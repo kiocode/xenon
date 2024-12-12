@@ -11,10 +11,17 @@
             "id": "9df7584897f8408e",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
-              "icon": "lucide-file",
-              "title": "New tab"
+              "type": "canvas",
+              "state": {
+                "file": "Project Schema.canvas",
+                "viewState": {
+                  "x": 0,
+                  "y": 0,
+                  "zoom": 0
+                }
+              },
+              "icon": "lucide-layout-dashboard",
+              "title": "Project Schema"
             }
           }
         ]
@@ -162,7 +169,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 560.5
+    "width": 443.5
   },
   "left-ribbon": {
     "hiddenItems": {
