@@ -1,0 +1,3 @@
+﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: The intermediate directory (E:\Projects\cheat-lib\\build\intermediates\) contains files shared from another project (cheat-lib.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  test-demo.cpp
+  test-demo.vcxproj -> E:\Projects\cheat-lib\build\test-demo.exe

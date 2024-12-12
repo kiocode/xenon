@@ -1,0 +1,2 @@
+Configuration:
+- fnGetEntities[] = [getEntities, getPlayers]
