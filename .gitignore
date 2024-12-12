@@ -32,4 +32,4 @@
 *.app
 
 .vs/
-*/*/build/
+build/
