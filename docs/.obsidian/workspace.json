@@ -11,17 +11,14 @@
             "id": "9df7584897f8408e",
             "type": "leaf",
             "state": {
-              "type": "canvas",
+              "type": "markdown",
               "state": {
-                "file": "Project Schema.canvas",
-                "viewState": {
-                  "x": 0,
-                  "y": 0,
-                  "zoom": 0
-                }
+                "file": "Project Notes.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-layout-dashboard",
-              "title": "Project Schema"
+              "icon": "lucide-file",
+              "title": "Project Notes"
             }
           }
         ]
@@ -190,6 +187,8 @@
   },
   "active": "9df7584897f8408e",
   "lastOpenFiles": [
+    "Tasks Organization.md",
+    "Project Schema.canvas",
     "Project Notes.md",
     "UniversalCheatsLib/Classes/Game.md",
     "UniversalCheatsLib/Classes/ESP.md",
