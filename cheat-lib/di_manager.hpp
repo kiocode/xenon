@@ -1,3 +1,5 @@
+#pragma once
+
 #include <functional>
 #include <memory>
 #include <unordered_map>
@@ -7,7 +9,7 @@
 #include <type_traits>
 #include <utility>
 
-class DiManager {
+class DIManager {
 public:
     template <typename TService>
     void AddSingleton(std::function<std::shared_ptr<TService>()> factory) {
@@ -64,5 +66,5 @@ private:
     };
 
     template <typename T>
-    using ConstructorParameters = typename ConstructorParameters<decltype(&T::T)>::type;
+    using ConstructorArgs = typename ConstructorParameters<decltype(&T::T)>::type;
 };

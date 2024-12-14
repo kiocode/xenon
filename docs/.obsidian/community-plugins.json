@@ -4,9 +4,9 @@
   "obsidian-kanban",
   "obsidian-git",
   "obsidian-day-planner",
-  "dataview",
   "editing-toolbar",
   "obsidian-importer",
   "obsidian-mind-map",
-  "github-copilot"
+  "github-copilot",
+  "dataview"
 ]

@@ -40,7 +40,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
@@ -137,10 +137,10 @@
     <ClInclude Include="game.hpp" />
     <ClInclude Include="gui.hpp" />
     <ClInclude Include="hooks.hpp" />
-    <ClInclude Include="test.hpp" />
+    <ClInclude Include="interfaces\aimbot_interface.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DiManager.hpp" />
+    <ClCompile Include="di_manager.hpp" />
     <ClCompile Include="game.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

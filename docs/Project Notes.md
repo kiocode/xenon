@@ -19,7 +19,7 @@
 - Singleton
 
 ## Classes
-- [[Game]] 
+- [[Game]]
 - [[Aimbot]]
 - [[Hooks]]
 - [[ESP]] 

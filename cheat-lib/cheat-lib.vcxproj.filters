@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="test.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="aimbot.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -33,12 +30,15 @@
     <ClInclude Include="gui.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="interfaces\aimbot_interface.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DiManager.hpp">
+    <ClCompile Include="di_manager.hpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

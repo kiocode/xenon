@@ -84,15 +84,16 @@
     "type": "split",
     "children": [
       {
-        "id": "bf03738327165cc9",
+        "id": "ddd01eb2a232d876",
         "type": "tabs",
         "children": [
           {
-            "id": "8d8ecf3130ec048b",
+            "id": "53614e15296cd6d5",
             "type": "leaf",
             "state": {
               "type": "backlink",
               "state": {
+                "file": "Project Notes.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,24 +103,25 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks"
+              "title": "Backlinks for Project Notes"
             }
           },
           {
-            "id": "d22480c4cb2a47bc",
+            "id": "3d7192e607bd85ba",
             "type": "leaf",
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "Project Notes.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links"
+              "title": "Outgoing links from Project Notes"
             }
           },
           {
-            "id": "1d25300e03e768ed",
+            "id": "aa6efcdad5ce182c",
             "type": "leaf",
             "state": {
               "type": "tag",
@@ -132,17 +134,19 @@
             }
           },
           {
-            "id": "86a7db8df0fe9c32",
+            "id": "904bfc312175c20a",
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {},
+              "state": {
+                "file": "Project Notes.md"
+              },
               "icon": "lucide-list",
-              "title": "Outline"
+              "title": "Outline of Project Notes"
             }
           },
           {
-            "id": "2ef0b83d8c40919d",
+            "id": "e68f9faf6fd09e8a",
             "type": "leaf",
             "state": {
               "type": "planner-timeline",
@@ -150,23 +154,13 @@
               "icon": "calendar-with-checkmark",
               "title": "Timeline"
             }
-          },
-          {
-            "id": "5ef118a8b40da5e0",
-            "type": "leaf",
-            "state": {
-              "type": "git-view",
-              "state": {},
-              "icon": "git-pull-request",
-              "title": "Source Control"
-            }
           }
-        ],
-        "currentTab": 5
+        ]
       }
     ],
     "direction": "horizontal",
-    "width": 443.5
+    "width": 443.5,
+    "collapsed": true
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -187,9 +181,15 @@
   },
   "active": "9df7584897f8408e",
   "lastOpenFiles": [
-    "Tasks Organization.md",
-    "Project Schema.canvas",
+    "Classes/Game.md",
     "Project Notes.md",
+    "Project Schema.canvas",
+    "Tasks Organization.md",
+    "Classes/Hooks.md",
+    "Classes/GUI.md",
+    "Classes/ESP.md",
+    "Classes/Aimbot.md",
+    "Drawing 2024-12-13 12.35.25.excalidraw.md",
     "UniversalCheatsLib/Classes/Game.md",
     "UniversalCheatsLib/Classes/ESP.md",
     "UniversalCheatsLib/Project Notes.md",
@@ -210,9 +210,6 @@
     "Untitled.canvas",
     "radar.excalidraw.md",
     "Excalidraw/Drawing 2024-12-12 21.02.50.excalidraw.md",
-    "Excalidraw/Drawing 2024-12-12 02.22.09.excalidraw.md",
-    "UniversalCheatsLib/Untitled.md",
-    "Templates/Untitled.md",
     "Templates",
     "UniversalCheatsLib/Classes",
     "UniversalCheatsLib"
