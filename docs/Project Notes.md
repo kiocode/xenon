@@ -1,6 +1,6 @@
 
 ## General Info
-- **Project Name**: ?
+- **Project Name**: Xenon
 - **Project Type**: Game Hack
 - **Project Language**: C++ (C++20)
 - Used Libraries:
