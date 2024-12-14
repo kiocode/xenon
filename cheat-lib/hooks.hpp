@@ -1,0 +1,4 @@
+class Hooks {
+public:
+private:
+};

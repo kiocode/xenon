@@ -133,7 +133,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="aimbot.hpp" />
+    <ClInclude Include="esp.hpp" />
+    <ClInclude Include="game.hpp" />
+    <ClInclude Include="gui.hpp" />
+    <ClInclude Include="hooks.hpp" />
     <ClInclude Include="test.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="DiManager.hpp" />
+    <ClCompile Include="game.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

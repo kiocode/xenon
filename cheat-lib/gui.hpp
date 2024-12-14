@@ -1,0 +1,4 @@
+class GUI {
+public:
+private:
+};

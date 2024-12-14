@@ -21,5 +21,25 @@
     <ClInclude Include="aimbot.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="game.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hooks.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="esp.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gui.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DiManager.hpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
