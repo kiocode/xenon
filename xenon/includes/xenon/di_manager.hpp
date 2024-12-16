@@ -54,8 +54,33 @@ public:
         throw std::runtime_error("Service not registered.");
     }
 
+    template <typename TConfiguration>
+    std::shared_ptr<TConfiguration> AddConfiguration() {
+        auto type = std::type_index(typeid(TConfiguration));
+        if (services.find(type) != services.end()) {
+            throw std::runtime_error("Configuration already registered.");
+        }
+
+        std::function<std::shared_ptr<TConfiguration>()> factory = [this]() {
+			return std::make_shared<TConfiguration>();
+		};
+
+        configurations[type] = [factory]() { return factory(); };
+
+        return std::static_pointer_cast<TConfiguration>(configurations[type]());
+    }
+    template <typename TConfiguration>
+    std::shared_ptr<TConfiguration> GetConfiguration() {
+        auto type = std::type_index(typeid(TConfiguration));
+        if (configurations.find(type) != configurations.end()) {
+            return std::static_pointer_cast<TConfiguration>(configurations[type]());
+        }
+        throw std::runtime_error("Configuration not registered.");
+    }
+
 private:
 
     std::unordered_map<std::type_index, std::function<std::shared_ptr<void>()>> services;
     std::unordered_map<std::type_index, std::function<std::shared_ptr<void>()>> transients;
+    std::unordered_map<std::type_index, std::function<std::shared_ptr<void>()>> configurations;
 };

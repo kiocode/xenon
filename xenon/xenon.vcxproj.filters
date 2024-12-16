@@ -357,6 +357,9 @@
     <ClInclude Include="includes\xenon\builder.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="includes\xenon\configs\aimbot_config.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\aimbot.cpp">
