@@ -15,25 +15,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="includes\xenon\aimbot.hpp">
+    <ClInclude Include="includes\xenon\features\aimbot.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="includes\xenon\game.hpp">
+    <ClInclude Include="includes\xenon\features\game.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="includes\xenon\hooks.hpp">
+    <ClInclude Include="includes\xenon\features\hooks.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="includes\xenon\esp.hpp">
+    <ClInclude Include="includes\xenon\features\esp.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="includes\xenon\gui.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\xenon\interfaces\aimbot_interface.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\xenon\logger.hpp">
+    <ClInclude Include="includes\xenon\features\gui.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="libs\spdlog\cfg\argv.h">
@@ -351,21 +345,24 @@
     <ClInclude Include="libs\spdlog\version.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="includes\xenon\interfaces\aimbot_interface.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\xenon\utility\vec2.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\xenon\utility\vec3.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\xenon\builder.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\game.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\aimbot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\logger.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="includes\xenon\di_manager.hpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="includes\xenon\interfaces\logger_interface.hpp">
       <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>

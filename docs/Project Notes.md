@@ -6,6 +6,7 @@
 - Used Libraries:
 	- [ImGui](https://github.com/ocornut/imgui)
 	- [MinHook](https://github.com/TsudaKageyu/minhook)
+	- [spdlog](https://github.com/gabime/spdlog)
 
 ## Features
 - Hooks
@@ -13,6 +14,7 @@
 - Packets Sniffer
 - ESP Snapline/Box2D/Box3D/Skeleton
 - Aimbot (Smooth/AutoShoot/FOV/Distance/Humanized)
+- File Configuration
 
 ## Patterns
 - Dependency Injection
