@@ -18,11 +18,11 @@ int main()
 	#pragma region Register Configurations
 
 	std::shared_ptr<AimbotConfig> pAimbotConfig = builder.Services.AddConfiguration<AimbotConfig>();
-	pAimbotConfig->m_bHumanize = true;
-	pAimbotConfig->m_vScreenCenter = { 1920/2, 1080 / 2};
-	pAimbotConfig->m_bStartFromCenter = true;
+	//pAimbotConfig->m_bHumanize = true;
+	//pAimbotConfig->m_vScreenCenter = { 1920/2, 1080 / 2};
+	//pAimbotConfig->m_bStartFromCenter = true;
 	//pAimbotConfig->m_bSmooth = true;
-	//pAimbotConfig->m_fSmooth = 6;
+	//pAimbotConfig->m_fSmooth = 30;
 
 	#pragma endregion
 
@@ -50,7 +50,7 @@ int main()
 			Vec2 randomPos{ round(Random::randomFloat(0, 1920-1)),  round(Random::randomFloat(0,1080 - 1)) };
 			c_pAimbot->SetTarget(randomPos);
 		}
-		c_pAimbot->Aim();
+		c_pAimbot->AimTarget();
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(5));
 	}

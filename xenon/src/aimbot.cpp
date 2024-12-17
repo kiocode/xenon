@@ -17,44 +17,82 @@ void Aimbot::SetTarget(Vec2 pos) {
     m_vTarget = pos;
 }
 
-void Aimbot::Aim() {
+void Aimbot::AimTargetWithPrediction(Vec2* vel) {
+
+    if (vel == nullptr) {
+        spdlog::error("Impossible to use prediction if velocity is null");
+        return;
+    }
+
+    // calc predicted target
+    auto predictedTarget = /*prediction*/ m_vTarget;
+
+    Aim(&predictedTarget);
+
+}
+
+void Aimbot::AimTarget() {
+
     if (IsTargetEmpty()) {
         spdlog::info("Target is empty");
         return;
     }
 
+    Aim(&m_vTarget);
+
+}
+
+void Aimbot::Aim(Vec2* target) {
+
+    if (target == nullptr) {
+        spdlog::error("Impossible to use aim if target is null");
+        return;
+    }
+
     if (m_pConfigs->m_bStartFromCenter) {
         if (m_pConfigs->m_bSmooth) {
-            SmoothMoveToTarget();
+            SmoothMoveToTarget(target);
         }
         else if (m_pConfigs->m_bHumanize) {
-            Humanize();
+            Humanize(target);
         }
         else {
-            MoveDirectlyToTarget();
+            MoveDirectlyToTarget(target);
         }
     }
     else {
-        MoveDirectlyToTarget();
+        MoveDirectlyToTarget(target);
     }
 
-    spdlog::debug("Aiming at {}, {}", m_vTarget.x, m_vTarget.y);
+    spdlog::debug("Aiming at {}, {}", target->x, target->y);
 
     if (IsTargetReached()) {
         ResetTarget();
     }
 }
 
-void Aimbot::MoveDirectlyToTarget() {
-    SetCursorPos(m_vTarget.x, m_vTarget.y);
+void Aimbot::MoveDirectlyToTarget(Vec2* target) {
+
+    if (target == nullptr) {
+        spdlog::error("Target is null");
+        return;
+    }
+
+    SetCursorPos(target->x, target->y);
 }
 
-void Aimbot::SmoothMoveToTarget() {
+void Aimbot::SmoothMoveToTarget(Vec2* target) {
+
+    if (target == nullptr) {
+        spdlog::error("Target is null");
+        return;
+    }
+
     POINT cursorPos;
     GetCursorPos(&cursorPos);
 
-    float stepX = (m_vTarget.x - cursorPos.x) / m_pConfigs->m_fSmooth;
-    float stepY = (m_vTarget.y - cursorPos.y) / m_pConfigs->m_fSmooth;
+    float stepX = (target->x - cursorPos.x) / m_pConfigs->m_fSmooth;
+    float stepY = (target->y - cursorPos.y) / m_pConfigs->m_fSmooth;
 
     for (int i = 1; i <= m_pConfigs->m_fSmooth; ++i) {
         float nextX = cursorPos.x + stepX * i;
@@ -65,14 +103,17 @@ void Aimbot::SmoothMoveToTarget() {
     }
 }
 
-void Aimbot::Humanize() {
+void Aimbot::Humanize(Vec2* target) {
+
+    if (target == nullptr) {
+        spdlog::error("Target is null");
+        return;
+    }
+
     POINT cursorPos;
     GetCursorPos(&cursorPos);
 
-    std::vector<Vec2> controlPoints = GenerateBezierControlPoints(
-        { static_cast<float>(cursorPos.x), static_cast<float>(cursorPos.y) },
-        m_vTarget
-    );
+    std::vector<Vec2> controlPoints = GenerateBezierControlPoints({ static_cast<float>(cursorPos.x), static_cast<float>(cursorPos.y) }, m_vTarget);
 
     for (float t = 0.0f; t <= 1.0f; t += 0.01f) {
         Vec2 point = CalculateBezierPoint(t, controlPoints);

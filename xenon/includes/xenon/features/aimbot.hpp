@@ -14,17 +14,19 @@ public:
     bool IsTargetEmpty();
     void SetTarget(Vec2 pos);
     bool IsTargetReached();
-    void Aim();
     void TrackMouse();
-    void MoveDirectlyToTarget();
+    void AimTarget();
+    void AimTargetWithPrediction(Vec2* vel);
 
 private:
     std::shared_ptr<AimbotConfig> m_pConfigs;
     Vec2 m_vTarget;
 
-    void Humanize();
+    void Aim(Vec2* target);
+    void MoveDirectlyToTarget(Vec2* target);
+    void Humanize(Vec2* target);
     void ResetTarget();
-    void SmoothMoveToTarget();
+    void SmoothMoveToTarget(Vec2* target);
     std::vector<Vec2> GenerateBezierControlPoints(const Vec2& start, const Vec2& target);
     Vec2 CalculateBezierPoint(float t, const std::vector<Vec2>& points);
 };
