@@ -3,4 +3,8 @@
 class Builder {
 public:
 	DIManager Services;
+
+    void SetDebugLogLevel();
+    void SetInfoLogLevel();
+    void SetErrorLogLevel();
 };

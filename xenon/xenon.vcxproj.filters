@@ -345,9 +345,6 @@
     <ClInclude Include="libs\spdlog\version.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="includes\xenon\interfaces\aimbot_interface.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="includes\xenon\utility\vec2.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -360,6 +357,9 @@
     <ClInclude Include="includes\xenon\configs\aimbot_config.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="includes\xenon\utility\random.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\aimbot.cpp">
@@ -367,6 +367,9 @@
     </ClCompile>
     <ClCompile Include="includes\xenon\di_manager.hpp">
       <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\builder.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

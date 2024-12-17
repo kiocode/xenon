@@ -150,7 +150,7 @@
     <ClInclude Include="includes\xenon\features\game.hpp" />
     <ClInclude Include="includes\xenon\features\gui.hpp" />
     <ClInclude Include="includes\xenon\features\hooks.hpp" />
-    <ClInclude Include="includes\xenon\interfaces\aimbot_interface.hpp" />
+    <ClInclude Include="includes\xenon\utility\random.hpp" />
     <ClInclude Include="includes\xenon\utility\vec2.hpp" />
     <ClInclude Include="includes\xenon\utility\vec3.hpp" />
     <ClInclude Include="libs\spdlog\async.h" />
@@ -262,6 +262,7 @@
   <ItemGroup>
     <ClCompile Include="src\aimbot.cpp" />
     <ClCompile Include="includes\xenon\di_manager.hpp" />
+    <ClCompile Include="src\builder.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

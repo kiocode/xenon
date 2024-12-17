@@ -6,7 +6,7 @@ public:
 	bool m_bAutoShoot;
 	bool m_bAutoScope;
 	bool m_bSmooth;
-	bool m_bHumanized;
+	bool m_bHumanize;
 	bool m_bFov;
 	bool m_bNoRecoil;
 	bool m_bNoSpread;

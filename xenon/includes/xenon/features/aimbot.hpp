@@ -1,27 +1,30 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 #include <spdlog/spdlog.h>
 
-#include <xenon/interfaces/aimbot_interface.hpp>
+#include <xenon/utility/vec2.hpp>
 #include <xenon/configs/aimbot_config.hpp>
 
-class Aimbot : public IAimbot {
+class Aimbot {
 public:
+    Aimbot(std::shared_ptr<AimbotConfig> configs) : m_pConfigs(configs) { }
 
-	Aimbot(std::shared_ptr<AimbotConfig> configs) : m_pConfigs(configs) 
-	{
-		spdlog::info("Aimbot config: m_bStartFromCenter = {}, m_vScreenCenter = {}/{}", m_pConfigs->m_bStartFromCenter, m_pConfigs->m_vScreenCenter.x, m_pConfigs->m_vScreenCenter.y);
-	}
-
-	bool IsTargetEmpty() override;
-	void SetTarget(Vec2 pos) override;
-	void Humanize() override;
-	void Aim() override;
+    bool IsTargetEmpty();
+    void SetTarget(Vec2 pos);
+    bool IsTargetReached();
+    void Aim();
+    void TrackMouse();
+    void MoveDirectlyToTarget();
 
 private:
-	std::shared_ptr<AimbotConfig> m_pConfigs;
-	Vec2 m_vTarget;
+    std::shared_ptr<AimbotConfig> m_pConfigs;
+    Vec2 m_vTarget;
 
-	float CalculateSmoothMove(float targetPos, float centerPos);
+    void Humanize();
+    void ResetTarget();
+    void SmoothMoveToTarget();
+    std::vector<Vec2> GenerateBezierControlPoints(const Vec2& start, const Vec2& target);
+    Vec2 CalculateBezierPoint(float t, const std::vector<Vec2>& points);
 };
