@@ -20,10 +20,8 @@ int main()
 	#pragma region Register Configurations
 
 	std::shared_ptr<AimbotConfig> pAimbotConfig = builder.Services.AddConfiguration<AimbotConfig>();
-	pAimbotConfig->m_vScreenCenter = { 1080, 1920 };
+	pAimbotConfig->m_vScreenCenter = { 1920/2, 1080 / 2};
 	pAimbotConfig->m_bStartFromCenter = true;
-
-	std::shared_ptr<AimbotConfig> pAimbotConfig2 = builder.Services.GetConfiguration<AimbotConfig>();
 
 	#pragma endregion
 
@@ -43,7 +41,7 @@ int main()
 	while (true) 
 	{
 
-		if (GetAsyncKeyState(VK_ESCAPE) && 1) {
+		if (GetAsyncKeyState(VK_ESCAPE)) {
 			break;
 		}
 

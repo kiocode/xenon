@@ -22,4 +22,6 @@ public:
 private:
 	std::shared_ptr<AimbotConfig> m_pConfigs;
 	Vec2 m_vTarget;
+
+	float CalculateSmoothMove(float targetPos, float centerPos);
 };
