@@ -49,16 +49,11 @@ void Aimbot::Aim(Vec2* target) {
         return;
     }
 
-    if (m_pConfigs->m_bStartFromCenter) {
-        if (m_pConfigs->m_bSmooth) {
-            SmoothMoveToTarget(target);
-        }
-        else if (m_pConfigs->m_bHumanize) {
-            Humanize(target);
-        }
-        else {
-            MoveDirectlyToTarget(target);
-        }
+    if (m_pConfigs->m_bSmooth) {
+        SmoothMoveToTarget(target);
+    }
+    else if (m_pConfigs->m_bHumanize) {
+        Humanize(target);
     }
     else {
         MoveDirectlyToTarget(target);

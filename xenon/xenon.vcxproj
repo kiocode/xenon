@@ -263,6 +263,7 @@
     <ClCompile Include="src\aimbot.cpp" />
     <ClCompile Include="includes\xenon\di_manager.hpp" />
     <ClCompile Include="src\builder.cpp" />
+    <ClCompile Include="src\game.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

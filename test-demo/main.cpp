@@ -15,11 +15,13 @@ int main()
 	Builder builder;
     builder.SetDebugLogLevel();
 
+	builder.GameManager.SetGameAbsolutePath("D:\\Steam\\steamapps\\common\\DDraceNetwork\\ddnet\\DDNet.exe");
+
 	#pragma region Register Configurations
 
 	std::shared_ptr<AimbotConfig> pAimbotConfig = builder.Services.AddConfiguration<AimbotConfig>();
-	//pAimbotConfig->m_bHumanize = true;
-	//pAimbotConfig->m_vScreenCenter = { 1920/2, 1080 / 2};
+	pAimbotConfig->m_bHumanize = true;
+	pAimbotConfig->m_vScreenCenter = { 1920/2, 1080 / 2};
 	//pAimbotConfig->m_bStartFromCenter = true;
 	//pAimbotConfig->m_bSmooth = true;
 	//pAimbotConfig->m_fSmooth = 30;
@@ -35,6 +37,8 @@ int main()
 
 	#pragma endregion
 
+	builder.Build();
+
 	#pragma region Tests
 
 	std::shared_ptr<Aimbot> c_pAimbot = builder.Services.GetService<Aimbot>();
@@ -47,7 +51,7 @@ int main()
 		}
 
 		if (c_pAimbot->IsTargetEmpty()) {
-			Vec2 randomPos{ round(Random::randomFloat(0, 1920-1)),  round(Random::randomFloat(0,1080 - 1)) };
+			Vec2 randomPos{ round(Random::randomFloat(0, 1920-1)),  round(Random::randomFloat(0, 1080-1)) };
 			c_pAimbot->SetTarget(randomPos);
 		}
 		c_pAimbot->AimTarget();
