@@ -21,8 +21,8 @@ int main()
 
 	#pragma region Register Configurations
 
-	std::shared_ptr<AimbotConfig> pAimbotConfig = builder.Services.AddConfiguration<AimbotConfig>();
-	pAimbotConfig->m_bHumanize = true;
+	std::shared_ptr<AimConfig> pAimbotConfig = builder.Services.GetConfiguration<AimConfig>();
+	//pAimbotConfig->m_bHumanize = true;
 	//pAimbotConfig->m_bStartFromCenter = true;
 	//pAimbotConfig->m_bSmooth = true;
 	//pAimbotConfig->m_fSmooth = 30;
@@ -31,10 +31,7 @@ int main()
 
 	#pragma region Register Services
 
-	//builder.m_services.AddSingleton<IAimbot>([&container]() { return std::make_shared<Aimbot>(container.GetService<ILogger>()); });
-	builder.Services.AddSingleton<Aimbot>([&builder]() {
-		return std::make_shared<Aimbot>(builder.Services.GetConfiguration<AimbotConfig>(), builder.Services.GetService<Game>(), builder.Services.GetService<AimService>());
-	});	
+	//builder.m_services.AddSingleton<IAimbot>([]() { return std::make_shared<Aimbot>(container.GetService<ILogger>()); });
 
 	#pragma endregion
 
@@ -43,6 +40,7 @@ int main()
 	#pragma region Tests
 
 	std::shared_ptr<Aimbot> c_pAimbot = builder.Services.GetService<Aimbot>();
+	std::shared_ptr<AimService> c_pAimService = builder.Services.GetService<AimService>();
 
 	while (true) 
 	{
@@ -51,12 +49,15 @@ int main()
 			continue; 
 		}
 
-		//if (c_pAimbot->IsTargetEmpty()) {
-		//	Vec2 randomPos{ round(Random::randomFloat(0, builder.GameManager->g_vScreenResolution.x - 1)),  round(Random::randomFloat(0, builder.GameManager->g_vScreenResolution.y - 1))};
-		//	c_pAimbot->SetTarget(randomPos);
-		//}
-		//c_pAimbot->AimTarget();
+		/*if (c_pAimbot->IsTargetEmpty()) {
+			Vec2 randomPos{ round(Random::randomFloat(0, builder.GameManager->g_vScreenResolution.x - 1)),  round(Random::randomFloat(0, builder.GameManager->g_vScreenResolution.y - 1))};
+			c_pAimbot->SetTarget(randomPos);
+		}
+		c_pAimbot->AimTarget();*/
 
+		if (GetAsyncKeyState(VK_RBUTTON)) {
+			c_pAimService->KeepRecoil(10);
+		}
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(5));
 	}

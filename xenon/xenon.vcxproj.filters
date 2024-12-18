@@ -354,7 +354,7 @@
     <ClInclude Include="includes\xenon\builder.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="includes\xenon\configs\aimbot_config.hpp">
+    <ClInclude Include="includes\xenon\configs\aim_config.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="includes\xenon\utility\random.hpp">

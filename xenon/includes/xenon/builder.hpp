@@ -9,8 +9,7 @@ public:
     std::shared_ptr<Game> GameManager;
 
     Builder() {
-        GameManager = Services.AddSingleton<Game>([this]() { return std::make_shared<Game>(); });
-        Services.AddSingleton<AimService>([this]() { return std::make_shared<AimService>(); });
+        RegisterDefaultServices();
     }
 
     void SetDebugLogLevel();
@@ -23,5 +22,6 @@ public:
 private:
     bool m_bUseUpdate = true;
     
+    void RegisterDefaultServices();
     void GetDesktopResolution(int& horizontal, int& vertical);
 };

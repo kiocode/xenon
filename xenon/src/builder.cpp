@@ -1,6 +1,8 @@
 #include <xenon/builder.hpp>
 
 #include <spdlog/spdlog.h>
+#include <xenon/configs/aim_config.hpp>
+#include <xenon/features/aimbot.hpp>
 
 void Builder::SetDebugLogLevel() {
     spdlog::set_level(spdlog::level::debug);
@@ -19,7 +21,21 @@ void Builder::DisableUpdate() {
 }
 
 void Builder::RegisterDefaultServices() {
+    std::shared_ptr<AimConfig> pAimConfig = Services.AddConfiguration<AimConfig>();
 
+    GameManager = Services.AddSingleton<Game>([]() {
+        return std::make_shared<Game>();
+    });
+
+    std::shared_ptr<AimService> pAimService = Services.AddSingleton<AimService>([pAimConfig]() {
+        return std::make_shared<AimService>(pAimConfig);
+    });
+
+    std::shared_ptr<Aimbot> pAimbot = Services.AddSingleton<Aimbot>(
+        [this, pAimConfig, pAimService]() {
+            return std::make_shared<Aimbot>(pAimConfig, GameManager, pAimService);
+        }
+    );
 }
 
 void Builder::BuildAndRun() {

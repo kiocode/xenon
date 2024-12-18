@@ -144,7 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="includes\xenon\builder.hpp" />
-    <ClInclude Include="includes\xenon\configs\aimbot_config.hpp" />
+    <ClInclude Include="includes\xenon\configs\aim_config.hpp" />
     <ClInclude Include="includes\xenon\features\aimbot.hpp" />
     <ClInclude Include="includes\xenon\services\aim_service.hpp" />
     <ClInclude Include="includes\xenon\features\esp.hpp" />

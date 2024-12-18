@@ -1,4 +1,6 @@
-class AimbotConfig {
+#pragma once
+
+class AimConfig {
 public:
 	bool m_bStartFromCenter;
 	bool m_bSilent;
@@ -14,4 +16,5 @@ public:
 
 	float m_fSmooth = 10;
 	float m_fFov;
+	float m_fRecoilOffset;
 };
