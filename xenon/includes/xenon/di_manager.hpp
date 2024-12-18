@@ -9,36 +9,40 @@
 class DIManager {
 public:
     template <typename TService>
-    void AddSingleton(std::function<std::shared_ptr<TService>()> factory) {
+    std::shared_ptr<TService> AddSingleton(std::function<std::shared_ptr<TService>()> factory) {
         auto type = std::type_index(typeid(TService));
         if (singletons.find(type) != singletons.end()) {
             throw std::runtime_error("Service already registered as Singleton.");
         }
         auto instance = factory();
         singletons[type] = instance;
+
+        return instance;
     }
 
     template <typename TService, typename TImplementation>
-    void AddSingleton() {
-        AddSingleton<TService>([]() {
+    std::shared_ptr<TService> AddSingleton() {
+        return AddSingleton<TService>([]() {
             return std::make_shared<TImplementation>();
-            });
+        });
     }
 
     template <typename TService>
-    void AddTransient(std::function<std::shared_ptr<TService>()> factory) {
+    std::shared_ptr<TService> AddTransient(std::function<std::shared_ptr<TService>()> factory) {
         auto type = std::type_index(typeid(TService));
         if (transients.find(type) != transients.end()) {
             throw std::runtime_error("Service already registered as Transient.");
         }
         transients[type] = factory;
+
+        return factory;
     }
 
     template <typename TService, typename TImplementation>
-    void AddTransient() {
-        AddTransient<TService>([]() {
+    std::shared_ptr<TService> AddTransient() {
+        return AddTransient<TService>([]() {
             return std::make_shared<TImplementation>();
-            });
+        });
     }
 
     template <typename TService>

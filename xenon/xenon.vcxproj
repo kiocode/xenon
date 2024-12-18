@@ -146,6 +146,7 @@
     <ClInclude Include="includes\xenon\builder.hpp" />
     <ClInclude Include="includes\xenon\configs\aimbot_config.hpp" />
     <ClInclude Include="includes\xenon\features\aimbot.hpp" />
+    <ClInclude Include="includes\xenon\services\aim_service.hpp" />
     <ClInclude Include="includes\xenon\features\esp.hpp" />
     <ClInclude Include="includes\xenon\features\game.hpp" />
     <ClInclude Include="includes\xenon\features\gui.hpp" />
@@ -262,6 +263,7 @@
   <ItemGroup>
     <ClCompile Include="src\aimbot.cpp" />
     <ClCompile Include="includes\xenon\di_manager.hpp" />
+    <ClCompile Include="src\aim_service.cpp" />
     <ClCompile Include="src\builder.cpp" />
     <ClCompile Include="src\game.cpp" />
   </ItemGroup>

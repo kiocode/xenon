@@ -5,7 +5,7 @@
 #include <xenon/utility/random.hpp>
 #include <thread>
 
-bool Aimbot::IsTargetEmpty() {
+bool Aimbot::IsTargetEmpty() const {
     return m_vTarget.x == -99 && m_vTarget.y == -99;
 }
 
@@ -40,30 +40,6 @@ void Aimbot::AimTarget() {
 
     Aim(&m_vTarget);
 
-}
-
-void Aimbot::Aim(Vec2* target) {
-
-    if (target == nullptr) {
-        spdlog::error("Impossible to use aim if target is null");
-        return;
-    }
-
-    if (m_pConfigs->m_bSmooth) {
-        SmoothMoveToTarget(target);
-    }
-    else if (m_pConfigs->m_bHumanize) {
-        Humanize(target);
-    }
-    else {
-        MoveDirectlyToTarget(target);
-    }
-
-    spdlog::debug("Aiming at {}, {}", target->x, target->y);
-
-    if (IsTargetReached()) {
-        ResetTarget();
-    }
 }
 
 void Aimbot::MoveDirectlyToTarget(Vec2* target) {
@@ -147,7 +123,7 @@ Vec2 Aimbot::CalculateBezierPoint(float t, const std::vector<Vec2>& points) {
     return { x, y };
 }
 
-bool Aimbot::IsTargetReached() {
+bool Aimbot::IsTargetReached() const {
     POINT cursorPos;
     if (!GetCursorPos(&cursorPos)) {
         spdlog::error("Failed to get cursor position");

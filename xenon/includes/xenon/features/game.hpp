@@ -8,8 +8,10 @@ class Game {
 public:
 	Vec2 g_vScreenCenter;
 	Vec2 g_vScreenResolution;
+	bool g_bUseUpdate;
 
 	void SetGameAbsolutePath(std::string path);
+	void Update();
 
 private:
 

@@ -14,6 +14,4 @@ public:
 
 	float m_fSmooth = 10;
 	float m_fFov;
-
-	Vec2 m_vScreenCenter;
 };
