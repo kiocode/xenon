@@ -49,15 +49,15 @@ int main()
 			continue; 
 		}
 
-		/*if (c_pAimbot->IsTargetEmpty()) {
+		if (c_pAimbot->IsTargetEmpty()) {
 			Vec2 randomPos{ round(Random::randomFloat(0, builder.GameManager->g_vScreenResolution.x - 1)),  round(Random::randomFloat(0, builder.GameManager->g_vScreenResolution.y - 1))};
 			c_pAimbot->SetTarget(randomPos);
 		}
-		c_pAimbot->AimTarget();*/
+		c_pAimbot->AimTarget();
 
-		if (GetAsyncKeyState(VK_RBUTTON)) {
+		/*if (GetAsyncKeyState(VK_RBUTTON)) {
 			c_pAimService->KeepRecoil(10);
-		}
+		}*/
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(5));
 	}
