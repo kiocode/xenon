@@ -12,7 +12,7 @@ public:
         std::shared_ptr<AimConfig> configs
     ) : m_pConfigs(configs) { }
 
-	void KeepRecoil(double offset);
+	void KeepRecoil(double verticalOffset, double tiltOffset);
 	void Aim(Vec2& target);
 
 private:
