@@ -1,4 +1,4 @@
-#include <xenon/builder.hpp>
+#include <xenon/core/builder.hpp>
 
 #include <spdlog/spdlog.h>
 #include <xenon/configs/aim_config.hpp>
@@ -27,8 +27,8 @@ void Builder::RegisterDefaultServices() {
         return std::make_shared<Game>();
     });
 
-    std::shared_ptr<AimService> pAimService = Services.AddSingleton<AimService>([pAimConfig]() {
-        return std::make_shared<AimService>(pAimConfig);
+    std::shared_ptr<AimService> pAimService = Services.AddSingleton<AimService>([this, pAimConfig]() {
+        return std::make_shared<AimService>(pAimConfig, GameManager);
     });
 
     std::shared_ptr<Aimbot> pAimbot = Services.AddSingleton<Aimbot>(
@@ -38,22 +38,15 @@ void Builder::RegisterDefaultServices() {
     );
 }
 
-void Builder::BuildAndRun() {
-
-    #pragma region SetScreenResolution & Get the center
-
-    int width, height;
-    GetDesktopResolution(width, height);
-
-    GameManager->g_vScreenResolution = Vec2(static_cast<double>(width), static_cast<double>(height));
-    GameManager->g_vScreenCenter = Vec2(GameManager->g_vScreenResolution.x / 2, GameManager->g_vScreenResolution.y / 2);
-
-    spdlog::info("Screen resolution: {}x{}", GameManager->g_vScreenResolution.x, GameManager->g_vScreenResolution.y);
-
-    #pragma endregion
-
+void Builder::BuildAndRun() const {
+    auto previousTime = std::chrono::steady_clock::now();
+    GameManager->g_fStartPlayTime = previousTime.time_since_epoch().count();
 
     while (m_bUseUpdate) {
+        auto currentTime = std::chrono::steady_clock::now();
+        GameManager->g_fDeltaTime = std::chrono::duration<float>(currentTime - previousTime).count();
+        previousTime = currentTime;
+
         GameManager->Update();
 
         std::this_thread::sleep_for(std::chrono::milliseconds(5));

@@ -5,18 +5,21 @@
 
 #include <xenon/utility/vec2.hpp>
 #include <xenon/configs/aim_config.hpp>
+#include <xenon/features/game.hpp>
 
 class AimService {
 public:
     AimService(
-        std::shared_ptr<AimConfig> configs
-    ) : m_pConfigs(configs) { }
+        std::shared_ptr<AimConfig> configs,
+        std::shared_ptr<Game> game
+    ) : m_pConfigs(configs), m_pGame(game){ }
 
-	void KeepRecoil(double verticalOffset, double tiltOffset);
+	void KeepRecoil();
 	void Aim(Vec2& target);
 
 private:
     std::shared_ptr<AimConfig> m_pConfigs;
+    std::shared_ptr<Game> m_pGame;
 
     void TrackMouse();
     void Humanize(Vec2& target);

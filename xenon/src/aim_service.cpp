@@ -2,21 +2,24 @@
 #include <spdlog/spdlog.h>
 #include <xenon/utility/random.hpp>
 
-void AimService::KeepRecoil(double verticalOffset, double horizontalAmplitude) {
-    static bool moveRight = true;
-    POINT cursorPos;
-    GetCursorPos(&cursorPos);
+void AimService::KeepRecoil() {
+    float playTime = m_pGame->GetPlayTime();
 
-    // Scale = speed * deltaTime
-    double scale = verticalOffset * 1000;
+    int adjustedVerticalOffset = static_cast<int>(
+        (m_pConfigs->m_fRecoilVerticalStrength * 0.4) * m_pGame->g_fDeltaTime
+    );
 
-    spdlog::debug("Scale: {}", scale);
+    int adjustedHorizontalOffset = static_cast<int>(
+        (m_pConfigs->m_fRecoilTiltStrength * 0.4) * std::sin(playTime) * m_pGame->g_fDeltaTime
+    );
 
-    int adjustedVerticalOffset = static_cast<int>(verticalOffset * scale);
+    INPUT input = {};
+    input.type = INPUT_MOUSE;
+    input.mi.dx = adjustedHorizontalOffset;
+    input.mi.dy = adjustedVerticalOffset;
+    input.mi.dwFlags = MOUSEEVENTF_MOVE;
 
-    cursorPos.y += adjustedVerticalOffset;
-
-    SetCursorPos(cursorPos.x, cursorPos.y);
+    SendInput(1, &input, sizeof(INPUT));
 }
 
 void AimService::Aim(Vec2& target) {
