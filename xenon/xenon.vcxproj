@@ -146,14 +146,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="includes\xenon\builder.hpp" />
+    <ClInclude Include="includes\xenon\core\builder.hpp" />
     <ClInclude Include="includes\xenon\configs\aim_config.hpp" />
     <ClInclude Include="includes\xenon\configs\gui_config.hpp" />
     <ClInclude Include="includes\xenon\features\aimbot.hpp" />
     <ClInclude Include="includes\xenon\services\aim_service.hpp" />
     <ClInclude Include="includes\xenon\features\esp.hpp" />
     <ClInclude Include="includes\xenon\features\game.hpp" />
-    <ClInclude Include="includes\xenon\features\gui.hpp" />
+    <ClInclude Include="includes\xenon\core\gui.hpp" />
     <ClInclude Include="includes\xenon\features\hooks.hpp" />
     <ClInclude Include="includes\xenon\utility\random.hpp" />
     <ClInclude Include="includes\xenon\utility\vec2.hpp" />
@@ -281,7 +281,7 @@
     <ClCompile Include="libs\imgui\imgui_tables.cpp" />
     <ClCompile Include="libs\imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\aimbot.cpp" />
-    <ClCompile Include="includes\xenon\di_manager.hpp" />
+    <ClCompile Include="includes\xenon\core\di_manager.hpp" />
     <ClCompile Include="src\aim_service.cpp" />
     <ClCompile Include="src\builder.cpp" />
     <ClCompile Include="src\game.cpp" />

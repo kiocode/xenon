@@ -16,5 +16,7 @@ public:
 
 	float m_fSmooth = 10;
 	float m_fFov;
-	float m_fRecoilOffset;
+	float m_fRecoilTiltSpeed;
+	float m_fRecoilTiltStrength;
+	float m_fRecoilVerticalStrength = 2;
 };

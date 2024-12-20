@@ -27,7 +27,7 @@
     <ClInclude Include="includes\xenon\features\esp.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="includes\xenon\features\gui.hpp">
+    <ClInclude Include="includes\xenon\core\gui.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="libs\spdlog\cfg\argv.h">
@@ -351,7 +351,7 @@
     <ClInclude Include="includes\xenon\utility\vec3.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="includes\xenon\builder.hpp">
+    <ClInclude Include="includes\xenon\core\builder.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="includes\xenon\configs\aim_config.hpp">
@@ -398,7 +398,7 @@
     <ClCompile Include="src\aimbot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="includes\xenon\di_manager.hpp">
+    <ClCompile Include="includes\xenon\core\di_manager.hpp">
       <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="src\builder.cpp">
