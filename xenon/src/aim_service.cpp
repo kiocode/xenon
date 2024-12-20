@@ -3,33 +3,16 @@
 #include <xenon/utility/random.hpp>
 
 void AimService::KeepRecoil(double verticalOffset, double horizontalAmplitude) {
-    static auto lastTime = std::chrono::steady_clock::now();
     static bool moveRight = true;
-    static POINT initialPos;
-
     POINT cursorPos;
     GetCursorPos(&cursorPos);
 
-    if (!initialPos.x && !initialPos.y) {
-        initialPos = cursorPos;
-    }
+    // Scale = speed * deltaTime
+    double scale = verticalOffset * 1000;
 
-    auto currentTime = std::chrono::steady_clock::now();
-    std::chrono::duration<double> deltaTime = currentTime - lastTime;
-    lastTime = currentTime;
-
-    double scale = deltaTime.count() * 1000;
+    spdlog::debug("Scale: {}", scale);
 
     int adjustedVerticalOffset = static_cast<int>(verticalOffset * scale);
-    int adjustedHorizontalOffset = static_cast<int>(horizontalAmplitude * scale);
-
-    if (moveRight) {
-        cursorPos.x = initialPos.x + adjustedHorizontalOffset;
-    }
-    else {
-        cursorPos.x = initialPos.x - adjustedHorizontalOffset;
-    }
-    moveRight = !moveRight;
 
     cursorPos.y += adjustedVerticalOffset;
 

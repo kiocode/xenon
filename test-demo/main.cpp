@@ -56,7 +56,7 @@ int main()
 		c_pAimbot->AimTarget();*/
 
 		if (GetAsyncKeyState(VK_RBUTTON)) {
-			c_pAimService->KeepRecoil(0, 10);
+			c_pAimService->KeepRecoil(0.5, 0);
 		}
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(5));
