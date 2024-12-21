@@ -33,6 +33,10 @@ public:
 	Present oPresent = NULL;
 	bool init = false;
 
+    static HRESULT __stdcall hkPresentWrapper(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags) {
+        return GetInstance().hkPresent(pSwapChain, SyncInterval, Flags);
+    }
+
     static HRESULT __stdcall WndProcWrapper(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
         return GetInstance().WndProc(hWnd, uMsg, wParam, lParam);
     }
