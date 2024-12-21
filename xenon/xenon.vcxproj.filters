@@ -393,7 +393,7 @@
     <ClInclude Include="includes\xenon\core\system.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="includes\xenon\core\core.hpp">
+    <ClInclude Include="includes\xenon\core\builder.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="libs\kiero\minhook\include\MinHook.h">
@@ -421,6 +421,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="libs\kiero\kiero.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\xenon\core\external_cheat.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\xenon\core\internal_cheat.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\xenon\interfaces\cheat_interface.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -464,7 +473,7 @@
     <ClCompile Include="src\system.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\core.cpp">
+    <ClCompile Include="src\builder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="libs\kiero\minhook\src\hde\hde32.c">
@@ -483,6 +492,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="libs\kiero\kiero.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\external_cheat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\internal_cheat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

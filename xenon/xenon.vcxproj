@@ -72,7 +72,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)\xenon\build</OutDir>
+    <OutDir>$(SolutionDir)\build-lib\</OutDir>
     <IntDir>$(SolutionDir)\xenon\build\intermediates\</IntDir>
     <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
@@ -148,9 +148,12 @@
   <ItemGroup>
     <ClInclude Include="includes\xenon\configs\aim_config.hpp" />
     <ClInclude Include="includes\xenon\configs\gui_config.hpp" />
-    <ClInclude Include="includes\xenon\core\core.hpp" />
+    <ClInclude Include="includes\xenon\core\builder.hpp" />
+    <ClInclude Include="includes\xenon\core\external_cheat.hpp" />
+    <ClInclude Include="includes\xenon\core\internal_cheat.hpp" />
     <ClInclude Include="includes\xenon\core\system.hpp" />
     <ClInclude Include="includes\xenon\features\aimbot.hpp" />
+    <ClInclude Include="includes\xenon\interfaces\cheat_interface.hpp" />
     <ClInclude Include="includes\xenon\services\aim_service.hpp" />
     <ClInclude Include="includes\xenon\features\esp.hpp" />
     <ClInclude Include="includes\xenon\features\game.hpp" />
@@ -300,9 +303,11 @@
     <ClCompile Include="src\aimbot.cpp" />
     <ClCompile Include="includes\xenon\core\di_manager.hpp" />
     <ClCompile Include="src\aim_service.cpp" />
+    <ClCompile Include="src\external_cheat.cpp" />
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\gui.cpp" />
-    <ClCompile Include="src\core.cpp" />
+    <ClCompile Include="src\builder.cpp" />
+    <ClCompile Include="src\internal_cheat.cpp" />
     <ClCompile Include="src\system.cpp" />
   </ItemGroup>
   <ItemGroup>
