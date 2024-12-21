@@ -3,6 +3,7 @@
 #include <spdlog/spdlog.h>
 #include <xenon/configs/aim_config.hpp>
 #include <xenon/features/aimbot.hpp>
+#include <xenon/services/lua_service.hpp>
 
 void Builder::SetDebugLogLevel() {
     spdlog::set_level(spdlog::level::debug);
@@ -17,18 +18,32 @@ void Builder::SetErrorLogLevel() {
 }
 
 void Builder::RegisterDefaultServices() {
+
+    #pragma region Configurations
+
     std::shared_ptr<AimConfig> pAimConfig = Services.AddConfiguration<AimConfig>();
     std::shared_ptr<GameConfig> pGameConfig = Services.AddConfiguration<GameConfig>();
 
-    std::shared_ptr<System> pSystem = Services.AddSingleton<System>([]() {
-        return std::make_shared<System>();
-    });
+    #pragma endregion
 
+    #pragma region Utils
+
+    std::shared_ptr<System> pSystem = Services.AddSingleton<System>();
+
+    #pragma endregion
+
+    #pragma region Services
+
+    std::shared_ptr<LuaService> pLuaService = Services.AddSingleton<LuaService>();
     std::shared_ptr<AimService> pAimService = Services.AddSingleton<AimService>(
         [pSystem, pAimConfig]() {
             return std::make_shared<AimService>(pAimConfig, pSystem);
-        }   
+        }
     );
+
+    #pragma endregion
+
+    #pragma region Features
 
     std::shared_ptr<Aimbot> pAimbot = Services.AddSingleton<Aimbot>(
         [pAimConfig, pAimService]() {
@@ -39,6 +54,9 @@ void Builder::RegisterDefaultServices() {
     GameManager = Services.AddSingleton<Game>([pGameConfig, pAimbot, pAimService, pSystem]() {
         return std::make_shared<Game>(pGameConfig, pAimbot, pAimService, pSystem);
     });
+
+    #pragma endregion
+
 }
 
 void Builder::UseUpdate() {

@@ -8,6 +8,7 @@
 
 class DIManager {
 public:
+
     template <typename TService>
     std::shared_ptr<TService> AddSingleton(std::function<std::shared_ptr<TService>()> factory) {
         auto type = std::type_index(typeid(TService));
@@ -27,6 +28,13 @@ public:
         });
     }
 
+    template <typename TService>
+    std::shared_ptr<TService> AddSingleton() {
+        return AddSingleton<TService>([]() {
+            return std::make_shared<TService>();
+        });
+    }
+    
     template <typename TService>
     std::shared_ptr<TService> AddTransient(std::function<std::shared_ptr<TService>()> factory) {
         auto type = std::type_index(typeid(TService));
