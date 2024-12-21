@@ -12,8 +12,12 @@
 class Game {
 public:
 
-	Game(std::shared_ptr<GameConfig> configs, std::shared_ptr<Aimbot> aimbot, std::shared_ptr<AimService> aimService, std::shared_ptr<System> system) :
-		m_pConfigs(configs), m_pAimbot(aimbot), m_pAimService(aimService), m_pSystem(system) {}
+	Game(
+		std::shared_ptr<GameConfig> configs, 
+		std::shared_ptr<Aimbot> aimbot, 
+		std::shared_ptr<AimService> aimService, 
+		std::shared_ptr<System> system
+	) : m_pConfigs(configs), m_pAimbot(aimbot), m_pAimService(aimService), m_pSystem(system) {}
 
 	Vec2 GetScreenResolution();
 	Vec2 GetScreenCenter();

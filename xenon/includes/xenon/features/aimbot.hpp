@@ -2,7 +2,6 @@
 
 #include <xenon/utility/vec2.hpp>
 #include <xenon/configs/aim_config.hpp>
-#include <xenon/features/game.hpp>
 #include <xenon/services/aim_service.hpp>
 
 class Aimbot {

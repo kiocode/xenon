@@ -1,7 +1,6 @@
 #include <xenon/features/game.hpp>
 #include <xenon/utility/random.hpp>
 
-
 void Game::Update() {
 
 	auto previousTime = std::chrono::steady_clock::now();

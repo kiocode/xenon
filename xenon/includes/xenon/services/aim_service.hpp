@@ -5,7 +5,6 @@
 
 #include <xenon/utility/vec2.hpp>
 #include <xenon/configs/aim_config.hpp>
-#include <xenon/features/game.hpp>
 #include <xenon/core/system.hpp>
 
 class AimService {

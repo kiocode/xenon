@@ -1,16 +1,16 @@
 {
 	"nodes":[
-		{"id":"cfc56bc2d52fd6e1","type":"text","text":"Core","x":-440,"y":-220,"width":250,"height":50},
+		{"id":"cfc56bc2d52fd6e1","type":"text","text":"Core","x":-440,"y":-220,"width":250,"height":60},
 		{"id":"5b61c116c09f792d","type":"text","text":"AimService","x":-740,"y":-40,"width":250,"height":60},
 		{"id":"6d1d524a84eec4e2","type":"text","text":"Game","x":-440,"y":-40,"width":250,"height":60},
-		{"id":"340d5b902a2db12c","type":"text","text":"Aimbot","x":-80,"y":-35,"width":250,"height":50},
-		{"id":"7c9f9e375f1d6117","x":-279,"y":144,"width":250,"height":60,"type":"text","text":"System"}
+		{"id":"7c9f9e375f1d6117","x":-120,"y":-220,"width":250,"height":60,"type":"text","text":"System"},
+		{"id":"340d5b902a2db12c","type":"text","text":"Aimbot","x":-80,"y":-40,"width":250,"height":60}
 	],
 	"edges":[
 		{"id":"0f261af04ef1443d","fromNode":"cfc56bc2d52fd6e1","fromSide":"bottom","toNode":"6d1d524a84eec4e2","toSide":"top"},
 		{"id":"b1bcaba8e1ac525e","fromNode":"5b61c116c09f792d","fromSide":"top","toNode":"cfc56bc2d52fd6e1","toSide":"left"},
 		{"id":"360b61d2a113740b","fromNode":"6d1d524a84eec4e2","fromSide":"bottom","toNode":"5b61c116c09f792d","toSide":"bottom"},
 		{"id":"3707e3931a424a38","fromNode":"6d1d524a84eec4e2","fromSide":"right","toNode":"340d5b902a2db12c","toSide":"left"},
-		{"id":"64d8cbc8b60c63db","fromNode":"6d1d524a84eec4e2","fromSide":"bottom","toNode":"7c9f9e375f1d6117","toSide":"top"}
+		{"id":"64d8cbc8b60c63db","fromNode":"6d1d524a84eec4e2","fromSide":"top","toNode":"7c9f9e375f1d6117","toSide":"bottom"}
 	]
 }

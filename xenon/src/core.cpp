@@ -24,9 +24,11 @@ void Core::RegisterDefaultServices() {
         return std::make_shared<System>();
     });
 
-    std::shared_ptr<AimService> pAimService = Services.AddSingleton<AimService>([pSystem, pAimConfig]() {
-        return std::make_shared<AimService>(pAimConfig, pSystem);
-    });
+    std::shared_ptr<AimService> pAimService = Services.AddSingleton<AimService>(
+        [pSystem, pAimConfig]() {
+            return std::make_shared<AimService>(pAimConfig, pSystem);
+        }   
+    );
 
     std::shared_ptr<Aimbot> pAimbot = Services.AddSingleton<Aimbot>(
         [pAimConfig, pAimService]() {
@@ -65,6 +67,7 @@ void Core::SetGameAbsolutePath(std::string path) {
 }
 
 void Core::Run() {
-    std::thread t([this]() { m_pGame->Update(); });
-    t.detach();
+    //std::thread t([this]() { m_pGame->Update(); });
+    //t.detach();
+    m_pGame->Update();
 }

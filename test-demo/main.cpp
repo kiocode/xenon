@@ -16,8 +16,9 @@ int main()
 	Core core;
     core.SetDebugLogLevel();
 
-	core.SetGameAbsolutePath("D:\\Steam\\steamapps\\common\\DDraceNetwork\\ddnet\\DDNet.exe");
+	//core.SetGameAbsolutePath("D:\\Steam\\steamapps\\common\\DDraceNetwork\\ddnet\\DDNet.exe");
 
+	//core.UseUpdate();
 	core.UseRecoil();
 
 	#pragma region Register Configurations

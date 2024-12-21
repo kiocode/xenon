@@ -5,13 +5,9 @@
 void AimService::KeepRecoil() {
     float playTime = m_pSystem->GetPlayTime();
 
-    int adjustedVerticalOffset = static_cast<int>(
-        (m_pConfigs->m_fRecoilVerticalStrength * 0.5) * m_pSystem->g_fDeltaTime
-    );
+    double adjustedVerticalOffset = (m_pConfigs->m_fRecoilVerticalStrength * 0.5) * m_pSystem->g_fDeltaTime;
 
-    int adjustedHorizontalOffset = static_cast<int>(
-        (m_pConfigs->m_fRecoilTiltStrength * 0.5) * std::sin(playTime) * m_pSystem->g_fDeltaTime
-    );
+    double adjustedHorizontalOffset = (m_pConfigs->m_fRecoilTiltStrength * 0.5) * std::sin(playTime)* m_pSystem->g_fDeltaTime;
 
     MoveMouseTo({ adjustedHorizontalOffset, adjustedVerticalOffset });
 }
@@ -36,14 +32,14 @@ void AimService::SmoothMoveToTarget(Vec2& target) {
     POINT cursorPos;
     GetCursorPos(&cursorPos);
 
-    float stepX = (target.x - cursorPos.x) / m_pConfigs->m_fSmooth;
-    float stepY = (target.y - cursorPos.y) / m_pConfigs->m_fSmooth;
+    double stepX = (target.x - cursorPos.x) / m_pConfigs->m_fSmooth;
+    double stepY = (target.y - cursorPos.y) / m_pConfigs->m_fSmooth;
 
     for (int i = 1; i <= m_pConfigs->m_fSmooth; ++i) {
-        float nextX = cursorPos.x + stepX * i;
-        float nextY = cursorPos.y + stepY * i;
+        double nextX = cursorPos.x + stepX * i;
+        double nextY = cursorPos.y + stepY * i;
 
-        MoveMouseTo({ static_cast<int>(nextX), static_cast<int>(nextY) });
+        MoveMouseTo({ nextX, nextY });
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 }
@@ -56,7 +52,7 @@ void AimService::Humanize(Vec2& target) {
 
     for (float t = 0.0f; t <= 1.0f; t += 0.01f) {
         Vec2 point = CalculateBezierPoint(t, controlPoints);
-        MoveMouseTo({ static_cast<int>(point.x), static_cast<int>(point.y) });
+        MoveMouseTo(point);
         std::this_thread::sleep_for(std::chrono::milliseconds(5));
     }
 }
@@ -64,10 +60,10 @@ void AimService::Humanize(Vec2& target) {
 std::vector<Vec2> AimService::GenerateBezierControlPoints(const Vec2& start, const Vec2& target) {
     std::vector<Vec2> points;
 
-    float minX = std::min(start.x, target.x);
-    float maxX = std::max(start.x, target.x);
-    float minY = std::min(start.y, target.y);
-    float maxY = std::max(start.y, target.y);
+    double minX = std::min(start.x, target.x);
+    double maxX = std::max(start.x, target.x);
+    double minY = std::min(start.y, target.y);
+    double maxY = std::max(start.y, target.y);
 
     points.push_back({ start.x, start.y });
     points.push_back({ Random::randomFloat(minX, maxX), Random::randomFloat(minY, maxY) });
@@ -102,10 +98,14 @@ void AimService::TrackMouse() {
 }
 
 void AimService::MoveMouseTo(Vec2 pos) {
+
+    int x = static_cast<int>(pos.x);
+    int y = static_cast<int>(pos.y);
+
     INPUT input = {};
     input.type = INPUT_MOUSE;
-    input.mi.dx = pos.x;
-    input.mi.dy = pos.y;
+    input.mi.dx = x;
+    input.mi.dy = y;
     input.mi.dwFlags = MOUSEEVENTF_MOVE;
 
     SendInput(1, &input, sizeof(INPUT));
