@@ -351,9 +351,6 @@
     <ClInclude Include="includes\xenon\utility\vec3.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="includes\xenon\core\builder.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="includes\xenon\configs\aim_config.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -393,6 +390,12 @@
     <ClInclude Include="includes\xenon\configs\gui_config.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="includes\xenon\core\system.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\xenon\core\core.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\aimbot.cpp">
@@ -400,9 +403,6 @@
     </ClCompile>
     <ClCompile Include="includes\xenon\core\di_manager.hpp">
       <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\builder.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\game.cpp">
       <Filter>Source Files</Filter>
@@ -429,6 +429,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\gui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="includes\xenon\configs\game_config.hpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\system.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

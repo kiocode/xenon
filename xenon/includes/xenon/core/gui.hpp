@@ -25,9 +25,17 @@ typedef LRESULT(CALLBACK* WNDPROC)(HWND, UINT, WPARAM, LPARAM);
 
 class GUI {
 public:
+    static GUI& GetInstance() {
+        static GUI instance;
+        return instance;
+    }
 
 	Present oPresent = NULL;
 	bool init = false;
+
+    static HRESULT __stdcall WndProcWrapper(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+        return GetInstance().WndProc(hWnd, uMsg, wParam, lParam);
+    }
 
 private:
 
@@ -80,4 +88,11 @@ private:
 
     void InitImGui();
     void RenderUI();
+
+
+    GUI() = default;
+    ~GUI() = default;
+
+    GUI(const GUI&) = delete;
+    GUI& operator=(const GUI&) = delete;
 };

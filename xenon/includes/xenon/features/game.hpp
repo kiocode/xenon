@@ -1,27 +1,30 @@
 #pragma once
 
-#include <xenon/utility/vec2.hpp>
-
 #include <string>
 #include <chrono>
 
+#include <xenon/utility/vec2.hpp>
+#include <spdlog/spdlog.h>
+#include <xenon/services/aim_service.hpp>
+#include <xenon/features/aimbot.hpp>
+#include <xenon/configs/game_config.hpp>
+
 class Game {
 public:
-	Vec2 g_vScreenCenter;
-	Vec2 g_vScreenResolution;
-	bool g_bUseUpdate;
-	float g_fStartPlayTime;
-	float g_fDeltaTime;
 
-	void SetGameAbsolutePath(std::string path);
+	Game(std::shared_ptr<GameConfig> configs, std::shared_ptr<Aimbot> aimbot, std::shared_ptr<AimService> aimService, std::shared_ptr<System> system) :
+		m_pConfigs(configs), m_pAimbot(aimbot), m_pAimService(aimService), m_pSystem(system) {}
+
+	Vec2 GetScreenResolution();
+	Vec2 GetScreenCenter();
 	void Update();
-
-	float GetPlayTime() const {
-		return std::chrono::steady_clock::now().time_since_epoch().count() - g_fStartPlayTime;
-	}
 
 private:
 
-	std::string m_strGameAbsolutePath;
+	std::shared_ptr<GameConfig> m_pConfigs;
+	std::shared_ptr<Aimbot> m_pAimbot;
+	std::shared_ptr<AimService> m_pAimService;
+	std::shared_ptr<System> m_pSystem;
 
+	void GetDesktopResolution(int& horizontal, int& vertical);
 };

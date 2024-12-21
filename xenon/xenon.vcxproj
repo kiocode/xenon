@@ -146,9 +146,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="includes\xenon\core\builder.hpp" />
     <ClInclude Include="includes\xenon\configs\aim_config.hpp" />
     <ClInclude Include="includes\xenon\configs\gui_config.hpp" />
+    <ClInclude Include="includes\xenon\core\core.hpp" />
+    <ClInclude Include="includes\xenon\core\system.hpp" />
     <ClInclude Include="includes\xenon\features\aimbot.hpp" />
     <ClInclude Include="includes\xenon\services\aim_service.hpp" />
     <ClInclude Include="includes\xenon\features\esp.hpp" />
@@ -274,6 +275,7 @@
     <ClInclude Include="libs\spdlog\version.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="includes\xenon\configs\game_config.hpp" />
     <ClCompile Include="libs\imgui\imgui.cpp" />
     <ClCompile Include="libs\imgui\imgui_draw.cpp" />
     <ClCompile Include="libs\imgui\imgui_impl_dx11.cpp" />
@@ -283,9 +285,10 @@
     <ClCompile Include="src\aimbot.cpp" />
     <ClCompile Include="includes\xenon\core\di_manager.hpp" />
     <ClCompile Include="src\aim_service.cpp" />
-    <ClCompile Include="src\builder.cpp" />
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\gui.cpp" />
+    <ClCompile Include="src\core.cpp" />
+    <ClCompile Include="src\system.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

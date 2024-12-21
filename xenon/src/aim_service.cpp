@@ -3,27 +3,20 @@
 #include <xenon/utility/random.hpp>
 
 void AimService::KeepRecoil() {
-    float playTime = m_pGame->GetPlayTime();
+    float playTime = m_pSystem->GetPlayTime();
 
     int adjustedVerticalOffset = static_cast<int>(
-        (m_pConfigs->m_fRecoilVerticalStrength * 0.4) * m_pGame->g_fDeltaTime
+        (m_pConfigs->m_fRecoilVerticalStrength * 0.5) * m_pSystem->g_fDeltaTime
     );
 
     int adjustedHorizontalOffset = static_cast<int>(
-        (m_pConfigs->m_fRecoilTiltStrength * 0.4) * std::sin(playTime) * m_pGame->g_fDeltaTime
+        (m_pConfigs->m_fRecoilTiltStrength * 0.5) * std::sin(playTime) * m_pSystem->g_fDeltaTime
     );
 
-    INPUT input = {};
-    input.type = INPUT_MOUSE;
-    input.mi.dx = adjustedHorizontalOffset;
-    input.mi.dy = adjustedVerticalOffset;
-    input.mi.dwFlags = MOUSEEVENTF_MOVE;
-
-    SendInput(1, &input, sizeof(INPUT));
+    MoveMouseTo({ adjustedHorizontalOffset, adjustedVerticalOffset });
 }
 
 void AimService::Aim(Vec2& target) {
-
     if (m_pConfigs->m_bSmooth) {
         SmoothMoveToTarget(target);
     }
@@ -31,17 +24,15 @@ void AimService::Aim(Vec2& target) {
         Humanize(target);
     }
     else {
-        SetCursorPos(target.x, target.y);
+        MoveMouseTo(target);
     }
 
     spdlog::debug("Aiming at {}, {}", target.x, target.y);
-
 }
 
 #pragma region AimService::Private
 
 void AimService::SmoothMoveToTarget(Vec2& target) {
-
     POINT cursorPos;
     GetCursorPos(&cursorPos);
 
@@ -52,13 +43,12 @@ void AimService::SmoothMoveToTarget(Vec2& target) {
         float nextX = cursorPos.x + stepX * i;
         float nextY = cursorPos.y + stepY * i;
 
-        SetCursorPos(static_cast<int>(nextX), static_cast<int>(nextY));
+        MoveMouseTo({ static_cast<int>(nextX), static_cast<int>(nextY) });
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 }
 
 void AimService::Humanize(Vec2& target) {
-
     POINT cursorPos;
     GetCursorPos(&cursorPos);
 
@@ -66,7 +56,7 @@ void AimService::Humanize(Vec2& target) {
 
     for (float t = 0.0f; t <= 1.0f; t += 0.01f) {
         Vec2 point = CalculateBezierPoint(t, controlPoints);
-        SetCursorPos(static_cast<int>(point.x), static_cast<int>(point.y));
+        MoveMouseTo({ static_cast<int>(point.x), static_cast<int>(point.y) });
         std::this_thread::sleep_for(std::chrono::milliseconds(5));
     }
 }
@@ -100,6 +90,7 @@ Vec2 AimService::CalculateBezierPoint(float t, const std::vector<Vec2>& points) 
 
     return { x, y };
 }
+
 void AimService::TrackMouse() {
     POINT cursorPos;
     if (!GetCursorPos(&cursorPos)) {
@@ -108,6 +99,16 @@ void AimService::TrackMouse() {
     }
 
     spdlog::info("Cursor pos {}, {}", cursorPos.x, cursorPos.y);
+}
+
+void AimService::MoveMouseTo(Vec2 pos) {
+    INPUT input = {};
+    input.type = INPUT_MOUSE;
+    input.mi.dx = pos.x;
+    input.mi.dy = pos.y;
+    input.mi.dwFlags = MOUSEEVENTF_MOVE;
+
+    SendInput(1, &input, sizeof(INPUT));
 }
 
 #pragma endregion

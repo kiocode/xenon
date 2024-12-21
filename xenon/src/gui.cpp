@@ -1,4 +1,4 @@
-#include <xenon/features/gui.hpp>
+#include <xenon/core/gui.hpp>
 
 #include <imgui/imgui_internal.h>
 
@@ -395,7 +395,7 @@ HRESULT __stdcall GUI::hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, 
 			pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
 			pDevice->CreateRenderTargetView(pBackBuffer, NULL, &mainRenderTargetView);
 			pBackBuffer->Release();
-			oWndProc = (WNDPROC)SetWindowLongPtr(window, GWLP_WNDPROC, (LONG_PTR)GUI::WndProc);
+			oWndProc = (WNDPROC)SetWindowLongPtr(window, GWLP_WNDPROC, (LONG_PTR)GUI::WndProcWrapper);
 			InitImGui();
 			init = true;
 		} else return oPresent(pSwapChain, SyncInterval, Flags);

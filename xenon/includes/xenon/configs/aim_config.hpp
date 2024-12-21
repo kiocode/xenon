@@ -15,8 +15,8 @@ public:
 	bool m_bNearest;
 
 	float m_fSmooth = 10;
-	float m_fFov;
-	float m_fRecoilTiltSpeed;
-	float m_fRecoilTiltStrength;
-	float m_fRecoilVerticalStrength = 2;
+	float m_fFov = 20;
+	float m_fRecoilTiltSpeed = 0;
+	float m_fRecoilTiltStrength = 0;
+	float m_fRecoilVerticalStrength = 0;
 };
