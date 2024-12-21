@@ -29,7 +29,6 @@ public:
     void Run();
 
 private:
-    std::shared_ptr<Game> m_pGame;
     std::string m_strGameAbsolutePath;
     void RegisterDefaultServices();
 };

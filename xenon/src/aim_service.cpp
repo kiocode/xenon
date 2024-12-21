@@ -5,9 +5,9 @@
 void AimService::KeepRecoil() {
     float playTime = m_pSystem->GetPlayTime();
 
-    double adjustedVerticalOffset = (m_pConfigs->m_fRecoilVerticalStrength * 0.5) * m_pSystem->g_fDeltaTime;
+    double adjustedVerticalOffset = m_pConfigs->m_fRecoilVerticalStrength * 10 * m_pSystem->g_fDeltaTime;
 
-    double adjustedHorizontalOffset = (m_pConfigs->m_fRecoilTiltStrength * 0.5) * std::sin(playTime)* m_pSystem->g_fDeltaTime;
+    double adjustedHorizontalOffset = m_pConfigs->m_fRecoilTiltStrength * std::sin(playTime)* m_pSystem->g_fDeltaTime;
 
     MoveMouseTo({ adjustedHorizontalOffset, adjustedVerticalOffset });
 }

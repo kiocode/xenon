@@ -18,7 +18,7 @@ int main()
 
 	//core.SetGameAbsolutePath("D:\\Steam\\steamapps\\common\\DDraceNetwork\\ddnet\\DDNet.exe");
 
-	//core.UseUpdate();
+	core.UseUpdate();
 	core.UseRecoil();
 
 	#pragma region Register Configurations
@@ -29,7 +29,7 @@ int main()
 	//pAimbotConfig->m_bSmooth = true;
 	//pAimbotConfig->m_fSmooth = 30;
 	//pAimbotConfig->m_fRecoilTiltStrength = 0;
-	pAimbotConfig->m_fRecoilVerticalStrength = 80;
+	pAimbotConfig->m_fRecoilVerticalStrength = 60;
 	
 	#pragma endregion
 

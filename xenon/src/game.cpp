@@ -12,7 +12,7 @@ void Game::Update() {
 		previousTime = currentTime;
 
 		if (GetAsyncKeyState(VK_ESCAPE)) {
-			return;
+			continue;
 		}
 
 		if (m_pConfigs->m_bUseAimbot) {

@@ -69,5 +69,5 @@ void Core::SetGameAbsolutePath(std::string path) {
 void Core::Run() {
     //std::thread t([this]() { m_pGame->Update(); });
     //t.detach();
-    m_pGame->Update();
+    GameManager->Update();
 }
