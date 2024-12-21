@@ -11,17 +11,14 @@
             "id": "9df7584897f8408e",
             "type": "leaf",
             "state": {
-              "type": "canvas",
+              "type": "markdown",
               "state": {
-                "file": "Project Schema.canvas",
-                "viewState": {
-                  "x": -149,
-                  "y": -102,
-                  "zoom": 0
-                }
+                "file": "Project Notes.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-layout-dashboard",
-              "title": "Project Schema"
+              "icon": "lucide-file",
+              "title": "Project Notes"
             }
           }
         ]
@@ -194,11 +191,11 @@
   },
   "active": "9df7584897f8408e",
   "lastOpenFiles": [
+    "Project Schema.canvas",
+    "Tasks Organization.md",
     "Project Notes.md",
     "Untitled.canvas",
-    "Tasks Organization.md",
     "Classes/Game.md",
-    "Project Schema.canvas",
     "Classes/Hooks.md",
     "Classes/GUI.md",
     "Classes/ESP.md",

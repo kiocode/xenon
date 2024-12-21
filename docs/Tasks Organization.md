@@ -6,11 +6,11 @@ kanban-plugin: board
 
 ## Todo
 
-- [ ] Organizzare i metodi dentro aimbot.cpp tra #region per raggruppare prima i metodi pubblici #region Public Methods e poi sotto #region Private Methods
 
 
 ## Done
 
+- [x] Organizzare i metodi dentro aimbot.cpp tra #region per raggruppare prima i metodi pubblici #region Public Methods e poi sotto #region Private Methods
 
 
 
