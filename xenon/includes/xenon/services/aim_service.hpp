@@ -22,6 +22,7 @@ private:
     std::shared_ptr<AimConfig> m_pConfigs;
     std::shared_ptr<System> m_pSystem;
 
+    void SetMouseTo(Vec2 pos);
     void MoveMouseTo(Vec2 pos);
     void TrackMouse();
     void Humanize(Vec2& target);

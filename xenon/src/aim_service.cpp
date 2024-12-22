@@ -39,7 +39,7 @@ void AimService::SmoothMoveToTarget(Vec2& target) {
         double nextX = cursorPos.x + stepX * i;
         double nextY = cursorPos.y + stepY * i;
 
-        MoveMouseTo({ nextX, nextY });
+        SetMouseTo({ nextX, nextY });
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 }
@@ -52,7 +52,7 @@ void AimService::Humanize(Vec2& target) {
 
     for (float t = 0.0f; t <= 1.0f; t += 0.01f) {
         Vec2 point = CalculateBezierPoint(t, controlPoints);
-        MoveMouseTo(point);
+        SetMouseTo(point);
         std::this_thread::sleep_for(std::chrono::milliseconds(5));
     }
 }
@@ -107,6 +107,22 @@ void AimService::MoveMouseTo(Vec2 pos) {
     input.mi.dx = x;
     input.mi.dy = y;
     input.mi.dwFlags = MOUSEEVENTF_MOVE;
+
+    SendInput(1, &input, sizeof(INPUT));
+}
+
+void AimService::SetMouseTo(Vec2 pos) {
+    int screenWidth = GetSystemMetrics(SM_CXSCREEN);
+    int screenHeight = GetSystemMetrics(SM_CYSCREEN);
+
+    int x = static_cast<int>((pos.x / screenWidth) * 65535.0f);
+    int y = static_cast<int>((pos.y / screenHeight) * 65535.0f);
+
+    INPUT input = {};
+    input.type = INPUT_MOUSE;
+    input.mi.dx = x;
+    input.mi.dy = y;
+    input.mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE;
 
     SendInput(1, &input, sizeof(INPUT));
 }

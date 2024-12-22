@@ -40,7 +40,7 @@ Vec2 Game::GetScreenResolution() {
 
 	Vec2 resolution{ static_cast<double>(width), static_cast<double>(height) };
 
-	spdlog::debug("Screen resolution: {}x{}", resolution.x, resolution.y);
+	//spdlog::debug("Screen resolution: {}x{}", resolution.x, resolution.y);
 
 	return resolution;
 }
@@ -51,7 +51,7 @@ Vec2 Game::GetScreenCenter() {
 
 	Vec2 center{ static_cast<double>(width / 2), static_cast<double>(height / 2) };
 
-	spdlog::debug("Screen center: {}, {}", center.x, center.y);
+	//spdlog::debug("Screen center: {}, {}", center.x, center.y);
 
 	return center;
 }
