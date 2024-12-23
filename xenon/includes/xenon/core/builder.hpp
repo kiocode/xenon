@@ -23,16 +23,15 @@ public:
     void SetInfoLogLevel();
     void SetErrorLogLevel();
 
-    void UseUpdate();
-    void UseAimbot();
-    void UseRecoil();
-
-    void SetGameAbsolutePath(std::string path);
+    void AttachGame(std::string path);
 
     InternalCheat BuildInternal();
     ExternalCheat BuildExternal();
 
 private:
     std::string m_strGameAbsolutePath;
+    std::string m_strProcessName;
+    int m_nPid;
+
     void RegisterDefaultServices();
 };

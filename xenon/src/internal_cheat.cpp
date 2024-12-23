@@ -6,7 +6,7 @@
 
 void InternalCheat::Run() {
 
-    spdlog::info("Running internal cheats");
+    spdlog::info("Internal cheat initialized");
 
     bool mainHkInitialized = false;
     do

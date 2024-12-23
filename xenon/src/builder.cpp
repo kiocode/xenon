@@ -1,5 +1,8 @@
-#include <xenon/core/builder.hpp>
+#include <windows.h>
+#include <tlhelp32.h>
+#include <psapi.h>
 
+#include <xenon/core/builder.hpp>
 #include <spdlog/spdlog.h>
 #include <xenon/configs/aim_config.hpp>
 #include <xenon/features/aimbot.hpp>
@@ -59,37 +62,59 @@ void Builder::RegisterDefaultServices() {
 
 }
 
-void Builder::UseUpdate() {
-    
-    Services.GetConfiguration<GameConfig>()->m_bUseUpdate = true;
+void Builder::AttachGame(std::string absExePath) {
+    std::wstring widePath = std::wstring(absExePath.begin(), absExePath.end());
+    m_strGameAbsolutePath = absExePath;
 
-    spdlog::info("Update is enabled");
-}
+    HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+    if (snapshot == INVALID_HANDLE_VALUE) {
+        throw std::runtime_error("Failed to create process snapshot");
+    }
 
-void Builder::UseAimbot() {
+    PROCESSENTRY32 processEntry{};
+    processEntry.dwSize = sizeof(PROCESSENTRY32);
 
-    Services.GetConfiguration<GameConfig>()->m_bUseAimbot = true;
+    bool found = false;
 
-    spdlog::info("Aimbot is enabled");
-}
+    if (Process32First(snapshot, &processEntry)) {
+        do {
+            HANDLE processHandle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, processEntry.th32ProcessID);
+            if (processHandle) {
+                wchar_t exePath[MAX_PATH];
+                if (GetModuleFileNameExW(processHandle, nullptr, exePath, MAX_PATH)) {
+                    if (_wcsicmp(exePath, widePath.c_str()) == 0) {
+                        m_nPid = processEntry.th32ProcessID;
 
-void Builder::UseRecoil() {
+                        std::wstring processName(processEntry.szExeFile, processEntry.szExeFile + strlen(processEntry.szExeFile));
+                        m_strProcessName = std::string(processName.begin(), processName.end());
 
-    Services.GetConfiguration<GameConfig>()->m_bUseRecoil = true;
+                        found = true;
+                        CloseHandle(processHandle);
 
-    spdlog::info("Recoil is enabled");
-}
+                        spdlog::info("Attached to process: {}", m_strProcessName);
+                        spdlog::debug("PID: {} - Path: {}", m_nPid, absExePath);
 
-void Builder::SetGameAbsolutePath(std::string path) {
-    m_strGameAbsolutePath = path;
+                        break;
+                    }
+                }
+                CloseHandle(processHandle);
+            }
+        } while (Process32Next(snapshot, &processEntry));
+    }
+
+    CloseHandle(snapshot);
+
+    if (!found) {
+        throw std::runtime_error("Failed to attach to process");
+    }
 }
 
 InternalCheat Builder::BuildInternal() {
-    spdlog::info("Building internal cheat");
-    return InternalCheat(GameManager);
+    spdlog::debug("Building internal cheat");
+    return InternalCheat(GameManager, Services.GetConfiguration<GameConfig>());
 }
 
 ExternalCheat Builder::BuildExternal() {
-    spdlog::info("Building external cheat");
-    return ExternalCheat(GameManager);
+    spdlog::debug("Building external cheat");
+    return ExternalCheat(GameManager, Services.GetConfiguration<GameConfig>());
 }

@@ -13,12 +13,12 @@
 static void AddConfiguration(Builder& builder) {
 
 	std::shared_ptr<AimConfig> pAimbotConfig = builder.Services.GetConfiguration<AimConfig>();
-	pAimbotConfig->m_bHumanize = true;
+	//pAimbotConfig->m_bHumanize = true;
 	//pAimbotConfig->m_bStartFromCenter = true;
 	//pAimbotConfig->m_bSmooth = true;
 	//pAimbotConfig->m_fSmooth = 30;
 	//pAimbotConfig->m_fRecoilTiltStrength = 0;
-	//pAimbotConfig->m_fRecoilVerticalStrength = 180;
+	pAimbotConfig->m_fRecoilVerticalStrength = 175;
 
 }
 
@@ -50,17 +50,17 @@ int main()
 	Builder builder;
 	builder.SetDebugLogLevel();
 
-	//builder.SetGameAbsolutePath("D:\\Steam\\steamapps\\common\\DDraceNetwork\\ddnet\\DDNet.exe");
-
-	// maybe centralize in Built class
-	builder.UseUpdate();
-	//builder.UseAimbot();
-	builder.UseRecoil();
+	builder.AttachGame("D:\\Steam\\steamapps\\common\\DDraceNetwork\\ddnet\\DDNet.exe");
 
 	AddConfiguration(builder);
 	AddServices(builder);
 
 	ExternalCheat cheat = builder.BuildExternal();
+
+	cheat.UseUpdate();
+	//cheat.UseAimbot();
+	//cheat.UseRecoil();
+
 	cheat.Run();
 
 	Test(builder);
