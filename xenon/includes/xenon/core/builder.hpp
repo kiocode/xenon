@@ -21,12 +21,16 @@ public:
 
     void SetDebugLogLevel();
     void SetInfoLogLevel();
+    void SetWarnLogLevel();
     void SetErrorLogLevel();
 
     void AttachGame(std::string path);
 
     InternalCheat BuildInternal();
     ExternalCheat BuildExternal();
+
+    Vec2 GetScreenResolution();
+    Vec2 GetScreenCenter();
 
 private:
     std::string m_strGameAbsolutePath;

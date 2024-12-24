@@ -16,6 +16,10 @@ void Builder::SetInfoLogLevel() {
     spdlog::set_level(spdlog::level::info);
 }
 
+void Builder::SetWarnLogLevel() {
+    spdlog::set_level(spdlog::level::warn);
+}
+
 void Builder::SetErrorLogLevel() {
     spdlog::set_level(spdlog::level::err);
 }

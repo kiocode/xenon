@@ -12,6 +12,8 @@ public:
 
 	void KeepRecoil();
 	void Aim(Vec2& target);
+	void Spin2D();
+	void Spin3D();
 
     AimService(
         std::shared_ptr<AimConfig> configs,

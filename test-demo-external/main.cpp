@@ -10,15 +10,21 @@
 #include <xenon/utility/random.hpp>
 #include <xenon/services/aim_service.hpp>
 
-static void AddConfiguration(Builder& builder) {
+static void AddConfigurations(Builder& builder) {
 
-	std::shared_ptr<AimConfig> pAimbotConfig = builder.Services.GetConfiguration<AimConfig>();
+	std::shared_ptr<AimConfig> pAimConfig = builder.Services.GetConfiguration<AimConfig>();
 	//pAimbotConfig->m_bHumanize = true;
 	//pAimbotConfig->m_bStartFromCenter = true;
 	//pAimbotConfig->m_bSmooth = true;
 	//pAimbotConfig->m_fSmooth = 30;
 	//pAimbotConfig->m_fRecoilTiltStrength = 0;
-	pAimbotConfig->m_fRecoilVerticalStrength = 175;
+	//pAimbotConfig->m_fRecoilVerticalStrength = 175; // ash
+	//pAimbotConfig->m_fRecoilVerticalStrength = 185; // castle
+	//pAimbotConfig->m_fRecoilVerticalStrength = 165; // dokkaebi
+	//pAimbotConfig->m_fRecoilVerticalStrength = 165; // thermite
+	//pAimConfig->m_fRecoilVerticalStrength = 130; // mira
+	pAimConfig->m_fSpinbotRadius = 100; 
+	pAimConfig->m_fSpinbotSpeed = 10; 
 
 }
 
@@ -50,16 +56,21 @@ int main()
 	Builder builder;
 	builder.SetDebugLogLevel();
 
-	builder.AttachGame("D:\\Steam\\steamapps\\common\\DDraceNetwork\\ddnet\\DDNet.exe");
-
-	AddConfiguration(builder);
+	//builder.AttachGame("D:\\Steam\\steamapps\\common\\DDraceNetwork\\ddnet\\DDNet.exe");
+	
+	AddConfigurations(builder);
 	AddServices(builder);
+
+	builder.GameManager->OnEvent("OnUpdate", []() {
+		std::cout << "OnUpdate event triggered!" << std::endl;
+	});
 
 	ExternalCheat cheat = builder.BuildExternal();
 
 	cheat.UseUpdate();
 	//cheat.UseAimbot();
 	//cheat.UseRecoil();
+	cheat.Use2DSpinbot();
 
 	cheat.Run();
 

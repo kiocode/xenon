@@ -19,4 +19,7 @@ public:
 	float m_fRecoilTiltSpeed = 0;
 	float m_fRecoilTiltStrength = 0;
 	float m_fRecoilVerticalStrength = 0;
+	float m_fSpinbotSpeed = 10;
+	float m_fSpinbotRadius = 100;
+	float m_fSpinbotDepth = 5;
 };

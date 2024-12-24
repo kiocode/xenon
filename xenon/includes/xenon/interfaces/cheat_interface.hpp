@@ -30,6 +30,20 @@ public:
         spdlog::info("Recoil is enabled");
     }
 
+    void Use2DSpinbot() {
+
+        m_pGameConfig->m_bUse2DSpinbot = true;
+
+        spdlog::info("Spinbot 2D is enabled");
+    }
+
+    void Use3DSpinbot() {
+
+        m_pGameConfig->m_bUse3DSpinbot = true;
+
+        spdlog::info("Spinbot 3D is enabled");
+    }
+
 protected:
     explicit Cheat(std::shared_ptr<GameConfig> gameConfig) : m_pGameConfig(gameConfig) {}
 

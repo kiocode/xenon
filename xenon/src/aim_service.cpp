@@ -2,6 +2,10 @@
 #include <spdlog/spdlog.h>
 #include <xenon/utility/random.hpp>
 
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+
 void AimService::KeepRecoil() {
     float playTime = m_pSystem->GetPlayTime();
 
@@ -24,6 +28,34 @@ void AimService::Aim(Vec2& target) {
     }
 
     spdlog::debug("Aiming at {}, {}", target.x, target.y);
+}
+
+void AimService::Spin2D() {
+    static float angle = 0.0f;
+
+    angle += m_pConfigs->m_fSpinbotSpeed;
+    if (angle >= 360.0f) angle = 0.0f;
+
+    float x = std::cos(angle * M_PI / 180.0f) * m_pConfigs->m_fSpinbotRadius + m_pSystem->GetScreenCenter().x;
+    float y = std::sin(angle * M_PI / 180.0f) * m_pConfigs->m_fSpinbotRadius + m_pSystem->GetScreenCenter().y;
+
+    SetMouseTo({ x, y });
+}
+
+void AimService::Spin3D() {
+    static float angle = 0.0f;
+    int centerX = GetSystemMetrics(SM_CXSCREEN) / 2;
+    int centerY = GetSystemMetrics(SM_CYSCREEN) / 2;
+
+    angle += m_pConfigs->m_fSpinbotSpeed;  
+    if (angle >= 360.0f) angle = 0.0f;
+
+    float x = std::cos(angle * M_PI / 180.0f) * m_pConfigs->m_fSpinbotRadius + centerX;
+    float y = std::sin(angle * M_PI / 180.0f) * m_pConfigs->m_fSpinbotRadius + centerY;
+    float z = std::cos(angle * M_PI / 180.0f) * m_pConfigs->m_fSpinbotDepth;
+
+    SetMouseTo({ x, y });
+    spdlog::info("3D spin at depth: {}", z);
 }
 
 #pragma region AimService::Private
