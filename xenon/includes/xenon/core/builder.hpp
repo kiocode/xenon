@@ -9,10 +9,12 @@
 #include <xenon/core/internal_cheat.hpp>
 #include <xenon/features/game.hpp>
 #include <xenon/services/aim_service.hpp>
+#include <xenon/services/memory_service.hpp>
 
 class Builder {
 public:
 	DIManager Services;
+    std::shared_ptr<MemoryService> MemoryManager;
     std::shared_ptr<Game> GameManager;
 
     Builder() {
@@ -24,18 +26,10 @@ public:
     void SetWarnLogLevel();
     void SetErrorLogLevel();
 
-    void AttachGame(std::string path);
-
     InternalCheat BuildInternal();
     ExternalCheat BuildExternal();
 
-    Vec2 GetScreenResolution();
-    Vec2 GetScreenCenter();
-
 private:
-    std::string m_strGameAbsolutePath;
-    std::string m_strProcessName;
-    int m_nPid;
 
     void RegisterDefaultServices();
 };

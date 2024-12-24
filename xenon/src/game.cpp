@@ -11,7 +11,7 @@ void Game::Update() {
 		m_pSystem->g_fDeltaTime = std::chrono::duration<float>(currentTime - previousTime).count();
 		previousTime = currentTime;
 
-		TriggerEvent("OnUpdate");
+		TriggerEvent("Update");
 
 		if (GetAsyncKeyState(VK_ESCAPE)) {
 			continue;

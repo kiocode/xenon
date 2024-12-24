@@ -528,7 +528,7 @@
     <ClInclude Include="includes\xenon\services\lua_service.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="libs\memory\memory.h">
+    <ClInclude Include="includes\xenon\services\memory_service.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -702,6 +702,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\lua_service.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\memory_service.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

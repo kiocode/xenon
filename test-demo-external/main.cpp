@@ -9,6 +9,7 @@
 #include <xenon/core/builder.hpp>
 #include <xenon/utility/random.hpp>
 #include <xenon/services/aim_service.hpp>
+#include <memory/memory.h>
 
 static void AddConfigurations(Builder& builder) {
 
@@ -22,7 +23,7 @@ static void AddConfigurations(Builder& builder) {
 	//pAimbotConfig->m_fRecoilVerticalStrength = 185; // castle
 	//pAimbotConfig->m_fRecoilVerticalStrength = 165; // dokkaebi
 	//pAimbotConfig->m_fRecoilVerticalStrength = 165; // thermite
-	//pAimConfig->m_fRecoilVerticalStrength = 130; // mira
+	pAimConfig->m_fRecoilVerticalStrength = 130; // mira
 	pAimConfig->m_fSpinbotRadius = 100; 
 	pAimConfig->m_fSpinbotSpeed = 10; 
 
@@ -52,17 +53,38 @@ static void Test(Builder& builder) {
 
 int main()
 {
+	#pragma region Offsets
+
+	struct offsets {
+		uintptr_t staticServerAddr = 0x5ABBA0;
+		uintptr_t idLocalPlayer = 0x1450;
+		uintptr_t onlinePlayers = 0x1454;
+		uintptr_t gametick = 0x147C + 0x0;
+		uintptr_t playerPos = 0x147C + 0xE8 + 0x0;
+	};
+
+	offsets offsets;
+
+	#pragma endregion
 
 	Builder builder;
 	builder.SetDebugLogLevel();
 
-	//builder.AttachGame("D:\\Steam\\steamapps\\common\\DDraceNetwork\\ddnet\\DDNet.exe");
-	
+	builder.MemoryManager->AttachGame("D:\\Steam\\steamapps\\common\\DDraceNetwork\\ddnet\\DDNet.exe");
+	uintptr_t baseAddr = builder.MemoryManager->GetModuleAddress();
+	uintptr_t serverAddr = builder.MemoryManager->Read<uintptr_t>(baseAddr + offsets.staticServerAddr);
+
 	AddConfigurations(builder);
 	AddServices(builder);
 
-	builder.GameManager->OnEvent("OnUpdate", []() {
-		std::cout << "OnUpdate event triggered!" << std::endl;
+	builder.GameManager->OnEvent("Update", [builder, offsets, serverAddr]() {
+
+		// initialize a class with online players and players etc
+		std::cout << "Online Players: " << builder.MemoryManager->Read<int>(serverAddr + offsets.onlinePlayers) << std::endl;
+		std::cout << "Game Tick: " << builder.MemoryManager->Read<int>(serverAddr + offsets.gametick) << std::endl;
+		std::cout << "Player Pos X: " << builder.MemoryManager->Read<float>(serverAddr + offsets.playerPos) << std::endl;
+		std::cout << "Player Pos X: " << builder.MemoryManager->Read<float>(serverAddr + offsets.playerPos + 0x4) << std::endl;
+
 	});
 
 	ExternalCheat cheat = builder.BuildExternal();
@@ -70,7 +92,9 @@ int main()
 	cheat.UseUpdate();
 	//cheat.UseAimbot();
 	//cheat.UseRecoil();
-	cheat.Use2DSpinbot();
+	//cheat.Use2DSpinbot();
+
+	//builder.MemoryManager->DeattachGame();
 
 	cheat.Run();
 
