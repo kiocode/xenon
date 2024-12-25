@@ -12,6 +12,8 @@
 class Game {
 public:
 
+    std::vector<Vec2> m_vTargets;
+
 	Game(
 		std::shared_ptr<GameConfig> configs, 
 		std::shared_ptr<Aimbot> aimbot, 

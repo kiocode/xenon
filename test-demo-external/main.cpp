@@ -9,7 +9,7 @@
 #include <xenon/core/builder.hpp>
 #include <xenon/utility/random.hpp>
 #include <xenon/services/aim_service.hpp>
-#include <memory/memory.h>
+#include "server.hpp"
 
 static void AddConfigurations(Builder& builder) {
 
@@ -23,6 +23,7 @@ static void AddConfigurations(Builder& builder) {
 	//pAimbotConfig->m_fRecoilVerticalStrength = 185; // castle
 	//pAimbotConfig->m_fRecoilVerticalStrength = 165; // dokkaebi
 	//pAimbotConfig->m_fRecoilVerticalStrength = 165; // thermite
+	pAimConfig->m_bNearest = true;
 	pAimConfig->m_fRecoilVerticalStrength = 130; // mira
 	pAimConfig->m_fSpinbotRadius = 100; 
 	pAimConfig->m_fSpinbotSpeed = 10; 
@@ -77,14 +78,37 @@ int main()
 	AddConfigurations(builder);
 	AddServices(builder);
 
-	builder.GameManager->OnEvent("Update", [builder, offsets, serverAddr]() {
+	Server* server = new Server();
 
-		// initialize a class with online players and players etc
-		std::cout << "Online Players: " << builder.MemoryManager->Read<int>(serverAddr + offsets.onlinePlayers) << std::endl;
-		std::cout << "Game Tick: " << builder.MemoryManager->Read<int>(serverAddr + offsets.gametick) << std::endl;
-		std::cout << "Player Pos X: " << builder.MemoryManager->Read<float>(serverAddr + offsets.playerPos) << std::endl;
-		std::cout << "Player Pos X: " << builder.MemoryManager->Read<float>(serverAddr + offsets.playerPos + 0x4) << std::endl;
+	builder.GameManager->OnEvent("Update", [builder, server, offsets, serverAddr]() {
 
+		server->players.clear();
+
+		server->localPlayerId = builder.MemoryManager->Read<int>(serverAddr + offsets.idLocalPlayer);
+		server->onlinePlayers = builder.MemoryManager->Read<int>(serverAddr + offsets.onlinePlayers);
+		server->localPlayerConnectedToAServer = server->localPlayerId != -1;
+
+		if(!server->localPlayerConnectedToAServer) return;
+
+		int i = 0;
+		do {
+			Player player;
+			player.id = i;
+			player.gametick = builder.MemoryManager->Read<int>(serverAddr + offsets.gametick + (i * 0xF8));
+			player.pos.x = builder.MemoryManager->Read<float>(serverAddr + offsets.playerPos + (i * 0xF8));
+			player.pos.y = builder.MemoryManager->Read<float>(serverAddr + offsets.playerPos + 0x4 + (i * 0xF8));
+
+			server->players.push_back(player);
+
+			i++;
+		} while(builder.MemoryManager->Read<int>(serverAddr + offsets.gametick + (i * 0xF8)) != -1);
+
+		builder.GameManager->m_vTargets.clear();
+		for (int i = 0; i < server->players.size(); i++) {
+			if(server->players[i].gametick == 0) continue; 
+
+			builder.GameManager->m_vTargets.push_back(server->players[i].pos);
+		}
 	});
 
 	ExternalCheat cheat = builder.BuildExternal();
@@ -98,7 +122,7 @@ int main()
 
 	cheat.Run();
 
-	Test(builder);
+	//Test(builder);
 
 	return 0;
 }
