@@ -10,20 +10,24 @@
 class AimService {
 public:
 
-	void KeepRecoil();
-	void Aim(Vec2& target);
-	void Spin2D();
-	void Spin3D();
-
     AimService(
         std::shared_ptr<AimConfig> configs,
         std::shared_ptr<System> system
     ) : m_pConfigs(configs), m_pSystem(system) { }
 
+    void KeepRecoil();
+    void Aim(Vec2& target);
+    void Spin2D();
+    void Spin3D();
+
+    Vec2* GetNearestPos(std::vector<Vec2> positions, Vec2 currentPos);
+    Vec2* GetNearestPos(std::vector<Vec2> positions, Vec2 currentPos, double maxdist);
+
 private:
     std::shared_ptr<AimConfig> m_pConfigs;
     std::shared_ptr<System> m_pSystem;
 
+    void SetAimPos(Vec2 pos);
     void SetMouseTo(Vec2 pos);
     void MoveMouseTo(Vec2 pos);
     void TrackMouse();

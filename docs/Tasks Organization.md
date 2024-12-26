@@ -17,7 +17,7 @@ kanban-plugin: board
 - [ ] External cheat gui
 - [ ] customize GUI
 - [ ] centralize renderui in another file
-- [ ] loader
+- [ ] dll loader
 - [ ] packet sniffer + parser
 - [ ] spinbot 2d/3d
 - [ ] implement IsUnityGame(type)/IsUnrealGame(version)
@@ -30,6 +30,9 @@ kanban-plugin: board
 - [ ] implement radar function
 - [ ] make tests for radar
 - [ ] generalizzare events in base
+- [ ] check configs naming convetions
+- [ ] delete GetModuleAddress (make overload but use it privately) ADD READPOINTER/READVALUE USE AUTOMATICALLY THE GETMODULE - SetModuleAddress
+- [ ] in update if attached a game check if its opened
 
 
 ## InProgress

@@ -13,13 +13,15 @@ class Game {
 public:
 
     std::vector<Vec2> m_vTargets;
+    Vec2 m_vLocalPos;
 
 	Game(
 		std::shared_ptr<GameConfig> configs, 
 		std::shared_ptr<Aimbot> aimbot, 
 		std::shared_ptr<AimService> aimService, 
-		std::shared_ptr<System> system
-	) : m_pConfigs(configs), m_pAimbot(aimbot), m_pAimService(aimService), m_pSystem(system) {}
+		std::shared_ptr<System> system,
+		std::shared_ptr<AimConfig> aimConfig
+	) : m_pConfigs(configs), m_pAimbot(aimbot), m_pAimService(aimService), m_pSystem(system), m_pAimConfigs(aimConfig) {}
 
 	void Update();
 
@@ -45,6 +47,7 @@ private:
 	std::shared_ptr<GameConfig> m_pConfigs;
 	std::shared_ptr<Aimbot> m_pAimbot;
 	std::shared_ptr<AimService> m_pAimService;
+	std::shared_ptr<AimConfig> m_pAimConfigs;
 	std::shared_ptr<System> m_pSystem;
 
 };

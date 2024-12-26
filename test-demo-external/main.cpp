@@ -24,6 +24,7 @@ static void AddConfigurations(Builder& builder) {
 	//pAimbotConfig->m_fRecoilVerticalStrength = 165; // dokkaebi
 	//pAimbotConfig->m_fRecoilVerticalStrength = 165; // thermite
 	pAimConfig->m_bNearest = true;
+	pAimConfig->m_fNearest = 700;
 	pAimConfig->m_fRecoilVerticalStrength = 130; // mira
 	pAimConfig->m_fSpinbotRadius = 100; 
 	pAimConfig->m_fSpinbotSpeed = 10; 
@@ -62,6 +63,9 @@ int main()
 		uintptr_t onlinePlayers = 0x1454;
 		uintptr_t gametick = 0x147C + 0x0;
 		uintptr_t playerPos = 0x147C + 0xE8 + 0x0;
+
+		uintptr_t staticClientAddr = 0x455C40;
+		uintptr_t aimPos = 0x10;
 	};
 
 	offsets offsets;
@@ -70,10 +74,13 @@ int main()
 
 	Builder builder;
 	builder.SetDebugLogLevel();
+	//builder.SetUICustomTheme(theme);
+	//builder.SetUICustom(ui);
 
 	builder.MemoryManager->AttachGame("D:\\Steam\\steamapps\\common\\DDraceNetwork\\ddnet\\DDNet.exe");
 	uintptr_t baseAddr = builder.MemoryManager->GetModuleAddress();
 	uintptr_t serverAddr = builder.MemoryManager->Read<uintptr_t>(baseAddr + offsets.staticServerAddr);
+	uintptr_t clientAddr = builder.MemoryManager->Read<uintptr_t>(baseAddr + offsets.staticClientAddr);
 
 	AddConfigurations(builder);
 	AddServices(builder);
@@ -100,25 +107,36 @@ int main()
 
 			server->players.push_back(player);
 
+			if (player.id == server->localPlayerId) {
+				server->localPlayer = &player;
+			}
+
 			i++;
-		} while(builder.MemoryManager->Read<int>(serverAddr + offsets.gametick + (i * 0xF8)) != -1);
+		} while (i != 63); //builder.MemoryManager->Read<int>(serverAddr + offsets.gametick + (i * 0xF8)) != -1);
 
 		builder.GameManager->m_vTargets.clear();
+		builder.GameManager->m_vLocalPos = server->localPlayer->pos;
 		for (int i = 0; i < server->players.size(); i++) {
-			if(server->players[i].gametick == 0) continue; 
+			if(server->players[i].gametick == 0 || server->players[i].id == server->localPlayerId) continue;
 
-			builder.GameManager->m_vTargets.push_back(server->players[i].pos);
+			Vec2 w2sTarget = { server->players[i].pos.x - server->localPlayer->pos.x, server->players[i].pos.y - server->localPlayer->pos.y };
+			builder.GameManager->m_vTargets.push_back(w2sTarget);
 		}
 	});
+
+	std::shared_ptr<AimConfig> pAimConfig = builder.Services.GetConfiguration<AimConfig>();
+	pAimConfig->m_mCustomAim = [builder, clientAddr, offsets](const Vec2& pos) {
+		builder.MemoryManager->Write<float>(clientAddr + offsets.aimPos, pos.x);
+		builder.MemoryManager->Write<float>(clientAddr + offsets.aimPos + 0x4, pos.y);
+	};
 
 	ExternalCheat cheat = builder.BuildExternal();
 
 	cheat.UseUpdate();
-	//cheat.UseAimbot();
+	//cheat.UseCustomUI(); <-- voto: pisnelo
+	cheat.UseAimbot();
 	//cheat.UseRecoil();
 	//cheat.Use2DSpinbot();
-
-	//builder.MemoryManager->DeattachGame();
 
 	cheat.Run();
 

@@ -13,6 +13,15 @@ void Game::Update() {
 
 		TriggerEvent("Update");
 
+		if (m_pAimConfigs->m_bNearest) {
+
+			Vec2* nearest = m_pAimService->GetNearestPos(m_vTargets, m_vLocalPos, m_pAimConfigs->m_fNearest);
+			
+			if (nearest == nullptr) m_pAimbot->ResetTarget();
+			else m_pAimbot->SetTarget(*nearest);
+
+		}
+
 		if (GetAsyncKeyState(VK_ESCAPE)) {
 			continue;
 		}

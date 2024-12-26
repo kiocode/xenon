@@ -1,5 +1,7 @@
 #pragma once
 
+#include <functional>
+
 class AimConfig {
 public:
 	bool m_bStartFromCenter;
@@ -14,6 +16,7 @@ public:
 	bool m_bNoSpread;
 	bool m_bNearest;
 
+	float m_fNearest;
 	float m_fSmooth = 10;
 	float m_fFov = 20;
 	float m_fRecoilTiltSpeed = 0;
@@ -22,4 +25,6 @@ public:
 	float m_fSpinbotSpeed = 10;
 	float m_fSpinbotRadius = 100;
 	float m_fSpinbotDepth = 5;
+
+	std::function<void(const Vec2&)> m_mCustomAim;
 };

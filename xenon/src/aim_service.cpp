@@ -24,7 +24,7 @@ void AimService::Aim(Vec2& target) {
         Humanize(target);
     }
     else {
-        MoveMouseTo(target);
+        SetAimPos(target);
     }
 
     spdlog::debug("Aiming at {}, {}", target.x, target.y);
@@ -39,7 +39,7 @@ void AimService::Spin2D() {
     float x = std::cos(angle * M_PI / 180.0f) * m_pConfigs->m_fSpinbotRadius + m_pSystem->GetScreenCenter().x;
     float y = std::sin(angle * M_PI / 180.0f) * m_pConfigs->m_fSpinbotRadius + m_pSystem->GetScreenCenter().y;
 
-    SetMouseTo({ x, y });
+    SetAimPos({ x, y });
 }
 
 void AimService::Spin3D() {
@@ -54,8 +54,28 @@ void AimService::Spin3D() {
     float y = std::sin(angle * M_PI / 180.0f) * m_pConfigs->m_fSpinbotRadius + centerY;
     float z = std::cos(angle * M_PI / 180.0f) * m_pConfigs->m_fSpinbotDepth;
 
-    SetMouseTo({ x, y });
-    spdlog::info("3D spin at depth: {}", z);
+    SetAimPos({ x, y });
+}
+
+Vec2* AimService::GetNearestPos(std::vector<Vec2> positions, Vec2 currentPos) {
+    double maxdist = 99999;
+
+	return GetNearestPos(positions, currentPos, maxdist);
+}
+
+Vec2* AimService::GetNearestPos(std::vector<Vec2> positions, Vec2 currentPos, double maxdist) {
+	Vec2* nearest = nullptr;
+	double minDistance = maxdist;
+
+    for (Vec2 pos : positions) {
+		double distance = std::sqrt(std::pow(pos.x - currentPos.x, 2) + std::pow(pos.y - currentPos.y, 2));
+        if (distance < minDistance) {
+			minDistance = distance;
+			nearest = &pos;
+		}
+	}
+
+	return nearest;
 }
 
 #pragma region AimService::Private
@@ -71,7 +91,7 @@ void AimService::SmoothMoveToTarget(Vec2& target) {
         double nextX = cursorPos.x + stepX * i;
         double nextY = cursorPos.y + stepY * i;
 
-        SetMouseTo({ nextX, nextY });
+        SetAimPos({ nextX, nextY });
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 }
@@ -84,7 +104,7 @@ void AimService::Humanize(Vec2& target) {
 
     for (float t = 0.0f; t <= 1.0f; t += 0.01f) {
         Vec2 point = CalculateBezierPoint(t, controlPoints);
-        SetMouseTo(point);
+        SetAimPos(point);
         std::this_thread::sleep_for(std::chrono::milliseconds(5));
     }
 }
@@ -157,6 +177,17 @@ void AimService::SetMouseTo(Vec2 pos) {
     input.mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE;
 
     SendInput(1, &input, sizeof(INPUT));
+}
+
+void AimService::SetAimPos(Vec2 pos) {
+
+    if (m_pConfigs->m_mCustomAim) {
+        m_pConfigs->m_mCustomAim(pos);
+    }
+    else {
+        SetMouseTo(pos);
+    }
+
 }
 
 #pragma endregion

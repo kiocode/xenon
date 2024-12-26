@@ -55,8 +55,8 @@ void Builder::RegisterDefaultServices() {
         }
     );
 
-    GameManager = Services.AddSingleton<Game>([pGameConfig, pAimbot, pAimService, pSystem]() {
-        return std::make_shared<Game>(pGameConfig, pAimbot, pAimService, pSystem);
+    GameManager = Services.AddSingleton<Game>([pGameConfig, pAimbot, pAimService, pSystem, pAimConfig]() {
+        return std::make_shared<Game>(pGameConfig, pAimbot, pAimService, pSystem, pAimConfig);
     });
 
     #pragma endregion
