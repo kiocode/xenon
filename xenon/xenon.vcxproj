@@ -150,6 +150,7 @@
     <ClInclude Include="includes\xenon\configs\gui_config.hpp" />
     <ClInclude Include="includes\xenon\core\builder.hpp" />
     <ClInclude Include="includes\xenon\core\external_cheat.hpp" />
+    <ClInclude Include="includes\xenon\core\gui_external.hpp" />
     <ClInclude Include="includes\xenon\core\internal_cheat.hpp" />
     <ClInclude Include="includes\xenon\core\system.hpp" />
     <ClInclude Include="includes\xenon\features\aimbot.hpp" />
@@ -157,7 +158,7 @@
     <ClInclude Include="includes\xenon\services\aim_service.hpp" />
     <ClInclude Include="includes\xenon\features\esp.hpp" />
     <ClInclude Include="includes\xenon\features\game.hpp" />
-    <ClInclude Include="includes\xenon\core\gui.hpp" />
+    <ClInclude Include="includes\xenon\services\gui_service.hpp" />
     <ClInclude Include="includes\xenon\features\hooks.hpp" />
     <ClInclude Include="includes\xenon\services\lua_service.hpp" />
     <ClInclude Include="includes\xenon\services\memory_service.hpp" />
@@ -372,8 +373,9 @@
     <ClCompile Include="src\aim_service.cpp" />
     <ClCompile Include="src\external_cheat.cpp" />
     <ClCompile Include="src\game.cpp" />
-    <ClCompile Include="src\gui.cpp" />
+    <ClCompile Include="src\gui_service.cpp" />
     <ClCompile Include="src\builder.cpp" />
+    <ClCompile Include="src\gui_external.cpp" />
     <ClCompile Include="src\internal_cheat.cpp" />
     <ClCompile Include="src\lua_service.cpp" />
     <ClCompile Include="src\memory_service.cpp" />

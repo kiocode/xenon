@@ -9,6 +9,7 @@
 #include <xenon/core/builder.hpp>
 #include <xenon/utility/random.hpp>
 #include <xenon/services/aim_service.hpp>
+
 #include "server.hpp"
 
 static void AddConfigurations(Builder& builder) {
@@ -77,64 +78,64 @@ int main()
 	//builder.SetUICustomTheme(theme);
 	//builder.SetUICustom(ui);
 
-	builder.MemoryManager->AttachGame("D:\\Steam\\steamapps\\common\\DDraceNetwork\\ddnet\\DDNet.exe");
+	/*builder.MemoryManager->AttachGame("D:\\Steam\\steamapps\\common\\DDraceNetwork\\ddnet\\DDNet.exe");
 	uintptr_t baseAddr = builder.MemoryManager->GetModuleAddress();
 	uintptr_t serverAddr = builder.MemoryManager->Read<uintptr_t>(baseAddr + offsets.staticServerAddr);
-	uintptr_t clientAddr = builder.MemoryManager->Read<uintptr_t>(baseAddr + offsets.staticClientAddr);
+	uintptr_t clientAddr = builder.MemoryManager->Read<uintptr_t>(baseAddr + offsets.staticClientAddr);*/
 
 	AddConfigurations(builder);
 	AddServices(builder);
 
-	Server* server = new Server();
+	//Server* server = new Server();
 
-	builder.GameManager->OnEvent("Update", [builder, server, offsets, serverAddr]() {
+	//builder.GameManager->OnEvent("Update", [builder, server, offsets, serverAddr]() {
 
-		server->players.clear();
+	//	server->players.clear();
 
-		server->localPlayerId = builder.MemoryManager->Read<int>(serverAddr + offsets.idLocalPlayer);
-		server->onlinePlayers = builder.MemoryManager->Read<int>(serverAddr + offsets.onlinePlayers);
-		server->localPlayerConnectedToAServer = server->localPlayerId != -1;
+	//	server->localPlayerId = builder.MemoryManager->Read<int>(serverAddr + offsets.idLocalPlayer);
+	//	server->onlinePlayers = builder.MemoryManager->Read<int>(serverAddr + offsets.onlinePlayers);
+	//	server->localPlayerConnectedToAServer = server->localPlayerId != -1;
 
-		if(!server->localPlayerConnectedToAServer) return;
+	//	if(!server->localPlayerConnectedToAServer) return;
 
-		int i = 0;
-		do {
-			Player player;
-			player.id = i;
-			player.gametick = builder.MemoryManager->Read<int>(serverAddr + offsets.gametick + (i * 0xF8));
-			player.pos.x = builder.MemoryManager->Read<float>(serverAddr + offsets.playerPos + (i * 0xF8));
-			player.pos.y = builder.MemoryManager->Read<float>(serverAddr + offsets.playerPos + 0x4 + (i * 0xF8));
+	//	int i = 0;
+	//	do {
+	//		Player player;
+	//		player.id = i;
+	//		player.gametick = builder.MemoryManager->Read<int>(serverAddr + offsets.gametick + (i * 0xF8));
+	//		player.pos.x = builder.MemoryManager->Read<float>(serverAddr + offsets.playerPos + (i * 0xF8));
+	//		player.pos.y = builder.MemoryManager->Read<float>(serverAddr + offsets.playerPos + 0x4 + (i * 0xF8));
 
-			server->players.push_back(player);
+	//		server->players.push_back(player);
 
-			if (player.id == server->localPlayerId) {
-				server->localPlayer = &player;
-			}
+	//		if (player.id == server->localPlayerId) {
+	//			server->localPlayer = &player;
+	//		}
 
-			i++;
-		} while (i != 63); //builder.MemoryManager->Read<int>(serverAddr + offsets.gametick + (i * 0xF8)) != -1);
+	//		i++;
+	//	} while (i != 63); //builder.MemoryManager->Read<int>(serverAddr + offsets.gametick + (i * 0xF8)) != -1);
 
-		builder.GameManager->m_vTargets.clear();
-		builder.GameManager->m_vLocalPos = server->localPlayer->pos;
-		for (int i = 0; i < server->players.size(); i++) {
-			if(server->players[i].gametick == 0 || server->players[i].id == server->localPlayerId) continue;
+	//	builder.GameManager->m_vTargets.clear();
+	//	builder.GameManager->m_vLocalPos = server->players[server->localPlayerId].pos;
+	//	for (int i = 0; i < server->players.size(); i++) {
+	//		if(server->players[i].gametick == 0 || server->players[i].id == server->localPlayerId) continue;
 
-			Vec2 w2sTarget = { server->players[i].pos.x - server->localPlayer->pos.x, server->players[i].pos.y - server->localPlayer->pos.y };
-			builder.GameManager->m_vTargets.push_back(w2sTarget);
-		}
-	});
+	//		builder.GameManager->m_vTargets.push_back(server->players[i].pos);
+	//	}
+	//});
 
-	std::shared_ptr<AimConfig> pAimConfig = builder.Services.GetConfiguration<AimConfig>();
-	pAimConfig->m_mCustomAim = [builder, clientAddr, offsets](const Vec2& pos) {
-		builder.MemoryManager->Write<float>(clientAddr + offsets.aimPos, pos.x);
-		builder.MemoryManager->Write<float>(clientAddr + offsets.aimPos + 0x4, pos.y);
-	};
+	//std::shared_ptr<AimConfig> pAimConfig = builder.Services.GetConfiguration<AimConfig>();
+	//pAimConfig->m_mCustomAim = [builder, clientAddr, offsets](const Vec2& pos) {
+	//	Vec2 w2sTarget = { pos.x - builder.GameManager->m_vLocalPos.x, pos.y - builder.GameManager->m_vLocalPos.y };
+	//	builder.MemoryManager->Write<float>(clientAddr + offsets.aimPos, w2sTarget.x);
+	//	builder.MemoryManager->Write<float>(clientAddr + offsets.aimPos + 0x4, w2sTarget.y);
+	//};
 
 	ExternalCheat cheat = builder.BuildExternal();
 
 	cheat.UseUpdate();
-	//cheat.UseCustomUI(); <-- voto: pisnelo
-	cheat.UseAimbot();
+	cheat.UseCustomUI(); 
+	//cheat.UseAimbot();
 	//cheat.UseRecoil();
 	//cheat.Use2DSpinbot();
 

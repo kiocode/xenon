@@ -3,5 +3,5 @@
 void ExternalCheat::Run() {
 	spdlog::info("External cheat initialized");
 
-	m_pGame->Update();    
+	m_pGame->EnableUpdate();
 }

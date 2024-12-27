@@ -27,7 +27,7 @@
     <ClInclude Include="includes\xenon\features\esp.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="includes\xenon\core\gui.hpp">
+    <ClInclude Include="includes\xenon\services\gui_service.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="libs\spdlog\cfg\argv.h">
@@ -531,6 +531,9 @@
     <ClInclude Include="includes\xenon\services\memory_service.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="includes\xenon\core\gui_external.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\aimbot.cpp">
@@ -563,7 +566,7 @@
     <ClCompile Include="libs\imgui\imgui_widgets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\gui.cpp">
+    <ClCompile Include="src\gui_service.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="includes\xenon\configs\game_config.hpp">
@@ -705,6 +708,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\memory_service.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui_external.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

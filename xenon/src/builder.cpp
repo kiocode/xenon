@@ -37,6 +37,7 @@ void Builder::RegisterDefaultServices() {
 
     #pragma region Services
 
+    std::shared_ptr<ui> pUIService = Services.AddSingleton<ui>();
     MemoryManager = Services.AddSingleton<MemoryService>();
     std::shared_ptr<LuaService> pLuaService = Services.AddSingleton<LuaService>();
     std::shared_ptr<AimService> pAimService = Services.AddSingleton<AimService>(
@@ -55,8 +56,8 @@ void Builder::RegisterDefaultServices() {
         }
     );
 
-    GameManager = Services.AddSingleton<Game>([pGameConfig, pAimbot, pAimService, pSystem, pAimConfig]() {
-        return std::make_shared<Game>(pGameConfig, pAimbot, pAimService, pSystem, pAimConfig);
+    GameManager = Services.AddSingleton<Game>([pGameConfig, pAimbot, pAimService, pSystem, pAimConfig, pUIService]() {
+        return std::make_shared<Game>(pGameConfig, pAimbot, pAimService, pSystem, pAimConfig, pUIService);
     });
 
     #pragma endregion

@@ -16,6 +16,13 @@ public:
         spdlog::info("Update is enabled");
     }
 
+    void UseCustomUI() {
+        
+		m_pGameConfig->m_bUseCustomUI = true;
+
+		spdlog::info("Custom UI is enabled");
+    }
+
     void UseAimbot() {
 
         m_pGameConfig->m_bUseAimbot = true;

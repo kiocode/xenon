@@ -8,6 +8,7 @@
 #include <xenon/services/aim_service.hpp>
 #include <xenon/features/aimbot.hpp>
 #include <xenon/configs/game_config.hpp>
+#include <xenon/services/gui_service.hpp>
 
 class Game {
 public:
@@ -20,9 +21,11 @@ public:
 		std::shared_ptr<Aimbot> aimbot, 
 		std::shared_ptr<AimService> aimService, 
 		std::shared_ptr<System> system,
-		std::shared_ptr<AimConfig> aimConfig
-	) : m_pConfigs(configs), m_pAimbot(aimbot), m_pAimService(aimService), m_pSystem(system), m_pAimConfigs(aimConfig) {}
+		std::shared_ptr<AimConfig> aimConfig,
+		std::shared_ptr<UIService> UIService
+	) : m_pConfigs(configs), m_pAimbot(aimbot), m_pAimService(aimService), m_pSystem(system), m_pAimConfigs(aimConfig), m_pUIService(UIService) {}
 
+	void EnableUpdate();
 	void Update();
 
     void OnEvent(const std::string& eventName, const std::function<void()>& callback) {
@@ -49,5 +52,6 @@ private:
 	std::shared_ptr<AimService> m_pAimService;
 	std::shared_ptr<AimConfig> m_pAimConfigs;
 	std::shared_ptr<System> m_pSystem;
+	std::shared_ptr<UIService> m_pUIService;
 
 };

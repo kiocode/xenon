@@ -2,7 +2,7 @@
 
 #include <xenon/core/internal_cheat.hpp>
 #include <kiero/kiero.h>
-#include <xenon/core/gui.hpp>
+#include <xenon/services/gui_service.hpp>
 
 void InternalCheat::Run() {
 
@@ -44,7 +44,7 @@ void InternalCheat::InitialSetup() {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x0F);
 
     // main hook loop
-    kiero::bind(8, (void**)&GUI::GetInstance().oPresent, GUI::hkPresentWrapper);
+    kiero::bind(8, (void**)&UIService::GetInstance().oPresent, UIService::hkPresentWrapper);
 }
 
 #pragma endregion

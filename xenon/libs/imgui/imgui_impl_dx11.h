@@ -11,6 +11,8 @@
 
 #pragma once
 
+#include "imgui.h"      // IMGUI_IMPL_API
+
 struct ID3D11Device;
 struct ID3D11DeviceContext;
 
