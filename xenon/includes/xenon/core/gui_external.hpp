@@ -71,7 +71,7 @@ private:
 
     bool devconsole = false;
 
-    bool showMenu = false;
+    bool m_bShowMenu = false;
 
     ImVec2 CenterText(ImVec2 min, ImVec2 max, const char* text) {
         return min + (max - min) / 2.0f - ImGui::CalcTextSize(text) / 2.0f;

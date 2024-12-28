@@ -1,0 +1,3 @@
+class Feature {
+public:
+};

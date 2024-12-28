@@ -24,23 +24,28 @@ void Builder::RegisterDefaultServices() {
 
     #pragma region Configurations
 
-    std::shared_ptr<AimConfig> pAimConfig = Services.AddConfiguration<AimConfig>();
-    std::shared_ptr<GameConfig> pGameConfig = Services.AddConfiguration<GameConfig>();
+    std::shared_ptr<AimConfig> pAimConfig = Services->AddConfiguration<AimConfig>();
+    std::shared_ptr<GameConfig> pGameConfig = Services->AddConfiguration<GameConfig>();
 
     #pragma endregion
 
     #pragma region Utils
 
-    std::shared_ptr<System> pSystem = Services.AddSingleton<System>();
+    std::shared_ptr<System> pSystem = Services->AddSingleton<System>();
+    pSystem->SetAppTitle(m_strAppTitle);
 
     #pragma endregion
 
     #pragma region Services
 
-    std::shared_ptr<ui> pUIService = Services.AddSingleton<ui>();
-    MemoryManager = Services.AddSingleton<MemoryService>();
-    std::shared_ptr<LuaService> pLuaService = Services.AddSingleton<LuaService>();
-    std::shared_ptr<AimService> pAimService = Services.AddSingleton<AimService>(
+    std::shared_ptr<UIService> pUIService = Services->AddSingleton<UIService>(
+        [pSystem]() {
+            return std::make_shared<UIService>(pSystem);
+        }
+    );
+    MemoryManager = Services->AddSingleton<MemoryService>();
+    std::shared_ptr<LuaService> pLuaService = Services->AddSingleton<LuaService>();
+    std::shared_ptr<AimService> pAimService = Services->AddSingleton<AimService>(
         [pSystem, pAimConfig]() {
             return std::make_shared<AimService>(pAimConfig, pSystem);
         }
@@ -50,13 +55,13 @@ void Builder::RegisterDefaultServices() {
 
     #pragma region Features
 
-    std::shared_ptr<Aimbot> pAimbot = Services.AddSingleton<Aimbot>(
+    std::shared_ptr<Aimbot> pAimbot = Services->AddSingleton<Aimbot>(
         [pAimConfig, pAimService]() {
             return std::make_shared<Aimbot>(pAimConfig, pAimService);
         }
     );
 
-    GameManager = Services.AddSingleton<Game>([pGameConfig, pAimbot, pAimService, pSystem, pAimConfig, pUIService]() {
+    GameManager = Services->AddSingleton<Game>([pGameConfig, pAimbot, pAimService, pSystem, pAimConfig, pUIService]() {
         return std::make_shared<Game>(pGameConfig, pAimbot, pAimService, pSystem, pAimConfig, pUIService);
     });
 
@@ -66,10 +71,10 @@ void Builder::RegisterDefaultServices() {
 
 InternalCheat Builder::BuildInternal() {
     spdlog::debug("Building internal cheat");
-    return InternalCheat(GameManager, Services.GetConfiguration<GameConfig>());
+    return InternalCheat(GameManager, Services->GetConfiguration<GameConfig>(), Services->GetService<UIService>());
 }
 
 ExternalCheat Builder::BuildExternal() {
     spdlog::debug("Building external cheat");
-    return ExternalCheat(GameManager, Services.GetConfiguration<GameConfig>());
+    return ExternalCheat(GameManager, Services->GetConfiguration<GameConfig>());
 }

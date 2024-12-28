@@ -15,13 +15,13 @@ void Game::EnableUpdate() {
 		m_pSystem->g_fDeltaTime = std::chrono::duration<float>(currentTime - previousTime).count();
 		previousTime = currentTime;
 
-		if (m_pConfigs->m_bUseCustomUI && m_pUIService->showMenu) {
+		if (m_pConfigs->m_bUseCustomUI && UIService::m_bShowMenu) {
 			m_pUIService->Update();
 		}
 
-		if (GetAsyncKeyState(VK_INSERT) & 1) {
-			m_pUIService->showMenu = !m_pUIService->showMenu;
-			if (m_pUIService->showMenu) m_pUIService->SetMenuOpen();
+		if (GetAsyncKeyState(m_pConfigs->m_nToggleUIKey) & 1) {
+			m_pUIService->m_bShowMenu = !UIService::m_bShowMenu;
+			if (UIService::m_bShowMenu) m_pUIService->SetMenuOpen();
 			else m_pUIService->SetMenuClose();
 		}
 

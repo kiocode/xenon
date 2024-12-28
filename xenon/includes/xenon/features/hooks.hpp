@@ -1,6 +1,8 @@
 #pragma once
 
-class Hooks {
+#include <xenon/features/feature.hpp>
+
+class Hooks : public Feature {
 public:
 private:
 };

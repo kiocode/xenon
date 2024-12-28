@@ -1,4 +1,5 @@
 #pragma once
+#include <winuser.rh>
 
 class GameConfig {
 public:
@@ -8,4 +9,6 @@ public:
 	bool m_bUseRecoil;
 	bool m_bUse2DSpinbot;
 	bool m_bUse3DSpinbot;
+
+	int m_nToggleUIKey = VK_INSERT;
 };

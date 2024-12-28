@@ -13,11 +13,17 @@
 
 class Builder {
 public:
-	DIManager Services;
+	DIManager* Services;
     std::shared_ptr<MemoryService> MemoryManager;
     std::shared_ptr<Game> GameManager;
 
     Builder() {
+        Services = &DIManager::GetInstance();
+        RegisterDefaultServices();
+    }
+
+    Builder(std::string appTitle) : m_strAppTitle(appTitle) {
+        Services = &DIManager::GetInstance();
         RegisterDefaultServices();
     }
 
@@ -30,6 +36,7 @@ public:
     ExternalCheat BuildExternal();
 
 private:
+    std:: string m_strAppTitle;
 
     void RegisterDefaultServices();
 };

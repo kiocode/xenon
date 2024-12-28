@@ -1,23 +1,27 @@
 #pragma once
 
+#include <memory>
 #include <Windows.h>
 #include <d3d11.h>
 #include <dxgi.h>
 
 #define IMGUI_DEFINE_MATH_OPERATORS
-
-#ifdef _DEBUG
-#define DX12_ENABLE_DEBUG_LAYER
-#endif
-
-#ifdef DX12_ENABLE_DEBUG_LAYER
-#include <dxgidebug.h>
-#pragma comment(lib, "dxguid.lib")
-#endif
+//
+//#ifdef _DEBUG
+//#define DX12_ENABLE_DEBUG_LAYER
+//#endif
+//
+//#ifdef DX12_ENABLE_DEBUG_LAYER
+//#include <dxgidebug.h>
+//#pragma comment(lib, "dxguid.lib")
+//#endif
 
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_win32.h>
 #include <imgui/imgui_impl_dx11.h>
+
+#include <xenon/core/system.hpp>
+#include <xenon/core/di_manager.hpp>
 
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 typedef HRESULT(__stdcall* Present) (IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags);
@@ -25,43 +29,40 @@ typedef LRESULT(CALLBACK* WNDPROC)(HWND, UINT, WPARAM, LPARAM);
 
 class UIService {
 public:
-    static UIService& GetInstance() {
-        static UIService instance;
-        return instance;
-    }
+    inline static bool m_bShowMenu = false;
+
+    UIService(std::shared_ptr<System> pSystem) : m_pSystem(pSystem) {}
 
 	Present oPresent = NULL;
-	bool init = false;
+	bool m_bInit = false;
 
     static HRESULT __stdcall hkPresentWrapper(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags) {
-        return GetInstance().hkPresent(pSwapChain, SyncInterval, Flags);
+        return DIManager::GetInstance().GetService<UIService>()->hkPresent(pSwapChain, SyncInterval, Flags);
     }
 
-    static LRESULT __stdcall WndProcWrapper(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-        return GetInstance().WndProc(hWnd, uMsg, wParam, lParam);
-    }
+    //static LRESULT __stdcall WndProcWrapper(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+    //    return GetInstance().WndProc(hWnd, uMsg, wParam, lParam);
+    //}
 
     void Init();
     void Update();
     void Destroy();
 
-    bool showMenu = false;
-
     void SetMenuOpen();
     void SetMenuClose();
 private:
+    std::shared_ptr<System> m_pSystem;
 
-    HWND window = NULL;
+    HWND m_hWindow = NULL;
 
-    WNDCLASSEXW wc{};
-    IDXGISwapChain* pSwapChain = nullptr;
-    D3D_FEATURE_LEVEL level;
+    WNDCLASSEXW m_wClass{};
+    IDXGISwapChain* m_pSwapChain = nullptr;
+    D3D_FEATURE_LEVEL m_dLevel;
 
-    WNDPROC oWndProc = NULL;
-    ID3D11Device* pDevice = NULL;
-    ID3D11DeviceContext* pContext = NULL;
-    ID3D11RenderTargetView* mainRenderTargetView = nullptr;
-    bool HkPresentInitialized = false;
+    WNDPROC m_oWndProc = NULL;
+    ID3D11Device* m_pDevice = NULL;
+    ID3D11DeviceContext* m_pContext = NULL;
+    ID3D11RenderTargetView* m_pMainRenderTargetView = nullptr;
 
     ImDrawList* drawlist;
     ImVec2 pos;
@@ -97,11 +98,14 @@ private:
     }
 
     HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags);
-    LRESULT __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+    static LRESULT __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
     void LoadFonts();
 
-    void RenderUI();
+    void RenderDefaultUI();
+    void RenderDefaultNotifications();
+    void RenderDefaultMenu();
+    void RenderDefaultRadar();
 
     bool CreateWindowUI();
     void DestroyWindowUI();
@@ -112,11 +116,4 @@ private:
     void DestroyImGuiUI();
     void BeginRenderUI();
     void EndRenderUI();
-
-
-    UIService() = default;
-    ~UIService() = default;
-
-    UIService(const UIService&) = delete;
-    UIService& operator=(const UIService&) = delete;
 };

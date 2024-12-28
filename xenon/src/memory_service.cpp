@@ -1,7 +1,6 @@
 #include <xenon/services/memory_service.hpp>
 
 #include <spdlog/spdlog.h>
-#include <iostream>
 
 void MemoryService::AttachGame(std::string absExePath) {
     std::wstring widePath = std::wstring(absExePath.begin(), absExePath.end());
@@ -56,10 +55,6 @@ void MemoryService::DeattachGame()
 	::CloseHandle(m_hProcessHandle);
 }
 
-const uintptr_t MemoryService::GetModuleAddress() const noexcept {
-	return GetModuleAddress(m_strProcessName);
-}   
-
 const uintptr_t MemoryService::GetModuleAddress(const std::string_view moduleName) const noexcept {
 	HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, m_nPid);
     if (snapshot == INVALID_HANDLE_VALUE) {
@@ -84,3 +79,15 @@ const uintptr_t MemoryService::GetModuleAddress(const std::string_view moduleNam
 
 	return result;
 }   
+
+uintptr_t MemoryService::ReadPointer(const std::uintptr_t& address)
+{
+    uintptr_t value = { };
+    ::ReadProcessMemory(m_hProcessHandle, reinterpret_cast<const void*>(GetModuleAddress(m_strProcessName) + address), &value, sizeof(uintptr_t), NULL);
+    return value;
+}
+
+void MemoryService::WritePointer(const std::uintptr_t& address, const uintptr_t& value)
+{
+    ::WriteProcessMemory(m_hProcessHandle, reinterpret_cast<void*>(GetModuleAddress(m_strProcessName) + address), &value, sizeof(uintptr_t), NULL);
+}

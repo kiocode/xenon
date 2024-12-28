@@ -8,6 +8,10 @@
 
 class DIManager {
 public:
+    static DIManager& GetInstance() {
+        static DIManager instance;
+        return instance;
+    }
 
     template <typename TService>
     std::shared_ptr<TService> AddSingleton(std::function<std::shared_ptr<TService>()> factory) {
@@ -89,4 +93,10 @@ private:
     std::unordered_map<std::type_index, std::shared_ptr<void>> singletons;
     std::unordered_map<std::type_index, std::function<std::shared_ptr<void>()>> transients;
     std::unordered_map<std::type_index, std::shared_ptr<void>> configurations;
+
+    DIManager() = default;
+    ~DIManager() = default;
+
+    DIManager(const DIManager&) = delete;
+    DIManager& operator=(const DIManager&) = delete;
 };

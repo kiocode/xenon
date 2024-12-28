@@ -154,6 +154,7 @@
     <ClInclude Include="includes\xenon\core\internal_cheat.hpp" />
     <ClInclude Include="includes\xenon\core\system.hpp" />
     <ClInclude Include="includes\xenon\features\aimbot.hpp" />
+    <ClInclude Include="includes\xenon\features\feature.hpp" />
     <ClInclude Include="includes\xenon\interfaces\cheat_interface.hpp" />
     <ClInclude Include="includes\xenon\services\aim_service.hpp" />
     <ClInclude Include="includes\xenon\features\esp.hpp" />

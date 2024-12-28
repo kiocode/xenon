@@ -3,9 +3,11 @@
 #include <xenon/utility/vec2.hpp>
 #include <xenon/configs/aim_config.hpp>
 #include <xenon/services/aim_service.hpp>
+#include <xenon/features/feature.hpp>
 
-class Aimbot {
+class Aimbot : public Feature {
 public:
+
     Aimbot(
         std::shared_ptr<AimConfig> configs,
         std::shared_ptr<AimService> aimService

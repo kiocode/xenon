@@ -534,6 +534,9 @@
     <ClInclude Include="includes\xenon\core\gui_external.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="includes\xenon\features\feature.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\aimbot.cpp">
