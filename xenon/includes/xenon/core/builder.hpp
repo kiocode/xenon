@@ -5,17 +5,17 @@
 #include <spdlog/spdlog.h>
 #include <xenon/utility/vec2.hpp>
 #include <xenon/core/di_manager.hpp>
-#include <xenon/core/external_cheat.hpp>
-#include <xenon/core/internal_cheat.hpp>
+#include <xenon/core/cheat.hpp>
 #include <xenon/features/game.hpp>
 #include <xenon/services/aim_service.hpp>
 #include <xenon/services/memory_service.hpp>
 
 class Builder {
 public:
-	DIManager* Services;
+    DIManager* Services;
     std::shared_ptr<MemoryService> MemoryManager;
     std::shared_ptr<Game> GameManager;
+    std::shared_ptr<System> SystemVariables;
 
     Builder() {
         Services = &DIManager::GetInstance();
@@ -27,13 +27,13 @@ public:
         RegisterDefaultServices();
     }
 
+    void SetConsoleEnabled() const;
     void SetDebugLogLevel();
     void SetInfoLogLevel();
     void SetWarnLogLevel();
     void SetErrorLogLevel();
 
-    InternalCheat BuildInternal();
-    ExternalCheat BuildExternal();
+    Cheat Build();
 
 private:
     std:: string m_strAppTitle;

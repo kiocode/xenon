@@ -72,8 +72,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)\test-demo-external\build\</OutDir>
-    <IntDir>$(SolutionDir)\test-demo-external\build\intermediates\</IntDir>
+    <OutDir>$(SolutionDir)test-demo-external\build\</OutDir>
+    <IntDir>$(SolutionDir)test-demo-external\build\intermediates\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)\test-demo\build\</OutDir>

@@ -6,5 +6,4 @@ public:
 	int localPlayerId;
 	int onlinePlayers;
 	std::vector<Player> players;
-	Player* localPlayer;
 };

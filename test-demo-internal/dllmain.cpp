@@ -2,19 +2,21 @@
 #include <windows.h>
 #include <iostream>
 
-#include <kiero/kiero.h>
-#include "../xenon/libs/kiero/kiero.h"
-#include <xenon/core/gui.hpp>
 #include <xenon/core/builder.hpp>
+#include <xenon/core/cheat.hpp>
 
 
 DWORD WINAPI MainThread(LPVOID lpReserved)
 {
 
-	Builder core;
-	core.SetDebugLogLevel();
+	Builder builder("Demo internal");
+    builder.SystemVariables->IsInternal(true);
+    builder.SetDebugLogLevel();
+    builder.SetConsoleEnabled();
 
-    InternalCheat cheat = core.BuildInternal();
+    Cheat cheat = builder.Build();
+
+    //cheat.UseCustomUI();
 
     cheat.Run();
 

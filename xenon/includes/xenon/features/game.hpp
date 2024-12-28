@@ -26,7 +26,6 @@ public:
 	) : m_pConfigs(configs), m_pAimbot(aimbot), m_pAimService(aimService), m_pSystem(system), m_pAimConfigs(aimConfig), m_pUIService(UIService) {}
 
 	void EnableUpdate();
-	void Update();
 
     void OnEvent(const std::string& eventName, const std::function<void()>& callback) {
         eventCallbacks[eventName].push_back(callback);
@@ -54,4 +53,6 @@ private:
 	std::shared_ptr<System> m_pSystem;
 	std::shared_ptr<UIService> m_pUIService;
 
+    void Update();
+	void HandleShortcuts(); 
 };

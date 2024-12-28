@@ -4,6 +4,40 @@
 #include <xenon/features/aimbot.hpp>
 #include <xenon/services/lua_service.hpp>
 
+#include <spdlog/spdlog.h>
+#include <spdlog/sinks/wincolor_sink.h>
+
+void Builder::SetConsoleEnabled() const {
+
+    if (SystemVariables->IsInternal()) {
+        AllocConsole();
+        AttachConsole(GetCurrentProcessId());
+    }
+    SetConsoleTitle(SystemVariables->GetAppTitle().c_str());
+
+    if (SystemVariables->IsInternal()) {
+        FILE* f;
+        freopen_s(&f, "CONOUT$", "w", stdout);
+        system("cls");
+    }
+
+    auto console_sink = std::make_shared<spdlog::sinks::wincolor_stdout_sink_mt>();
+    //console_sink->set_color(spdlog::level::info, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+
+    auto logger = std::make_shared<spdlog::logger>("", console_sink);
+    spdlog::set_default_logger(logger);
+
+    //spdlog::set_pattern("[%H:%M:%S] [%^%l%$] %v");
+
+    spdlog::info(R"(  
+     __  __     __     ______     ______     ______     _____     ______    
+    /\ \/ /    /\ \   /\  __ \   /\  ___\   /\  __ \   /\  __-.  /\  ___\    
+    \ \  _'-.  \ \ \  \ \ \/\ \  \ \ \____  \ \ \/\ \  \ \ \/\ \ \ \  __\   
+     \ \_\ \_\  \ \_\  \ \_____\  \ \_____\  \ \_____\  \ \____-  \ \_____\    
+      \/_/\/_/   \/_/   \/_____/   \/_____/   \/_____/   \/____/   \/_____/
+    )");
+}
+
 void Builder::SetDebugLogLevel() {
     spdlog::set_level(spdlog::level::debug);
 }
@@ -31,23 +65,23 @@ void Builder::RegisterDefaultServices() {
 
     #pragma region Utils
 
-    std::shared_ptr<System> pSystem = Services->AddSingleton<System>();
-    pSystem->SetAppTitle(m_strAppTitle);
+    SystemVariables = Services->AddSingleton<System>();
+    SystemVariables->SetAppTitle(m_strAppTitle);
 
     #pragma endregion
 
     #pragma region Services
 
     std::shared_ptr<UIService> pUIService = Services->AddSingleton<UIService>(
-        [pSystem]() {
-            return std::make_shared<UIService>(pSystem);
+        [this]() {
+            return std::make_shared<UIService>(SystemVariables);
         }
     );
     MemoryManager = Services->AddSingleton<MemoryService>();
     std::shared_ptr<LuaService> pLuaService = Services->AddSingleton<LuaService>();
     std::shared_ptr<AimService> pAimService = Services->AddSingleton<AimService>(
-        [pSystem, pAimConfig]() {
-            return std::make_shared<AimService>(pAimConfig, pSystem);
+        [this, pAimConfig]() {
+            return std::make_shared<AimService>(pAimConfig, SystemVariables);
         }
     );
 
@@ -61,20 +95,15 @@ void Builder::RegisterDefaultServices() {
         }
     );
 
-    GameManager = Services->AddSingleton<Game>([pGameConfig, pAimbot, pAimService, pSystem, pAimConfig, pUIService]() {
-        return std::make_shared<Game>(pGameConfig, pAimbot, pAimService, pSystem, pAimConfig, pUIService);
+    GameManager = Services->AddSingleton<Game>([this, pGameConfig, pAimbot, pAimService, pAimConfig, pUIService]() {
+        return std::make_shared<Game>(pGameConfig, pAimbot, pAimService, SystemVariables, pAimConfig, pUIService);
     });
 
     #pragma endregion
 
 }
 
-InternalCheat Builder::BuildInternal() {
-    spdlog::debug("Building internal cheat");
-    return InternalCheat(GameManager, Services->GetConfiguration<GameConfig>(), Services->GetService<UIService>());
-}
-
-ExternalCheat Builder::BuildExternal() {
-    spdlog::debug("Building external cheat");
-    return ExternalCheat(GameManager, Services->GetConfiguration<GameConfig>());
+Cheat Builder::Build() {
+    spdlog::debug("Building cheat");
+    return Cheat(GameManager, Services->GetConfiguration<GameConfig>(), Services->GetService<UIService>(), SystemVariables);
 }

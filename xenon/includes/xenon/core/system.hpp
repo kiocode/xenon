@@ -23,8 +23,17 @@ public:
 		return m_strAppTitle;
 	}
 
+	void IsInternal(bool isInternal) {
+		m_bIsInternal = isInternal;
+	}
+
+	bool IsInternal() const {
+		return m_bIsInternal;
+	}
+
 private:
 	std::string m_strAppTitle;
+	bool m_bIsInternal;
 
 	void GetDesktopResolution(int& horizontal, int& vertical);
 

@@ -15,20 +15,22 @@
 static void AddConfigurations(Builder& builder) {
 
 	std::shared_ptr<AimConfig> pAimConfig = builder.Services->GetConfiguration<AimConfig>();
-	//pAimbotConfig->m_bHumanize = true;
-	//pAimbotConfig->m_bStartFromCenter = true;
-	//pAimbotConfig->m_bSmooth = true;
-	//pAimbotConfig->m_fSmooth = 30;
-	//pAimbotConfig->m_fRecoilTiltStrength = 0;
-	//pAimbotConfig->m_fRecoilVerticalStrength = 175; // ash
-	//pAimbotConfig->m_fRecoilVerticalStrength = 185; // castle
-	//pAimbotConfig->m_fRecoilVerticalStrength = 165; // dokkaebi
-	//pAimbotConfig->m_fRecoilVerticalStrength = 165; // thermite
-	pAimConfig->m_bNearest = true;
-	pAimConfig->m_fNearest = 700;
-	pAimConfig->m_fRecoilVerticalStrength = 130; // mira
-	pAimConfig->m_fSpinbotRadius = 100; 
-	pAimConfig->m_fSpinbotSpeed = 10; 
+	//pAimConfig->m_bHumanize = true;
+	//pAimConfig->m_bStartFromCenter = true;
+	//pAimConfig->m_bSmooth = true;
+	//pAimConfig->m_fSmooth = 30;
+	//pAimConfig->m_fRecoilTiltStrength = 0;
+	//pAimConfig->m_fRecoilVerticalStrength = 175; // ash
+	//pAimConfig->m_fRecoilVerticalStrength = 185; // castle
+	//pAimConfig->m_fRecoilVerticalStrength = 165; // dokkaebi
+	//pAimConfig->m_fRecoilVerticalStrength = 165; // thermite
+	//pAimConfig->m_fRecoilVerticalStrength = 200; // jackal
+	pAimConfig->m_fRecoilVerticalStrength = 120; // onix
+	//pAimConfig->m_bNearest = true;
+	//pAimConfig->m_fNearest = 700;
+	//pAimConfig->m_fRecoilVerticalStrength = 130; // mira
+	//pAimConfig->m_fSpinbotRadius = 100; 
+	//pAimConfig->m_fSpinbotSpeed = 10; 
 
 }
 
@@ -36,7 +38,7 @@ static void AddServices(Builder& builder) {
 	//builder.Services->AddSingleton<Aimbot>([]() { return std::make_shared<Aimbot>(); });
 }
 
-static void Test(Builder& builder) {
+static void TestDDNetExternal(Builder& builder) {
 	/*std::shared_ptr<Aimbot> c_pAimbot = builder.Services->GetService<Aimbot>();
 	std::shared_ptr<AimService> c_pAimService = builder.Services->GetService<AimService>();
 
@@ -51,10 +53,7 @@ static void Test(Builder& builder) {
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(5));
 	}*/
-}
 
-int main()
-{
 	#pragma region Offsets
 
 	struct offsets {
@@ -71,11 +70,6 @@ int main()
 	offsets offsets;
 
 	#pragma endregion
-
-	Builder builder("Demo");
-	builder.SetDebugLogLevel();
-	//builder.SetUICustomTheme(theme);
-	//builder.SetUICustom(ui);
 
 	builder.MemoryManager->AttachGame("D:\\Steam\\steamapps\\common\\DDraceNetwork\\ddnet\\DDNet.exe");
 	uintptr_t serverAddr = builder.MemoryManager->ReadPointer(offsets.staticServerAddr);
@@ -94,7 +88,7 @@ int main()
 		server->onlinePlayers = builder.MemoryManager->Read<int>(serverAddr + offsets.onlinePlayers);
 		server->localPlayerConnectedToAServer = server->localPlayerId != -1;
 
-		if(!server->localPlayerConnectedToAServer) return;
+		if (!server->localPlayerConnectedToAServer) return;
 
 		int i = 0;
 		do {
@@ -106,40 +100,98 @@ int main()
 
 			server->players.push_back(player);
 
-			if (player.id == server->localPlayerId) {
-				server->localPlayer = &player;
-			}
-
 			i++;
 		} while (i != 63); //builder.MemoryManager->Read<int>(serverAddr + offsets.gametick + (i * 0xF8)) != -1);
 
 		builder.GameManager->m_vTargets.clear();
 		builder.GameManager->m_vLocalPos = server->players[server->localPlayerId].pos;
 		for (int i = 0; i < server->players.size(); i++) {
-			if(server->players[i].gametick == 0 || server->players[i].id == server->localPlayerId) continue;
+			if (server->players[i].gametick == 0 || server->players[i].id == server->localPlayerId) continue;
 
 			builder.GameManager->m_vTargets.push_back(server->players[i].pos);
 		}
-	});
+		});
 
 	std::shared_ptr<AimConfig> pAimConfig = builder.Services->GetConfiguration<AimConfig>();
 	pAimConfig->m_mCustomAim = [builder, clientAddr, offsets](const Vec2& pos) {
 		Vec2 w2sTarget = { pos.x - builder.GameManager->m_vLocalPos.x, pos.y - builder.GameManager->m_vLocalPos.y };
 		builder.MemoryManager->Write<float>(clientAddr + offsets.aimPos, w2sTarget.x);
 		builder.MemoryManager->Write<float>(clientAddr + offsets.aimPos + 0x4, w2sTarget.y);
-	};
+		};
 
-	ExternalCheat cheat = builder.BuildExternal();
+	Cheat cheat = builder.Build();
 
 	cheat.UseUpdate();
-	cheat.UseCustomUI(); 
+	cheat.UseCustomUI();
 	//cheat.UseAimbot();
 	//cheat.UseRecoil();
 	//cheat.Use2DSpinbot();
 
 	cheat.Run();
 
-	//Test(builder);
+}
+
+static void TestGeneral(Builder& builder) {
+
+	AddConfigurations(builder);
+	AddServices(builder);
+
+	Cheat cheat = builder.Build();
+
+	cheat.UseUpdate();
+	cheat.UseCustomUI();
+	//cheat.UseAimbot();
+	//cheat.UseRecoil();
+	//cheat.Use2DSpinbot();
+
+	cheat.Run();
+
+}
+
+static void TestRecoil(Builder& builder) {
+
+	AddConfigurations(builder);
+	AddServices(builder);
+
+	Cheat cheat = builder.Build();
+
+	cheat.UseUpdate();
+	//cheat.UseCustomUI();
+	//cheat.UseAimbot();
+	cheat.UseRecoil();
+	//cheat.Use2DSpinbot();
+
+	cheat.Run();
+
+}
+
+static void RunTests() {
+
+	Builder builder("Demo external");
+	builder.SystemVariables->IsInternal(false);
+	builder.SetConsoleEnabled();
+	builder.SetDebugLogLevel();
+	//builder.SetUICustomTheme(theme);
+	//builder.SetUICustom(ui);
+	//builder.SetUIDefaultFunctions([
+	//	{ACTIONTYPE.CHECKBOX, "name", &var}
+	//]);
+
+	//TestGeneral(builder);
+	TestRecoil(builder);
+	//TestDDNetExternal(builder);
+
+}
+
+int main()
+{
+
+	try {
+		RunTests();
+	}
+	catch (const std::exception& e) {
+		std::cout << e.what() << std::endl;
+	}
 
 	return 0;
 }

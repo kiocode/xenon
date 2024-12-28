@@ -4,15 +4,6 @@
 #include <dwmapi.h>
 #include <spdlog/spdlog.h>
 
-void UIService::CreateImGuiUI()
-{
-	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO();
-	io.ConfigFlags = ImGuiConfigFlags_NoMouseCursorChange;
-	ImGui_ImplWin32_Init(m_hWindow);
-	ImGui_ImplDX11_Init(m_pDevice, m_pContext);
-}
-
 void UIService::LoadFonts()
 {
 	ImGui::GetIO().Fonts->AddFontDefault();
@@ -410,7 +401,11 @@ void UIService::Init() {
 
 void UIService::Update() {
 	BeginRenderUI();
-	RenderDefaultUI();
+
+	if (m_bShowMenu) {
+		RenderDefaultUI();
+	}
+	
 	EndRenderUI();
 }
 
@@ -581,6 +576,15 @@ void UIService::DestroyDeviceUI()
 	}
 }
 
+void UIService::CreateImGuiUI()
+{
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO();
+	io.ConfigFlags = ImGuiConfigFlags_NoMouseCursorChange;
+	ImGui_ImplWin32_Init(m_hWindow);
+	ImGui_ImplDX11_Init(m_pDevice, m_pContext);
+}
+
 void UIService::DestroyImGuiUI()
 {
 	ImGui_ImplDX11_Shutdown();
@@ -639,11 +643,9 @@ void UIService::EndRenderUI()
 
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
-	m_pSwapChain->Present(1U, 0U);
+	if(!m_pSystem->IsInternal()) m_pSwapChain->Present(1U, 0U);
 }
 
-
-// internal
 HRESULT __stdcall UIService::hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags) {
 	if (!m_bInit)
 	{

@@ -423,13 +423,7 @@
     <ClInclude Include="libs\kiero\kiero.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="includes\xenon\core\external_cheat.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\xenon\core\internal_cheat.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\xenon\interfaces\cheat_interface.hpp">
+    <ClInclude Include="includes\xenon\core\cheat.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="libs\sol\config.hpp">
@@ -531,9 +525,6 @@
     <ClInclude Include="includes\xenon\services\memory_service.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="includes\xenon\core\gui_external.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="includes\xenon\features\feature.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -599,10 +590,7 @@
     <ClCompile Include="libs\kiero\kiero.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\external_cheat.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\internal_cheat.cpp">
+    <ClCompile Include="src\cheat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="libs\lua\lapi.c">
@@ -711,9 +699,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\memory_service.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\gui_external.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
