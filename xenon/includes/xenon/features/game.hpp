@@ -53,6 +53,14 @@ private:
 	std::shared_ptr<System> m_pSystem;
 	std::shared_ptr<UIService> m_pUIService;
 
+    bool m_bInit = false;
+
     void Update();
 	void HandleShortcuts(); 
+
+    static HRESULT __stdcall hkPresentWrapper(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags) {
+        return DIManager::GetInstance().GetService<Game>()->hkPresent(pSwapChain, SyncInterval, Flags);
+    }
+    HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags);
+
 };

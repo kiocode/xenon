@@ -30,7 +30,8 @@ kanban-plugin: board
 - [ ] in update if attached a game check if its opened
 - [ ] understand if toggle menu visiblity key is for game config or ui config
 - [ ] add health bar
-- [ ] create a public services pool
+- [ ] merge track mouse withthe system get mouse fn
+- [ ] move hkpresent in another clas
 
 
 ## InProgress
@@ -44,6 +45,7 @@ kanban-plugin: board
 - [x] spinbot 2d/3d
 - [x] implement IsUnityGame(type)/IsUnrealGame(version)
 - [x] delete GetModuleAddress (make overload but use it privately) ADD READPOINTER/READVALUE USE AUTOMATICALLY THE GETMODULE - SetModuleAddress
+- [x] create a public services pool
 - [x] generalize events in base
 
 

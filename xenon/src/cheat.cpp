@@ -16,6 +16,10 @@ void Cheat::Run() {
                 m_pGame->EnableUpdate();
                 bInitialized = true;
             }
+            else {
+                spdlog::error("Failed to initialize kiero");
+				std::this_thread::sleep_for(std::chrono::seconds(3));
+            }
         } while (!bInitialized);
     }
     else {

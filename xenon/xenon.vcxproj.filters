@@ -701,6 +701,9 @@
     <ClCompile Include="src\memory_service.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="includes\xenon\utility\imgui_helper.hpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="libs\kiero\minhook\dll_resources\MinHook.def">

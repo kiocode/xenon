@@ -24,11 +24,11 @@ static void AddConfigurations(Builder& builder) {
 	//pAimConfig->m_fRecoilVerticalStrength = 185; // castle
 	//pAimConfig->m_fRecoilVerticalStrength = 165; // dokkaebi
 	//pAimConfig->m_fRecoilVerticalStrength = 165; // thermite
-	//pAimConfig->m_fRecoilVerticalStrength = 200; // jackal
-	pAimConfig->m_fRecoilVerticalStrength = 120; // onix
+	pAimConfig->m_fRecoilVerticalStrength = 200; // jackal
+	//pAimConfig->m_fRecoilVerticalStrength = 120; // onix
+	//pAimConfig->m_fRecoilVerticalStrength = 130; // mira
 	//pAimConfig->m_bNearest = true;
 	//pAimConfig->m_fNearest = 700;
-	//pAimConfig->m_fRecoilVerticalStrength = 130; // mira
 	//pAimConfig->m_fSpinbotRadius = 100; 
 	//pAimConfig->m_fSpinbotSpeed = 10; 
 

@@ -29,6 +29,15 @@ Vec2 System::GetScreenCenter() {
 	return center;
 }
 
+Vec2 System::GetMousePos() {
+
+	POINT p;
+	GetCursorPos(&p);
+
+	return Vec2{ static_cast<double>(p.x), static_cast<double>(p.y) };
+
+}
+
 
 #pragma region System:Private
 

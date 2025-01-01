@@ -1,6 +1,7 @@
 #pragma once
 
 #include <functional>
+#include <imgui/imgui.h>
 
 class AimConfig {
 public:
@@ -12,6 +13,7 @@ public:
 	bool m_bSmooth;
 	bool m_bHumanize;
 	bool m_bFov;
+	bool m_bCrosshair;
 	bool m_bNoRecoil;
 	bool m_bNoSpread;
 	bool m_bNearest;
@@ -25,6 +27,12 @@ public:
 	float m_fSpinbotSpeed = 10;
 	float m_fSpinbotRadius = 100;
 	float m_fSpinbotDepth = 5;
+	float m_fCrosshair;
+
+	int m_nCrosshairType = 0;
+
+	ImColor m_cFov = ImColor(255, 255, 255, 255);
+	ImColor m_cCrosshair = ImColor(255, 255, 255, 255);
 
 	std::function<void(const Vec2&)> m_mCustomAim;
 };

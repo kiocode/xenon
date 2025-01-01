@@ -320,6 +320,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="includes\xenon\configs\game_config.hpp" />
+    <ClCompile Include="includes\xenon\utility\imgui_helper.hpp" />
     <ClCompile Include="libs\imgui\imgui.cpp" />
     <ClCompile Include="libs\imgui\imgui_draw.cpp" />
     <ClCompile Include="libs\imgui\imgui_impl_dx11.cpp" />

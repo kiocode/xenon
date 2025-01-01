@@ -1,8 +1,30 @@
 #include <xenon/services/gui_service.hpp>
 
-#include <imgui/imgui_internal.h>
 #include <dwmapi.h>
 #include <spdlog/spdlog.h>
+
+#include <xenon/utility/imgui_helper.hpp>
+
+#include <imgui/imgui_internal.h>
+
+bool UIService::InitPresent(IDXGISwapChain* pSwapChain) {
+	if (!SUCCEEDED(pSwapChain->GetDevice(__uuidof(ID3D11Device), (void**)&m_pDevice)))
+	{
+		return false;
+	}
+
+	m_pDevice->GetImmediateContext(&m_pContext);
+	DXGI_SWAP_CHAIN_DESC sd;
+	pSwapChain->GetDesc(&sd);
+	m_hWindow = sd.OutputWindow;
+	ID3D11Texture2D* pBackBuffer = nullptr;
+	pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
+	m_pDevice->CreateRenderTargetView(pBackBuffer, NULL, &m_pMainRenderTargetView);
+	pBackBuffer->Release();
+	m_oWndProc = (WNDPROC)SetWindowLongPtr(m_hWindow, GWLP_WNDPROC, (LONG_PTR)WndProc);
+
+	return true;
+}
 
 void UIService::LoadFonts()
 {
@@ -376,13 +398,16 @@ void UIService::RenderDefaultRadar() {
 }
 
 LRESULT __stdcall UIService::WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-	if (m_bShowMenu && ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam))
+
+	std::shared_ptr<UIService> pThis = DIManager::GetInstance().GetService<UIService>();
+
+	if (pThis->m_bShowMenu && ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam))
 		return true;
 
-	if (m_bShowMenu)
+	if (pThis->m_bShowMenu)
 		return true;
 
-	if (uMsg == WM_DESTROY) {
+	if (!DIManager::GetInstance().GetService<System>()->IsInternal() && uMsg == WM_DESTROY) {
 		PostQuitMessage(0);
 		return true;
 	}
@@ -399,10 +424,60 @@ void UIService::Init() {
 	//LoadFonts();
 }
 
+void UIService::RenderCrosshair() {
+	switch (m_pAimConfigs->m_nCrosshairType)
+	{
+		case 0:
+			ImGui::GetForegroundDrawList()->AddLine(ImVec2(m_pSystem->GetScreenCenter().x - m_pAimConfigs->m_fCrosshair, m_pSystem->GetScreenCenter().y), ImVec2((m_pSystem->GetScreenCenter().x - m_pAimConfigs->m_fCrosshair) + (m_pAimConfigs->m_fCrosshair * 2), m_pSystem->GetScreenCenter().y), m_pAimConfigs->m_cCrosshair, 1.2f);
+			ImGui::GetForegroundDrawList()->AddLine(ImVec2(m_pSystem->GetScreenCenter().x, m_pSystem->GetScreenCenter().y - m_pAimConfigs->m_fCrosshair), ImVec2(m_pSystem->GetScreenCenter().x, (m_pSystem->GetScreenCenter().y - m_pAimConfigs->m_fCrosshair) + (m_pAimConfigs->m_fCrosshair * 2)), m_pAimConfigs->m_cCrosshair, 1.2f);
+			break;
+		case 1:
+			ImGui::GetForegroundDrawList()->AddCircle(ImVec2(m_pSystem->GetScreenCenter().x, m_pSystem->GetScreenCenter().y), m_pAimConfigs->m_fCrosshair, m_cCrosshair, 100, 1.2f);
+			break;
+	}
+}
+
+void UIService::RenderFov() {
+	ImGui::GetForegroundDrawList()->AddCircle(ImVec2(m_pSystem->GetScreenCenter().x, m_pSystem->GetScreenCenter().y), m_pAimConfigs->m_fFov, m_pAimConfigs->m_cFov, 360);
+}
+
+void UIService::RenderMouse() {
+	switch (m_nMouseType) {
+		case 0:
+			ImGui::GetForegroundDrawList()->AddCircleFilled(ImGui::GetMousePos(), 4, m_cMouse);
+			break;
+		case 1:
+			ImGuiHelper::DrawOutlinedTextForeground(ImGuiHelper::g_pGameFont, ImVec2(m_pSystem->GetMousePos().x, m_pSystem->GetMousePos().y), 13.0f, m_cMouse, false, "X");
+			break;
+		case 2:
+			if (!ImGui::GetIO().MouseDrawCursor) {
+				ImGui::GetIO().MouseDrawCursor = true;
+			}
+			break;
+	}
+}
+
 void UIService::Update() {
 	BeginRenderUI();
 
+	//if (Config::m_bWatermark)
+	//{
+	//	ImGuiHelper::DrawOutlinedText(Config::m_pGameFont, ImVec2(Config::System::m_ScreenCenter.X, Config::System::m_ScreenSize.Y - 20), 13.0f, Config::m_cRainbow, true, Config::System::m_cAuthor);
+	//	ImGuiHelper::DrawOutlinedText(Config::m_pGameFont, ImVec2(Config::System::m_ScreenCenter.X, 5), 13.0f, Config::m_cRainbow, true, "[ %.1f FPS ]", ImGui::GetIO().Framerate);
+	//}
+
+	if (m_pAimConfigs->m_bCrosshair) {
+		RenderCrosshair();
+	}
+
+	if (m_pAimConfigs->m_bFov) {
+		RenderFov();
+	}
+
 	if (m_bShowMenu) {
+		if (m_bMouse) {
+			RenderMouse();
+		}
 		RenderDefaultUI();
 	}
 	
@@ -612,16 +687,18 @@ void UIService::DestroyImGuiUI()
 void UIService::BeginRenderUI()
 {
 
-	MSG msg;
-	while (PeekMessage(&msg, nullptr, 0U, 0U, PM_REMOVE)) {
+	if (!m_pSystem->IsInternal()) {
+		MSG msg;
+		while (PeekMessage(&msg, nullptr, 0U, 0U, PM_REMOVE)) {
 
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
 
-		if (msg.message == WM_QUIT)
-		{
-			//isRunning = !isRunning;
-			return;
+			if (msg.message == WM_QUIT)
+			{
+				//isRunning = !isRunning;
+				return;
+			}
 		}
 	}
 
@@ -637,45 +714,13 @@ void UIService::EndRenderUI()
 
 	ImGui::Render();
 
-	constexpr float color[4]{ 0.f, 0.f, 0.f, 0.f };
 	m_pContext->OMSetRenderTargets(1U, &m_pMainRenderTargetView, nullptr);
-	m_pContext->ClearRenderTargetView(m_pMainRenderTargetView, color);
+	if (!m_pSystem->IsInternal()) {
+		constexpr float color[4] = { 0.f, 0.f, 0.f, 0.f };
+		m_pContext->ClearRenderTargetView(m_pMainRenderTargetView, color);
+	}
 
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
 	if(!m_pSystem->IsInternal()) m_pSwapChain->Present(1U, 0U);
-}
-
-HRESULT __stdcall UIService::hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags) {
-	if (!m_bInit)
-	{
-		if (!SUCCEEDED(pSwapChain->GetDevice(__uuidof(ID3D11Device), (void**)&m_pDevice)))
-		{
-			return oPresent(pSwapChain, SyncInterval, Flags);
-		}
-
-		m_pDevice->GetImmediateContext(&m_pContext);
-		DXGI_SWAP_CHAIN_DESC sd;
-		pSwapChain->GetDesc(&sd);
-		m_hWindow = sd.OutputWindow;
-		ID3D11Texture2D* pBackBuffer = nullptr;
-		pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
-		m_pDevice->CreateRenderTargetView(pBackBuffer, NULL, &m_pMainRenderTargetView);
-		pBackBuffer->Release();
-		m_oWndProc = (WNDPROC)SetWindowLongPtr(m_hWindow, GWLP_WNDPROC, (LONG_PTR)WndProc);
-		CreateImGuiUI();
-		m_bInit = true;
-	}
-
-	//BeginRenderUI();
-
-	//if (showMenu) RenderDefaultUI();
-
-	//ImGui::Render();
-	//pContext->OMSetRenderTargets(1, &pMainRenderTargetView, NULL);
-	//ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-
-	Update();
-
-	return oPresent(pSwapChain, SyncInterval, Flags);
 }

@@ -2,10 +2,53 @@
 #include <xenon/utility/random.hpp>
 #include <kiero/kiero.h>
 
+static void EnableHooks()
+{
+	// EXAMPLE
+	//// Health__TakeDamage
+	//if (MH_CreateHook(reinterpret_cast<LPVOID*>(
+	//	Offsets::Health__TakeDamage_Offset),
+	//	&HooksFunctions::Health__TakeDamage_hook,
+	//	(LPVOID*)&HooksFunctions::Health__TakeDamage) == MH_OK)
+	//{
+	//	MH_EnableHook(reinterpret_cast<LPVOID*>(Offsets::Health__TakeDamage_Offset));
+	//}
+}
+
+HRESULT __stdcall Game::hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags) {
+	if (!m_bInit)
+	{
+		if (!m_pUIService->InitPresent(pSwapChain)) {
+			return m_pUIService->oPresent(pSwapChain, SyncInterval, Flags);
+		}
+		else {
+			if (m_pConfigs->m_bUseCustomUI) {
+				m_pUIService->CreateImGuiUI();
+			}
+			m_bInit = true;
+		}
+	}
+
+	HandleShortcuts();
+
+	// update ui
+	if (m_pConfigs->m_bUseCustomUI) {
+		m_pUIService->Update();
+	}
+	
+	// update cheats
+	Update();
+
+	return m_pUIService->oPresent(pSwapChain, SyncInterval, Flags);
+}
+
 void Game::EnableUpdate() {
 
 	if (m_pSystem->IsInternal()) {
-		kiero::bind(8, (void**)&m_pUIService->oPresent, UIService::hkPresentWrapper);
+
+		EnableHooks();
+
+		kiero::bind(8, (void**)&m_pUIService->oPresent, Game::hkPresentWrapper);
 	}
 	else {
 
@@ -29,7 +72,7 @@ void Game::EnableUpdate() {
 
 			HandleShortcuts();
 
-			if (m_pConfigs->m_bUseCustomUI && UIService::m_bShowMenu) {
+			if (m_pConfigs->m_bUseCustomUI) {
 				m_pUIService->Update();
 			}
 
@@ -83,11 +126,13 @@ void Game::Update() {
 void Game::HandleShortcuts() {
 
 	if (GetAsyncKeyState(m_pConfigs->m_nToggleUIKey) & 1) {
-		m_pUIService->m_bShowMenu = !UIService::m_bShowMenu;
-		if (UIService::m_bShowMenu) m_pUIService->SetMenuOpen();
-		else m_pUIService->SetMenuClose();
-	}
+		m_pUIService->m_bShowMenu = !m_pUIService->m_bShowMenu;
 
+		if (!m_pSystem->IsInternal()) {
+			if (m_pUIService->m_bShowMenu) m_pUIService->SetMenuOpen();
+			else m_pUIService->SetMenuClose();
+		}
+	}
 
 }
 

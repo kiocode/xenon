@@ -15,6 +15,8 @@ public:
 	Vec2 GetScreenResolution();
 	Vec2 GetScreenCenter();
 
+	Vec2 GetMousePos();
+
 	void SetAppTitle(std::string title) {
 		m_strAppTitle = title;
 	}

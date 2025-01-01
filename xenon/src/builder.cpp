@@ -73,8 +73,8 @@ void Builder::RegisterDefaultServices() {
     #pragma region Services
 
     std::shared_ptr<UIService> pUIService = Services->AddSingleton<UIService>(
-        [this]() {
-            return std::make_shared<UIService>(SystemVariables);
+        [this, pAimConfig]() {
+            return std::make_shared<UIService>(SystemVariables, pAimConfig);
         }
     );
     MemoryManager = Services->AddSingleton<MemoryService>();
