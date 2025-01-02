@@ -3,9 +3,9 @@
 #include <dwmapi.h>
 #include <spdlog/spdlog.h>
 
-#include <xenon/utility/imgui_helper.hpp>
-
 #include <imgui/imgui_internal.h>
+#include <xenon/utility/resources_bytes.h>
+#include <xenon/utility/imgui_helper.hpp>
 
 bool UIService::InitPresent(IDXGISwapChain* pSwapChain) {
 	if (!SUCCEEDED(pSwapChain->GetDevice(__uuidof(ID3D11Device), (void**)&m_pDevice)))
@@ -21,351 +21,421 @@ bool UIService::InitPresent(IDXGISwapChain* pSwapChain) {
 	pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
 	m_pDevice->CreateRenderTargetView(pBackBuffer, NULL, &m_pMainRenderTargetView);
 	pBackBuffer->Release();
-	m_oWndProc = (WNDPROC)SetWindowLongPtr(m_hWindow, GWLP_WNDPROC, (LONG_PTR)WndProc);
+
+	oWndProc = (WNDPROC)SetWindowLongPtrA(m_hWindow, GWLP_WNDPROC, (LONG_PTR)WndProc);
+
+	snprintf(notiftitle, sizeof(notiftitle), "Big sium title");
+	snprintf(notifdesc, sizeof(notifdesc), "Sium Description");
 
 	return true;
 }
 
-void UIService::LoadFonts()
+void UIService::LoadDefaultFonts()
 {
-	ImGui::GetIO().Fonts->AddFontDefault();
-	ImFontConfig font_cfg;
-	font_cfg.GlyphExtraSpacing.x = 1.2f;
+	//ImGui::GetIO().Fonts->AddFontDefault();
+	//ImFontConfig font_cfg;
+	//font_cfg.GlyphExtraSpacing.x = 1.2f;
+
+	ImGui::GetIO().Fonts->AddFontFromMemoryTTF(&mainfonthxd, sizeof mainfonthxd, 14, NULL, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
+	notiffont = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(&boldfonthxd, sizeof boldfonthxd, 18, NULL, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
+	logo = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(&logohxd, sizeof logohxd, 48, NULL, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
+	logo_bigger = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(&logohxd, sizeof logohxd, 80, NULL, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
+}
+
+void UIService::RenderDefaultTheme(bool rainbowBorders) {
+	ImVec4* colors = ImGui::GetStyle().Colors;
+	colors[ImGuiCol_Text] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
+	colors[ImGuiCol_TextDisabled] = ImVec4(0.50f, 0.50f, 0.50f, 1.00f);
+	colors[ImGuiCol_WindowBg] = ImVec4(0.10f, 0.10f, 0.10f, 0.90f);
+	colors[ImGuiCol_ChildBg] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
+	colors[ImGuiCol_PopupBg] = ImVec4(0.19f, 0.19f, 0.19f, 0.92f);
+	colors[ImGuiCol_FrameBg] = ImVec4(0.05f, 0.05f, 0.05f, 0.54f);
+	colors[ImGuiCol_FrameBgHovered] = ImVec4(0.19f, 0.19f, 0.19f, 0.54f);
+	colors[ImGuiCol_FrameBgActive] = ImVec4(0.20f, 0.22f, 0.23f, 0.70f);
+	colors[ImGuiCol_TitleBg] = ImVec4(0.00f, 0.00f, 0.00f, 0.60f);
+	colors[ImGuiCol_TitleBgActive] = ImVec4(0.06f, 0.06f, 0.06f, 0.60f);
+	colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.00f, 0.00f, 0.00f, 0.30f);
+	colors[ImGuiCol_MenuBarBg] = ImVec4(0.14f, 0.14f, 0.14f, 0.60f);
+	colors[ImGuiCol_ScrollbarBg] = ImVec4(0.05f, 0.05f, 0.05f, 0.54f);
+	colors[ImGuiCol_ScrollbarGrab] = ImVec4(0.34f, 0.34f, 0.34f, 0.54f);
+	colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.40f, 0.40f, 0.40f, 0.54f);
+	colors[ImGuiCol_ScrollbarGrabActive] = ImVec4(0.56f, 0.56f, 0.56f, 0.54f);
+	colors[ImGuiCol_CheckMark] = ImVec4(0.33f, 0.67f, 0.86f, 1.00f);
+	colors[ImGuiCol_SliderGrab] = ImVec4(0.34f, 0.34f, 0.34f, 0.54f);
+	colors[ImGuiCol_SliderGrabActive] = ImVec4(0.56f, 0.56f, 0.56f, 0.54f);
+	colors[ImGuiCol_Button] = ImVec4(0.05f, 0.05f, 0.05f, 0.54f);
+	colors[ImGuiCol_ButtonHovered] = ImVec4(0.19f, 0.19f, 0.19f, 0.54f);
+	colors[ImGuiCol_ButtonActive] = ImVec4(0.20f, 0.22f, 0.23f, 1.00f);
+	colors[ImGuiCol_Header] = ImVec4(0.00f, 0.00f, 0.00f, 0.52f);
+	colors[ImGuiCol_HeaderHovered] = ImVec4(0.00f, 0.00f, 0.00f, 0.36f);
+	colors[ImGuiCol_HeaderActive] = ImVec4(0.20f, 0.22f, 0.23f, 0.33f);
+	colors[ImGuiCol_Separator] = ImVec4(0.28f, 0.28f, 0.28f, 0.29f);
+	colors[ImGuiCol_SeparatorHovered] = ImVec4(0.44f, 0.44f, 0.44f, 0.29f);
+	colors[ImGuiCol_SeparatorActive] = ImVec4(0.40f, 0.44f, 0.47f, 1.00f);
+	colors[ImGuiCol_ResizeGrip] = ImVec4(0.28f, 0.28f, 0.28f, 0.29f);
+	colors[ImGuiCol_ResizeGripHovered] = ImVec4(0.44f, 0.44f, 0.44f, 0.29f);
+	colors[ImGuiCol_ResizeGripActive] = ImVec4(0.40f, 0.44f, 0.47f, 1.00f);
+	colors[ImGuiCol_PlotLines] = ImVec4(1.00f, 0.00f, 0.00f, 1.00f);
+	colors[ImGuiCol_PlotLinesHovered] = ImVec4(1.00f, 0.00f, 0.00f, 1.00f);
+	colors[ImGuiCol_PlotHistogram] = ImVec4(1.00f, 0.00f, 0.00f, 1.00f);
+	colors[ImGuiCol_PlotHistogramHovered] = ImVec4(1.00f, 0.00f, 0.00f, 1.00f);
+	colors[ImGuiCol_TextSelectedBg] = ImVec4(0.20f, 0.22f, 0.23f, 1.00f);
+	colors[ImGuiCol_DragDropTarget] = ImVec4(0.33f, 0.67f, 0.86f, 1.00f);
+
+	if (rainbowBorders) {
+		//colors[ImGuiCol_Border] = ImVec4(Config::m_v4Rainbow.x, Config::m_v4Rainbow.y, Config::m_v4Rainbow.z, 0.5f);
+	}
+	else {
+		colors[ImGuiCol_Border] = ImVec4(0.19f, 0.19f, 0.19f, 0.29f);
+	}
+
+	colors[ImGuiCol_BorderShadow] = ImVec4(0.00f, 0.00f, 0.00f, 0.4f);
+
+	ImGuiStyle& style = ImGui::GetStyle();
+	style.WindowPadding = ImVec2(15, 5);
+	style.IndentSpacing = 25;
+	style.GrabMinSize = 10;
+	style.ChildBorderSize = 1;
+	style.PopupBorderSize = 1;
+	style.WindowRounding = 6;
+	style.ChildRounding = 4;
+	style.FrameRounding = 3;
+	style.PopupRounding = 4;
+	style.ScrollbarRounding = 9;
+	style.ScrollbarSize = 10;
+	style.GrabRounding = 3;
+	style.WindowBorderSize = 3;
+	style.WindowTitleAlign = ImVec2(0.5, 0.5);
 }
 
 void UIService::RenderDefaultUI()
 {
-	RenderDefaultNotifications();
+	//RenderDefaultTheme(false);
+	//RenderBottomCenterNotification();
+	RenderTopLeftNotification();
 	RenderDefaultMenu();
 	RenderDefaultRadar();
 }
 
-void UIService::RenderDefaultNotifications() {
+void UIService::RenderBottomCenterNotification() {
 
-	switch(notiftype) {
+	//	if(ImGui::Begin("Notif0", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoMove)) {
+	//		if (notifpressed && 1)
+	//		{
+	//			shouldmove = true;
 
-		case 0:
-			ImGui::Begin("Notif0", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoMove);
+	//			static float timer = 0.f;
+	//			timer += 4.f * ImGui::GetIO().DeltaTime;
+
+	//			if (timer > 10.f)
+	//				shouldresize = false;
+
+	//			if (timer > 20.f)
+	//				shouldmove = false;
+
+	//			if (timer > 30.f)
+	//				logoshouldmove = false;
+
+	//			if (timer > 40.f)
+	//				finalresizeshouldmove = false;
+
+	//			if (timer > 50.f)
+	//			{
+	//				notifpressed = 0;
+	//				closemove = false;
+	//			}
+
+	//			ImGuiContext& g = *GImGui;
+	//			anim = ImLerp(anim, shouldmove ? 0.f : 300.f, g.IO.DeltaTime * 6.f);
+	//			resizeanim = ImLerp(resizeanim, shouldresize ? 0.f : 320.f, g.IO.DeltaTime * 5.f);
+	//			logomove = ImLerp(logomove, logoshouldmove ? 0.f : 320.f, g.IO.DeltaTime * 5.f);
+	//			finalresize = ImLerp(finalresize, finalresizeshouldmove ? 0.f : 320.f, g.IO.DeltaTime * 5.f);
+	//			closeanim = ImLerp(closeanim, closemove ? 0.f : 500.f, g.IO.DeltaTime * 1.f);
+
+	//			//sizing + pos
+	//			ImGui::SetWindowSize(ImVec2(80 + resizeanim + resizeanim - finalresize - finalresize, 60));
+	//			ImGui::SetWindowPos(ImVec2(900 - resizeanim + finalresize, 900 + closeanim));
+
+	//			//helpers def
+	//			drawlist = ImGui::GetWindowDrawList();
+	//			pos = ImGui::GetWindowPos() + ImVec2(5, 5);
+
+	//			//main draws
+	//			drawlist->AddRectFilled(pos, ImVec2(pos.x + 70 + resizeanim + resizeanim - finalresize - finalresize, pos.y + 50), ImColor(0, 79, 65, 255), 20.f); //bg
+	//			drawlist->AddRect(pos, ImVec2(pos.x + 70 + resizeanim + resizeanim - finalresize - finalresize, pos.y + 50), ImColor(0, 229, 189, 255), 20.f, 0, 1.5f); //rect
+
+	//			//logo
+	//			ImGui::PushFont(logo);
+	//			ImGui::SetCursorPos(ImVec2(15 + logomove - finalresize, 7));
+	//			ImGui::TextColored(ImColor(255, 255, 255, 255), "A");
+	//			ImGui::SetCursorPos(ImVec2(15 + logomove - finalresize, 7));
+	//			ImGui::TextColored(ImColor(0, 229, 189), "B");
+	//			ImGui::SetCursorPos(ImVec2(15 + logomove - finalresize, 7));
+	//			ImGui::TextColored(ImColor(0, 229, 189), "C");
+	//			ImGui::PopFont();
+
+	//			//render notifts
+	//			ImGui::PushFont(notiffont);
+	//			ImGui::SetCursorPos(ImVec2(78, 13 - anim));
+	//			ImGui::TextColored(ImColor(255, 255, 255, 255), notiftitle);
+	//			ImGui::PopFont();
+
+	//			ImGui::SetCursorPos(ImVec2(78, 32 - anim));
+	//			ImGui::TextColored(ImColor(255, 255, 255, 255), notifdesc);
+
+	//			ImGui::PushFont(notiffont);
+	//			ImGui::SetCursorPos(ImVec2(78, 321 - anim - logomove));
+	//			ImGui::TextColored(ImColor(255, 255, 255, 255), notifsecondtitle);
+	//			ImGui::PopFont();
+
+	//			ImGui::PushFont(notiffont);
+	//			ImGui::SetCursorPos(ImVec2(80, 341 - logomove - finalresize));
+	//			ImGui::TextColored(ImColor(255, 255, 255, 255), "Welcome to RageByte");
+
+	//			ImGui::SetCursorPos(ImVec2(475, 341 - logomove - finalresize));
+	//			ImGui::TextColored(ImColor(255, 255, 255, 255), "Dominate the game!");
+	//			ImGui::PopFont();
+	//		}
+	//	}
+	//	ImGui::End();
+}
+
+void UIService::RenderTopLeftNotification() {
+	if (ImGui::Begin("Notification", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoMove)) {
+		if (notifpressed && 1)
+		{
+			shouldmove = false;
+
+			static float timer = 0.f;
+			timer += 2.f * ImGui::GetIO().DeltaTime;
+
+			if (timer > 10.f)
+				shouldmove = true;
+
+			if (timer > 20.0f)
 			{
-				if (notifpressed && 1)
-				{
-					shouldmove = true;
-
-					static float timer = 0.f;
-					timer += 4.f * ImGui::GetIO().DeltaTime;
-
-					if (timer > 10.f)
-						shouldresize = false;
-
-					if (timer > 20.f)
-						shouldmove = false;
-
-					if (timer > 30.f)
-						logoshouldmove = false;
-
-					if (timer > 40.f)
-						finalresizeshouldmove = false;
-
-					if (timer > 50.f)
-					{
-						notifpressed = 0;
-						closemove = false;
-					}
-
-					ImGuiContext& g = *GImGui;
-					anim = ImLerp(anim, shouldmove ? 0.f : 300.f, g.IO.DeltaTime * 6.f);
-					resizeanim = ImLerp(resizeanim, shouldresize ? 0.f : 320.f, g.IO.DeltaTime * 5.f);
-					logomove = ImLerp(logomove, logoshouldmove ? 0.f : 320.f, g.IO.DeltaTime * 5.f);
-					finalresize = ImLerp(finalresize, finalresizeshouldmove ? 0.f : 320.f, g.IO.DeltaTime * 5.f);
-					closeanim = ImLerp(closeanim, closemove ? 0.f : 500.f, g.IO.DeltaTime * 1.f);
-
-					//sizing + pos
-					ImGui::SetWindowSize(ImVec2(80 + resizeanim + resizeanim - finalresize - finalresize, 60));
-					ImGui::SetWindowPos(ImVec2(900 - resizeanim + finalresize, 900 + closeanim));
-
-					//helpers def
-					drawlist = ImGui::GetWindowDrawList();
-					pos = ImGui::GetWindowPos() + ImVec2(5, 5);
-
-					//main draws
-					drawlist->AddRectFilled(pos, ImVec2(pos.x + 70 + resizeanim + resizeanim - finalresize - finalresize, pos.y + 50), ImColor(0, 79, 65, 255), 20.f); //bg
-					drawlist->AddRect(pos, ImVec2(pos.x + 70 + resizeanim + resizeanim - finalresize - finalresize, pos.y + 50), ImColor(0, 229, 189, 255), 20.f, 0, 1.5f); //rect
-
-					//logo
-					ImGui::PushFont(logo);
-					ImGui::SetCursorPos(ImVec2(15 + logomove - finalresize, 7));
-					ImGui::TextColored(ImColor(255, 255, 255, 255), "A");
-					ImGui::SetCursorPos(ImVec2(15 + logomove - finalresize, 7));
-					ImGui::TextColored(ImColor(0, 229, 189), "B");
-					ImGui::SetCursorPos(ImVec2(15 + logomove - finalresize, 7));
-					ImGui::TextColored(ImColor(0, 229, 189), "C");
-					ImGui::PopFont();
-
-					//render notifts
-					ImGui::PushFont(notiffont);
-					ImGui::SetCursorPos(ImVec2(78, 13 - anim));
-					ImGui::TextColored(ImColor(255, 255, 255, 255), notiftitle);
-					ImGui::PopFont();
-
-					ImGui::SetCursorPos(ImVec2(78, 32 - anim));
-					ImGui::TextColored(ImColor(255, 255, 255, 255), notifdesc);
-
-					ImGui::PushFont(notiffont);
-					ImGui::SetCursorPos(ImVec2(78, 321 - anim - logomove));
-					ImGui::TextColored(ImColor(255, 255, 255, 255), notifsecondtitle);
-					ImGui::PopFont();
-
-					ImGui::PushFont(notiffont);
-					ImGui::SetCursorPos(ImVec2(80, 341 - logomove - finalresize));
-					ImGui::TextColored(ImColor(255, 255, 255, 255), "Welcome to RageByte");
-
-					ImGui::SetCursorPos(ImVec2(475, 341 - logomove - finalresize));
-					ImGui::TextColored(ImColor(255, 255, 255, 255), "Dominate the game!");
-					ImGui::PopFont();
-				}
+				timer = 0.f;
+				notifpressed = 0;
 			}
-			ImGui::End();
-			break;
+		}
 
-		case 1:
-			ImGui::Begin("Notif1", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoMove);
-			{
-				if (notifpressed && 1)
-				{
-					shouldmove = false;
+		ImGuiContext& g = *GImGui;
+		anim = ImLerp(anim, shouldmove ? 0.f : 800.f, g.IO.DeltaTime * 6.f);
+		if (anim <= 799.f)
+			shouldresize = true;
+		else
+			shouldresize = false;
 
-					static float timer = 0.f;
-					timer += 2.f * ImGui::GetIO().DeltaTime;
+		resizeanim = ImLerp(resizeanim, shouldresize ? 0.f : 310.f, g.IO.DeltaTime * 5.f);
 
-					if (timer > 10.f)
-						shouldmove = true;
+		//sizing + pos
+		ImGui::SetWindowSize(ImVec2(80 + resizeanim, 80));
+		ImGui::SetWindowPos(ImVec2(20, -780 + anim));
 
-					if (timer > 20.0f)
-					{
-						timer = 0.f;
-						notifpressed = 0;
-					}
-				}
+		//helpers def
+		drawlist = ImGui::GetWindowDrawList();
+		pos = ImGui::GetWindowPos() + ImVec2(5, 5);
 
-				ImGuiContext& g = *GImGui;
-				anim = ImLerp(anim, shouldmove ? 0.f : 800.f, g.IO.DeltaTime * 6.f);
-				if (anim <= 799.f)
-					shouldresize = true;
-				else
-					shouldresize = false;
+		//main draws
+		drawlist->AddRectFilled(pos, ImVec2(pos.x + 70 + resizeanim, pos.y + 50), ImColor(0, 79, 65, 255), 20.f); //bg
+		drawlist->AddRect(pos, ImVec2(pos.x + 70 + resizeanim, pos.y + 50), ImColor(0, 229, 189, 255), 20.f, 0, 1.5f); //rect
 
-				resizeanim = ImLerp(resizeanim, shouldresize ? 0.f : 310.f, g.IO.DeltaTime * 5.f);
+		//logo
+		ImGui::PushFont(logo);
+		ImGui::SetCursorPos(ImVec2(15, 7));
+		ImGui::TextColored(ImColor(255, 255, 255, 255), "A");
+		ImGui::SetCursorPos(ImVec2(15, 7));
+		ImGui::TextColored(ImColor(0, 229, 189), "B");
+		ImGui::SetCursorPos(ImVec2(15, 7));
+		ImGui::TextColored(ImColor(0, 229, 189), "C");
+		ImGui::PopFont();
 
-				//sizing + pos
-				ImGui::SetWindowSize(ImVec2(80 + resizeanim, 60));
-				ImGui::SetWindowPos(ImVec2(20, -780 + anim));
+		//render notifts
+		ImGui::PushFont(notiffont);
+		ImGui::SetCursorPos(ImVec2(78, 13));
+		ImGui::TextColored(ImColor(255, 255, 255, 255), notiftitle);
+		ImGui::PopFont();
 
-				//helpers def
-				drawlist = ImGui::GetWindowDrawList();
-				pos = ImGui::GetWindowPos() + ImVec2(5, 5);
-
-				//main draws
-				drawlist->AddRectFilled(pos, ImVec2(pos.x + 70 + resizeanim, pos.y + 50), ImColor(0, 79, 65, 255), 20.f); //bg
-				drawlist->AddRect(pos, ImVec2(pos.x + 70 + resizeanim, pos.y + 50), ImColor(0, 229, 189, 255), 20.f, 0, 1.5f); //rect
-
-				//logo
-				ImGui::PushFont(logo);
-				ImGui::SetCursorPos(ImVec2(15, 7));
-				ImGui::TextColored(ImColor(255, 255, 255, 255), "A");
-				ImGui::SetCursorPos(ImVec2(15, 7));
-				ImGui::TextColored(ImColor(0, 229, 189), "B");
-				ImGui::SetCursorPos(ImVec2(15, 7));
-				ImGui::TextColored(ImColor(0, 229, 189), "C");
-				ImGui::PopFont();
-
-				//render notifts
-				ImGui::PushFont(notiffont);
-				ImGui::SetCursorPos(ImVec2(78, 13));
-				ImGui::TextColored(ImColor(255, 255, 255, 255), notiftitle);
-				ImGui::PopFont();
-
-				ImGui::SetCursorPos(ImVec2(78, 32));
-				ImGui::TextColored(ImColor(255, 255, 255, 255), notifdesc);
-			}
-			ImGui::End();
-			break;
+		ImGui::SetCursorPos(ImVec2(78, 32));
+		ImGui::TextColored(ImColor(255, 255, 255, 255), notifdesc);
 	}
+	ImGui::End();
 }
 
 void UIService::RenderDefaultMenu() {
 
-	ImGui::Begin("Hello, world!", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoBackground);
+	if (ImGui::Begin("Hello, world!", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoBackground)) {
 
-	//sizing
-	ImGui::SetWindowSize(ImVec2(490, 440));
+		//sizing
+		ImGui::SetWindowSize(ImVec2(490, 440));
 
-	//helpers def
-	drawlist = ImGui::GetWindowDrawList();
-	pos = ImGui::GetWindowPos() + ImVec2(5, 5);
+		//helpers def
+		drawlist = ImGui::GetWindowDrawList();
+		pos = ImGui::GetWindowPos() + ImVec2(5, 5);
 
-	//main rect
-	drawlist->AddRectFilled(pos, ImVec2(pos.x + 480, pos.y + 430), ImColor(29, 40, 54, 150), 6.f, ImDrawFlags_RoundCornersAll);
+		//main rect
+		drawlist->AddRectFilled(pos, ImVec2(pos.x + 480, pos.y + 430), ImColor(29, 40, 54, 150), 6.f, ImDrawFlags_RoundCornersAll);
 
-	//title
-	drawlist->AddRectFilled(pos, ImVec2(pos.x + 480, pos.y + 25), ImColor(29, 40, 54, 255), 6.f, ImDrawFlags_RoundCornersTop);
-	drawlist->AddText(CenterText(pos, ImVec2(pos.x + 480, pos.y + 25), m_pSystem->GetAppTitle().c_str()), ImColor(165, 186, 197, 255), m_pSystem->GetAppTitle().c_str());
+		//title
+		drawlist->AddRectFilled(pos, ImVec2(pos.x + 480, pos.y + 25), ImColor(29, 40, 54, 255), 6.f, ImDrawFlags_RoundCornersTop);
+		drawlist->AddText(CenterText(pos, ImVec2(pos.x + 480, pos.y + 25), m_pSystem->GetAppTitle().c_str()), ImColor(165, 186, 197, 255), m_pSystem->GetAppTitle().c_str());
 
-	//tabs
-	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
-	ImGui::SetCursorPos(ImVec2(5, 35));
-	ImGui::BeginGroup();
-	{
-		if (devconsole)
-		{
-			if (ImGui::Tabs("Players", ImVec2(80, 20), tabs == 0)) tabs = 0;
-			if (ImGui::Tabs("Radar", ImVec2(80, 20), tabs == 1)) tabs = 1;
-			if (ImGui::Tabs("Loot", ImVec2(80, 20), tabs == 2)) tabs = 2;
-			if (ImGui::Tabs("Aim", ImVec2(80, 20), tabs == 3)) tabs = 3;
-			if (ImGui::Tabs("Misc", ImVec2(80, 20), tabs == 4)) tabs = 4;
-			if (ImGui::Tabs("Dev", ImVec2(80, 20), tabs == 5)) tabs = 5;
-		}
-		else
-		{
-			if (ImGui::Tabs("Players", ImVec2(96, 20), tabs == 0)) tabs = 0;
-			if (ImGui::Tabs("Radar", ImVec2(96, 20), tabs == 1)) tabs = 1;
-			if (ImGui::Tabs("Loot", ImVec2(96, 20), tabs == 2)) tabs = 2;
-			if (ImGui::Tabs("Aim", ImVec2(96, 20), tabs == 3)) tabs = 3;
-			if (ImGui::Tabs("Misc", ImVec2(96, 20), tabs == 4)) tabs = 4;
-		}
-	}
-	ImGui::EndGroup();
-
-	//subtabs ( if it's the case )
-	if (tabs == 0)
-	{
-		ImGui::SetCursorPos(ImVec2(5, 55));
+		//tabs
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
+		ImGui::SetCursorPos(ImVec2(5, 35));
 		ImGui::BeginGroup();
 		{
-			if (ImGui::Tabs("Colors", ImVec2(240, 20), subtabs == 0)) subtabs = 0;
-			if (ImGui::Tabs("Settings", ImVec2(240, 20), subtabs == 1)) subtabs = 1;
+			if (devconsole)
+			{
+				if (ImGui::Tabs("Players", ImVec2(80, 20), tabs == 0)) tabs = 0;
+				if (ImGui::Tabs("Radar", ImVec2(80, 20), tabs == 1)) tabs = 1;
+				if (ImGui::Tabs("Loot", ImVec2(80, 20), tabs == 2)) tabs = 2;
+				if (ImGui::Tabs("Aim", ImVec2(80, 20), tabs == 3)) tabs = 3;
+				if (ImGui::Tabs("Misc", ImVec2(80, 20), tabs == 4)) tabs = 4;
+				if (ImGui::Tabs("Dev", ImVec2(80, 20), tabs == 5)) tabs = 5;
+			}
+			else
+			{
+				if (ImGui::Tabs("Players", ImVec2(96, 20), tabs == 0)) tabs = 0;
+				if (ImGui::Tabs("Radar", ImVec2(96, 20), tabs == 1)) tabs = 1;
+				if (ImGui::Tabs("Loot", ImVec2(96, 20), tabs == 2)) tabs = 2;
+				if (ImGui::Tabs("Aim", ImVec2(96, 20), tabs == 3)) tabs = 3;
+				if (ImGui::Tabs("Misc", ImVec2(96, 20), tabs == 4)) tabs = 4;
+			}
 		}
 		ImGui::EndGroup();
-	}
 
-	ImGui::PopStyleVar(); // this pops the itemspacing push
-
-	//functions
-	if (tabs == 0)
-	{
-		ImGui::SetCursorPos(ImVec2(10, 80));
-		ImGui::BeginChild("MainChild", ImVec2(470, 345));
+		//subtabs ( if it's the case )
+		if (tabs == 0)
 		{
-			//demo funcs
-			static bool checkbox[8];
-			static int sliderint[4];
-
-			//render funcs
-			ImGui::SetCursorPos(ImVec2(10, 10));
+			ImGui::SetCursorPos(ImVec2(5, 55));
 			ImGui::BeginGroup();
 			{
-				ImGui::Checkbox("Only Visible", &checkbox[0]);
-				ImGui::Checkbox("Friends", &checkbox[1]);
-				ImGui::Checkbox("Name", &checkbox[2]);
-				ImGui::Checkbox("Line", &checkbox[3]);
-				ImGui::Checkbox("Health", &checkbox[4]);
-				ImGui::Checkbox("Box 2D", &checkbox[5]);
-				ImGui::Checkbox("Distance", &checkbox[6]);
-				ImGui::Checkbox("Skeleton", &checkbox[7]);
-				ImGui::SliderInt("Size line skeleton", &sliderint[0], 0, 10);
-				ImGui::SliderInt("Skeleton draw distance", &sliderint[1], 0, 100);
-				ImGui::Checkbox("Developer Console", &devconsole);
+				if (ImGui::Tabs("Colors", ImVec2(240, 20), subtabs == 0)) subtabs = 0;
+				if (ImGui::Tabs("Settings", ImVec2(240, 20), subtabs == 1)) subtabs = 1;
 			}
 			ImGui::EndGroup();
 		}
-		ImGui::EndChild();
-	}
 
-	if (tabs == 1)
-	{
-		ImGui::SetCursorPos(ImVec2(10, 60));
-		ImGui::BeginChild("MainChild", ImVec2(470, 365));
+		ImGui::PopStyleVar(); // this pops the itemspacing push
+
+		//functions
+		if (tabs == 0)
 		{
-			//demo funcs
-			static bool checkbox = false;
-			static int sliderint = 0;
-			static float sliderfloat = 0.f;
-			static int combo = 0;
-			static const char* multi_items[5] = { "One", "Two", "Three", "Four", "Five" };
-			static bool multi_items_count[5];
-			static int key = 0;
-
-			//render funcs
-			ImGui::SetCursorPos(ImVec2(10, 10));
-			ImGui::BeginGroup();
+			ImGui::SetCursorPos(ImVec2(10, 80));
+			ImGui::BeginChild("MainChild", ImVec2(470, 345));
 			{
-				ImGui::Checkbox("Checkbox", &checkbox);
-				ImGui::SliderInt("Slider Int", &sliderint, 0, 100);
-				ImGui::SliderFloat("Slider Float", &sliderfloat, 0.f, 100.f, "%.1f");
-				ImGui::Combo("Combo", &combo, "Selectable 1\0\Selectable 2\0\Selectable 3", 3);
-				ImGui::MultiCombo("Multicombo", multi_items_count, multi_items, 5);
-				ImGui::Keybind("Keybind", &key);
-			}
-			ImGui::EndGroup();
-		}
-		ImGui::EndChild();
-	}
+				//demo funcs
+				static bool checkbox[8];
+				static int sliderint[4];
 
-	//achievements
-	if (tabs == 2)
-	{
-		ImGui::SetCursorPos(ImVec2(10, 60));
-		ImGui::BeginChild("MainChild", ImVec2(470, 365));
-		{
-			//render funcs
-			ImGui::SetCursorPos(ImVec2(10, 10));
-			ImGui::BeginGroup();
-			{
-				ImGui::InputText("Notification Title", notiftitle, 64);
-				ImGui::InputText("Notification Description", notifdesc, 64);
-				ImGui::InputText("Notification Second Title", notifsecondtitle, 64);
-				if (ImGui::Button("Showcase notification", ImVec2(200, 25)))
-					notifpressed++;
-				ImGui::Combo("Notificiation Type", &notiftype, "Xbox\0\PS4", 2);
-			}
-			ImGui::EndGroup();
-		}
-		ImGui::EndChild();
-	}
-
-	if (tabs == 5)
-	{
-		ImGui::SetCursorPos(ImVec2(10, 60));
-		ImGui::BeginChild("MainChild", ImVec2(470, 365));
-		{
-			//demo funcs
-			static bool checkbox[2];
-			static int combo = 0;
-			static char input0[64] = "";
-			static char input1[64] = "";
-
-			//render funcs
-			ImGui::SetCursorPos(ImVec2(10, 10));
-			ImGui::BeginGroup();
-			{
-				if (checkbox[0])
+				//render funcs
+				ImGui::SetCursorPos(ImVec2(10, 10));
+				ImGui::BeginGroup();
 				{
-					ImGui::InputText("Pointer or Offset", input0, 64, ImGuiInputTextFlags_ReadOnly);
-					ImGui::InputText("Value", input1, 64, ImGuiInputTextFlags_ReadOnly);
+					ImGui::Checkbox("Only Visible", &checkbox[0]);
+					ImGui::Checkbox("Friends", &checkbox[1]);
+					ImGui::Checkbox("Name", &checkbox[2]);
+					ImGui::Checkbox("Line", &checkbox[3]);
+					ImGui::Checkbox("Health", &checkbox[4]);
+					ImGui::Checkbox("Box 2D", &checkbox[5]);
+					ImGui::Checkbox("Distance", &checkbox[6]);
+					ImGui::Checkbox("Skeleton", &checkbox[7]);
+					ImGui::SliderInt("Size line skeleton", &sliderint[0], 0, 10);
+					ImGui::SliderInt("Skeleton draw distance", &sliderint[1], 0, 100);
+					ImGui::Checkbox("Developer Console", &devconsole);
 				}
-				else
-				{
-					ImGui::InputText("Pointer or Offset", input0, 64);
-					ImGui::InputText("Value", input1, 64);
-				}
-				ImGui::Checkbox("Read-Only", &checkbox[0]);
-				ImGui::Checkbox("Loop Command", &checkbox[1]);
-				ImGui::Combo("Type", &combo, "Byte\0\r2 Byte\0\r4 Byte\0\rFloat\0\Double\0\String", 6);
+				ImGui::EndGroup();
 			}
-			ImGui::EndGroup();
+			ImGui::EndChild();
 		}
-		ImGui::EndChild();
-	}
 
+		if (tabs == 1)
+		{
+			ImGui::SetCursorPos(ImVec2(10, 60));
+			ImGui::BeginChild("MainChild", ImVec2(470, 365));
+			{
+				//demo funcs
+				static bool checkbox = false;
+				static int sliderint = 0;
+				static float sliderfloat = 0.f;
+				static int combo = 0;
+				static const char* multi_items[5] = { "One", "Two", "Three", "Four", "Five" };
+				static bool multi_items_count[5];
+				static int key = 0;
+
+				//render funcs
+				ImGui::SetCursorPos(ImVec2(10, 10));
+				ImGui::BeginGroup();
+				{
+					ImGui::Checkbox("Checkbox", &checkbox);
+					ImGui::SliderInt("Slider Int", &sliderint, 0, 100);
+					ImGui::SliderFloat("Slider Float", &sliderfloat, 0.f, 100.f, "%.1f");
+					ImGui::Combo("Combo", &combo, "Selectable 1\0\Selectable 2\0\Selectable 3", 3);
+					ImGui::MultiCombo("Multicombo", multi_items_count, multi_items, 5);
+					ImGui::Keybind("Keybind", &key);
+				}
+				ImGui::EndGroup();
+			}
+			ImGui::EndChild();
+		}
+
+		//achievements
+		if (tabs == 2)
+		{
+			ImGui::SetCursorPos(ImVec2(10, 60));
+			ImGui::BeginChild("MainChild", ImVec2(470, 365));
+			{
+				//render funcs
+				ImGui::SetCursorPos(ImVec2(10, 10));
+				ImGui::BeginGroup();
+				{
+					ImGui::InputText("Notification Title", notiftitle, 64);
+					ImGui::InputText("Notification Description", notifdesc, 64);
+					if (ImGui::Button("Showcase notification", ImVec2(200, 25)))
+						notifpressed++;
+					//ImGui::Combo("Notificiation Type", &notiftype, "Xbox\0\PS4", 2);
+				}
+				ImGui::EndGroup();
+			}
+			ImGui::EndChild();
+		}
+
+		if (tabs == 5)
+		{
+			ImGui::SetCursorPos(ImVec2(10, 60));
+			ImGui::BeginChild("MainChild", ImVec2(470, 365));
+			{
+				//demo funcs
+				static bool checkbox[2];
+				static int combo = 0;
+				static char input0[64] = "";
+				static char input1[64] = "";
+
+				//render funcs
+				ImGui::SetCursorPos(ImVec2(10, 10));
+				ImGui::BeginGroup();
+				{
+					if (checkbox[0])
+					{
+						ImGui::InputText("Pointer or Offset", input0, 64, ImGuiInputTextFlags_ReadOnly);
+						ImGui::InputText("Value", input1, 64, ImGuiInputTextFlags_ReadOnly);
+					}
+					else
+					{
+						ImGui::InputText("Pointer or Offset", input0, 64);
+						ImGui::InputText("Value", input1, 64);
+					}
+					ImGui::Checkbox("Read-Only", &checkbox[0]);
+					ImGui::Checkbox("Loop Command", &checkbox[1]);
+					ImGui::Combo("Type", &combo, "Byte\0\r2 Byte\0\r4 Byte\0\rFloat\0\Double\0\String", 6);
+				}
+				ImGui::EndGroup();
+			}
+			ImGui::EndChild();
+		}
+
+	}
 	ImGui::End();
 }
 
@@ -412,16 +482,19 @@ LRESULT __stdcall UIService::WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, 
 		return true;
 	}
 
-	return DefWindowProc(hWnd, uMsg, wParam, lParam);
+	if (DIManager::GetInstance().GetService<System>()->IsInternal()) {
+		return CallWindowProcA(pThis->oWndProc, hWnd, uMsg, wParam, lParam);
+	} else {
+		return DefWindowProcA(hWnd, uMsg, wParam, lParam);
+	}
 }
 
-void UIService::Init() {
+void UIService::InitExternal() {
 	if (CreateWindowUI()) {
 		if (CreateDeviceUI()) {
 			CreateImGuiUI();
 		}
 	}
-	//LoadFonts();
 }
 
 void UIService::RenderCrosshair() {
@@ -658,6 +731,8 @@ void UIService::CreateImGuiUI()
 	io.ConfigFlags = ImGuiConfigFlags_NoMouseCursorChange;
 	ImGui_ImplWin32_Init(m_hWindow);
 	ImGui_ImplDX11_Init(m_pDevice, m_pContext);
+
+	LoadDefaultFonts();
 }
 
 void UIService::DestroyImGuiUI()

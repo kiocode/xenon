@@ -22,7 +22,12 @@ enum class UnrealEngineVersion {
 class Cheat {
 public:
 
-    Cheat(std::shared_ptr<Game> game, std::shared_ptr<GameConfig> gameConfig, std::shared_ptr<UIService> UIService, std::shared_ptr<System> system) : m_pGameConfig(gameConfig), m_pGame(game), m_pUIService(UIService), m_pSystem(system) { }
+    Cheat(
+        std::shared_ptr<Game> game, 
+        std::shared_ptr<GameConfig> gameConfig, 
+        std::shared_ptr<UIService> UIService, 
+        std::shared_ptr<System> system
+    ) : m_pGameConfig(gameConfig), m_pGame(game), m_pUIService(UIService), m_pSystem(system) { }
 
     void UseUpdate() {
 

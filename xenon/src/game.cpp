@@ -15,16 +15,14 @@ static void EnableHooks()
 	//}
 }
 
-HRESULT __stdcall Game::hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags) {
-	if (!m_bInit)
+HRESULT __stdcall Game::hkPresent(IDXGISwapChain* pSwapChain, UINT nSyncInterval, UINT nFlags) {
+	if (!m_bInit && m_pConfigs->m_bUseCustomUI)
 	{
 		if (!m_pUIService->InitPresent(pSwapChain)) {
-			return m_pUIService->oPresent(pSwapChain, SyncInterval, Flags);
+			return m_pUIService->oPresent(pSwapChain, nSyncInterval, nFlags);
 		}
 		else {
-			if (m_pConfigs->m_bUseCustomUI) {
-				m_pUIService->CreateImGuiUI();
-			}
+			m_pUIService->CreateImGuiUI();
 			m_bInit = true;
 		}
 	}
@@ -39,7 +37,7 @@ HRESULT __stdcall Game::hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval,
 	// update cheats
 	Update();
 
-	return m_pUIService->oPresent(pSwapChain, SyncInterval, Flags);
+	return m_pUIService->oPresent(pSwapChain, nSyncInterval, nFlags);
 }
 
 void Game::EnableUpdate() {
@@ -56,7 +54,7 @@ void Game::EnableUpdate() {
 		m_pSystem->g_fStartPlayTime = previousTime.time_since_epoch().count();
 
 		if (m_pConfigs->m_bUseCustomUI) {
-			m_pUIService->Init();
+			m_pUIService->InitExternal();
 		}
 
 		while (m_pConfigs->m_bUseUpdate) {

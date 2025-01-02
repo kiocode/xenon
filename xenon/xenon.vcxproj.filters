@@ -360,7 +360,7 @@
     <ClInclude Include="includes\xenon\services\aim_service.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="libs\imgui\fonts.h">
+    <ClInclude Include="includes\xenon\utility\resources_bytes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="libs\imgui\imconfig.h">

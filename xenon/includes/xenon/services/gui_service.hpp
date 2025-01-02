@@ -40,19 +40,12 @@ public:
     UIService(std::shared_ptr<System> pSystem, std::shared_ptr<AimConfig> pAimConfigs) : m_pSystem(pSystem), m_pAimConfigs(pAimConfigs) {}
 
 	Present oPresent = NULL;
+    inline static WNDPROC oWndProc = NULL;
     bool m_bShowMenu = false;
-
-    //static HRESULT __stdcall hkPresentWrapper(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags) {
-    //    return DIManager::GetInstance().GetService<UIService>()->hkPresent(pSwapChain, SyncInterval, Flags);
-    //}
-
-    //static LRESULT __stdcall WndProcWrapper(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-    //    return GetInstance().WndProc(hWnd, uMsg, wParam, lParam);
-    //}
 
     bool InitPresent(IDXGISwapChain* pSwapChain);
 
-    void Init();
+    void InitExternal();
     void Update();
     void Destroy();
 
@@ -71,7 +64,6 @@ private:
     IDXGISwapChain* m_pSwapChain = nullptr;
     D3D_FEATURE_LEVEL m_dLevel;
 
-    WNDPROC m_oWndProc = NULL;
     ID3D11Device* m_pDevice = NULL;
     ID3D11DeviceContext* m_pContext = NULL;
     ID3D11RenderTargetView* m_pMainRenderTargetView = nullptr;
@@ -95,12 +87,11 @@ private:
     int subtabs = 0;
     int notifs = 0;
     int notiftype = 0;
-    static inline int notify_select = 0;
+    //static inline int notify_select = 1;
     const char* notify_items[2]{ "Circle", "Line" };
 
-    char notiftitle[64] = "Hello Mercy";
-    char notifdesc[64] = "This is a super cool description";
-    char notifsecondtitle[64] = "I completely ran out of ideas apologies";
+    char notiftitle[99];
+    char notifdesc[99];
     int notifpressed = 0;
     float anim = 0;
     float resizeanim = 0;
@@ -124,10 +115,13 @@ private:
     //HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags);
     static LRESULT __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-    void LoadFonts();
+    void LoadDefaultFonts();
+
+    void RenderDefaultTheme(bool rainbowBorders);
 
     void RenderDefaultUI();
-    void RenderDefaultNotifications();
+    void RenderBottomCenterNotification();
+    void RenderTopLeftNotification();
     void RenderDefaultMenu();
     void RenderDefaultRadar();
 

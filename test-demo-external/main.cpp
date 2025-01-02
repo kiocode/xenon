@@ -177,8 +177,8 @@ static void RunTests() {
 	//	{ACTIONTYPE.CHECKBOX, "name", &var}
 	//]);
 
-	//TestGeneral(builder);
-	TestRecoil(builder);
+	TestGeneral(builder);
+	//TestRecoil(builder);
 	//TestDDNetExternal(builder);
 
 }
