@@ -16,16 +16,16 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 
     Cheat cheat = builder.Build();
 
-    cheat.UseCustomUI();
+    cheat.UseCustomUI(RenderingType::DIRECTX11);
 
     cheat.Run();
 
 	return TRUE;
 }
 
-BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
+BOOL APIENTRY DllMain(HMODULE hModule, DWORD dReasonForCall, LPVOID lpReserved)
 {
-    switch (ul_reason_for_call)
+    switch (dReasonForCall)
     {
     case DLL_PROCESS_ATTACH:
         DisableThreadLibraryCalls(hModule);

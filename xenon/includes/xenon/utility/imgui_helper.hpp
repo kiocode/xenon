@@ -1,11 +1,44 @@
+#include <string>
 #include <sstream>
 #include <wtypes.h>
 
 #include <imgui/imgui.h>
+#include <xenon/models/hotkey.hpp>
 
 namespace ImGuiHelper {
 
 	static ImFont* g_pGameFont;
+
+	static void RenderHotkeyEditor(Hotkey* hotkey, bool* isEditing) {
+
+		if(hotkey == nullptr) return;
+		if(isEditing == nullptr) return;
+
+		if (isEditing) {
+			ImGui::Text("Press the combination...");
+			if (ImGui::IsKeyDown(ImGuiKey_Escape)) {
+				*isEditing = false;
+			}
+			for (int key = 0; key < IM_ARRAYSIZE(ImGui::GetIO().KeysDown); ++key) {
+				if (ImGui::IsKeyDown((ImGuiKey)key)) {
+					hotkey->key = key;
+					hotkey->modifiers.clear();
+					if (ImGui::GetIO().KeyCtrl) hotkey->modifiers.push_back(ImGuiKey_LeftCtrl);
+					if (ImGui::GetIO().KeyAlt) hotkey->modifiers.push_back(ImGuiKey_LeftAlt);
+					if (ImGui::GetIO().KeyShift) hotkey->modifiers.push_back(ImGuiKey_LeftShift);
+					*isEditing = false;
+					break;
+				}
+			}
+		}
+		else {
+			std::string hotkeyText = "Key: " + std::to_string(hotkey->key);
+			if (!hotkey->modifiers.empty()) hotkeyText += " + Modifers";
+			if (ImGui::Button(hotkeyText.c_str())) {
+				*isEditing = true;
+			}
+		}
+	}
 
 	static void HelpMarker(const char* desc) {
 		ImGui::TextDisabled("[?]");

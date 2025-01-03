@@ -113,7 +113,11 @@ void UIService::RenderDefaultUI()
 	//RenderDefaultTheme(false);
 	//RenderBottomCenterNotification();
 	RenderTopLeftNotification();
-	RenderDefaultMenu();
+	if (m_pConfigs->m_fnCustomMenu) {
+		m_pConfigs->m_fnCustomMenu();
+	} else {
+		RenderDefaultMenu();
+	}
 	RenderDefaultRadar();
 }
 
@@ -374,6 +378,10 @@ void UIService::RenderDefaultMenu() {
 					ImGui::Combo("Combo", &combo, "Selectable 1\0\Selectable 2\0\Selectable 3", 3);
 					ImGui::MultiCombo("Multicombo", multi_items_count, multi_items, 5);
 					ImGui::Keybind("Keybind", &key);
+
+					//if(ImGui::Button("Test Hotkey", ImVec2(200, 25)))
+					//	isEditing = true;
+					//ImGuiHelper::RenderHotkeyEditor(&testhotkey, &isEditing);
 				}
 				ImGui::EndGroup();
 			}

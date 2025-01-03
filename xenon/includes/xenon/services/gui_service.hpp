@@ -12,6 +12,8 @@
 #include <xenon/core/system.hpp>
 #include <xenon/core/di_manager.hpp>
 #include <xenon/configs/aim_config.hpp>
+#include <xenon/models/hotkey.hpp>
+#include <xenon/configs/ui_config.hpp>
 
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 typedef HRESULT(__stdcall* Present) (IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags);
@@ -37,7 +39,14 @@ inline ImVec2 operator+(const ImVec2& lhs, const ImVec2& rhs) {
 class UIService {
 public:
 
-    UIService(std::shared_ptr<System> pSystem, std::shared_ptr<AimConfig> pAimConfigs) : m_pSystem(pSystem), m_pAimConfigs(pAimConfigs) {}
+    UIService(
+        std::shared_ptr<UIConfig> pConfigs, 
+        std::shared_ptr<System> pSystem, 
+        std::shared_ptr<AimConfig> pAimConfigs
+    ) : m_pConfigs(pConfigs), m_pSystem(pSystem), m_pAimConfigs(pAimConfigs) {}
+
+    Hotkey testhotkey;
+    bool isEditing = false;
 
 	Present oPresent = NULL;
     inline static WNDPROC oWndProc = NULL;
@@ -55,6 +64,7 @@ public:
     void CreateImGuiUI();
 
 private:
+    std::shared_ptr<UIConfig> m_pConfigs;
     std::shared_ptr<System> m_pSystem;
     std::shared_ptr<AimConfig> m_pAimConfigs;
 

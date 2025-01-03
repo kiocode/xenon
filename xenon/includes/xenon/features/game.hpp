@@ -7,8 +7,8 @@
 #include <spdlog/spdlog.h>
 #include <xenon/services/aim_service.hpp>
 #include <xenon/features/aimbot.hpp>
-#include <xenon/configs/game_config.hpp>
 #include <xenon/services/gui_service.hpp>
+#include <xenon/configs/game_config.hpp>
 
 class Game {
 public:
@@ -22,8 +22,8 @@ public:
 		std::shared_ptr<AimService> aimService, 
 		std::shared_ptr<System> system,
 		std::shared_ptr<AimConfig> aimConfig,
-		std::shared_ptr<UIService> UIService
-	) : m_pConfigs(configs), m_pAimbot(aimbot), m_pAimService(aimService), m_pSystem(system), m_pAimConfigs(aimConfig), m_pUIService(UIService) {}
+		std::shared_ptr<UIService> uiService
+	) : m_pConfigs(configs), m_pAimbot(aimbot), m_pAimService(aimService), m_pSystem(system), m_pAimConfigs(aimConfig), m_pUIService(uiService) {}
 
 	void EnableUpdate();
 

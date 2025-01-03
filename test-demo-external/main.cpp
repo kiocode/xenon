@@ -11,6 +11,7 @@
 #include <xenon/services/aim_service.hpp>
 
 #include "server.hpp"
+#include <xenon/configs/ui_config.hpp>
 
 static void AddConfigurations(Builder& builder) {
 
@@ -24,13 +25,23 @@ static void AddConfigurations(Builder& builder) {
 	//pAimConfig->m_fRecoilVerticalStrength = 185; // castle
 	//pAimConfig->m_fRecoilVerticalStrength = 165; // dokkaebi
 	//pAimConfig->m_fRecoilVerticalStrength = 165; // thermite
+	//pAimConfig->m_fRecoilVerticalStrength = 135; // solis
 	pAimConfig->m_fRecoilVerticalStrength = 200; // jackal
 	//pAimConfig->m_fRecoilVerticalStrength = 120; // onix
 	//pAimConfig->m_fRecoilVerticalStrength = 130; // mira
+	//pAimConfig->m_fRecoilVerticalStrength = 380; // twitch
+	//pAimConfig->m_fRecoilVerticalStrength = 100; // tachanka
 	//pAimConfig->m_bNearest = true;
 	//pAimConfig->m_fNearest = 700;
 	//pAimConfig->m_fSpinbotRadius = 100; 
 	//pAimConfig->m_fSpinbotSpeed = 10; 
+
+	std::shared_ptr<UIConfig> pUIConfig = builder.Services->GetConfiguration<UIConfig>();
+	pUIConfig->m_fnCustomMenu = []() {
+		ImGui::Begin("Custom menu");
+		ImGui::Text("Hello, world!");
+		ImGui::End();
+	};
 
 }
 
@@ -113,7 +124,7 @@ static void TestDDNetExternal(Builder& builder) {
 		});
 
 	std::shared_ptr<AimConfig> pAimConfig = builder.Services->GetConfiguration<AimConfig>();
-	pAimConfig->m_mCustomAim = [builder, clientAddr, offsets](const Vec2& pos) {
+	pAimConfig->m_fnCustomAim = [builder, clientAddr, offsets](const Vec2& pos) {
 		Vec2 w2sTarget = { pos.x - builder.GameManager->m_vLocalPos.x, pos.y - builder.GameManager->m_vLocalPos.y };
 		builder.MemoryManager->Write<float>(clientAddr + offsets.aimPos, w2sTarget.x);
 		builder.MemoryManager->Write<float>(clientAddr + offsets.aimPos + 0x4, w2sTarget.y);
@@ -122,7 +133,7 @@ static void TestDDNetExternal(Builder& builder) {
 	Cheat cheat = builder.Build();
 
 	cheat.UseUpdate();
-	cheat.UseCustomUI();
+	cheat.UseCustomUI(RenderingTypes::DIRECTX11);
 	//cheat.UseAimbot();
 	//cheat.UseRecoil();
 	//cheat.Use2DSpinbot();
@@ -139,7 +150,7 @@ static void TestGeneral(Builder& builder) {
 	Cheat cheat = builder.Build();
 
 	cheat.UseUpdate();
-	cheat.UseCustomUI();
+	cheat.UseCustomUI(RenderingTypes::DIRECTX11);
 	//cheat.UseAimbot();
 	//cheat.UseRecoil();
 	//cheat.Use2DSpinbot();
@@ -156,7 +167,7 @@ static void TestRecoil(Builder& builder) {
 	Cheat cheat = builder.Build();
 
 	cheat.UseUpdate();
-	//cheat.UseCustomUI();
+	//cheat.UseCustomUI(RenderingType::DIRECTX11);
 	//cheat.UseAimbot();
 	cheat.UseRecoil();
 	//cheat.Use2DSpinbot();
@@ -171,14 +182,12 @@ static void RunTests() {
 	builder.SystemVariables->IsInternal(false);
 	builder.SetConsoleEnabled();
 	builder.SetDebugLogLevel();
-	//builder.SetUICustomTheme(theme);
-	//builder.SetUICustom(ui);
 	//builder.SetUIDefaultFunctions([
 	//	{ACTIONTYPE.CHECKBOX, "name", &var}
 	//]);
 
-	TestGeneral(builder);
-	//TestRecoil(builder);
+	//TestGeneral(builder);
+	TestRecoil(builder);
 	//TestDDNetExternal(builder);
 
 }

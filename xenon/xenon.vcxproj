@@ -147,12 +147,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="includes\xenon\configs\aim_config.hpp" />
-    <ClInclude Include="includes\xenon\configs\gui_config.hpp" />
+    <ClInclude Include="includes\xenon\configs\ui_config.hpp" />
     <ClInclude Include="includes\xenon\core\builder.hpp" />
     <ClInclude Include="includes\xenon\core\system.hpp" />
     <ClInclude Include="includes\xenon\features\aimbot.hpp" />
     <ClInclude Include="includes\xenon\features\feature.hpp" />
     <ClInclude Include="includes\xenon\core\cheat.hpp" />
+    <ClInclude Include="includes\xenon\models\render_types.hpp" />
+    <ClInclude Include="includes\xenon\models\unity_engine_types.hpp" />
     <ClInclude Include="includes\xenon\services\aim_service.hpp" />
     <ClInclude Include="includes\xenon\features\esp.hpp" />
     <ClInclude Include="includes\xenon\features\game.hpp" />
@@ -160,6 +162,7 @@
     <ClInclude Include="includes\xenon\features\hooks.hpp" />
     <ClInclude Include="includes\xenon\services\lua_service.hpp" />
     <ClInclude Include="includes\xenon\services\memory_service.hpp" />
+    <ClInclude Include="includes\xenon\models\hotkey.hpp" />
     <ClInclude Include="includes\xenon\utility\random.hpp" />
     <ClInclude Include="includes\xenon\utility\vec2.hpp" />
     <ClInclude Include="includes\xenon\utility\vec3.hpp" />
@@ -320,6 +323,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="includes\xenon\configs\game_config.hpp" />
+    <ClCompile Include="includes\xenon\models\unreal_engine_versions.hpp" />
     <ClCompile Include="includes\xenon\utility\imgui_helper.hpp" />
     <ClCompile Include="libs\imgui\imgui.cpp" />
     <ClCompile Include="libs\imgui\imgui_draw.cpp" />
@@ -370,6 +374,7 @@
     <ClCompile Include="src\aimbot.cpp" />
     <ClCompile Include="includes\xenon\core\di_manager.hpp" />
     <ClCompile Include="src\aim_service.cpp" />
+    <ClCompile Include="src\feature.cpp" />
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\gui_service.cpp" />
     <ClCompile Include="src\builder.cpp" />

@@ -181,8 +181,8 @@ void AimService::SetMouseTo(Vec2 pos) {
 
 void AimService::SetAimPos(Vec2 pos) {
 
-    if (m_pConfigs->m_mCustomAim) {
-        m_pConfigs->m_mCustomAim(pos);
+    if (m_pConfigs->m_fnCustomAim) {
+        m_pConfigs->m_fnCustomAim(pos);
     }
     else {
         SetMouseTo(pos);

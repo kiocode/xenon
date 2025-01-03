@@ -34,5 +34,5 @@ public:
 	ImColor m_cFov = ImColor(255, 255, 255, 255);
 	ImColor m_cCrosshair = ImColor(255, 255, 255, 255);
 
-	std::function<void(const Vec2&)> m_mCustomAim;
+	std::function<void(const Vec2&)> m_fnCustomAim;
 };

@@ -5,19 +5,9 @@
 #include <xenon/configs/game_config.hpp>
 #include <spdlog/spdlog.h>
 #include <xenon/features/game.hpp>
-
-
-enum class UnityEngineType {
-    IL2CPP,
-    Mono
-};
-
-enum class UnrealEngineVersion {
-    UE3,
-    UE4,
-    UE5
-};
-
+#include <xenon/models/render_types.hpp>
+#include <xenon/models/unreal_engine_versions.hpp>
+#include <xenon/models/unity_engine_types.hpp>
 
 class Cheat {
 public:
@@ -36,8 +26,9 @@ public:
         spdlog::info("Update is enabled");
     }
 
-    void UseCustomUI() {
+    void UseCustomUI(RenderingTypes renderingType) {
         
+		m_pGameConfig->m_bRenderingType = renderingType;
 		m_pGameConfig->m_bUseCustomUI = true;
 
 		spdlog::info("Custom UI is enabled");
@@ -71,8 +62,8 @@ public:
         spdlog::info("Spinbot 3D is enabled");
     }
 
-    void IsUnityEngine(UnityEngineType type);
-    void IsUnrealEngine(UnrealEngineVersion version);
+    void IsUnityEngine(UnityEngineTypes type);
+    void IsUnrealEngine(UnrealEngineVersions version);
 
     void Run();
 

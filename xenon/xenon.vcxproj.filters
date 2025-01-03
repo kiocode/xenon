@@ -387,7 +387,7 @@
     <ClInclude Include="libs\imgui\imstb_truetype.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="includes\xenon\configs\gui_config.hpp">
+    <ClInclude Include="includes\xenon\configs\ui_config.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="includes\xenon\core\system.hpp">
@@ -526,6 +526,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="includes\xenon\features\feature.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\xenon\models\hotkey.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\xenon\models\render_types.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\xenon\models\unity_engine_types.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -702,6 +711,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="includes\xenon\utility\imgui_helper.hpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\feature.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="includes\xenon\models\unreal_engine_versions.hpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

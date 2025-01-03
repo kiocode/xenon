@@ -60,6 +60,7 @@ void Builder::RegisterDefaultServices() {
 
     std::shared_ptr<AimConfig> pAimConfig = Services->AddConfiguration<AimConfig>();
     std::shared_ptr<GameConfig> pGameConfig = Services->AddConfiguration<GameConfig>();
+    std::shared_ptr<UIConfig> pUIConfig = Services->AddConfiguration<UIConfig>();
 
     #pragma endregion
 
@@ -73,8 +74,8 @@ void Builder::RegisterDefaultServices() {
     #pragma region Services
 
     std::shared_ptr<UIService> pUIService = Services->AddSingleton<UIService>(
-        [this, pAimConfig]() {
-            return std::make_shared<UIService>(SystemVariables, pAimConfig);
+        [this, pUIConfig, pAimConfig]() {
+            return std::make_shared<UIService>(pUIConfig, SystemVariables, pAimConfig);
         }
     );
     MemoryManager = Services->AddSingleton<MemoryService>();
