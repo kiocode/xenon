@@ -90,6 +90,7 @@ private:
 
     ImDrawList* drawlist;
     ImVec2 pos;
+    ImFont* mainfont;
     ImFont* notiffont;
     ImFont* logo;
     ImFont* logo_bigger;
@@ -127,25 +128,25 @@ private:
 
     void LoadDefaultFonts();
 
-    void RenderDefaultTheme(bool rainbowBorders);
+    bool CreateWindowUI();
+    bool CreateDeviceUI();
+    void BeginRenderUI();
 
+    void RenderDefaultTheme(bool rainbowBorders);
     void RenderDefaultUI();
-    void RenderBottomCenterNotification();
-    void RenderTopLeftNotification();
+    void RenderDefaultUIQuickActions();
     void RenderDefaultMenu();
     void RenderDefaultRadar();
-
-    bool CreateWindowUI();
-    void DestroyWindowUI();
-    bool CreateDeviceUI();
-    void ResetDeviceUI();
-    void DestroyDeviceUI();
-    void DestroyImGuiUI();
-    void BeginRenderUI();
-    void EndRenderUI();
-
+    void RenderBottomCenterNotification();
+    void RenderTopLeftNotification();
     void RenderCrosshair();
     void RenderFov();
     void RenderMouse();
+
+    void ResetDeviceUI();
+    void DestroyWindowUI();
+    void DestroyDeviceUI();
+    void DestroyImGuiUI();
+    void EndRenderUI();
 
 };

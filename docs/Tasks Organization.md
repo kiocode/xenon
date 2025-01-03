@@ -15,7 +15,6 @@ kanban-plugin: board
 - [ ] Organize src content like includes
 - [ ] Add on github an activity check for building and formatting
 - [ ] customize GUI
-- [ ] centralize renderui in another file
 - [ ] dll loader
 - [ ] packet sniffer + parser
 - [ ] implement il2cppresolver
@@ -31,7 +30,7 @@ kanban-plugin: board
 - [ ] understand if toggle menu visiblity key is for game config or ui config
 - [ ] add health bar
 - [ ] merge track mouse withthe system get mouse fn
-- [ ] move hkpresent in another clas
+- [ ] move all "use" var in a cheatconfig that will be share by any service
 
 
 ## InProgress
@@ -45,8 +44,10 @@ kanban-plugin: board
 - [x] spinbot 2d/3d
 - [x] implement IsUnityGame(type)/IsUnrealGame(version)
 - [x] delete GetModuleAddress (make overload but use it privately) ADD READPOINTER/READVALUE USE AUTOMATICALLY THE GETMODULE - SetModuleAddress
+- [x] centralize renderui in another file
 - [x] create a public services pool
 - [x] generalize events in base
+- [x] move hkpresent in another clas
 
 
 

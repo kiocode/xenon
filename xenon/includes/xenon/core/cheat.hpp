@@ -6,8 +6,8 @@
 #include <spdlog/spdlog.h>
 #include <xenon/features/game.hpp>
 #include <xenon/models/render_types.hpp>
-#include <xenon/models/unreal_engine_versions.hpp>
-#include <xenon/models/unity_engine_types.hpp>
+#include <xenon/models/unrealengine_versions.hpp>
+#include <xenon/models/unityengine_types.hpp>
 
 class Cheat {
 public:
@@ -15,9 +15,10 @@ public:
     Cheat(
         std::shared_ptr<Game> game, 
         std::shared_ptr<GameConfig> gameConfig, 
-        std::shared_ptr<UIService> UIService, 
+        std::shared_ptr<UIService> uiService,
+        std::shared_ptr<UIConfig> uiConfig, 
         std::shared_ptr<System> system
-    ) : m_pGameConfig(gameConfig), m_pGame(game), m_pUIService(UIService), m_pSystem(system) { }
+    ) : m_pGame(game), m_pGameConfig(gameConfig), m_pUIService(uiService), m_pUIConfig(uiConfig), m_pSystem(system) { }
 
     void UseUpdate() {
 
@@ -26,10 +27,10 @@ public:
         spdlog::info("Update is enabled");
     }
 
-    void UseCustomUI(RenderingTypes renderingType) {
+    void UseUICustom(RenderingTypes renderingType) {
         
 		m_pGameConfig->m_bRenderingType = renderingType;
-		m_pGameConfig->m_bUseCustomUI = true;
+		m_pGameConfig->m_bUseUICustom = true;
 
 		spdlog::info("Custom UI is enabled");
     }
@@ -62,6 +63,71 @@ public:
         spdlog::info("Spinbot 3D is enabled");
     }
 
+    void UseUIRadar() {
+
+        if (!m_pGameConfig->m_bUseUICustom) {
+            spdlog::error("UI Radar can only be used with Custom UI");
+			return;
+		}
+        
+        m_pUIConfig->m_bUseUIRadar = true;
+
+		spdlog::info("UI Radar is enabled");
+
+    }
+
+    void UseUIMenu() {
+        if (!m_pGameConfig->m_bUseUICustom) {
+			spdlog::error("UI Menu can only be used with Custom UI");
+            return;
+        }
+        
+        m_pUIConfig->m_bUseUIMenu = true;
+
+		spdlog::info("UI Menu is enabled");
+
+    }
+
+    void UseUIRenderWindows() {
+
+        if (!m_pGameConfig->m_bUseUICustom) {
+			spdlog::error("UI Custom Draw List can only be used with Custom UI");
+            return;
+        }
+
+        m_pUIConfig->m_bUseUIRenderWindows = true;
+
+        spdlog::info("UI Custom Draw List of Windows is enabled");
+
+    }
+
+    void UseUIRenderOverlays() {
+
+        if (!m_pGameConfig->m_bUseUICustom) {
+			spdlog::error("UI Custom Draw List can only be used with Custom UI");
+            return;
+        }
+
+        m_pUIConfig->m_bUseUIRenderOverlays = true;
+
+        spdlog::info("UI Custom Draw List of Overlay is enabled");
+
+    }
+
+    void UseUIQuickActions() {
+
+        if (!m_pGameConfig->m_bUseUICustom) {
+            spdlog::error("UI Quick Actions can only be used with Custom UI");
+            return;
+        }
+
+        m_pUIConfig->m_bUseUIQuickActions = true;
+
+        spdlog::info("UI Quick Actions is enabled");
+
+    }
+
+    // add check if is internal to use it
     void IsUnityEngine(UnityEngineTypes type);
     void IsUnrealEngine(UnrealEngineVersions version);
 
@@ -71,6 +137,7 @@ private:
     std::shared_ptr<Game> m_pGame;
     std::shared_ptr<GameConfig> m_pGameConfig;
     std::shared_ptr<UIService> m_pUIService;
+    std::shared_ptr<UIConfig> m_pUIConfig;
     std::shared_ptr<System> m_pSystem;
 
 };

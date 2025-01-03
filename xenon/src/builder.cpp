@@ -106,5 +106,11 @@ void Builder::RegisterDefaultServices() {
 
 Cheat Builder::Build() {
     spdlog::debug("Building cheat");
-    return Cheat(GameManager, Services->GetConfiguration<GameConfig>(), Services->GetService<UIService>(), SystemVariables);
+    return Cheat(
+        GameManager, 
+        Services->GetConfiguration<GameConfig>(), 
+        Services->GetService<UIService>(), 
+        Services->GetConfiguration<UIConfig>(), 
+        SystemVariables
+    );
 }

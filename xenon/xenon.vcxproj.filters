@@ -534,7 +534,19 @@
     <ClInclude Include="includes\xenon\models\render_types.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="includes\xenon\models\unity_engine_types.hpp">
+    <ClInclude Include="includes\xenon\models\unityengine_types.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\xenon\models\quickactions\quickactions.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\xenon\models\quickactions\quickaction_checkbox.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\xenon\models\quickactions\quickaction_button.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\xenon\models\quickactions\quickaction_slider.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -716,7 +728,7 @@
     <ClCompile Include="src\feature.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="includes\xenon\models\unreal_engine_versions.hpp">
+    <ClCompile Include="includes\xenon\models\unrealengine_versions.hpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

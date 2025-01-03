@@ -36,7 +36,7 @@ void UIService::LoadDefaultFonts()
 	//ImFontConfig font_cfg;
 	//font_cfg.GlyphExtraSpacing.x = 1.2f;
 
-	ImGui::GetIO().Fonts->AddFontFromMemoryTTF(&mainfonthxd, sizeof mainfonthxd, 14, NULL, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
+	mainfont = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(&mainfonthxd, sizeof mainfonthxd, 14, NULL, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
 	notiffont = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(&boldfonthxd, sizeof boldfonthxd, 18, NULL, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
 	logo = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(&logohxd, sizeof logohxd, 48, NULL, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
 	logo_bigger = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(&logohxd, sizeof logohxd, 80, NULL, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
@@ -110,15 +110,35 @@ void UIService::RenderDefaultTheme(bool rainbowBorders) {
 
 void UIService::RenderDefaultUI()
 {
-	//RenderDefaultTheme(false);
-	//RenderBottomCenterNotification();
-	RenderTopLeftNotification();
-	if (m_pConfigs->m_fnCustomMenu) {
-		m_pConfigs->m_fnCustomMenu();
+	if (m_pConfigs->m_fnCustomTheme) {
+		m_pConfigs->m_fnCustomTheme();
 	} else {
-		RenderDefaultMenu();
+		RenderDefaultTheme(false);
 	}
-	RenderDefaultRadar();
+
+	if (m_pConfigs->m_bUseUINotification) {
+		if (m_pConfigs->m_fnCustomNotification) {
+			m_pConfigs->m_fnCustomNotification();
+		} else {
+			RenderTopLeftNotification();
+		}
+	}
+
+	if (m_pConfigs->m_bUseUIMenu) {
+		if (m_pConfigs->m_fnCustomMenu) {
+			m_pConfigs->m_fnCustomMenu();
+		} else {
+			RenderDefaultMenu();
+		}
+	}
+
+	if (m_pConfigs->m_bUseUIRadar) {
+		if (m_pConfigs->m_fnCustomRadar) {
+			m_pConfigs->m_fnCustomRadar();
+		} else {
+			RenderDefaultRadar();
+		}
+	}
 }
 
 void UIService::RenderBottomCenterNotification() {
@@ -538,14 +558,55 @@ void UIService::RenderMouse() {
 	}
 }
 
+void UIService::RenderDefaultUIQuickActions() {
+
+
+	if (ImGui::Begin("QuickActions", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoBackground)) {
+
+		int width = 490;
+		int height = 440;
+		int padding = 5;
+
+		ImGui::SetWindowSize(ImVec2(width, height));
+
+		drawlist = ImGui::GetWindowDrawList();
+		pos = ImGui::GetWindowPos() + ImVec2(padding, padding);
+
+		//main rect
+		drawlist->AddRectFilled(pos, ImVec2(pos.x + 480, pos.y + 430), ImColor(29, 40, 54, 150), 6.f, ImDrawFlags_RoundCornersAll);
+
+		//title
+		const char* title = "Quick Actions";
+		drawlist->AddRectFilled(pos, ImVec2(pos.x + 480, pos.y + 25), ImColor(29, 40, 54, 255), 6.f, ImDrawFlags_RoundCornersTop);
+		drawlist->AddText(CenterText(pos, ImVec2(pos.x + 480, pos.y + 25), title), ImColor(165, 186, 197, 255), title);
+
+		ImGui::SetCursorPos(ImVec2(15, 40));
+
+		int buttonWidth = 100;
+		int buttonHeight = 30;
+
+		for (const auto& button : m_pConfigs->m_qActions->GetButtons()) {
+			if (ImGui::Button(button->GetLabel().c_str(), ImVec2(buttonWidth, buttonHeight))) {
+				button->Execute();
+			}
+		}
+
+		for (const auto& checkbox : m_pConfigs->m_qActions->GetCheckboxes()) {
+			ImGui::Checkbox(checkbox->GetLabel().c_str(), checkbox->m_bValue);
+		}
+
+		for (const auto& slider : m_pConfigs->m_qActions->GetSliders()) {
+			ImGui::SliderFloat(slider->GetLabel().c_str(), slider->m_fValue, slider->GetMin(), slider->GetMax());
+		}
+
+		ImGui::End();
+
+	}
+
+}
+
 void UIService::Update() {
 	BeginRenderUI();
-
-	//if (Config::m_bWatermark)
-	//{
-	//	ImGuiHelper::DrawOutlinedText(Config::m_pGameFont, ImVec2(Config::System::m_ScreenCenter.X, Config::System::m_ScreenSize.Y - 20), 13.0f, Config::m_cRainbow, true, Config::System::m_cAuthor);
-	//	ImGuiHelper::DrawOutlinedText(Config::m_pGameFont, ImVec2(Config::System::m_ScreenCenter.X, 5), 13.0f, Config::m_cRainbow, true, "[ %.1f FPS ]", ImGui::GetIO().Framerate);
-	//}
 
 	if (m_pAimConfigs->m_bCrosshair) {
 		RenderCrosshair();
@@ -556,12 +617,45 @@ void UIService::Update() {
 	}
 
 	if (m_bShowMenu) {
+
 		if (m_bMouse) {
 			RenderMouse();
 		}
-		RenderDefaultUI();
+
+		if (m_pConfigs->m_bUseUIMenu) {
+			if (m_pConfigs->m_fnCustomMenu) {
+				m_pConfigs->m_fnCustomMenu();
+			} else {
+				RenderDefaultUI();
+			}
+		}
+
+		//if (m_pConfigs->m_bUseUIRenderWindows) {
+		//	for (auto& fn : m_pConfigs->m_vFnWindows) {
+		//		fn();
+		//	}
+		//}
+
+		if (m_pConfigs->m_bUseUIQuickActions && m_pConfigs->m_qActions->GetSize() > 0) {
+			RenderDefaultUIQuickActions();
+		}
+
 	}
-	
+
+	//if (m_pConfigs->m_bUseUIRenderOverlays) {
+	//	for (auto& fn : m_pConfigs->m_vFnOverlays) {
+	//		fn();
+	//	}
+	//}
+
+	if (m_pConfigs->m_bWatermark)
+	{
+		ImColor color = ImColor(255, 255, 255, 255); // or rainbow
+
+		ImGuiHelper::DrawOutlinedText(mainfont, ImVec2(m_pSystem->GetScreenCenter().x, m_pSystem->GetScreenCenter().y - 20), 13.0f, color, true, m_pSystem->GetAppTitle().c_str());
+		ImGuiHelper::DrawOutlinedText(mainfont, ImVec2(m_pSystem->GetScreenCenter().x, 5), 13.0f, color, true, "[ %.1f FPS ]", ImGui::GetIO().Framerate);
+	}
+
 	EndRenderUI();
 }
 

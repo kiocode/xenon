@@ -17,7 +17,7 @@ public:
     std::shared_ptr<TService> AddSingleton(std::function<std::shared_ptr<TService>()> factory) {
         auto type = std::type_index(typeid(TService));
         if (singletons.find(type) != singletons.end()) {
-            throw std::runtime_error("Service already registered as Singleton.");
+            throw std::runtime_error("Service already registered as Singleton: " + std::string(typeid(TService).name()));
         }
         auto instance = factory();
         singletons[type] = instance;
@@ -43,7 +43,7 @@ public:
     std::shared_ptr<TService> AddTransient(std::function<std::shared_ptr<TService>()> factory) {
         auto type = std::type_index(typeid(TService));
         if (transients.find(type) != transients.end()) {
-            throw std::runtime_error("Service already registered as Transient.");
+            throw std::runtime_error("Service already registered as Transient: " + std::string(typeid(TService).name()));
         }
         transients[type] = factory;
 
@@ -66,14 +66,14 @@ public:
         if (transients.find(type) != transients.end()) {
             return std::static_pointer_cast<TService>(transients[type]());
         }
-        throw std::runtime_error("Service not registered.");
+        throw std::runtime_error("Service not registered: " + std::string(typeid(TService).name()));
     }
 
     template <typename TConfiguration>
     std::shared_ptr<TConfiguration> AddConfiguration() {
         auto type = std::type_index(typeid(TConfiguration));
         if (configurations.find(type) != configurations.end()) {
-            throw std::runtime_error("Configuration already registered.");
+            throw std::runtime_error("Configuration already registered: " + std::string(typeid(TConfiguration).name()));
         }
         auto instance = std::make_shared<TConfiguration>();
         configurations[type] = instance;
@@ -86,7 +86,7 @@ public:
         if (configurations.find(type) != configurations.end()) {
             return std::static_pointer_cast<TConfiguration>(configurations[type]);
         }
-        throw std::runtime_error("Configuration not registered.");
+        throw std::runtime_error("Configuration not registered: " + std::string(typeid(TConfiguration).name()));
     }
 
 private:

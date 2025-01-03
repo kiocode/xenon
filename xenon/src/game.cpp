@@ -16,7 +16,7 @@ static void EnableHooks()
 }
 
 HRESULT __stdcall Game::hkPresent(IDXGISwapChain* pSwapChain, UINT nSyncInterval, UINT nFlags) {
-	if (!m_bInit && m_pConfigs->m_bUseCustomUI)
+	if (!m_bInit && m_pConfigs->m_bUseUICustom)
 	{
 		if (!m_pUIService->InitPresent(pSwapChain)) {
 			return m_pUIService->oPresent(pSwapChain, nSyncInterval, nFlags);
@@ -30,7 +30,7 @@ HRESULT __stdcall Game::hkPresent(IDXGISwapChain* pSwapChain, UINT nSyncInterval
 	HandleShortcuts();
 
 	// update ui
-	if (m_pConfigs->m_bUseCustomUI) {
+	if (m_pConfigs->m_bUseUICustom) {
 		m_pUIService->Update();
 	}
 	
@@ -53,7 +53,7 @@ void Game::EnableUpdate() {
 		auto previousTime = std::chrono::steady_clock::now();
 		m_pSystem->g_fStartPlayTime = previousTime.time_since_epoch().count();
 
-		if (m_pConfigs->m_bUseCustomUI) {
+		if (m_pConfigs->m_bUseUICustom) {
 			m_pUIService->InitExternal();
 		}
 
@@ -70,7 +70,7 @@ void Game::EnableUpdate() {
 
 			HandleShortcuts();
 
-			if (m_pConfigs->m_bUseCustomUI) {
+			if (m_pConfigs->m_bUseUICustom) {
 				m_pUIService->Update();
 			}
 
@@ -79,7 +79,7 @@ void Game::EnableUpdate() {
 			std::this_thread::sleep_for(std::chrono::milliseconds(5));
 		}
 
-		if (m_pConfigs->m_bUseCustomUI) {
+		if (m_pConfigs->m_bUseUICustom) {
 			m_pUIService->Destroy();
 		}
 	}
