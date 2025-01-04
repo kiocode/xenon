@@ -31,6 +31,7 @@ kanban-plugin: board
 - [ ] add health bar
 - [ ] merge track mouse withthe system get mouse fn
 - [ ] move all "use" var in a cheatconfig that will be share by any service
+- [ ] togliere useradar e mettere in config se radar é abilitato o meno
 
 
 ## InProgress
