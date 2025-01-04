@@ -23,6 +23,8 @@ static void AddConfigurations(Builder& builder) {
 	//pAimConfig->m_fRecoilTiltStrength = 0;
 	//pAimConfig->m_fRecoilVerticalStrength = 175; // ash
 	//pAimConfig->m_fRecoilVerticalStrength = 185; // castle
+	pAimConfig->m_fRecoilVerticalStrength = 160; // ela
+	//pAimConfig->m_fRecoilVerticalStrength = 190; // ace
 	//pAimConfig->m_fRecoilVerticalStrength = 165; // dokkaebi
 	//pAimConfig->m_fRecoilVerticalStrength = 165; // thermite
 	//pAimConfig->m_fRecoilVerticalStrength = 135; // solis
@@ -31,6 +33,7 @@ static void AddConfigurations(Builder& builder) {
 	//pAimConfig->m_fRecoilVerticalStrength = 130; // mira 
 	//pAimConfig->m_fRecoilVerticalStrength = 380; // twitch
 	//pAimConfig->m_fRecoilVerticalStrength = 100; // tachanka
+	//pAimConfig->m_fRecoilVerticalStrength = 150; // mute
 	//pAimConfig->m_bNearest = true;
 	//pAimConfig->m_fNearest = 700;
 	//pAimConfig->m_fSpinbotRadius = 100; 
@@ -58,13 +61,17 @@ static void AddConfigurations(Builder& builder) {
 		ImGui::Text("Hello, world!");
 		ImGui::End();
 	});
-	//pUIConfig->m_vFnOverlays.push_back([]() {});
+	pUIConfig->m_vFnOverlays.push_back([]() {
+		ImGui::Begin("Overlay");
+		ImGui::Text("Hello, world!");
+		ImGui::End();
+	});
 
-	pUIConfig->m_qActions->AddButton("Test", []() { std::cout << "test" << std::endl; });
-	pUIConfig->m_qActions->AddCheckbox("Test 2 toggle", &pUIConfig->m_bWatermark);
-	pUIConfig->m_qActions->AddCheckbox("Test 2 toggle", &pUIConfig->m_bWatermark);
-	float test = 0;
-	pUIConfig->m_qActions->AddSlider("Test 3 slider", &test, 0, 100);
+	//pUIConfig->m_qActions->AddButton("Test", []() { std::cout << "test" << std::endl; });
+	//pUIConfig->m_qActions->AddCheckbox("Test 2 toggle", &pUIConfig->m_bWatermark);
+	//pUIConfig->m_qActions->AddCheckbox("Test 2 toggle", &pUIConfig->m_bWatermark);
+	//float test = 0;
+	//pUIConfig->m_qActions->AddSlider("Test 3 slider", &test, 0, 100);
 
 }
 
@@ -174,11 +181,11 @@ static void TestGeneral(Builder& builder) {
 
 	cheat.UseUpdate();
 	cheat.UseUICustom(RenderingTypes::DIRECTX11);
-	cheat.UseUIRadar();
+	//cheat.UseUIRadar();
 	cheat.UseUIMenu();
 	cheat.UseUIRenderWindows();
 	cheat.UseUIRenderOverlays();
-	cheat.UseUIQuickActions();
+	//cheat.UseUIQuickActions();
 	//cheat.UseAimbot();
 	//cheat.UseRecoil();
 	//cheat.Use2DSpinbot();
@@ -197,7 +204,7 @@ static void TestRecoil(Builder& builder) {
 	cheat.UseUpdate();
 	//cheat.UseUICustom(RenderingType::DIRECTX11);
 	//cheat.UseAimbot();
-	//cheat.UseRecoil();
+	cheat.UseRecoil();
 	//cheat.Use2DSpinbot();
 
 	cheat.Run();

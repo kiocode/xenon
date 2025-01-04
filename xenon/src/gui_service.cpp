@@ -630,11 +630,11 @@ void UIService::Update() {
 			}
 		}
 
-		//if (m_pConfigs->m_bUseUIRenderWindows) {
-		//	for (auto& fn : m_pConfigs->m_vFnWindows) {
-		//		fn();
-		//	}
-		//}
+		if (m_pConfigs->m_bUseUIRenderWindows) {
+			for (auto& fn : m_pConfigs->m_vFnWindows) {
+				fn();
+			}
+		}
 
 		if (m_pConfigs->m_bUseUIQuickActions && m_pConfigs->m_qActions->GetSize() > 0) {
 			RenderDefaultUIQuickActions();
@@ -642,17 +642,17 @@ void UIService::Update() {
 
 	}
 
-	//if (m_pConfigs->m_bUseUIRenderOverlays) {
-	//	for (auto& fn : m_pConfigs->m_vFnOverlays) {
-	//		fn();
-	//	}
-	//}
+	if (m_pConfigs->m_bUseUIRenderOverlays) {
+		for (auto& fn : m_pConfigs->m_vFnOverlays) {
+			fn();
+		}
+	}
 
 	if (m_pConfigs->m_bWatermark)
 	{
 		ImColor color = ImColor(255, 255, 255, 255); // or rainbow
 
-		ImGuiHelper::DrawOutlinedText(mainfont, ImVec2(m_pSystem->GetScreenCenter().x, m_pSystem->GetScreenCenter().y - 20), 13.0f, color, true, m_pSystem->GetAppTitle().c_str());
+		ImGuiHelper::DrawOutlinedText(mainfont, ImVec2(m_pSystem->GetScreenCenter().x, m_pSystem->GetScreenResolution().y - 20), 13.0f, color, true, m_pSystem->GetAppTitle().c_str());
 		ImGuiHelper::DrawOutlinedText(mainfont, ImVec2(m_pSystem->GetScreenCenter().x, 5), 13.0f, color, true, "[ %.1f FPS ]", ImGui::GetIO().Framerate);
 	}
 
