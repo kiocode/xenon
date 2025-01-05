@@ -203,7 +203,7 @@ static void TestGeneral(Builder& builder) {
 	//cheat.UseUIMenu();
 	//cheat.UseUIRenderWindows();
 	//cheat.UseUIRenderOverlays();
-	//cheat.UseUIQuickActions();
+	cheat.UseUIQuickActions();
 	//cheat.UseAimbot();
 	//cheat.UseRecoil();
 	//cheat.Use2DSpinbot();

@@ -567,13 +567,16 @@ void UIService::RenderDefaultUIQuickActions() {
 		drawlist->AddText(CenterText(pos, ImVec2(pos.x + 480, pos.y + 25), title), ImColor(165, 186, 197, 255), title);
 
 		ImGui::SetCursorPos(ImVec2(15, 40));
+		ImGui::BeginGroup();
+		{
+			int buttonWidth = 100;
+			int buttonHeight = 30;
 
-		int buttonWidth = 100;
-		int buttonHeight = 30;
-
-		for (const auto& action : m_pConfigs->m_qActions->GetComponents()) {
-			action->Render();
+			for (const auto& action : m_pConfigs->m_qActions->GetComponents()) {
+				action->Render();
+			}
 		}
+		ImGui::EndGroup();
 
 		ImGui::End();
 
