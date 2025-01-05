@@ -30,6 +30,7 @@ kanban-plugin: board
 - [ ] merge track mouse with the system get mouse fn
 - [ ] move all "use" var in a cheatconfig that will be share by any service
 - [ ] togliere useradar e mettere in config se radar é abilitato o meno
+- [ ] add ui right top show enabled features like minecraft clients
 
 
 ## InProgress

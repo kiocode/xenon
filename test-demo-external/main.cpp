@@ -55,35 +55,27 @@ static void AddConfigurations(Builder& builder) {
 	//	ImGui::Text("Hello, world!");
 	//	ImGui::End();
 	//};
-	pUIConfig->m_bWatermark = true;
-	pUIConfig->m_vFnWindows.push_back([]() {
-		ImGui::Begin("Custom draw list");
-		ImGui::Text("Hello, world!");
-		ImGui::End();
-	});
-	pUIConfig->m_vFnOverlays.push_back([]() {
-		ImGui::Begin("Overlay1");
-		ImGui::Text("Hello, world!");
-		ImGui::End();
-	});
-	
-	pUIConfig->m_vFnOverlays.push_back([]() {
-		ImGui::Begin("Overlay2");
-		ImGui::Text("Hello, world!");
-		ImGui::End();
-	});
-	
-	pUIConfig->m_vFnOverlays.push_back([]() {
-		ImGui::Begin("Overlay3");
-		ImGui::Text("Hello, world!");
-		ImGui::End();
-	});
+	//pUIConfig->m_bWatermark = true;
+	//pUIConfig->m_vFnWindows.push_back([]() {
+	//	ImGui::Begin("Custom draw list");
+	//	ImGui::Text("Hello, world!");
+	//	ImGui::End();
+	//});
+	pUIConfig->m_vFnOverlays.push_back([builder]() {
+		ImGui::Begin("Healths");
 
-	pUIConfig->m_qActions->AddButton("Test", []() { std::cout << "test" << std::endl; });
-	pUIConfig->m_qActions->AddCheckbox("Test 2 toggle", &pUIConfig->m_bWatermark);
-	pUIConfig->m_qActions->AddCheckbox("Test 2 toggle", &pUIConfig->m_bWatermark);
-	pUIConfig->m_qActions->AddButton("Test", []() { std::cout << "test" << std::endl; });
-	pUIConfig->m_qActions->AddSlider("Test 3 slider", &pAimConfig->m_fRecoilVerticalStrength, 0, 1000);
+		for (int i = 0; i < builder.GameManager->m_vTargets.size(); i++) {
+			ImGui::Text("Position: %f, %f", builder.GameManager->m_vTargets[i].x, builder.GameManager->m_vTargets[i].y);
+		}
+
+		ImGui::End();
+	});
+	
+	//pUIConfig->m_qActions->AddButton("Test", []() { std::cout << "test" << std::endl; });
+	//pUIConfig->m_qActions->AddCheckbox("Test 2 toggle", &pUIConfig->m_bWatermark);
+	//pUIConfig->m_qActions->AddCheckbox("Test 2 toggle", &pUIConfig->m_bWatermark);
+	//pUIConfig->m_qActions->AddButton("Test", []() { std::cout << "test" << std::endl; });
+	//pUIConfig->m_qActions->AddSlider("Test 3 slider", &pAimConfig->m_fRecoilVerticalStrength, 0, 1000);
 
 }
 
@@ -107,7 +99,7 @@ static void TestDDNetExternal(Builder& builder) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(5));
 	}*/
 
-	#pragma region Offsets
+#pragma region Offsets
 
 	struct offsets {
 		uintptr_t staticServerAddr = 0x5ABBA0;
@@ -122,7 +114,7 @@ static void TestDDNetExternal(Builder& builder) {
 
 	offsets offsets;
 
-	#pragma endregion
+#pragma endregion
 
 	builder.MemoryManager->AttachGame("D:\\Steam\\steamapps\\common\\DDraceNetwork\\ddnet\\DDNet.exe");
 	uintptr_t serverAddr = builder.MemoryManager->ReadPointer(offsets.staticServerAddr);
@@ -170,13 +162,95 @@ static void TestDDNetExternal(Builder& builder) {
 		Vec2 w2sTarget = { pos.x - builder.GameManager->m_vLocalPos.x, pos.y - builder.GameManager->m_vLocalPos.y };
 		builder.MemoryManager->Write<float>(clientAddr + offsets.aimPos, w2sTarget.x);
 		builder.MemoryManager->Write<float>(clientAddr + offsets.aimPos + 0x4, w2sTarget.y);
-	};
+		};
 
 	Cheat cheat = builder.Build();
 
 	cheat.UseUpdate();
 	cheat.UseUICustom(RenderingTypes::DIRECTX11);
 	//cheat.UseAimbot();
+	//cheat.UseRecoil();
+	//cheat.Use2DSpinbot();
+
+	cheat.Run();
+
+}
+
+static void TestRedEclipseExternal(Builder& builder) {
+
+	#pragma region Offsets
+
+	struct offsets {
+		uintptr_t staticServerAddr = 0x868EB8;
+		uintptr_t staticClientAddr = 0x868EC8;
+		uintptr_t localPlayer = 0x0;
+		uintptr_t posX = 0x0;
+		uintptr_t posY = 0x4;
+		uintptr_t health = 0x48;
+
+		uintptr_t staticViewAddr = 0x859300;
+		uintptr_t pitch = 0x30;
+		uintptr_t yaw = 0x34;
+	};
+
+	offsets offsets;
+
+	#pragma endregion
+
+	builder.MemoryManager->AttachGame("D:\\Steam\\steamapps\\common\\Red Eclipse\\bin\\amd64\\redeclipse.exe");
+	uintptr_t serverAddr = builder.MemoryManager->ReadPointer(offsets.staticServerAddr);
+	uintptr_t clientAddr = builder.MemoryManager->ReadPointer(offsets.staticClientAddr);
+	uintptr_t localPlayerAddr = builder.MemoryManager->Read<uintptr_t>(clientAddr + offsets.localPlayer);
+	uintptr_t viewAddr = builder.MemoryManager->ReadPointer(offsets.staticViewAddr);
+
+	AddConfigurations(builder);
+	AddServices(builder);
+
+	builder.GameManager->OnEvent("Update", [builder, offsets, serverAddr, localPlayerAddr]() {
+
+		builder.GameManager->m_vTargets.clear();
+		builder.GameManager->m_vLocalPos = Vec2(builder.MemoryManager->Read<int>(serverAddr + offsets.posX), builder.MemoryManager->Read<int>(serverAddr + offsets.posY));
+
+		int localPlayerHealth = builder.MemoryManager->Read<int>(localPlayerAddr + offsets.health);
+
+		int i = 0;
+		do {
+
+			uintptr_t entityAddr = builder.MemoryManager->Read<uintptr_t>(serverAddr + (i * 0x8));
+			int health = builder.MemoryManager->Read<int>(entityAddr + offsets.health + (i * 0x8));
+
+			if (health <= 0) {
+				i++;
+				continue;
+			}	
+
+			float x = builder.MemoryManager->Read<float>(entityAddr + offsets.posX + (i * 0x8));
+			float y = builder.MemoryManager->Read<float>(entityAddr + offsets.posY + (i * 0x8));
+
+			builder.GameManager->m_vTargets.push_back(Vec2(x, y));
+
+			i++;
+		} while (i != 6);
+
+	});
+
+	std::shared_ptr<AimConfig> pAimConfig = builder.Services->GetConfiguration<AimConfig>();
+	pAimConfig->m_fnCustomAim = [builder, viewAddr, offsets](const Vec2& pos) {
+		//Vec2 w2sTarget = ;
+		//
+		//// x rotation
+		//builder.MemoryManager->Write<float>(viewAddr + offsets.pitch, pos.x);
+		//
+		//// y rotation
+		//builder.MemoryManager->Write<float>(viewAddr + offsets.yaw, pos.y);
+	};
+
+	Cheat cheat = builder.Build();
+
+	cheat.UseUpdate();
+	cheat.UseUICustom(RenderingTypes::DIRECTX11);
+	cheat.UseUIRenderOverlays();
+	cheat.UseAimbot();
 	//cheat.UseRecoil();
 	//cheat.Use2DSpinbot();
 
@@ -238,9 +312,10 @@ static void RunTests() {
 	builder.SetConsoleEnabled();
 	builder.SetDebugLogLevel();
 
-	TestGeneral(builder);
+	//TestGeneral(builder);
 	//TestRecoil(builder);
 	//TestDDNetExternal(builder);
+	TestRedEclipseExternal(builder);
 
 }
 

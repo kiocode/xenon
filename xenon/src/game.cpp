@@ -54,9 +54,13 @@ void Game::BindForExternal() {
 			continue;
 		}
 
-		m_pUIService->BeginRenderUI();
+		if (m_pConfigs->m_bUseUICustom) {
+			m_pUIService->BeginRenderUI();
+		}
 		Update();
-		m_pUIService->EndRenderUI();
+		if (m_pConfigs->m_bUseUICustom) {
+			m_pUIService->EndRenderUI();
+		}
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(5));
 	}
