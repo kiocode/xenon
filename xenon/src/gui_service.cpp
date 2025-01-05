@@ -5,7 +5,6 @@
 
 #include <imgui/imgui_internal.h>
 #include <xenon/utility/resources_bytes.h>
-#include <xenon/utility/imgui_helper.hpp>
 
 bool UIService::InitPresent(IDXGISwapChain* pSwapChain) {
 	if (!SUCCEEDED(pSwapChain->GetDevice(__uuidof(ID3D11Device), (void**)&m_pDevice)))
@@ -110,19 +109,6 @@ void UIService::RenderDefaultTheme(bool rainbowBorders) {
 
 void UIService::RenderDefaultUI()
 {
-	if (m_pConfigs->m_fnCustomTheme) {
-		m_pConfigs->m_fnCustomTheme();
-	} else {
-		RenderDefaultTheme(false);
-	}
-
-	if (m_pConfigs->m_bUseUINotification) {
-		if (m_pConfigs->m_fnCustomNotification) {
-			m_pConfigs->m_fnCustomNotification();
-		} else {
-			RenderTopLeftNotification();
-		}
-	}
 
 	if (m_pConfigs->m_bUseUIMenu) {
 		if (m_pConfigs->m_fnCustomMenu) {
@@ -298,7 +284,7 @@ void UIService::RenderDefaultMenu() {
 		pos = ImGui::GetWindowPos() + ImVec2(5, 5);
 
 		//main rect
-		drawlist->AddRectFilled(pos, ImVec2(pos.x + 480, pos.y + 430), ImColor(29, 40, 54, 150), 6.f, ImDrawFlags_RoundCornersAll);
+		drawlist->AddRectFilled(pos, ImVec2(pos.x + 480, pos.y + 430), ImColor(29, 40, 54, 255), 6.f, ImDrawFlags_RoundCornersAll);
 
 		//title
 		drawlist->AddRectFilled(pos, ImVec2(pos.x + 480, pos.y + 25), ImColor(29, 40, 54, 255), 6.f, ImDrawFlags_RoundCornersTop);
@@ -585,18 +571,8 @@ void UIService::RenderDefaultUIQuickActions() {
 		int buttonWidth = 100;
 		int buttonHeight = 30;
 
-		for (const auto& button : m_pConfigs->m_qActions->GetButtons()) {
-			if (ImGui::Button(button->GetLabel().c_str(), ImVec2(buttonWidth, buttonHeight))) {
-				button->Execute();
-			}
-		}
-
-		for (const auto& checkbox : m_pConfigs->m_qActions->GetCheckboxes()) {
-			ImGui::Checkbox(checkbox->GetLabel().c_str(), checkbox->m_bValue);
-		}
-
-		for (const auto& slider : m_pConfigs->m_qActions->GetSliders()) {
-			ImGui::SliderFloat(slider->GetLabel().c_str(), slider->m_fValue, slider->GetMin(), slider->GetMax());
+		for (const auto& action : m_pConfigs->m_qActions->GetComponents()) {
+			action->Render();
 		}
 
 		ImGui::End();
@@ -606,7 +582,6 @@ void UIService::RenderDefaultUIQuickActions() {
 }
 
 void UIService::Update() {
-	BeginRenderUI();
 
 	if (m_pAimConfigs->m_bCrosshair) {
 		RenderCrosshair();
@@ -622,13 +597,14 @@ void UIService::Update() {
 			RenderMouse();
 		}
 
-		if (m_pConfigs->m_bUseUIMenu) {
-			if (m_pConfigs->m_fnCustomMenu) {
-				m_pConfigs->m_fnCustomMenu();
-			} else {
-				RenderDefaultUI();
-			}
-		}
+		//if (m_pConfigs->m_fnCustomTheme) {
+		//	m_pConfigs->m_fnCustomTheme();
+		//}
+		//else {
+		//	RenderDefaultTheme(false);
+		//}
+
+		RenderDefaultUI();
 
 		if (m_pConfigs->m_bUseUIRenderWindows) {
 			for (auto& fn : m_pConfigs->m_vFnWindows) {
@@ -646,6 +622,13 @@ void UIService::Update() {
 		for (auto& fn : m_pConfigs->m_vFnOverlays) {
 			fn();
 		}
+	}
+
+	if (m_pConfigs->m_fnCustomNotification) {
+		m_pConfigs->m_fnCustomNotification();
+	}
+	else {
+		RenderTopLeftNotification();
 	}
 
 	if (m_pConfigs->m_bWatermark)
@@ -694,9 +677,9 @@ bool UIService::CreateWindowUI()
 	m_hWindow = CreateWindowExW(
 		WS_EX_TOPMOST | WS_EX_TRANSPARENT | WS_EX_LAYERED,
 		m_wClass.lpszClassName,
-		L"DPerX",
+		L"test",//std::wstring(m_pSystem->GetAppTitle().begin(), m_pSystem->GetAppTitle().end()).c_str(),
 		WS_POPUP,
-		0, 0, 1920, 1080,
+		0, 0, m_pSystem->GetScreenResolution().x, m_pSystem->GetScreenResolution().y,
 		nullptr, nullptr, m_wClass.hInstance, nullptr
 	);
 

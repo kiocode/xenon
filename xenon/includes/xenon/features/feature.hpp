@@ -1,3 +1,5 @@
+#pragma once
+
 #include <nlohmann/json.hpp>
 
 #include <xenon/models/hotkey.hpp>

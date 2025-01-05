@@ -15,30 +15,6 @@ static void EnableHooks()
 	//}
 }
 
-HRESULT __stdcall Game::hkPresent(IDXGISwapChain* pSwapChain, UINT nSyncInterval, UINT nFlags) {
-	if (!m_bInit && m_pConfigs->m_bUseUICustom)
-	{
-		if (!m_pUIService->InitPresent(pSwapChain)) {
-			return m_pUIService->oPresent(pSwapChain, nSyncInterval, nFlags);
-		}
-		else {
-			m_pUIService->CreateImGuiUI();
-			m_bInit = true;
-		}
-	}
-
-	HandleShortcuts();
-
-	// update ui
-	if (m_pConfigs->m_bUseUICustom) {
-		m_pUIService->Update();
-	}
-	
-	// update cheats
-	Update();
-
-	return m_pUIService->oPresent(pSwapChain, nSyncInterval, nFlags);
-}
 
 void Game::EnableUpdate() {
 
@@ -50,45 +26,98 @@ void Game::EnableUpdate() {
 	}
 	else {
 
-		auto previousTime = std::chrono::steady_clock::now();
-		m_pSystem->g_fStartPlayTime = previousTime.time_since_epoch().count();
-
-		if (m_pConfigs->m_bUseUICustom) {
-			m_pUIService->InitExternal();
-		}
-
-		while (m_pConfigs->m_bUseUpdate) {
-			auto currentTime = std::chrono::steady_clock::now();
-			m_pSystem->g_fDeltaTime = std::chrono::duration<float>(currentTime - previousTime).count();
-			previousTime = currentTime;
-
-			if (GetAsyncKeyState(VK_ESCAPE)) {
-				continue;
-			}
-
-			TriggerEvent("Update");
-
-			HandleShortcuts();
-
-			if (m_pConfigs->m_bUseUICustom) {
-				m_pUIService->Update();
-			}
-
-			Update();
-
-			std::this_thread::sleep_for(std::chrono::milliseconds(5));
-		}
-
-		if (m_pConfigs->m_bUseUICustom) {
-			m_pUIService->Destroy();
-		}
+		// enable hooks
+		BindForExternal();
 	}
 
 }
 
 #pragma region Game:Private
 
+// called one time and it makes a loop of call manually
+void Game::BindForExternal() {
+
+	auto previousTime = std::chrono::steady_clock::now();
+	m_pSystem->g_fStartPlayTime = previousTime.time_since_epoch().count();
+
+	if (m_pConfigs->m_bUseUICustom) {
+		m_pUIService->InitExternal();
+	}
+
+	//update loop
+	while (m_pConfigs->m_bUseUpdate) {
+		auto currentTime = std::chrono::steady_clock::now();
+		m_pSystem->g_fDeltaTime = std::chrono::duration<float>(currentTime - previousTime).count();
+		previousTime = currentTime;
+
+		if (GetAsyncKeyState(VK_ESCAPE)) {
+			continue;
+		}
+
+		m_pUIService->BeginRenderUI();
+		Update();
+		m_pUIService->EndRenderUI();
+
+		std::this_thread::sleep_for(std::chrono::milliseconds(5));
+	}
+
+	if (m_pConfigs->m_bUseUICustom) {
+		m_pUIService->Destroy();
+	}
+}
+
+// looply called by the hook
+HRESULT __stdcall Game::BindForInternal(IDXGISwapChain* pSwapChain, UINT nSyncInterval, UINT nFlags) {
+	if (!m_bInit && m_pConfigs->m_bUseUICustom)
+	{
+		if (!m_pUIService->InitPresent(pSwapChain)) {
+			return m_pUIService->oPresent(pSwapChain, nSyncInterval, nFlags);
+		}
+		else {
+			m_pUIService->CreateImGuiUI();
+			m_bInit = true;
+		}
+	}
+	
+	m_pUIService->BeginRenderUI();
+	Update();
+	m_pUIService->EndRenderUI();
+
+	return m_pUIService->oPresent(pSwapChain, nSyncInterval, nFlags);
+}
+
 void Game::Update() {
+
+	#pragma region System
+	TriggerEvent("Update");
+	HandleShortcuts();
+	#pragma endregion
+
+	if (m_pConfigs->m_bUseUICustom) {
+		m_pUIService->Update();
+	}
+
+	#pragma region ESP
+	
+	m_pESP->SetTargets(m_vTargets);
+
+	if (m_pConfigs->m_bUseESPSnapline) {
+		m_pESP->RenderSnapline();
+	}
+	
+	if (m_pConfigs->m_bUseESPBox2D) {
+		m_pESP->Render2DBox();
+	}
+
+	if (m_pConfigs->m_bUseESPBox3D) {
+		m_pESP->Render3DBox();
+	}
+
+	if (m_pConfigs->m_bUseESPSkeleton) {
+		m_pESP->RenderSkeleton();
+	}
+
+	#pragma endregion
 
 
 	if (m_pConfigs->m_bUseAimbot) {

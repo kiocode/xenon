@@ -1,17 +1,17 @@
 #include <string>
 #include <functional>
 
-class QuickActionButton {
+#include <xenon/models/quickactions/quickaction.hpp>
+
+class QuickActionButton : public QuickAction {
 public:
 
 	QuickActionButton(std::string label, std::function<void()> callback) : m_strLabel(label), m_fnCallback(callback) {}
 
-	std::string GetLabel() const {
-		return m_strLabel;
-	}
-
-	void Execute() {
-		m_fnCallback();
+	void Render() override {
+		if (ImGui::Button(m_strLabel.c_str(), ImVec2(100, 30))) {
+			m_fnCallback();
+		}
 	}
 
 private:

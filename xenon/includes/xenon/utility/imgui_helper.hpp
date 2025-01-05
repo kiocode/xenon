@@ -5,6 +5,22 @@
 #include <imgui/imgui.h>
 #include <xenon/models/hotkey.hpp>
 
+inline ImVec2 operator-(const ImVec2& lhs, const ImVec2& rhs) {
+	return ImVec2(lhs.x - rhs.x, lhs.y - rhs.y);
+}
+
+inline ImVec2 operator/(const ImVec2& lhs, float rhs) {
+	return ImVec2(lhs.x / rhs, lhs.y / rhs);
+}
+
+inline ImVec2 operator*(const ImVec2& lhs, float rhs) {
+	return ImVec2(lhs.x * rhs, lhs.y * rhs);
+}
+
+inline ImVec2 operator+(const ImVec2& lhs, const ImVec2& rhs) {
+	return ImVec2(lhs.x + rhs.x, lhs.y + rhs.y);
+}
+
 namespace ImGuiHelper {
 
 	static ImFont* g_pGameFont;
@@ -160,18 +176,13 @@ namespace ImGuiHelper {
 		return y;
 	}
 
-	static void RectFilled(float x0, float y0, float x1, float y1, ImColor color, float rounding, int rounding_corners_flags) {
-		auto vList = ImGui::GetBackgroundDrawList();
-		vList->AddRectFilled(ImVec2(x0, y0), ImVec2(x1, y1), color, rounding, rounding_corners_flags);
-	}
+	//static void HealthBar(float x, float y, float w, float h, int phealth, ImColor col) {
+	//	auto vList = ImGui::GetBackgroundDrawList();
 
-	static void HealthBar(float x, float y, float w, float h, int phealth, ImColor col) {
-		auto vList = ImGui::GetBackgroundDrawList();
+	//	int healthValue = max(0, min(phealth, 100));
 
-		int healthValue = max(0, min(phealth, 100));
-
-		int barColor = ImColor(min(510 * (100 - healthValue) / 100, 255), min(510 * healthValue / 100, 255), 25, 255);
-		vList->AddRect(ImVec2(x - 1, y - 1), ImVec2(x + w + 1, y + h + 1), col);
-		RectFilled(x, y, x + w, y + (((float)h / 100.0f) * (float)phealth), barColor, 0.0f, 0);
-	}
+	//	int barColor = ImColor(min(510 * (100 - healthValue) / 100, 255), min(510 * healthValue / 100, 255), 25, 255);
+	//	vList->AddRect(ImVec2(x - 1, y - 1), ImVec2(x + w + 1, y + h + 1), col);
+	//	RectFilled(x, y, x + w, y + (((float)h / 100.0f) * (float)phealth), barColor, 0.0f, 0);
+	//}
 }

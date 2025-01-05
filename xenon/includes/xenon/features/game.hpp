@@ -7,6 +7,7 @@
 #include <spdlog/spdlog.h>
 #include <xenon/services/aim_service.hpp>
 #include <xenon/features/aimbot.hpp>
+#include <xenon/features/esp.hpp>
 #include <xenon/services/gui_service.hpp>
 #include <xenon/configs/game_config.hpp>
 
@@ -22,8 +23,9 @@ public:
 		std::shared_ptr<AimService> aimService, 
 		std::shared_ptr<System> system,
 		std::shared_ptr<AimConfig> aimConfig,
-		std::shared_ptr<UIService> uiService
-	) : m_pConfigs(configs), m_pAimbot(aimbot), m_pAimService(aimService), m_pSystem(system), m_pAimConfigs(aimConfig), m_pUIService(uiService) {}
+		std::shared_ptr<UIService> uiService,
+		std::shared_ptr<ESP> esp
+	) : m_pConfigs(configs), m_pAimbot(aimbot), m_pAimService(aimService), m_pSystem(system), m_pAimConfigs(aimConfig), m_pUIService(uiService), m_pESP(esp) {}
 
 	void EnableUpdate();
 
@@ -52,6 +54,7 @@ private:
 	std::shared_ptr<AimConfig> m_pAimConfigs;
 	std::shared_ptr<System> m_pSystem;
 	std::shared_ptr<UIService> m_pUIService;
+	std::shared_ptr<ESP> m_pESP;
 
     bool m_bInit = false;
 
@@ -59,8 +62,9 @@ private:
 	void HandleShortcuts(); 
 
     static HRESULT __stdcall hkPresentWrapper(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags) {
-        return DIManager::GetInstance().GetService<Game>()->hkPresent(pSwapChain, SyncInterval, Flags);
+        return DIManager::GetInstance().GetService<Game>()->BindForInternal(pSwapChain, SyncInterval, Flags);
     }
-    HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags);
+    HRESULT __stdcall BindForInternal(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags);
+    void BindForExternal();
 
 };

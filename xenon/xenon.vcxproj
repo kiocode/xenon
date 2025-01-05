@@ -147,12 +147,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="includes\xenon\configs\aim_config.hpp" />
+    <ClInclude Include="includes\xenon\configs\esp_config.hpp" />
     <ClInclude Include="includes\xenon\configs\ui_config.hpp" />
     <ClInclude Include="includes\xenon\core\builder.hpp" />
     <ClInclude Include="includes\xenon\core\system.hpp" />
     <ClInclude Include="includes\xenon\features\aimbot.hpp" />
     <ClInclude Include="includes\xenon\features\feature.hpp" />
     <ClInclude Include="includes\xenon\core\cheat.hpp" />
+    <ClInclude Include="includes\xenon\models\quickactions\quickaction.hpp" />
     <ClInclude Include="includes\xenon\models\quickactions\quickactions.hpp" />
     <ClInclude Include="includes\xenon\models\quickactions\quickaction_button.hpp" />
     <ClInclude Include="includes\xenon\models\quickactions\quickaction_checkbox.hpp" />
@@ -378,6 +380,7 @@
     <ClCompile Include="src\aimbot.cpp" />
     <ClCompile Include="includes\xenon\core\di_manager.hpp" />
     <ClCompile Include="src\aim_service.cpp" />
+    <ClCompile Include="src\esp.cpp" />
     <ClCompile Include="src\feature.cpp" />
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\gui_service.cpp" />

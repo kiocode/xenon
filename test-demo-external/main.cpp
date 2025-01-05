@@ -62,16 +62,28 @@ static void AddConfigurations(Builder& builder) {
 		ImGui::End();
 	});
 	pUIConfig->m_vFnOverlays.push_back([]() {
-		ImGui::Begin("Overlay");
+		ImGui::Begin("Overlay1");
+		ImGui::Text("Hello, world!");
+		ImGui::End();
+	});
+	
+	pUIConfig->m_vFnOverlays.push_back([]() {
+		ImGui::Begin("Overlay2");
+		ImGui::Text("Hello, world!");
+		ImGui::End();
+	});
+	
+	pUIConfig->m_vFnOverlays.push_back([]() {
+		ImGui::Begin("Overlay3");
 		ImGui::Text("Hello, world!");
 		ImGui::End();
 	});
 
-	//pUIConfig->m_qActions->AddButton("Test", []() { std::cout << "test" << std::endl; });
-	//pUIConfig->m_qActions->AddCheckbox("Test 2 toggle", &pUIConfig->m_bWatermark);
-	//pUIConfig->m_qActions->AddCheckbox("Test 2 toggle", &pUIConfig->m_bWatermark);
-	//float test = 0;
-	//pUIConfig->m_qActions->AddSlider("Test 3 slider", &test, 0, 100);
+	pUIConfig->m_qActions->AddButton("Test", []() { std::cout << "test" << std::endl; });
+	pUIConfig->m_qActions->AddCheckbox("Test 2 toggle", &pUIConfig->m_bWatermark);
+	pUIConfig->m_qActions->AddCheckbox("Test 2 toggle", &pUIConfig->m_bWatermark);
+	pUIConfig->m_qActions->AddButton("Test", []() { std::cout << "test" << std::endl; });
+	pUIConfig->m_qActions->AddSlider("Test 3 slider", &pAimConfig->m_fRecoilVerticalStrength, 0, 1000);
 
 }
 
@@ -158,7 +170,7 @@ static void TestDDNetExternal(Builder& builder) {
 		Vec2 w2sTarget = { pos.x - builder.GameManager->m_vLocalPos.x, pos.y - builder.GameManager->m_vLocalPos.y };
 		builder.MemoryManager->Write<float>(clientAddr + offsets.aimPos, w2sTarget.x);
 		builder.MemoryManager->Write<float>(clientAddr + offsets.aimPos + 0x4, w2sTarget.y);
-		};
+	};
 
 	Cheat cheat = builder.Build();
 
@@ -177,18 +189,26 @@ static void TestGeneral(Builder& builder) {
 	AddConfigurations(builder);
 	AddServices(builder);
 
+	builder.GameManager->m_vTargets.push_back({ 100, 100 });
+	builder.GameManager->m_vTargets.push_back({ 200, 200 });
+	builder.GameManager->m_vTargets.push_back({ 300, 300 });
+	builder.GameManager->m_vTargets.push_back({ 400, 400 });
+	builder.GameManager->m_vTargets.push_back({ 500, 500 });
+
 	Cheat cheat = builder.Build();
 
 	cheat.UseUpdate();
 	cheat.UseUICustom(RenderingTypes::DIRECTX11);
 	//cheat.UseUIRadar();
-	cheat.UseUIMenu();
-	cheat.UseUIRenderWindows();
-	cheat.UseUIRenderOverlays();
+	//cheat.UseUIMenu();
+	//cheat.UseUIRenderWindows();
+	//cheat.UseUIRenderOverlays();
 	//cheat.UseUIQuickActions();
 	//cheat.UseAimbot();
 	//cheat.UseRecoil();
 	//cheat.Use2DSpinbot();
+	cheat.UseESPSnapline();
+	cheat.UseESPBox2D();
 
 	cheat.Run();
 

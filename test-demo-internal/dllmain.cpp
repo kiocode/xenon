@@ -16,7 +16,8 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 
     Cheat cheat = builder.Build();
 
-    cheat.UseUICustom(RenderingType::DIRECTX11);
+    cheat.UseUICustom(RenderingTypes::DIRECTX11);
+    cheat.UseUIMenu();
 
     cheat.Run();
 

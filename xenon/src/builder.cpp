@@ -6,6 +6,7 @@
 
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/wincolor_sink.h>
+#include <xenon/features/esp.hpp>
 
 void Builder::SetConsoleEnabled() const {
 
@@ -61,6 +62,7 @@ void Builder::RegisterDefaultServices() {
     std::shared_ptr<AimConfig> pAimConfig = Services->AddConfiguration<AimConfig>();
     std::shared_ptr<GameConfig> pGameConfig = Services->AddConfiguration<GameConfig>();
     std::shared_ptr<UIConfig> pUIConfig = Services->AddConfiguration<UIConfig>();
+    std::shared_ptr<ESPConfig> pESPConfig = Services->AddConfiguration<ESPConfig>();
 
     #pragma endregion
 
@@ -90,14 +92,18 @@ void Builder::RegisterDefaultServices() {
 
     #pragma region Features
 
+    std::shared_ptr<ESP> pESP = Services->AddSingleton<ESP>(
+        [this, pESPConfig]() {
+            return std::make_shared<ESP>(pESPConfig, SystemVariables);
+        }
+    );
     std::shared_ptr<Aimbot> pAimbot = Services->AddSingleton<Aimbot>(
         [pAimConfig, pAimService]() {
             return std::make_shared<Aimbot>(pAimConfig, pAimService);
         }
     );
-
-    GameManager = Services->AddSingleton<Game>([this, pGameConfig, pAimbot, pAimService, pAimConfig, pUIService]() {
-        return std::make_shared<Game>(pGameConfig, pAimbot, pAimService, SystemVariables, pAimConfig, pUIService);
+    GameManager = Services->AddSingleton<Game>([this, pGameConfig, pAimbot, pAimService, pAimConfig, pUIService, pESP]() {
+        return std::make_shared<Game>(pGameConfig, pAimbot, pAimService, SystemVariables, pAimConfig, pUIService, pESP);
     });
 
     #pragma endregion

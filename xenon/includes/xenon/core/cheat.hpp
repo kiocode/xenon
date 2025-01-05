@@ -127,6 +127,56 @@ public:
 
     }
 
+    void UseESPSnapline() {
+
+        if (!m_pGameConfig->m_bUseUICustom) {
+			spdlog::error("Snapline ESP can only be used with Custom UI");
+			return;
+		}
+
+		m_pGameConfig->m_bUseESPSnapline = true;
+
+		spdlog::info("Snapline ESP is enabled");
+
+	}
+    
+    void UseESPBox2D() {
+
+        if (!m_pGameConfig->m_bUseUICustom) {
+            spdlog::error("2D Box ESP can only be used with Custom UI");
+            return;
+        }
+
+        m_pGameConfig->m_bUseESPBox2D = true;
+
+        spdlog::info("2D Box ESP is enabled");
+    }
+
+    void UseESPBox3D() {
+
+        if (!m_pGameConfig->m_bUseUICustom) {
+			spdlog::error("3D Box ESP can only be used with Custom UI");
+			return;
+		}
+
+		m_pGameConfig->m_bUseESPBox3D = true;
+
+		spdlog::info("3D Box ESP is enabled");
+	}
+
+    void UseESPSkeleton() {
+
+        if (!m_pGameConfig->m_bUseUICustom) {
+            spdlog::error("Skeleton ESP can only be used with Custom UI");
+            return;
+        }
+
+        m_pGameConfig->m_bUseESPSkeleton = true;
+
+        spdlog::info("Skeleton ESP is enabled");
+    }
+
+
     // add check if is internal to use it
     void IsUnityEngine(UnityEngineTypes type);
     void IsUnrealEngine(UnrealEngineVersions version);

@@ -14,27 +14,11 @@
 #include <xenon/configs/aim_config.hpp>
 #include <xenon/models/hotkey.hpp>
 #include <xenon/configs/ui_config.hpp>
+#include <xenon/utility/imgui_helper.hpp>
 
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 typedef HRESULT(__stdcall* Present) (IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags);
 typedef LRESULT(CALLBACK* WNDPROC)(HWND, UINT, WPARAM, LPARAM);
-
-inline ImVec2 operator-(const ImVec2& lhs, const ImVec2& rhs) {
-    return ImVec2(lhs.x - rhs.x, lhs.y - rhs.y);
-}
-
-inline ImVec2 operator/(const ImVec2& lhs, float rhs) {
-    return ImVec2(lhs.x / rhs, lhs.y / rhs);
-}
-
-inline ImVec2 operator*(const ImVec2& lhs, float rhs) {
-	return ImVec2(lhs.x * rhs, lhs.y * rhs);
-}
-
-inline ImVec2 operator+(const ImVec2& lhs, const ImVec2& rhs) {
-	return ImVec2(lhs.x + rhs.x, lhs.y + rhs.y);
-}
-
 
 class UIService {
 public:
@@ -57,6 +41,9 @@ public:
     void InitExternal();
     void Update();
     void Destroy();
+
+    void BeginRenderUI();
+    void EndRenderUI();
 
     void SetMenuOpen();
     void SetMenuClose();
@@ -123,14 +110,13 @@ private:
         return min + (max - min) / 2.0f - ImGui::CalcTextSize(text) / 2.0f;
     }
 
-    //HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags);
+    //HRESULT __stdcall BindForInternal(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags);
     static LRESULT __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
     void LoadDefaultFonts();
 
     bool CreateWindowUI();
     bool CreateDeviceUI();
-    void BeginRenderUI();
 
     void RenderDefaultTheme(bool rainbowBorders);
     void RenderDefaultUI();
@@ -147,6 +133,5 @@ private:
     void DestroyWindowUI();
     void DestroyDeviceUI();
     void DestroyImGuiUI();
-    void EndRenderUI();
 
 };
