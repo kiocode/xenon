@@ -22,6 +22,10 @@ public:
         m_vActions.push_back(std::make_unique<QuickActionSlider>(label, value, min, max));
 	}
 
+    void AddSlider(std::string label, int* value, int min, int max) {
+        m_vActions.push_back(std::make_unique<QuickActionSlider>(label, value, min, max));
+	}
+
     const std::vector<std::unique_ptr<QuickAction>>& GetComponents() const {
         return m_vActions;
     }
