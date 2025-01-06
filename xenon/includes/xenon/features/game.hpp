@@ -10,12 +10,18 @@
 #include <xenon/features/esp.hpp>
 #include <xenon/services/gui_service.hpp>
 #include <xenon/configs/game_config.hpp>
+#include <xenon/utility/vec3.hpp>
+#include <xenon/services/lua_service.hpp>
 
 class Game {
 public:
 
-    std::vector<Vec2> m_vTargets;
-    Vec2 m_vLocalPos;
+    std::vector<Vec2> m_vTargets2DWorld;
+    std::vector<Vec3> m_vTargets3DWorld;
+    std::vector<Vec2> m_vTargetsCustom;
+    std::vector<Vec2> m_vTargetsScreen;
+    Vec2 m_vLocalPos2DWorld;
+    Vec3 m_vLocalPos3DWorld;
 
 	Game(
 		std::shared_ptr<GameConfig> configs, 
@@ -24,8 +30,9 @@ public:
 		std::shared_ptr<System> system,
 		std::shared_ptr<AimConfig> aimConfig,
 		std::shared_ptr<UIService> uiService,
-		std::shared_ptr<ESP> esp
-	) : m_pConfigs(configs), m_pAimbot(aimbot), m_pAimService(aimService), m_pSystem(system), m_pAimConfigs(aimConfig), m_pUIService(uiService), m_pESP(esp) {}
+		std::shared_ptr<ESP> esp,
+		std::shared_ptr<LuaService> luaService
+	) : m_pConfigs(configs), m_pAimbot(aimbot), m_pAimService(aimService), m_pSystem(system), m_pAimConfigs(aimConfig), m_pUIService(uiService), m_pESP(esp), m_pLuaService(luaService) {}
 
 	void EnableUpdate();
 
@@ -55,6 +62,7 @@ private:
 	std::shared_ptr<System> m_pSystem;
 	std::shared_ptr<UIService> m_pUIService;
 	std::shared_ptr<ESP> m_pESP;
+	std::shared_ptr<LuaService> m_pLuaService;
 
     bool m_bInit = false;
 

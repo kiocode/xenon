@@ -31,6 +31,7 @@ kanban-plugin: board
 - [ ] move all "use" var in a cheatconfig that will be share by any service
 - [ ] togliere useradar e mettere in config se radar é abilitato o meno
 - [ ] add ui right top show enabled features like minecraft clients
+- [ ] add more universal data, maybe a player profile with health and name and distance from the localplayer
 
 
 ## InProgress

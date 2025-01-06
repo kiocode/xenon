@@ -94,6 +94,7 @@ void Game::Update() {
 
 	#pragma region System
 	TriggerEvent("Update");
+	m_pLuaService->TriggerOnUpdate();
 	HandleShortcuts();
 	#pragma endregion
 
@@ -103,7 +104,7 @@ void Game::Update() {
 
 	#pragma region ESP
 	
-	m_pESP->SetTargets(m_vTargets);
+	m_pESP->SetTargets(m_vTargetsScreen);
 
 	if (m_pConfigs->m_bUseESPSnapline) {
 		m_pESP->RenderSnapline();
@@ -128,7 +129,10 @@ void Game::Update() {
 
 		if (m_pAimConfigs->m_bNearest) {
 
-			Vec2* nearest = m_pAimService->GetNearestPos(m_vTargets, m_vLocalPos, m_pAimConfigs->m_fNearest);
+			Vec2 m_vLocalPos = m_vLocalPos2DWorld; // or 3d world but converted idk
+
+			// targets different types
+			Vec2* nearest = m_pAimService->GetNearestPos(m_vTargetsCustom, m_vLocalPos, m_pAimConfigs->m_fNearest);
 
 			if (nearest == nullptr) m_pAimbot->ResetTarget();
 			else m_pAimbot->SetTarget(*nearest);

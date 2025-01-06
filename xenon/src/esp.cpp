@@ -32,17 +32,16 @@ void ESP::Render2DBox() {
 	for (auto& target : m_vTargets) {
 
 		ImVec2 head = ImVec2(target.x, target.y);
-		ImVec2 feet = ImVec2(target.x, target.y + 50);
+		ImVec2 feet = ImVec2(target.x, target.y + 64);
 
-		ImVec2 minBottomLeft = ImVec2(feet.x - 10, feet.y);
-		ImVec2 maxTopRight = ImVec2(head.x + 10, head.y);
+		ImVec2 minBottomLeft = ImVec2(feet.x - 32, feet.y);
+		ImVec2 maxTopRight = ImVec2(head.x + 32, head.y);
 
 		ImColor colorAlpha = m_pConfigs->m_cBox2D;
 		colorAlpha.Value.w = 0.5f;
 
 		ImGui::GetBackgroundDrawList()->AddRectFilled(minBottomLeft, maxTopRight, colorAlpha, 0, 0);
 		ImGui::GetBackgroundDrawList()->AddRect(minBottomLeft, maxTopRight, m_pConfigs->m_cBox2D, 0, 0);
-
 
 	}
 

@@ -15,6 +15,8 @@ public:
 	void ExecuteScript(std::string script);
 	void ExecuteScriptFile(std::string path);
 
+	void TriggerOnUpdate();
+
 private:
 	sol::state lua;
 
