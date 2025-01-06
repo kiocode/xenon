@@ -9,4 +9,8 @@ public:
 	ImColor m_cBox2D = ImColor(255, 255, 255, 255);
 	ImColor m_cBox3D = ImColor(255, 255, 255, 255);
 	ImColor m_cSkeleton = ImColor(255, 255, 255, 255);
+
+	std::vector<std::pair<int, int>> m_tBonePairs;
+
+	std::function<Vec2(int)> m_fnGetBoneScreenPosFromIndex;
 };

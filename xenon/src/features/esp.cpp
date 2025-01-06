@@ -1,6 +1,7 @@
 #include <xenon/features/esp.hpp>
 
 #include <xenon/utility/imgui_helper.hpp>
+#include <spdlog/spdlog.h>
 
 void ESP::RenderSnapline() {
 
@@ -49,6 +50,29 @@ void ESP::Render3DBox() {
 
 void ESP::RenderSkeleton() {
 
+	if (!m_pConfigs->m_tBonePairs.empty() || !m_pConfigs->m_fnGetBoneScreenPosFromIndex) {
+		spdlog::error("No bone pairs or bone getter function set");
+	}
+
+	for (auto& target : m_pGameVariables->g_vTargetsScreen) {
+
+		for (const std::pair<int, int>& pair : m_pConfigs->m_tBonePairs)
+		{
+			const int bone1Index = pair.first;
+			const int bone2Index = pair.second;
+
+			const Vec2 boneLoc1 = m_pConfigs->m_fnGetBoneScreenPosFromIndex(bone1Index);
+			const Vec2 boneLoc2 = m_pConfigs->m_fnGetBoneScreenPosFromIndex(bone2Index);
+
+			ImGui::GetBackgroundDrawList()->AddLine(
+				ImVec2(boneLoc1.x, boneLoc1.y),
+				ImVec2(boneLoc2.x, boneLoc2.y),
+				m_pConfigs->m_cSkeleton,
+				1.0f
+			);
+		}
+
+	}
 }
 
 void ESP::RenderHealthbar() {

@@ -10,26 +10,20 @@ kanban-plugin: board
 
 ## Todo
 
-- [ ] Add Lua support
 - [ ] Add Waypoints support
-- [ ] Organize src content like includes
 - [ ] Add on github an activity check for building and formatting
 - [ ] customize GUI
 - [ ] dll loader
 - [ ] packet sniffer + parser
 - [ ] implement il2cppresolver
 - [ ] esp skeleton
-- [ ] make tests for Lua
 - [ ] write down some Lua binding c++
-- [ ] implement radar function
-- [ ] make tests for radar
 - [ ] check configs naming convetions
 - [ ] in update if attached a game check if its opened
 - [ ] understand if toggle menu visiblity key is for game config or ui config
 - [ ] add health bar
 - [ ] merge track mouse with the system get mouse fn
 - [ ] move all "use" var in a cheatconfig that will be share by any service
-- [ ] togliere useradar e mettere in config se radar é abilitato o meno
 - [ ] add ui right top show enabled features like minecraft clients
 - [ ] add more universal data, maybe a player profile with health and name and distance from the localplayer
 - [ ] change all, don't have a single update but have a list with all features and services called now components that have a super clas with onupdate synchronized with the original update
@@ -45,12 +39,17 @@ kanban-plugin: board
 - [x] External cheat gui
 - [x] spinbot 2d/3d
 - [x] implement IsUnityGame(type)/IsUnrealGame(version)
+- [x] make tests for Lua
 - [x] delete GetModuleAddress (make overload but use it privately) ADD READPOINTER/READVALUE USE AUTOMATICALLY THE GETMODULE - SetModuleAddress
+- [x] make tests for radar
 - [x] centralize renderui in another file
 - [x] esp snapline
 - [x] esp box2d/3d
+- [x] implement radar function
 - [x] create a public services pool
+- [x] Add Lua support
 - [x] generalize events in base
+- [x] Organize src content like includes
 - [x] move hkpresent in another clas
 
 
