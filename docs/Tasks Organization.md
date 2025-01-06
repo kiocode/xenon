@@ -27,6 +27,7 @@ kanban-plugin: board
 - [ ] add ui right top show enabled features like minecraft clients
 - [ ] add more universal data, maybe a player profile with health and name and distance from the localplayer
 - [ ] change all, don't have a single update but have a list with all features and services called now components that have a super clas with onupdate synchronized with the original update
+- [ ] add esp and aimbot support for visible/not players behind walls
 
 
 ## InProgress

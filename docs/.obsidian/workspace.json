@@ -11,21 +11,14 @@
             "id": "9df7584897f8408e",
             "type": "leaf",
             "state": {
-              "type": "kanban",
+              "type": "markdown",
               "state": {
-                "file": "Tasks Organization.md",
-                "kanbanViewState": {
-                  "kanban-plugin": "board",
-                  "list-collapse": [
-                    false,
-                    false,
-                    false,
-                    false
-                  ]
-                }
+                "file": "Project Notes.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-trello",
-              "title": "Tasks Organization"
+              "icon": "lucide-file",
+              "title": "Project Notes"
             }
           }
         ]
@@ -196,7 +189,7 @@
       "obsidian-importer:Open Importer": false
     }
   },
-  "active": "9df7584897f8408e",
+  "active": "869c50470146a2ba",
   "lastOpenFiles": [
     "Project Schema.canvas",
     "Tasks Organization.md",

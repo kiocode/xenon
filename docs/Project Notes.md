@@ -18,17 +18,5 @@
 - Aimbot (Smooth/AutoShoot/FOV/Distance/Humanized)
 - File Configuration
 - Lua
-
-## Patterns
-- Dependency Injection
-- Singleton
-
-## Classes
-- [[Game]]
-- [[Aimbot]]
-- [[Hooks]]
-- [[ESP]] 
-- [[GUI]]
-
 ## Default Services
 - 
