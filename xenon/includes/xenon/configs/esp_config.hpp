@@ -5,6 +5,7 @@
 class ESPConfig {
 public:
 	int m_nSnaplineType = 0;
+	int m_nBox2DType = 0;
 	ImColor m_cSnapline = ImColor(255, 255, 255, 255);
 	ImColor m_cBox2D = ImColor(255, 255, 255, 255);
 	ImColor m_cBox3D = ImColor(255, 255, 255, 255);

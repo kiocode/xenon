@@ -48,6 +48,7 @@ static void AddConfigurations(Builder& builder) {
 	pRadarConfig->m_fLocalSize = 6.0f;
 	pRadarConfig->m_fTargetsSize = 6.0f;
 
+	std::shared_ptr<ESPConfig> pESPConfig = builder.Services->GetConfiguration<ESPConfig>();
 	std::shared_ptr<UIConfig> pUIConfig = builder.Services->GetConfiguration<UIConfig>();
 	//pUIConfig->m_fnCustomMenu = []() {
 	//	ImGui::Begin("Custom menu");
@@ -83,6 +84,7 @@ static void AddConfigurations(Builder& builder) {
 	pUIConfig->m_qActions->AddSlider("Radar Zoom", &pRadarConfig->m_fZoom, 0.3, 5);
 	pUIConfig->m_qActions->AddButton("Reset Radar Zoom", [pRadarConfig]() { pRadarConfig->m_fZoom = 1; });
 	pUIConfig->m_qActions->AddSlider("Radar Type", &pRadarConfig->m_nType, 0, 1);
+	pUIConfig->m_qActions->AddSlider("Box2d Type", &pESPConfig->m_nBox2DType, 0, 1);
 
 }
 
@@ -185,8 +187,8 @@ static void TestDDNetExternal(Builder& builder) {
 	cheat.UseUIRenderOverlays();
 	cheat.UseUIRadar();
 	cheat.UseUIQuickActions();
-	//cheat.UseESPSnapline();
-	//cheat.UseESPBox2D();
+	cheat.UseESPSnapline();
+	cheat.UseESPBox2D();
 	//cheat.UseAimbot();
 	//cheat.UseRecoil();
 	//cheat.Use2DSpinbot();
