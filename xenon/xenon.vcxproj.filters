@@ -555,18 +555,30 @@
     <ClInclude Include="includes\xenon\configs\esp_config.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="includes\xenon\features\radar.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\xenon\configs\radar_config.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\xenon\configs\game_variables.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\xenon\models\radar_shapes.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\aimbot.cpp">
+    <ClCompile Include="src\features\aimbot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="includes\xenon\core\di_manager.hpp">
       <Filter>Header Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\game.cpp">
+    <ClCompile Include="src\features\game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\aim_service.cpp">
+    <ClCompile Include="src\services\aim_service.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="libs\imgui\imgui.cpp">
@@ -587,16 +599,16 @@
     <ClCompile Include="libs\imgui\imgui_widgets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\gui_service.cpp">
+    <ClCompile Include="src\services\gui_service.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="includes\xenon\configs\game_config.hpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\system.cpp">
+    <ClCompile Include="src\core\system.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\builder.cpp">
+    <ClCompile Include="src\core\builder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="libs\kiero\minhook\src\hde\hde32.c">
@@ -617,7 +629,7 @@
     <ClCompile Include="libs\kiero\kiero.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\cheat.cpp">
+    <ClCompile Include="src\core\cheat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="libs\lua\lapi.c">
@@ -722,22 +734,25 @@
     <ClCompile Include="libs\lua\lzio.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\lua_service.cpp">
+    <ClCompile Include="src\services\lua_service.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\memory_service.cpp">
+    <ClCompile Include="src\services\memory_service.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="includes\xenon\utility\imgui_helper.hpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\feature.cpp">
+    <ClCompile Include="src\features\feature.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="includes\xenon\models\unrealengine_versions.hpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\esp.cpp">
+    <ClCompile Include="src\features\esp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\features\radar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

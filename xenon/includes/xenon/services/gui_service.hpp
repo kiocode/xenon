@@ -15,6 +15,7 @@
 #include <xenon/models/hotkey.hpp>
 #include <xenon/configs/ui_config.hpp>
 #include <xenon/utility/imgui_helper.hpp>
+#include <xenon/features/radar.hpp>
 
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 typedef HRESULT(__stdcall* Present) (IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags);
@@ -26,8 +27,9 @@ public:
     UIService(
         std::shared_ptr<UIConfig> pConfigs, 
         std::shared_ptr<System> pSystem, 
-        std::shared_ptr<AimConfig> pAimConfigs
-    ) : m_pConfigs(pConfigs), m_pSystem(pSystem), m_pAimConfigs(pAimConfigs) {}
+        std::shared_ptr<AimConfig> pAimConfigs,
+        std::shared_ptr<Radar> pRadar
+    ) : m_pConfigs(pConfigs), m_pSystem(pSystem), m_pAimConfigs(pAimConfigs), m_pRadar(pRadar) {}
 
     Hotkey testhotkey;
     bool isEditing = false;
@@ -54,6 +56,7 @@ private:
     std::shared_ptr<UIConfig> m_pConfigs;
     std::shared_ptr<System> m_pSystem;
     std::shared_ptr<AimConfig> m_pAimConfigs;
+    std::shared_ptr<Radar> m_pRadar;
 
     HWND m_hWindow = NULL;
 

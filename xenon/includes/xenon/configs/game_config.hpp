@@ -20,4 +20,5 @@ public:
 	RenderingTypes m_bRenderingType;
 
 	int m_nToggleUIKey = VK_INSERT;
+
 };

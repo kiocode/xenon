@@ -148,17 +148,21 @@
   <ItemGroup>
     <ClInclude Include="includes\xenon\configs\aim_config.hpp" />
     <ClInclude Include="includes\xenon\configs\esp_config.hpp" />
+    <ClInclude Include="includes\xenon\configs\game_variables.hpp" />
+    <ClInclude Include="includes\xenon\configs\radar_config.hpp" />
     <ClInclude Include="includes\xenon\configs\ui_config.hpp" />
     <ClInclude Include="includes\xenon\core\builder.hpp" />
     <ClInclude Include="includes\xenon\core\system.hpp" />
     <ClInclude Include="includes\xenon\features\aimbot.hpp" />
     <ClInclude Include="includes\xenon\features\feature.hpp" />
     <ClInclude Include="includes\xenon\core\cheat.hpp" />
+    <ClInclude Include="includes\xenon\features\radar.hpp" />
     <ClInclude Include="includes\xenon\models\quickactions\quickaction.hpp" />
     <ClInclude Include="includes\xenon\models\quickactions\quickactions.hpp" />
     <ClInclude Include="includes\xenon\models\quickactions\quickaction_button.hpp" />
     <ClInclude Include="includes\xenon\models\quickactions\quickaction_checkbox.hpp" />
     <ClInclude Include="includes\xenon\models\quickactions\quickaction_slider.hpp" />
+    <ClInclude Include="includes\xenon\models\radar_shapes.hpp" />
     <ClInclude Include="includes\xenon\models\render_types.hpp" />
     <ClInclude Include="includes\xenon\models\unityengine_types.hpp" />
     <ClInclude Include="includes\xenon\services\aim_service.hpp" />
@@ -377,18 +381,19 @@
     <ClCompile Include="libs\lua\lutf8lib.c" />
     <ClCompile Include="libs\lua\lvm.c" />
     <ClCompile Include="libs\lua\lzio.c" />
-    <ClCompile Include="src\aimbot.cpp" />
+    <ClCompile Include="src\features\aimbot.cpp" />
     <ClCompile Include="includes\xenon\core\di_manager.hpp" />
-    <ClCompile Include="src\aim_service.cpp" />
-    <ClCompile Include="src\esp.cpp" />
-    <ClCompile Include="src\feature.cpp" />
-    <ClCompile Include="src\game.cpp" />
-    <ClCompile Include="src\gui_service.cpp" />
-    <ClCompile Include="src\builder.cpp" />
-    <ClCompile Include="src\cheat.cpp" />
-    <ClCompile Include="src\lua_service.cpp" />
-    <ClCompile Include="src\memory_service.cpp" />
-    <ClCompile Include="src\system.cpp" />
+    <ClCompile Include="src\services\aim_service.cpp" />
+    <ClCompile Include="src\features\esp.cpp" />
+    <ClCompile Include="src\features\feature.cpp" />
+    <ClCompile Include="src\features\game.cpp" />
+    <ClCompile Include="src\services\gui_service.cpp" />
+    <ClCompile Include="src\core\builder.cpp" />
+    <ClCompile Include="src\core\cheat.cpp" />
+    <ClCompile Include="src\services\lua_service.cpp" />
+    <ClCompile Include="src\services\memory_service.cpp" />
+    <ClCompile Include="src\features\radar.cpp" />
+    <ClCompile Include="src\core\system.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libs\kiero\minhook\dll_resources\MinHook.def" />

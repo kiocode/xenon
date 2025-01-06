@@ -15,6 +15,7 @@ public:
     DIManager* Services;
     std::shared_ptr<MemoryService> MemoryManager;
     std::shared_ptr<Game> GameManager;
+    std::shared_ptr<GameVariables> GameGlobalVariables;
     std::shared_ptr<System> SystemVariables;
 
     Builder() {

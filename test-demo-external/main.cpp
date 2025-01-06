@@ -40,6 +40,14 @@ static void AddConfigurations(Builder& builder) {
 	//pAimConfig->m_fSpinbotRadius = 100; 
 	//pAimConfig->m_fSpinbotSpeed = 10; 
 
+	std::shared_ptr<RadarConfig> pRadarConfig = builder.Services->GetConfiguration<RadarConfig>();
+	pRadarConfig->m_nType = 0;
+	pRadarConfig->m_fSize= 200.f;
+	pRadarConfig->m_fDefaultScale = 1000.0f;
+	pRadarConfig->m_fZoom = 1.0f;
+	pRadarConfig->m_fLocalSize = 6.0f;
+	pRadarConfig->m_fTargetsSize = 6.0f;
+
 	std::shared_ptr<UIConfig> pUIConfig = builder.Services->GetConfiguration<UIConfig>();
 	//pUIConfig->m_fnCustomMenu = []() {
 	//	ImGui::Begin("Custom menu");
@@ -63,20 +71,17 @@ static void AddConfigurations(Builder& builder) {
 	//	ImGui::End();
 	//});
 	pUIConfig->m_vFnOverlays.push_back([builder]() {
-		ImGui::Begin("Healths");
+		ImGui::Begin("Positions");
 
-		for (int i = 0; i < builder.GameManager->m_vTargets2DWorld.size(); i++) {
-			ImGui::Text("Position: %f, %f", builder.GameManager->m_vTargets2DWorld[i].x, builder.GameManager->m_vTargets2DWorld[i].y);
+		for (int i = 0; i < builder.GameGlobalVariables->g_vTargets2DWorld.size(); i++) {
+			ImGui::Text("Position: %f, %f", builder.GameGlobalVariables->g_vTargets2DWorld[i].x, builder.GameGlobalVariables->g_vTargets2DWorld[i].y);
 		}
 
 		ImGui::End();
 	});
 	
-	//pUIConfig->m_qActions->AddButton("Test", []() { std::cout << "test" << std::endl; });
-	//pUIConfig->m_qActions->AddCheckbox("Test 2 toggle", &pUIConfig->m_bWatermark);
-	//pUIConfig->m_qActions->AddCheckbox("Test 2 toggle", &pUIConfig->m_bWatermark);
-	//pUIConfig->m_qActions->AddButton("Test", []() { std::cout << "test" << std::endl; });
-	//pUIConfig->m_qActions->AddSlider("Test 3 slider", &pAimConfig->m_fRecoilVerticalStrength, 0, 1000);
+	pUIConfig->m_qActions->AddSlider("Radar Zoom", &pRadarConfig->m_fZoom, 0.1, 3);
+	pUIConfig->m_qActions->AddButton("Reset Radar Zoom", [pRadarConfig]() { pRadarConfig->m_fZoom = 1; });
 
 }
 
@@ -100,7 +105,7 @@ static void TestDDNetExternal(Builder& builder) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(5));
 	}*/
 
-#pragma region Offsets
+	#pragma region Offsets
 
 	struct offsets {
 		uintptr_t staticServerAddr = 0x5ABBA0;
@@ -115,7 +120,7 @@ static void TestDDNetExternal(Builder& builder) {
 
 	offsets offsets;
 
-#pragma endregion
+	#pragma endregion
 
 	builder.MemoryManager->AttachGame("D:\\Steam\\steamapps\\common\\DDraceNetwork\\ddnet\\DDNet.exe");
 	uintptr_t serverAddr = builder.MemoryManager->ReadPointer(offsets.staticServerAddr);
@@ -149,20 +154,20 @@ static void TestDDNetExternal(Builder& builder) {
 			i++;
 		} while (i != 63); //builder.MemoryManager->Read<int>(serverAddr + offsets.gametick + (i * 0xF8)) != -1);
 
-		builder.GameManager->m_vTargetsCustom.clear(); // aimbot custom
-		builder.GameManager->m_vTargets2DWorld.clear();
-		builder.GameManager->m_vTargetsScreen.clear();
-		builder.GameManager->m_vLocalPos2DWorld = server->players[server->localPlayerId].pos;
+		builder.GameGlobalVariables->g_vTargetsCustom.clear(); // aimbot custom
+		builder.GameGlobalVariables->g_vTargets2DWorld.clear();
+		builder.GameGlobalVariables->g_vTargetsScreen.clear();
+		builder.GameGlobalVariables->g_vLocalPos2DWorld = server->players[server->localPlayerId].pos;
 		for (int i = 0; i < server->players.size(); i++) {
 			if (server->players[i].gametick == 0 || server->players[i].id == server->localPlayerId) continue;
 
-			Vec2 w2sTarget = { server->players[i].pos.x - builder.GameManager->m_vLocalPos2DWorld.x, server->players[i].pos.y - builder.GameManager->m_vLocalPos2DWorld.y };
-			builder.GameManager->m_vTargetsCustom.push_back(w2sTarget);
-			builder.GameManager->m_vTargets2DWorld.push_back(server->players[i].pos);
+			Vec2 w2sTarget = { server->players[i].pos.x - builder.GameGlobalVariables->g_vLocalPos2DWorld.x, server->players[i].pos.y - builder.GameGlobalVariables->g_vLocalPos2DWorld.y };
+			builder.GameGlobalVariables->g_vTargetsCustom.push_back(w2sTarget);
+			builder.GameGlobalVariables->g_vTargets2DWorld.push_back(server->players[i].pos);
 
 			// edit pos
 			Vec2 pos = Vec2((w2sTarget.x + builder.Services->GetService<System>()->GetScreenCenter().x) - 32, (w2sTarget.y + builder.Services->GetService<System>()->GetScreenCenter().y) - 32);
-			builder.GameManager->m_vTargetsScreen.push_back(pos);
+			builder.GameGlobalVariables->g_vTargetsScreen.push_back(pos);
 		}
 	});
 
@@ -176,8 +181,11 @@ static void TestDDNetExternal(Builder& builder) {
 
 	cheat.UseUpdate();
 	cheat.UseUICustom(RenderingTypes::DIRECTX11);
-	cheat.UseESPSnapline();
-	cheat.UseESPBox2D();
+	cheat.UseUIRenderOverlays();
+	cheat.UseUIRadar();
+	cheat.UseUIQuickActions();
+	//cheat.UseESPSnapline();
+	//cheat.UseESPBox2D();
 	//cheat.UseAimbot();
 	//cheat.UseRecoil();
 	//cheat.Use2DSpinbot();
@@ -219,8 +227,8 @@ static void TestRedEclipseExternal(Builder& builder) {
 
 	builder.GameManager->OnEvent("Update", [builder, offsets, serverAddr, localPlayerAddr]() {
 
-		builder.GameManager->m_vTargets3DWorld.clear();
-		builder.GameManager->m_vLocalPos3DWorld = Vec3(builder.MemoryManager->Read<int>(serverAddr + offsets.posX), builder.MemoryManager->Read<int>(serverAddr + offsets.posY), builder.MemoryManager->Read<int>(serverAddr + offsets.posZ));
+		builder.GameGlobalVariables->g_vTargets3DWorld.clear();
+		builder.GameGlobalVariables->g_vLocalPos3DWorld = Vec3(builder.MemoryManager->Read<int>(serverAddr + offsets.posX), builder.MemoryManager->Read<int>(serverAddr + offsets.posY), builder.MemoryManager->Read<int>(serverAddr + offsets.posZ));
 
 		int localPlayerHealth = builder.MemoryManager->Read<int>(localPlayerAddr + offsets.health);
 
@@ -239,7 +247,7 @@ static void TestRedEclipseExternal(Builder& builder) {
 			float y = builder.MemoryManager->Read<float>(entityAddr + offsets.posY + (i * 0x8));
 			float z = builder.MemoryManager->Read<float>(entityAddr + offsets.posZ + (i * 0x8));
 
-			builder.GameManager->m_vTargets3DWorld.push_back(Vec3(x, y, z));
+			builder.GameGlobalVariables->g_vTargets3DWorld.push_back(Vec3(x, y, z));
 
 			i++;
 		} while (i != 6);
@@ -275,11 +283,11 @@ static void TestGeneral(Builder& builder) {
 	AddConfigurations(builder);
 	AddServices(builder);
 
-	builder.GameManager->m_vTargetsScreen.push_back({ 100, 100 });
-	builder.GameManager->m_vTargetsScreen.push_back({ 200, 200 });
-	builder.GameManager->m_vTargetsScreen.push_back({ 300, 300 });
-	builder.GameManager->m_vTargetsScreen.push_back({ 400, 400 });
-	builder.GameManager->m_vTargetsScreen.push_back({ 500, 500 });
+	builder.GameGlobalVariables->g_vTargetsScreen.push_back({ 100, 100 });
+	builder.GameGlobalVariables->g_vTargetsScreen.push_back({ 200, 200 });
+	builder.GameGlobalVariables->g_vTargetsScreen.push_back({ 300, 300 });
+	builder.GameGlobalVariables->g_vTargetsScreen.push_back({ 400, 400 });
+	builder.GameGlobalVariables->g_vTargetsScreen.push_back({ 500, 500 });
 
 	Cheat cheat = builder.Build();
 
@@ -305,23 +313,40 @@ static void TestLua(Builder& builder) {
 	//AddConfigurations(builder);
 	//AddServices(builder);
 
+	Cheat cheat = builder.Build();
+
+	cheat.UseUpdate();
+	cheat.UseUICustom(RenderingTypes::DIRECTX11);
+	cheat.UseUIQuickActions();
+	/*cheat.UseESPSnapline();
+	cheat.UseESPBox2D();*/
+
+
 	std::shared_ptr<LuaService> pLuaService = builder.Services->GetService<LuaService>();
 
 	//pLuaService->ExecuteScriptFile("scripts\\test.lua");
 	pLuaService->ExecuteScript(R"(
-		print("Hello, world!")
-
         function OnUpdate()
-            print("Update triggered!")
+			--local staticServerAddr = 0x5ABBA0
+			--local idLocalPlayer = 0x1450
+			--
+			--local mem = MemoryService()
+			--local baseAddress = mem:getModuleAddress("DDNet.exe")
+			--print(string.format("Base Address: 0x%X", baseAddress))
+			--
+			--local staticServer = mem:readPointer(baseAddress + staticServerAddr)
+			--print(string.format("Static Server Address: 0x%X", staticServer))
+			--
+			--local localPlayerId = mem:readInt(staticServer + idLocalPlayer)
+			--print(string.format("Local Player ID: %i", localPlayer))
+
+			local address = memoryService:getModuleAddress("DDNet.exe")
+			local value = memoryService:readPointer(address + 0x1234)
+			print(value)
+
         end
+
     )");
-
-	Cheat cheat = builder.Build();
-
-	cheat.UseUpdate();
-	/*cheat.UseUICustom(RenderingTypes::DIRECTX11);
-	cheat.UseESPSnapline();
-	cheat.UseESPBox2D();*/
 
 	cheat.Run();
 
@@ -352,9 +377,9 @@ static void RunTests() {
 	builder.SetDebugLogLevel();
 
 	//TestGeneral(builder);
-	TestLua(builder);
+	//TestLua(builder);
 	//TestRecoil(builder);
-	//TestDDNetExternal(builder);
+	TestDDNetExternal(builder);
 	//TestRedEclipseExternal(builder);
 
 }
