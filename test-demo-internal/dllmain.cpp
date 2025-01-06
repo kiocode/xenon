@@ -2,9 +2,7 @@
 #include <windows.h>
 #include <iostream>
 
-#include <xenon/core/builder.hpp>
-#include <xenon/core/cheat.hpp>
-
+#include <xenon/xenon.hpp>
 
 DWORD WINAPI MainThread(LPVOID lpReserved)
 {

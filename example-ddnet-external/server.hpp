@@ -1,4 +1,5 @@
 #include "player.hpp"
+#include <vector>
 
 class Server {
 public:

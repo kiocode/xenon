@@ -177,6 +177,7 @@
     <ClInclude Include="includes\xenon\utility\vec2.hpp" />
     <ClInclude Include="includes\xenon\utility\vec3.hpp" />
     <ClInclude Include="includes\xenon\utility\resources_bytes.h" />
+    <ClInclude Include="includes\xenon\xenon.hpp" />
     <ClInclude Include="libs\imgui\imconfig.h" />
     <ClInclude Include="libs\imgui\imgui.h" />
     <ClInclude Include="libs\imgui\imgui_impl_dx11.h" />
