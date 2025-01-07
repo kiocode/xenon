@@ -157,6 +157,7 @@
     <ClInclude Include="includes\xenon\features\feature.hpp" />
     <ClInclude Include="includes\xenon\core\cheat.hpp" />
     <ClInclude Include="includes\xenon\features\radar.hpp" />
+    <ClInclude Include="includes\xenon\features\waypoints.hpp" />
     <ClInclude Include="includes\xenon\models\quickactions\quickaction.hpp" />
     <ClInclude Include="includes\xenon\models\quickactions\quickactions.hpp" />
     <ClInclude Include="includes\xenon\models\quickactions\quickaction_button.hpp" />

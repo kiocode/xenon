@@ -4,21 +4,24 @@
     "type": "split",
     "children": [
       {
-        "id": "d562d81ba945e472",
+        "id": "c3c5088d8b14313d",
         "type": "tabs",
         "children": [
           {
-            "id": "9df7584897f8408e",
+            "id": "9d65ac3cab51b524",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "canvas",
               "state": {
-                "file": "Project Notes.md",
-                "mode": "source",
-                "source": false
+                "file": "Project Schema.canvas",
+                "viewState": {
+                  "x": 444.22874365482204,
+                  "y": -560.7877538071065,
+                  "zoom": -0.6220146447384416
+                }
               },
-              "icon": "lucide-file",
-              "title": "Project Notes"
+              "icon": "lucide-layout-dashboard",
+              "title": "Project Schema"
             }
           }
         ]
@@ -52,7 +55,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "tag:#region",
+                "query": "",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -189,18 +192,17 @@
       "obsidian-importer:Open Importer": false
     }
   },
-  "active": "869c50470146a2ba",
+  "active": "9d65ac3cab51b524",
   "lastOpenFiles": [
-    "Project Schema.canvas",
-    "Tasks Organization.md",
     "Project Notes.md",
+    "Tasks Organization.md",
+    "Untitled.canvas",
+    "Classes/Game.md",
+    "Project Schema.canvas",
     "Classes/Hooks.md",
     "Classes/GUI.md",
-    "Classes/Game.md",
     "Classes/ESP.md",
     "Classes/Aimbot.md",
-    "sol2.md",
-    "Untitled.canvas",
     "Drawing 2024-12-13 12.35.25.excalidraw.md",
     "UniversalCheatsLib/Classes/Game.md",
     "UniversalCheatsLib/Classes/ESP.md",
@@ -220,6 +222,7 @@
     "Excalidraw",
     "2024-12-18.md",
     "radar.excalidraw.md",
+    "Excalidraw/Drawing 2024-12-12 21.02.50.excalidraw.md",
     "Templates",
     "UniversalCheatsLib/Classes",
     "UniversalCheatsLib"
