@@ -9,7 +9,8 @@ void Cheat::Run() {
         spdlog::info("Internal cheat initialized");
 
         switch (m_pGameConfig->m_bRenderingType) {
-            case RenderingTypes::DIRECTX11:
+            case RenderingHookTypes::KIERO: {
+
                 bool bInitialized = false;
                 do
                 {
@@ -22,11 +23,12 @@ void Cheat::Run() {
                         spdlog::error("Failed to initialize kiero");
                         std::this_thread::sleep_for(std::chrono::seconds(3));
                     }
-                } while (!bInitialized);				
-                break;
-            case RenderingTypes::DIRECTX11_DISCORDHOOK:
+                } while (!bInitialized);	
+
+            } break;
+            case RenderingHookTypes::DISCORD: {
                 m_pGame->EnableUpdate();
-				break;
+            } break;
         }
     }
     else {

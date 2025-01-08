@@ -23,11 +23,12 @@ void Game::EnableUpdate() {
 		EnableHooks();
 
 		switch (m_pConfigs->m_bRenderingType) {
-			case RenderingTypes::DIRECTX11:
+			case RenderingHookTypes::KIERO:
 				kiero::bind(8, (void**)&m_pUIService->oPresent, Game::hkPresentWrapper);
 				break;
-			case RenderingTypes::DIRECTX11_DISCORDHOOK:
-				uint64_t addr = (uint64_t)(GetModuleHandleA("DiscordHook64.dll")) + 0x1060E0;
+			case RenderingHookTypes::DISCORD:
+				uint64_t discordPresentOffset = 0x1060E0;
+				uint64_t addr = (uint64_t)(GetModuleHandleA("DiscordHook64.dll")) + discordPresentOffset;
 				Present* discord_present = (Present*)addr;
 				m_pUIService->oPresent = *discord_present;
 				_InterlockedExchangePointer((volatile PVOID*)addr, Game::hkPresentWrapper);

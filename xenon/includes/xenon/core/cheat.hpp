@@ -5,7 +5,7 @@
 #include <xenon/configs/game_config.hpp>
 #include <spdlog/spdlog.h>
 #include <xenon/features/game.hpp>
-#include <xenon/models/render_types.hpp>
+#include <xenon/models/rendering_hook_types.hpp>
 #include <xenon/models/unrealengine_versions.hpp>
 #include <xenon/models/unityengine_types.hpp>
 
@@ -27,7 +27,7 @@ public:
         spdlog::info("Update is enabled");
     }
 
-    void UseUICustom(RenderingTypes renderingType) {
+    void UseUICustom(RenderingHookTypes renderingType) {
         
 		m_pGameConfig->m_bRenderingType = renderingType;
 		m_pGameConfig->m_bUseUICustom = true;

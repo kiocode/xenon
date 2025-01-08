@@ -114,7 +114,7 @@ int main()
 	Cheat cheat = builder.Build();
 
 	cheat.UseUpdate();
-	cheat.UseUICustom(RenderingTypes::DIRECTX11);
+	cheat.UseUICustom(RenderingHookTypes::KIERO);
 	cheat.UseUIRenderOverlays();
 	cheat.UseUIRadar();
 	cheat.UseUIQuickActions();

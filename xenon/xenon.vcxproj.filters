@@ -531,7 +531,7 @@
     <ClInclude Include="includes\xenon\models\hotkey.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="includes\xenon\models\render_types.hpp">
+    <ClInclude Include="includes\xenon\models\rendering_hook_types.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="includes\xenon\models\unityengine_types.hpp">
@@ -571,6 +571,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="includes\xenon\features\waypoints.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\xenon\configs\waypoints_config.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

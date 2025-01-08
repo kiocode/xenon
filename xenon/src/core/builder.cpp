@@ -7,6 +7,7 @@
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/wincolor_sink.h>
 #include <xenon/features/esp.hpp>
+#include <xenon/features/waypoints.hpp>
 
 void Builder::SetConsoleEnabled() const {
 
@@ -108,6 +109,11 @@ void Builder::RegisterDefaultServices() {
     std::shared_ptr<Aimbot> pAimbot = Services->AddSingleton<Aimbot>(
         [pAimConfig, pAimService]() {
             return std::make_shared<Aimbot>(pAimConfig, pAimService);
+        }
+    );
+    std::shared_ptr<Waypoints> pWaypoints = Services->AddSingleton<Waypoints>(
+        [pAimConfig, pAimService]() {
+            return std::make_shared<Waypoints>();
         }
     );
 

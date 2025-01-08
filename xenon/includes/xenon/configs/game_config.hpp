@@ -2,7 +2,7 @@
 
 #include <winuser.rh>
 
-#include <xenon/models/render_types.hpp>
+#include <xenon/models/rendering_hook_types.hpp>
 
 class GameConfig {
 public:
@@ -17,7 +17,7 @@ public:
 	bool m_bUse2DSpinbot;
 	bool m_bUse3DSpinbot;
 
-	RenderingTypes m_bRenderingType;
+	RenderingHookTypes m_bRenderingType;
 
 	int m_nToggleUIKey = VK_INSERT;
 

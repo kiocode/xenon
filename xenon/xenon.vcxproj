@@ -151,6 +151,7 @@
     <ClInclude Include="includes\xenon\configs\game_variables.hpp" />
     <ClInclude Include="includes\xenon\configs\radar_config.hpp" />
     <ClInclude Include="includes\xenon\configs\ui_config.hpp" />
+    <ClInclude Include="includes\xenon\configs\waypoints_config.hpp" />
     <ClInclude Include="includes\xenon\core\builder.hpp" />
     <ClInclude Include="includes\xenon\core\system.hpp" />
     <ClInclude Include="includes\xenon\features\aimbot.hpp" />
@@ -164,7 +165,7 @@
     <ClInclude Include="includes\xenon\models\quickactions\quickaction_checkbox.hpp" />
     <ClInclude Include="includes\xenon\models\quickactions\quickaction_slider.hpp" />
     <ClInclude Include="includes\xenon\models\radar_shapes.hpp" />
-    <ClInclude Include="includes\xenon\models\render_types.hpp" />
+    <ClInclude Include="includes\xenon\models\rendering_hook_types.hpp" />
     <ClInclude Include="includes\xenon\models\unityengine_types.hpp" />
     <ClInclude Include="includes\xenon\services\aim_service.hpp" />
     <ClInclude Include="includes\xenon\features\esp.hpp" />

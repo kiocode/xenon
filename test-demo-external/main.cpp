@@ -41,6 +41,9 @@ static void AddConfigurations(Builder& builder) {
 	std::shared_ptr<Waypoints> pWaypoint = builder.Services->GetService<Waypoints>();
 	pUIConfig->m_qActions->AddButton("Set Waypoint", [pWaypoint, pGameVariables]() { pWaypoint->SetWaypoint("waypointTest", pGameVariables->g_vLocalPos3DWorld, ImColor(255, 255, 255)); });
 
+	pUIConfig->m_qActions->AddSlider("Radar Zoom", &pRadarConfig->m_fZoom, 0.3, 30);
+	pUIConfig->m_qActions->AddButton("Reset Radar Zoom", [pRadarConfig]() { pRadarConfig->m_fZoom = 1; });
+	pUIConfig->m_qActions->AddSlider("Radar Type", &pRadarConfig->m_nType, 0, 1);
 }
 
 static void AddServices(Builder& builder) {
@@ -121,7 +124,7 @@ static void TestRedEclipseExternal(Builder& builder) {
 	Cheat cheat = builder.Build();
 
 	cheat.UseUpdate();
-	cheat.UseUICustom(RenderingTypes::DIRECTX11);
+	cheat.UseUICustom(RenderingHookTypes::KIERO);
 	cheat.UseUIRenderOverlays();
 	cheat.UseAimbot();
 	//cheat.UseRecoil();
@@ -136,22 +139,30 @@ static void TestGeneral(Builder& builder) {
 	AddConfigurations(builder);
 	AddServices(builder);
 
-	builder.GameGlobalVariables->g_vLocalPos3DWorld = Vec3( 1500, 100, 600 );
+	//builder.GameGlobalVariables->g_vLocalPos3DWorld = Vec3( 1500, 100, 600 );
 
-	builder.GameGlobalVariables->g_vTargetsScreen.push_back({ 100, 100 });
-	builder.GameGlobalVariables->g_vTargetsScreen.push_back({ 200, 200 });
-	builder.GameGlobalVariables->g_vTargetsScreen.push_back({ 300, 300 });
-	builder.GameGlobalVariables->g_vTargetsScreen.push_back({ 400, 400 });
-	builder.GameGlobalVariables->g_vTargetsScreen.push_back({ 500, 500 });
+	//builder.GameGlobalVariables->g_vTargetsScreen.push_back({ 100, 100 });
+	//builder.GameGlobalVariables->g_vTargetsScreen.push_back({ 200, 200 });
+	//builder.GameGlobalVariables->g_vTargetsScreen.push_back({ 300, 300 });
+	//builder.GameGlobalVariables->g_vTargetsScreen.push_back({ 400, 400 });
+	//builder.GameGlobalVariables->g_vTargetsScreen.push_back({ 500, 500 });
+
+	builder.GameGlobalVariables->g_vLocalPos2DWorld = Vec2(300, 600 );
+	 
+	builder.GameGlobalVariables->g_vTargets2DWorld.push_back({ 100, 100 });
+	builder.GameGlobalVariables->g_vTargets2DWorld.push_back({ 200, 200 });
+	builder.GameGlobalVariables->g_vTargets2DWorld.push_back({ 300, 300 });
+	builder.GameGlobalVariables->g_vTargets2DWorld.push_back({ 400, 400 });
+	builder.GameGlobalVariables->g_vTargets2DWorld.push_back({ 500, 500 });
 
 	Cheat cheat = builder.Build();
 
 	cheat.UseUpdate();
-	cheat.UseUICustom(RenderingTypes::DIRECTX11);
-	//cheat.UseUIRadar();
+	cheat.UseUICustom(RenderingHookTypes::KIERO);
+	cheat.UseUIRadar();
 	//cheat.UseUIMenu();
 	//cheat.UseUIRenderWindows();
-	//cheat.UseUIRenderOverlays();
+	cheat.UseUIRenderOverlays();
 	cheat.UseUIQuickActions();
 	//cheat.UseAimbot();
 	//cheat.UseRecoil();
@@ -171,7 +182,7 @@ static void TestLua(Builder& builder) {
 	Cheat cheat = builder.Build();
 
 	cheat.UseUpdate();
-	cheat.UseUICustom(RenderingTypes::DIRECTX11);
+	cheat.UseUICustom(RenderingHookTypes::KIERO);
 	cheat.UseUIQuickActions();
 	/*cheat.UseESPSnapline();
 	cheat.UseESPBox2D();*/
@@ -231,7 +242,7 @@ static void RunTests() {
 	builder.SetConsoleEnabled();
 	builder.SetDebugLogLevel();
 
-	//TestGeneral(builder);
+	TestGeneral(builder);
 	//TestLua(builder);
 	//TestRecoil(builder);
 	//TestRedEclipseExternal(builder);
