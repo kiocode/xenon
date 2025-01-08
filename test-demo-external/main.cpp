@@ -1,5 +1,6 @@
 #include <windows.h>
 #include <xenon/xenon.hpp>
+#include <xenon/features/waypoints.hpp>
 
 static void AddConfigurations(Builder& builder) {
 
@@ -35,43 +36,10 @@ static void AddConfigurations(Builder& builder) {
 	pRadarConfig->m_fLocalSize = 6.0f;
 	pRadarConfig->m_fTargetsSize = 6.0f;
 
-	std::shared_ptr<ESPConfig> pESPConfig = builder.Services->GetConfiguration<ESPConfig>();
 	std::shared_ptr<UIConfig> pUIConfig = builder.Services->GetConfiguration<UIConfig>();
-	//pUIConfig->m_fnCustomMenu = []() {
-	//	ImGui::Begin("Custom menu");
-	//	ImGui::Text("Hello, world!");
-	//	ImGui::End();
-	//};
-	//pUIConfig->m_fnCustomRadar = []() {
-	//	ImGui::Begin("Custom menu");
-	//	ImGui::Text("Hello, world!");
-	//	ImGui::End();
-	//};
-	//pUIConfig->m_fnCustomNotification = []() {
-	//	ImGui::Begin("Custom menu");
-	//	ImGui::Text("Hello, world!");
-	//	ImGui::End();
-	//};
-	//pUIConfig->m_bWatermark = true;
-	//pUIConfig->m_vFnWindows.push_back([]() {
-	//	ImGui::Begin("Custom draw list");
-	//	ImGui::Text("Hello, world!");
-	//	ImGui::End();
-	//});
-	pUIConfig->m_vFnOverlays.push_back([builder]() {
-		ImGui::Begin("Positions");
-
-		for (int i = 0; i < builder.GameGlobalVariables->g_vTargets2DWorld.size(); i++) {
-			ImGui::Text("Position: %f, %f", builder.GameGlobalVariables->g_vTargets2DWorld[i].x, builder.GameGlobalVariables->g_vTargets2DWorld[i].y);
-		}
-
-		ImGui::End();
-	});
-	
-	pUIConfig->m_qActions->AddSlider("Radar Zoom", &pRadarConfig->m_fZoom, 0.3, 5);
-	pUIConfig->m_qActions->AddButton("Reset Radar Zoom", [pRadarConfig]() { pRadarConfig->m_fZoom = 1; });
-	pUIConfig->m_qActions->AddSlider("Radar Type", &pRadarConfig->m_nType, 0, 1);
-	pUIConfig->m_qActions->AddSlider("Box2d Type", &pESPConfig->m_nBox2DType, 0, 1);
+	std::shared_ptr<GameVariables> pGameVariables = builder.Services->GetConfiguration<GameVariables>();
+	std::shared_ptr<Waypoints> pWaypoint = builder.Services->GetService<Waypoints>();
+	pUIConfig->m_qActions->AddButton("Set Waypoint", [pWaypoint, pGameVariables]() { pWaypoint->SetWaypoint("waypointTest", pGameVariables->g_vLocalPos3DWorld, ImColor(255, 255, 255)); });
 
 }
 
@@ -167,6 +135,8 @@ static void TestGeneral(Builder& builder) {
 
 	AddConfigurations(builder);
 	AddServices(builder);
+
+	builder.GameGlobalVariables->g_vLocalPos3DWorld = Vec3( 1500, 100, 600 );
 
 	builder.GameGlobalVariables->g_vTargetsScreen.push_back({ 100, 100 });
 	builder.GameGlobalVariables->g_vTargetsScreen.push_back({ 200, 200 });
@@ -265,6 +235,7 @@ static void RunTests() {
 	//TestLua(builder);
 	//TestRecoil(builder);
 	//TestRedEclipseExternal(builder);
+
 
 }
 

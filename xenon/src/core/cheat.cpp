@@ -8,19 +8,26 @@ void Cheat::Run() {
     if (m_pSystem->IsInternal()) {
         spdlog::info("Internal cheat initialized");
 
-        bool bInitialized = false;
-        do
-        {
-            if (kiero::init(kiero::RenderType::D3D11) == kiero::Status::Success)
-            {
+        switch (m_pGameConfig->m_bRenderingType) {
+            case RenderingTypes::DIRECTX11:
+                bool bInitialized = false;
+                do
+                {
+                    if (kiero::init(kiero::RenderType::D3D11) == kiero::Status::Success)
+                    {
+                        m_pGame->EnableUpdate();
+                        bInitialized = true;
+                    }
+                    else {
+                        spdlog::error("Failed to initialize kiero");
+                        std::this_thread::sleep_for(std::chrono::seconds(3));
+                    }
+                } while (!bInitialized);				
+                break;
+            case RenderingTypes::DIRECTX11_DISCORDHOOK:
                 m_pGame->EnableUpdate();
-                bInitialized = true;
-            }
-            else {
-                spdlog::error("Failed to initialize kiero");
-				std::this_thread::sleep_for(std::chrono::seconds(3));
-            }
-        } while (!bInitialized);
+				break;
+        }
     }
     else {
         spdlog::info("External cheat initialized");
