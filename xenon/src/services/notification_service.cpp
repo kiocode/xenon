@@ -14,10 +14,11 @@ void NotificationService::RemoveQueuedNotification(int nIndex) {
 
 }
 
-void NotificationService::Push(std::string title, std::string message) {
+void NotificationService::Notify(std::string title, std::string message) {
 
-	if(m_vQueuedNotifications.size() > 5)
+	if (m_vQueuedNotifications.size() > 5) {
 		m_vQueuedNotifications.erase(m_vQueuedNotifications.begin());
+	}
 
 	Notification notification = Notification(m_vQueuedNotifications.size(), title, message);
 	m_vQueuedNotifications.push_back(notification);

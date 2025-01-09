@@ -5,7 +5,7 @@
 #include <xenon/core/system.hpp>
 #include <xenon/configs/radar_config.hpp>
 #include <xenon/configs/game_variables.hpp>
-#include <xenon/models/radar_shapes.hpp>
+#include <xenon/models/enums/radar_shapes.hpp>
 
 class Radar : public Feature {
 public:

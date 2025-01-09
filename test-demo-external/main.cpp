@@ -46,7 +46,7 @@ static void AddConfigurations(Builder& builder) {
 	pUIConfig->m_qActions->AddButton("Reset Radar Zoom", [pRadarConfig]() { pRadarConfig->m_fZoom = 1; });
 	pUIConfig->m_qActions->AddSlider("Radar Type", &pRadarConfig->m_nType, 0, 1);
 
-	pUIConfig->m_qActions->AddButton("Test Notification", [pNotificationService]() { pNotificationService->Push("test", "test message"); });
+	pUIConfig->m_qActions->AddButton("Test Notification", [pNotificationService]() { pNotificationService->Notify("test", "test message"); });
 
 }
 

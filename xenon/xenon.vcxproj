@@ -165,9 +165,9 @@
     <ClInclude Include="includes\xenon\models\quickactions\quickaction_button.hpp" />
     <ClInclude Include="includes\xenon\models\quickactions\quickaction_checkbox.hpp" />
     <ClInclude Include="includes\xenon\models\quickactions\quickaction_slider.hpp" />
-    <ClInclude Include="includes\xenon\models\radar_shapes.hpp" />
-    <ClInclude Include="includes\xenon\models\rendering_hook_types.hpp" />
-    <ClInclude Include="includes\xenon\models\unityengine_types.hpp" />
+    <ClInclude Include="includes\xenon\models\enums\radar_shapes.hpp" />
+    <ClInclude Include="includes\xenon\models\enums\rendering_hook_types.hpp" />
+    <ClInclude Include="includes\xenon\models\enums\unityengine_types.hpp" />
     <ClInclude Include="includes\xenon\services\aim_service.hpp" />
     <ClInclude Include="includes\xenon\features\esp.hpp" />
     <ClInclude Include="includes\xenon\features\game.hpp" />
@@ -338,7 +338,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="includes\xenon\configs\game_config.hpp" />
-    <ClCompile Include="includes\xenon\models\unrealengine_versions.hpp" />
+    <ClCompile Include="includes\xenon\models\enums\unrealengine_versions.hpp" />
     <ClCompile Include="includes\xenon\utility\imgui_helper.hpp" />
     <ClCompile Include="libs\imgui\imgui.cpp" />
     <ClCompile Include="libs\imgui\imgui_draw.cpp" />

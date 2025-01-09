@@ -6,9 +6,10 @@
 
 class NotificationService {
 public:
+
 	void RenderNotifications();
 	void RemoveQueuedNotification(int nIndex);
-	void Push(std::string title, std::string message);
+	void Notify(std::string title, std::string message);
 
 	void SetFonts(ImFont* imFont, ImFont* imLogo, ImFont* imLogoBigger) {
 		m_imFont = imFont;

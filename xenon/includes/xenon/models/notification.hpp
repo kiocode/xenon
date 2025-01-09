@@ -6,7 +6,6 @@
 
 #include <xenon/utility/imgui_helper.hpp>
 #include <xenon/core/di_manager.hpp>
-#include <xenon/features/game.hpp>
 
 class Notification {
 public:

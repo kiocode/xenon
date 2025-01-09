@@ -5,9 +5,9 @@
 #include <xenon/configs/game_config.hpp>
 #include <spdlog/spdlog.h>
 #include <xenon/features/game.hpp>
-#include <xenon/models/rendering_hook_types.hpp>
-#include <xenon/models/unrealengine_versions.hpp>
-#include <xenon/models/unityengine_types.hpp>
+#include <xenon/models/enums/rendering_hook_types.hpp>
+#include <xenon/models/enums/unrealengine_versions.hpp>
+#include <xenon/models/enums/unityengine_types.hpp>
 #include <xenon/services/notification_service.hpp>
 
 class Cheat {
@@ -20,7 +20,7 @@ public:
         std::shared_ptr<UIConfig> pUiConfig, 
         std::shared_ptr<System> pSystem,
         std::shared_ptr<NotificationService> pNotificationService
-    ) : m_pGame(pGame), m_pGameConfig(pGameConfig), m_pUIService(pUiService), m_pUIConfig(pUiConfig), m_pSystem(pSystem), m_pNotificationService(pNotificationService) { }
+    ) : m_pGame(pGame), m_pGameConfig(pGameConfig), m_pUIService(pUiService), m_pUIConfig(pUiConfig), m_pSystem(pSystem), m_pNotificationService(pNotificationService){ }
 
     void UseUpdate() {
 

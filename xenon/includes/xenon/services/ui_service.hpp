@@ -22,12 +22,13 @@ extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam
 typedef HRESULT(__stdcall* Present) (IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags);
 typedef LRESULT(CALLBACK* WNDPROC)(HWND, UINT, WPARAM, LPARAM);
 
+
 class UIService {
 public:
 
     UIService(
-        std::shared_ptr<UIConfig> pConfigs, 
-        std::shared_ptr<System> pSystem, 
+        std::shared_ptr<UIConfig> pConfigs,
+        std::shared_ptr<System> pSystem,
         std::shared_ptr<AimConfig> pAimConfigs,
         std::shared_ptr<Radar> pRadar,
         std::shared_ptr<NotificationService> pNotificationService

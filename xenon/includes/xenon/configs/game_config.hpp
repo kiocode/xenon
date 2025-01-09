@@ -2,7 +2,7 @@
 
 #include <winuser.rh>
 
-#include <xenon/models/rendering_hook_types.hpp>
+#include <xenon/models/enums/rendering_hook_types.hpp>
 
 class GameConfig {
 public:

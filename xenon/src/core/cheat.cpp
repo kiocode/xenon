@@ -1,6 +1,6 @@
 #include <xenon/core/cheat.hpp>
 #include <kiero/kiero.h>
-#include <xenon/services/ui_service.hpp>
+#include <xenon/services/gui_service.hpp>
 #include <xenon/core/di_manager.hpp>
 
 void Cheat::Run() {
@@ -37,7 +37,7 @@ void Cheat::Run() {
         m_pGame->EnableUpdate();
     }
 
-    m_pNotificationService->Push("Status success", "Cheat is sucessfully running");
+    m_pNotificationService->Notify("Status", "Cheat initialized");
 }
 
 #pragma region Cheat:Private

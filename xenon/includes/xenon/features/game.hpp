@@ -9,11 +9,12 @@
 #include <xenon/features/aimbot.hpp>
 #include <xenon/features/radar.hpp>
 #include <xenon/features/esp.hpp>
-#include <xenon/services/ui_service.hpp>
 #include <xenon/configs/game_config.hpp>
 #include <xenon/utility/vec3.hpp>
 #include <xenon/services/lua_service.hpp>
 #include <xenon/configs/game_variables.hpp>
+#include <xenon/configs/ui_config.hpp>
+#include <xenon/services/gui_service.hpp>
 
 class Game {
 public:

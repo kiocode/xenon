@@ -3,6 +3,7 @@
 #include <xenon/configs/aim_config.hpp>
 #include <xenon/features/aimbot.hpp>
 #include <xenon/services/lua_service.hpp>
+#include <xenon/services/notification_service.hpp>
 
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/wincolor_sink.h>
@@ -84,6 +85,12 @@ void Builder::RegisterDefaultServices() {
         }
     );
     std::shared_ptr<NotificationService> pNotificationService = Services->AddSingleton<NotificationService>();
+
+    std::shared_ptr<UIService> pUIService = Services->AddSingleton<UIService>(
+        [this, pUIConfig, pAimConfig, pRadar, pNotificationService]() {
+            return std::make_shared<UIService>(pUIConfig, SystemVariables, pAimConfig, pRadar, pNotificationService);
+        }
+    );
     MemoryManager = Services->AddSingleton<MemoryService>();
     std::shared_ptr<LuaService> pLuaService = Services->AddSingleton<LuaService>();
     std::shared_ptr<AimService> pAimService = Services->AddSingleton<AimService>(
@@ -92,11 +99,6 @@ void Builder::RegisterDefaultServices() {
         }
     );
 
-    std::shared_ptr<UIService> pUIService = Services->AddSingleton<UIService>(
-        [this, pUIConfig, pAimConfig, pRadar, pNotificationService]() {
-            return std::make_shared<UIService>(pUIConfig, SystemVariables, pAimConfig, pRadar, pNotificationService);
-        }
-    );
 
     #pragma endregion
 
@@ -134,6 +136,6 @@ Cheat Builder::Build() {
         Services->GetService<UIService>(), 
         Services->GetConfiguration<UIConfig>(), 
         SystemVariables,
-        Services->GetService<NotificationService>()
+        Services->GetConfiguration<NotificationService>()
     );
 }
