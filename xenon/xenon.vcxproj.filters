@@ -27,7 +27,7 @@
     <ClInclude Include="includes\xenon\features\esp.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="includes\xenon\services\gui_service.hpp">
+    <ClInclude Include="includes\xenon\services\ui_service.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="libs\spdlog\cfg\argv.h">
@@ -360,7 +360,7 @@
     <ClInclude Include="includes\xenon\services\aim_service.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="includes\xenon\utility\resources_bytes.h">
+    <ClInclude Include="includes\xenon\utility\fonts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="libs\imgui\imconfig.h">
@@ -576,6 +576,12 @@
     <ClInclude Include="includes\xenon\configs\waypoints_config.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="includes\xenon\services\notification_service.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\xenon\models\notification.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\features\aimbot.cpp">
@@ -608,7 +614,7 @@
     <ClCompile Include="libs\imgui\imgui_widgets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\services\gui_service.cpp">
+    <ClCompile Include="src\services\ui_service.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="includes\xenon\configs\game_config.hpp">
@@ -765,6 +771,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\features\waypoints.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\services\notification_service.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,3 +1,5 @@
+#pragma once
+
 #include <string>
 #include <sstream>
 #include <wtypes.h>
@@ -186,3 +188,4 @@ namespace ImGuiHelper {
 	//	RectFilled(x, y, x + w, y + (((float)h / 100.0f) * (float)phealth), barColor, 0.0f, 0);
 	//}
 }
+

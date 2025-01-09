@@ -23,16 +23,23 @@ void Game::EnableUpdate() {
 		EnableHooks();
 
 		switch (m_pConfigs->m_bRenderingType) {
-			case RenderingHookTypes::KIERO:
+			case RenderingHookTypes::KIERO: {
 				kiero::bind(8, (void**)&m_pUIService->oPresent, Game::hkPresentWrapper);
-				break;
-			case RenderingHookTypes::DISCORD:
+			} break;
+			case RenderingHookTypes::DISCORD: {
 				uint64_t discordPresentOffset = 0x1060E0;
-				uint64_t addr = (uint64_t)(GetModuleHandleA("DiscordHook64.dll")) + discordPresentOffset;
-				Present* discord_present = (Present*)addr;
-				m_pUIService->oPresent = *discord_present;
-				_InterlockedExchangePointer((volatile PVOID*)addr, Game::hkPresentWrapper);
-				break;
+				uint64_t presentDiscordAddr = (uint64_t)(GetModuleHandleA("DiscordHook64.dll")) + discordPresentOffset;
+				Present* discordPresent = (Present*)presentDiscordAddr;
+				m_pUIService->oPresent = *discordPresent;
+				_InterlockedExchangePointer((volatile PVOID*)presentDiscordAddr, Game::hkPresentWrapper);
+			} break;
+			case RenderingHookTypes::STEAM: {
+				uint64_t steamPresentOffset = 0x150D70;
+				uint64_t presentSteamAddr = (uint64_t)(GetModuleHandleA("GameOverlayRenderer64.dll")) + steamPresentOffset;
+				Present* steamPresent = (Present*)presentSteamAddr;
+				m_pUIService->oPresent = *steamPresent;
+				_InterlockedExchangePointer((volatile PVOID*)presentSteamAddr, Game::hkPresentWrapper);
+			} break;
 		}
 
 	}
@@ -95,12 +102,16 @@ HRESULT __stdcall Game::BindForInternal(IDXGISwapChain* pSwapChain, UINT nSyncIn
 		}
 	}
 	
-	if (m_pConfigs->m_bUseUICustom) {
-		m_pUIService->BeginRenderUI();
-	}
-	Update();
-	if (m_pConfigs->m_bUseUICustom) {
-		m_pUIService->EndRenderUI();
+	if (!GetAsyncKeyState(VK_ESCAPE)) {
+
+		if (m_pConfigs->m_bUseUICustom) {
+			m_pUIService->BeginRenderUI();
+		}
+		Update();
+		if (m_pConfigs->m_bUseUICustom) {
+			m_pUIService->EndRenderUI();
+		}
+
 	}
 
 	return m_pUIService->oPresent(pSwapChain, nSyncInterval, nFlags);

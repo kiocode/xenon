@@ -83,17 +83,18 @@ void Builder::RegisterDefaultServices() {
             return std::make_shared<Radar>(pRadarConfig, GameGlobalVariables);
         }
     );
-
-    std::shared_ptr<UIService> pUIService = Services->AddSingleton<UIService>(
-        [this, pUIConfig, pAimConfig, pRadar]() {
-            return std::make_shared<UIService>(pUIConfig, SystemVariables, pAimConfig, pRadar);
-        }
-    );
+    std::shared_ptr<NotificationService> pNotificationService = Services->AddSingleton<NotificationService>();
     MemoryManager = Services->AddSingleton<MemoryService>();
     std::shared_ptr<LuaService> pLuaService = Services->AddSingleton<LuaService>();
     std::shared_ptr<AimService> pAimService = Services->AddSingleton<AimService>(
         [this, pAimConfig]() {
             return std::make_shared<AimService>(pAimConfig, SystemVariables);
+        }
+    );
+
+    std::shared_ptr<UIService> pUIService = Services->AddSingleton<UIService>(
+        [this, pUIConfig, pAimConfig, pRadar, pNotificationService]() {
+            return std::make_shared<UIService>(pUIConfig, SystemVariables, pAimConfig, pRadar, pNotificationService);
         }
     );
 
@@ -132,6 +133,7 @@ Cheat Builder::Build() {
         Services->GetConfiguration<GameConfig>(), 
         Services->GetService<UIService>(), 
         Services->GetConfiguration<UIConfig>(), 
-        SystemVariables
+        SystemVariables,
+        Services->GetService<NotificationService>()
     );
 }

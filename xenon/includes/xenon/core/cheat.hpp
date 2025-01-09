@@ -8,17 +8,19 @@
 #include <xenon/models/rendering_hook_types.hpp>
 #include <xenon/models/unrealengine_versions.hpp>
 #include <xenon/models/unityengine_types.hpp>
+#include <xenon/services/notification_service.hpp>
 
 class Cheat {
 public:
 
     Cheat(
-        std::shared_ptr<Game> game, 
-        std::shared_ptr<GameConfig> gameConfig, 
-        std::shared_ptr<UIService> uiService,
-        std::shared_ptr<UIConfig> uiConfig, 
-        std::shared_ptr<System> system
-    ) : m_pGame(game), m_pGameConfig(gameConfig), m_pUIService(uiService), m_pUIConfig(uiConfig), m_pSystem(system) { }
+        std::shared_ptr<Game> pGame, 
+        std::shared_ptr<GameConfig> pGameConfig, 
+        std::shared_ptr<UIService> pUiService,
+        std::shared_ptr<UIConfig> pUiConfig, 
+        std::shared_ptr<System> pSystem,
+        std::shared_ptr<NotificationService> pNotificationService
+    ) : m_pGame(pGame), m_pGameConfig(pGameConfig), m_pUIService(pUiService), m_pUIConfig(pUiConfig), m_pSystem(pSystem), m_pNotificationService(pNotificationService) { }
 
     void UseUpdate() {
 
@@ -28,8 +30,24 @@ public:
     }
 
     void UseUICustom(RenderingHookTypes renderingType) {
+
+        if (!m_pSystem->IsInternal()) {
+			spdlog::warn("Rendering hook type is not necessary if the cheat is Internal");;
+		}
         
 		m_pGameConfig->m_bRenderingType = renderingType;
+		m_pGameConfig->m_bUseUICustom = true;
+
+		spdlog::info("Custom UI is enabled");
+    }
+
+    void UseUICustom() {
+
+        if (m_pSystem->IsInternal()) {
+			spdlog::error("Rendering hook type must be specified if the cheat is Internal");
+            return;
+		}
+        
 		m_pGameConfig->m_bUseUICustom = true;
 
 		spdlog::info("Custom UI is enabled");
@@ -189,5 +207,6 @@ private:
     std::shared_ptr<UIService> m_pUIService;
     std::shared_ptr<UIConfig> m_pUIConfig;
     std::shared_ptr<System> m_pSystem;
+    std::shared_ptr<NotificationService> m_pNotificationService;
 
 };

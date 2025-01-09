@@ -39,11 +39,15 @@ static void AddConfigurations(Builder& builder) {
 	std::shared_ptr<UIConfig> pUIConfig = builder.Services->GetConfiguration<UIConfig>();
 	std::shared_ptr<GameVariables> pGameVariables = builder.Services->GetConfiguration<GameVariables>();
 	std::shared_ptr<Waypoints> pWaypoint = builder.Services->GetService<Waypoints>();
+	std::shared_ptr<NotificationService> pNotificationService = builder.Services->GetService<NotificationService>();
 	pUIConfig->m_qActions->AddButton("Set Waypoint", [pWaypoint, pGameVariables]() { pWaypoint->SetWaypoint("waypointTest", pGameVariables->g_vLocalPos3DWorld, ImColor(255, 255, 255)); });
 
 	pUIConfig->m_qActions->AddSlider("Radar Zoom", &pRadarConfig->m_fZoom, 0.3, 30);
 	pUIConfig->m_qActions->AddButton("Reset Radar Zoom", [pRadarConfig]() { pRadarConfig->m_fZoom = 1; });
 	pUIConfig->m_qActions->AddSlider("Radar Type", &pRadarConfig->m_nType, 0, 1);
+
+	pUIConfig->m_qActions->AddButton("Test Notification", [pNotificationService]() { pNotificationService->Push("test", "test message"); });
+
 }
 
 static void AddServices(Builder& builder) {

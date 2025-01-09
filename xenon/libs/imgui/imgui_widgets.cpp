@@ -732,7 +732,7 @@ bool ImGui::Button(const char* label, const ImVec2& size_arg)
     return ButtonEx(label, size_arg, ImGuiButtonFlags_None);
 }
 
-//extern ImFont* logo_bigger;
+//extern ImFont* m_imLogoBigger;
 
 //bool ImGui::Achievement(const char* label, const ImVec2& size_arg, bool islocked, ImGuiButtonFlags flags)
 //{
@@ -772,7 +772,7 @@ bool ImGui::Button(const char* label, const ImVec2& size_arg)
 //    if (g.LogEnabled)
 //        LogSetNextTextDecoration("[", "]");
 //
-//    PushFont(logo_bigger);
+//    PushFont(m_imLogoBigger);
 //    if (islocked)
 //    {
 //        window->DrawList->AddText(bb.Min + ImVec2(28, 5), ImColor(255, 255, 255, 100), "D");

@@ -14,7 +14,7 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 
     Cheat cheat = builder.Build();
     
-    cheat.UseUICustom(RenderingHookTypes::KIERO);
+    cheat.UseUICustom();
     cheat.UseUIMenu();
     
     cheat.Run();
