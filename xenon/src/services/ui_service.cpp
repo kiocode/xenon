@@ -35,9 +35,9 @@ void UIService::LoadDefaultFonts()
 	mainfont = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(&mainFontBytes, sizeof(mainFontBytes), 14, NULL, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
 	ImFont* notiffont = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(&boldFontBytes, sizeof(boldFontBytes), 18, NULL, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
 	ImFont* logo = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(&logoBytes, sizeof(logoBytes), 48, NULL, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
-	ImFont* logo_bigger = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(&logoBytes, sizeof(logoBytes), 80, NULL, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
+	//ImFont* logo_bigger = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(&logoBytes, sizeof(logoBytes), 80, NULL, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
 
-	m_pNotificationService->SetFonts(notiffont, logo, logo_bigger);
+	m_pNotificationService->SetFonts(notiffont, logo);//, logo_bigger);
 
 }
 
@@ -123,7 +123,7 @@ void UIService::RenderDefaultMenu() {
 
 		//title
 		drawlist->AddRectFilled(pos, ImVec2(pos.x + 480, pos.y + 25), ImColor(29, 40, 54, 255), 6.f, ImDrawFlags_RoundCornersTop);
-		drawlist->AddText(CenterText(pos, ImVec2(pos.x + 480, pos.y + 25), m_pSystem->GetAppTitle().c_str()), ImColor(165, 186, 197, 255), m_pSystem->GetAppTitle().c_str());
+		drawlist->AddText(CenterText(pos, ImVec2(pos.x + 480, pos.y + 25), m_pSystem->GetAppTitle()->c_str()), ImColor(165, 186, 197, 255), m_pSystem->GetAppTitle()->c_str());
 
 		//tabs
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
@@ -218,6 +218,7 @@ void UIService::RenderDefaultMenu() {
 					ImGui::SliderFloat("Slider Float", &sliderfloat, 0.f, 100.f, "%.1f");
 					ImGui::Combo("Combo", &combo, "Selectable 1\0\Selectable 2\0\Selectable 3", 3);
 					ImGui::MultiCombo("Multicombo", multi_items_count, multi_items, 5);
+					ImGui::Keybind("Hotkey", &key);
 
 					//if(ImGui::Button("Test Hotkey", ImVec2(200, 25)))
 					//	isEditing = true;
@@ -344,7 +345,7 @@ void UIService::RenderDefaultUIQuickActions() {
 		pos = ImGui::GetWindowPos() + ImVec2(padding, padding);
 
 		//main rect
-		drawlist->AddRectFilled(pos, ImVec2(pos.x + 480, pos.y + 430), ImColor(29, 40, 54, 150), 6.f, ImDrawFlags_RoundCornersAll);
+		drawlist->AddRectFilled(pos, ImVec2(pos.x + 480, pos.y + 430), ImColor(29, 40, 54, 255), 6.f, ImDrawFlags_RoundCornersAll);
 
 		//title
 		const char* title = "Quick Actions";
@@ -439,7 +440,7 @@ void UIService::Update() {
 	{
 		ImColor color = ImColor(255, 255, 255, 255); // or rainbow
 
-		ImGuiHelper::DrawOutlinedText(mainfont, ImVec2(m_pSystem->GetScreenCenter().x, m_pSystem->GetScreenResolution().y - 20), 13.0f, color, true, m_pSystem->GetAppTitle().c_str());
+		ImGuiHelper::DrawOutlinedText(mainfont, ImVec2(m_pSystem->GetScreenCenter().x, m_pSystem->GetScreenResolution().y - 20), 13.0f, color, true, m_pSystem->GetAppTitle()->c_str());
 		ImGuiHelper::DrawOutlinedText(mainfont, ImVec2(m_pSystem->GetScreenCenter().x, 5), 13.0f, color, true, "[ %.1f FPS ]", ImGui::GetIO().Framerate);
 	}
 
@@ -480,10 +481,12 @@ bool UIService::CreateWindowUI()
 		return false;
 	}
 
+	std::wstring wideWindowTitle = std::wstring(m_pSystem->GetAppTitle()->begin(), m_pSystem->GetAppTitle()->end());
+
 	m_hWindow = CreateWindowExW(
 		WS_EX_TOPMOST | WS_EX_TRANSPARENT | WS_EX_LAYERED,
 		m_wClass.lpszClassName,
-		L"test",//std::wstring(m_pSystem->GetAppTitle().begin(), m_pSystem->GetAppTitle().end()).c_str(),
+		wideWindowTitle.c_str(),
 		WS_POPUP,
 		0, 0, m_pSystem->GetScreenResolution().x, m_pSystem->GetScreenResolution().y,
 		nullptr, nullptr, m_wClass.hInstance, nullptr
@@ -517,6 +520,8 @@ bool UIService::CreateWindowUI()
 
 	ShowWindow(m_hWindow, SW_SHOWDEFAULT);
 	UpdateWindow(m_hWindow);
+
+	SetCursor(LoadCursor(nullptr, IDC_ARROW));
 
 	return true;
 

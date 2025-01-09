@@ -3,7 +3,7 @@
 void NotificationService::RenderNotifications() {
 
 	for (Notification& notification : m_vQueuedNotifications) {
-		notification.Render(m_imFont, m_imLogo, m_imLogoBigger);
+		notification.Render(m_imFont, m_imLogo);// , m_imLogoBigger);
 	}
 
 }

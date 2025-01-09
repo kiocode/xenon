@@ -164,7 +164,7 @@ static void TestGeneral(Builder& builder) {
 	cheat.UseUpdate();
 	cheat.UseUICustom(RenderingHookTypes::KIERO);
 	cheat.UseUIRadar();
-	//cheat.UseUIMenu();
+	cheat.UseUIMenu();
 	//cheat.UseUIRenderWindows();
 	cheat.UseUIRenderOverlays();
 	cheat.UseUIQuickActions();

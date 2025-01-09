@@ -1,7 +1,6 @@
 #include <xenon/features/feature.hpp>
 
 #include <fstream>
-#include <imgui/imgui_widgets.cpp>
 
 void Feature::SaveHotkeys(const std::vector<Hotkey>& hotkeys, const std::string& filename) {
     json j;

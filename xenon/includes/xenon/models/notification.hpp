@@ -12,8 +12,8 @@ public:
 
 	Notification(int index, std::string strTitle, std::string strMessage) : m_nIndex(index), m_strTitle(strTitle), m_strMessage(strMessage) { }
 
-	void Render(ImFont* imFont, ImFont* imLogo, ImFont* imLogoBigger) {
-		if(!imFont || !imLogo || !imLogoBigger)
+	void Render(ImFont* imFont, ImFont* imLogo){//, ImFont* imLogoBigger) {
+		if(!imFont || !imLogo)// || !imLogoBigger)
 			return;
 
 		ImGui::Begin("Notification", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoMove);

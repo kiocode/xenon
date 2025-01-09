@@ -30,7 +30,7 @@ public:
         return m_vActions;
     }
 
-    int GetSize() {
+    size_t GetSize() {
         return m_vActions.size();
     }
 

@@ -21,8 +21,8 @@ public:
 		m_strAppTitle = title;
 	}
 
-	std::string GetAppTitle() {
-		return m_strAppTitle;
+	std::string* GetAppTitle() {
+		return &m_strAppTitle;
 	}
 
 	void IsInternal(bool isInternal) {

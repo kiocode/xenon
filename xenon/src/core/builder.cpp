@@ -136,6 +136,6 @@ Cheat Builder::Build() {
         Services->GetService<UIService>(), 
         Services->GetConfiguration<UIConfig>(), 
         SystemVariables,
-        Services->GetConfiguration<NotificationService>()
+        Services->GetService<NotificationService>()
     );
 }

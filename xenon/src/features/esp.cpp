@@ -5,18 +5,23 @@
 
 void ESP::RenderSnapline() {
 
+	float screenHeight = static_cast<float>(m_pSystem->GetScreenResolution().y);
+	float centerX = static_cast<float>(m_pSystem->GetScreenCenter().x);
+	ImVec2 center = ImVec2(centerX, static_cast<float>(m_pSystem->GetScreenCenter().y));
+
 	for (auto& target : m_pGameVariables->g_vTargetsScreen) {
+		ImVec2 targetPos = ImVec2(static_cast<float>(target.x), static_cast<float>(target.y));
 
 		switch (m_pConfigs->m_nSnaplineType)
 		{
 			case 0:
-				ImGui::GetBackgroundDrawList()->AddLine(ImVec2(m_pSystem->GetScreenCenter().x, m_pSystem->GetScreenCenter().y), ImVec2(target.x, target.y), m_pConfigs->m_cSnapline, 1.0f);
+				ImGui::GetBackgroundDrawList()->AddLine(center, targetPos, m_pConfigs->m_cSnapline, 1.0f);
 				break;
 			case 1:
-				ImGui::GetBackgroundDrawList()->AddLine(ImVec2(m_pSystem->GetScreenCenter().x, 0), ImVec2(target.x, target.y), m_pConfigs->m_cSnapline, 1.0f);
+				ImGui::GetBackgroundDrawList()->AddLine(ImVec2(centerX, 0), targetPos, m_pConfigs->m_cSnapline, 1.0f);
 				break;
 			case 2:
-				ImGui::GetBackgroundDrawList()->AddLine(ImVec2(m_pSystem->GetScreenCenter().x, m_pSystem->GetScreenResolution().y), ImVec2(target.x, target.y), m_pConfigs->m_cSnapline, 1.0f);
+				ImGui::GetBackgroundDrawList()->AddLine(ImVec2(centerX, screenHeight), targetPos, m_pConfigs->m_cSnapline, 1.0f);
 				break;
 		}
 
@@ -28,8 +33,11 @@ void ESP::Render2DBox() {
 
 	for (auto& target : m_pGameVariables->g_vTargetsScreen) {
 
-		ImVec2 head = ImVec2(target.x, target.y);
-		ImVec2 feet = ImVec2(target.x, target.y + 64);
+		float targetX = static_cast<float>(target.x);
+		float targetY = static_cast<float>(target.y);
+
+		ImVec2 head = ImVec2(targetX, targetY);
+		ImVec2 feet = ImVec2(targetX, targetY + 64);
 
 		ImVec2 minBottomLeft = ImVec2(feet.x - 32, feet.y);
 		ImVec2 maxTopRight = ImVec2(head.x + 32, head.y);
@@ -84,9 +92,14 @@ void ESP::RenderSkeleton() {
 			const Vec2 boneLoc1 = m_pConfigs->m_fnGetBoneScreenPosFromIndex(bone1Index);
 			const Vec2 boneLoc2 = m_pConfigs->m_fnGetBoneScreenPosFromIndex(bone2Index);
 
+			float bone1X = static_cast<float>(boneLoc1.x);
+			float bone1Y = static_cast<float>(boneLoc1.y);
+			float bone2X = static_cast<float>(boneLoc2.x);
+			float bone2Y = static_cast<float>(boneLoc2.y);
+
 			ImGui::GetBackgroundDrawList()->AddLine(
-				ImVec2(boneLoc1.x, boneLoc1.y),
-				ImVec2(boneLoc2.x, boneLoc2.y),
+				ImVec2(bone1X, bone1Y),
+				ImVec2(bone2X, bone2Y),
 				m_pConfigs->m_cSkeleton,
 				1.0f
 			);
