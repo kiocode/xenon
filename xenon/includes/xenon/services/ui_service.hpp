@@ -119,12 +119,13 @@ private:
     bool CreateDeviceUI();
 
     void RenderDefaultTheme(bool rainbowBorders);
-    void RenderDefaultUI();
+
+    void RenderTabs();
+    void RenderPlayersTab();
+    void RenderDevTab();    
+
     void RenderDefaultUIQuickActions();
     void RenderDefaultMenu();
-    void RenderDefaultRadar();
-    void RenderBottomCenterNotification();
-    void RenderTopLeftNotification();
     void RenderCrosshair();
     void RenderFov();
     void RenderMouse();

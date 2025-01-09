@@ -184,7 +184,13 @@
     <ClInclude Include="includes\xenon\xenon.hpp" />
     <ClInclude Include="libs\imgui\imconfig.h" />
     <ClInclude Include="libs\imgui\imgui.h" />
+    <ClInclude Include="libs\imgui\imgui_impl_dx10.h" />
     <ClInclude Include="libs\imgui\imgui_impl_dx11.h" />
+    <ClInclude Include="libs\imgui\imgui_impl_dx12.h" />
+    <ClInclude Include="libs\imgui\imgui_impl_dx9.h" />
+    <ClInclude Include="libs\imgui\imgui_impl_opengl2.h" />
+    <ClInclude Include="libs\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="libs\imgui\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="libs\imgui\imgui_impl_win32.h" />
     <ClInclude Include="libs\imgui\imgui_internal.h" />
     <ClInclude Include="libs\imgui\imstb_rectpack.h" />
@@ -342,7 +348,12 @@
     <ClCompile Include="includes\xenon\utility\imgui_helper.hpp" />
     <ClCompile Include="libs\imgui\imgui.cpp" />
     <ClCompile Include="libs\imgui\imgui_draw.cpp" />
+    <ClCompile Include="libs\imgui\imgui_impl_dx10.cpp" />
     <ClCompile Include="libs\imgui\imgui_impl_dx11.cpp" />
+    <ClCompile Include="libs\imgui\imgui_impl_dx12.cpp" />
+    <ClCompile Include="libs\imgui\imgui_impl_dx9.cpp" />
+    <ClCompile Include="libs\imgui\imgui_impl_opengl2.cpp" />
+    <ClCompile Include="libs\imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="libs\imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="libs\imgui\imgui_tables.cpp" />
     <ClCompile Include="libs\imgui\imgui_widgets.cpp" />

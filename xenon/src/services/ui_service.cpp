@@ -132,20 +132,20 @@ void UIService::RenderDefaultMenu() {
 		{
 			if (devconsole)
 			{
-				if (ImGui::Tabs("Players", ImVec2(80, 20), tabs == 0)) tabs = 0;
-				if (ImGui::Tabs("Radar", ImVec2(80, 20), tabs == 1)) tabs = 1;
-				if (ImGui::Tabs("Loot", ImVec2(80, 20), tabs == 2)) tabs = 2;
-				if (ImGui::Tabs("Aim", ImVec2(80, 20), tabs == 3)) tabs = 3;
-				if (ImGui::Tabs("Misc", ImVec2(80, 20), tabs == 4)) tabs = 4;
-				if (ImGui::Tabs("Dev", ImVec2(80, 20), tabs == 5)) tabs = 5;
+				if (ImGui::Tabs("Players", ImVec2(80, 20), tabs == 0, 0)) tabs = 0;
+				if (ImGui::Tabs("Radar", ImVec2(80, 20), tabs == 1, 0)) tabs = 1;
+				if (ImGui::Tabs("Loot", ImVec2(80, 20), tabs == 2, 0)) tabs = 2;
+				if (ImGui::Tabs("Aim", ImVec2(80, 20), tabs == 3, 0)) tabs = 3;
+				if (ImGui::Tabs("Misc", ImVec2(80, 20), tabs == 4, 0)) tabs = 4;
+				if (ImGui::Tabs("Dev", ImVec2(80, 20), tabs == 5, 0)) tabs = 5;
 			}
 			else
 			{
-				if (ImGui::Tabs("Players", ImVec2(96, 20), tabs == 0)) tabs = 0;
-				if (ImGui::Tabs("Radar", ImVec2(96, 20), tabs == 1)) tabs = 1;
-				if (ImGui::Tabs("Loot", ImVec2(96, 20), tabs == 2)) tabs = 2;
-				if (ImGui::Tabs("Aim", ImVec2(96, 20), tabs == 3)) tabs = 3;
-				if (ImGui::Tabs("Misc", ImVec2(96, 20), tabs == 4)) tabs = 4;
+				if (ImGui::Tabs("Players", ImVec2(96, 20), tabs == 0, 0)) tabs = 0;
+				if (ImGui::Tabs("Radar", ImVec2(96, 20), tabs == 1, 0)) tabs = 1;
+				if (ImGui::Tabs("Loot", ImVec2(96, 20), tabs == 2, 0)) tabs = 2;
+				if (ImGui::Tabs("Aim", ImVec2(96, 20), tabs == 3, 0)) tabs = 3;
+				if (ImGui::Tabs("Misc", ImVec2(96, 20), tabs == 4, 0)) tabs = 4;
 			}
 		}
 		ImGui::EndGroup();
@@ -156,8 +156,8 @@ void UIService::RenderDefaultMenu() {
 			ImGui::SetCursorPos(ImVec2(5, 55));
 			ImGui::BeginGroup();
 			{
-				if (ImGui::Tabs("Colors", ImVec2(240, 20), subtabs == 0)) subtabs = 0;
-				if (ImGui::Tabs("Settings", ImVec2(240, 20), subtabs == 1)) subtabs = 1;
+				if (ImGui::Tabs("Colors", ImVec2(240, 20), subtabs == 0, 0)) subtabs = 0;
+				if (ImGui::Tabs("Settings", ImVec2(240, 20), subtabs == 1, 0)) subtabs = 1;
 			}
 			ImGui::EndGroup();
 		}
@@ -218,34 +218,12 @@ void UIService::RenderDefaultMenu() {
 					ImGui::SliderFloat("Slider Float", &sliderfloat, 0.f, 100.f, "%.1f");
 					ImGui::Combo("Combo", &combo, "Selectable 1\0\Selectable 2\0\Selectable 3", 3);
 					ImGui::MultiCombo("Multicombo", multi_items_count, multi_items, 5);
-					ImGui::Keybind("Keybind", &key);
 
 					//if(ImGui::Button("Test Hotkey", ImVec2(200, 25)))
 					//	isEditing = true;
 					//ImGuiHelper::RenderHotkeyEditor(&testhotkey, &isEditing);
 				}
 				ImGui::EndGroup();
-			}
-			ImGui::EndChild();
-		}
-
-		//achievements
-		if (tabs == 2)
-		{
-			ImGui::SetCursorPos(ImVec2(10, 60));
-			ImGui::BeginChild("MainChild", ImVec2(470, 365));
-			{
-				////render funcs
-				//ImGui::SetCursorPos(ImVec2(10, 10));
-				//ImGui::BeginGroup();
-				//{
-				//	ImGui::InputText("Notification Title", notiftitle, 64);
-				//	ImGui::InputText("Notification Description", notifdesc, 64);
-				//	if (ImGui::Button("Showcase notification", ImVec2(200, 25)))
-				//		notifpressed++;
-				//	//ImGui::Combo("Notificiation Type", &notiftype, "Xbox\0\PS4", 2);
-				//}
-				//ImGui::EndGroup();
 			}
 			ImGui::EndChild();
 		}

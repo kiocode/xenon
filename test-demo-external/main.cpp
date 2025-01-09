@@ -187,6 +187,7 @@ static void TestLua(Builder& builder) {
 
 	cheat.UseUpdate();
 	cheat.UseUICustom(RenderingHookTypes::KIERO);
+	cheat.UseUIMenu();
 	cheat.UseUIQuickActions();
 	/*cheat.UseESPSnapline();
 	cheat.UseESPBox2D();*/

@@ -1,6 +1,6 @@
 #include <xenon/core/cheat.hpp>
 #include <kiero/kiero.h>
-#include <xenon/services/gui_service.hpp>
+#include <xenon/services/ui_service.hpp>
 #include <xenon/core/di_manager.hpp>
 
 void Cheat::Run() {

@@ -1,4 +1,3 @@
-
 // dear imgui, v1.89.7 WIP
 // (widgets code)
 
@@ -732,75 +731,75 @@ bool ImGui::Button(const char* label, const ImVec2& size_arg)
     return ButtonEx(label, size_arg, ImGuiButtonFlags_None);
 }
 
-//extern ImFont* m_imLogoBigger;
+extern ImFont* logo_bigger;
 
-//bool ImGui::Achievement(const char* label, const ImVec2& size_arg, bool islocked, ImGuiButtonFlags flags)
-//{
-//    ImGuiWindow* window = GetCurrentWindow();
-//    if (window->SkipItems)
-//        return false;
-//
-//    ImGuiContext& g = *GImGui;
-//    const ImGuiStyle& style = g.Style;
-//    const ImGuiID id = window->GetID(label);
-//    const ImVec2 label_size = CalcTextSize(label, NULL, true);
-//
-//    ImVec2 pos = window->DC.CursorPos;
-//    if ((flags & ImGuiButtonFlags_AlignTextBaseLine) && style.FramePadding.y < window->DC.CurrLineTextBaseOffset) // Try to vertically align buttons that are smaller/have no padding so that text baseline matches (bit hacky, since it shouldn't be a flag)
-//        pos.y += window->DC.CurrLineTextBaseOffset - style.FramePadding.y;
-//    ImVec2 size = CalcItemSize(size_arg, label_size.x + style.FramePadding.x * 2.0f, label_size.y + style.FramePadding.y * 2.0f);
-//
-//    const ImRect bb(pos, pos + size);
-//    ItemSize(size, style.FramePadding.y);
-//    if (!ItemAdd(bb, id))
-//        return false;
-//
-//    if (g.LastItemData.InFlags & ImGuiItemFlags_ButtonRepeat)
-//        flags |= ImGuiButtonFlags_Repeat;
-//
-//    bool hovered, held;
-//    bool pressed = ButtonBehavior(bb, id, &hovered, &held, flags);
-//
-//    // Render
-//    RenderNavHighlight(bb, id);
-//    window->DrawList->AddRectFilled(bb.Min, bb.Max, ImColor(60, 64, 65, 255), 8.f);
-//    if (islocked)
-//        window->DrawList->AddRect(bb.Min, bb.Max, ImColor(255, 255, 255, 100), 8.f, 0, 1.5f);
-//    else
-//        window->DrawList->AddRect(bb.Min, bb.Max, ImColor(255, 255, 255, 255), 8.f, 0, 1.5f);
-//
-//    if (g.LogEnabled)
-//        LogSetNextTextDecoration("[", "]");
-//
-//    PushFont(m_imLogoBigger);
-//    if (islocked)
-//    {
-//        window->DrawList->AddText(bb.Min + ImVec2(28, 5), ImColor(255, 255, 255, 100), "D");
-//    }
-//    else
-//    {
-//        window->DrawList->AddText(bb.Min + ImVec2(14, 5), ImColor(255, 255, 255, 255), "A");
-//        window->DrawList->AddText(bb.Min + ImVec2(14, 5), ImColor(0, 229, 189, 255), "B");
-//        window->DrawList->AddText(bb.Min + ImVec2(14, 5), ImColor(0, 229, 189, 255), "C");
-//    }
-//    PopFont();
-//
-//    if (islocked)
-//    {
-//        PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 1.0f, 1.0f, 0.39f));
-//        RenderTextClipped(bb.Min + style.FramePadding, bb.Max - style.FramePadding, label, NULL, &label_size, ImVec2(0.5, 0.95), &bb);
-//        PopStyleColor();
-//    }
-//    else
-//    {
-//        PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
-//        RenderTextClipped(bb.Min + style.FramePadding, bb.Max - style.FramePadding, label, NULL, &label_size, ImVec2(0.5, 0.95), &bb);
-//        PopStyleColor();
-//    }
-//
-//    IMGUI_TEST_ENGINE_ITEM_INFO(id, label, g.LastItemData.StatusFlags);
-//    return pressed;
-//}
+bool ImGui::Achievement(const char* label, const ImVec2& size_arg, bool islocked, ImGuiButtonFlags flags)
+{
+    ImGuiWindow* window = GetCurrentWindow();
+    if (window->SkipItems)
+        return false;
+
+    ImGuiContext& g = *GImGui;
+    const ImGuiStyle& style = g.Style;
+    const ImGuiID id = window->GetID(label);
+    const ImVec2 label_size = CalcTextSize(label, NULL, true);
+
+    ImVec2 pos = window->DC.CursorPos;
+    if ((flags & ImGuiButtonFlags_AlignTextBaseLine) && style.FramePadding.y < window->DC.CurrLineTextBaseOffset) // Try to vertically align buttons that are smaller/have no padding so that text baseline matches (bit hacky, since it shouldn't be a flag)
+        pos.y += window->DC.CurrLineTextBaseOffset - style.FramePadding.y;
+    ImVec2 size = CalcItemSize(size_arg, label_size.x + style.FramePadding.x * 2.0f, label_size.y + style.FramePadding.y * 2.0f);
+
+    const ImRect bb(pos, pos + size);
+    ItemSize(size, style.FramePadding.y);
+    if (!ItemAdd(bb, id))
+        return false;
+
+    if (g.LastItemData.InFlags & ImGuiItemFlags_ButtonRepeat)
+        flags |= ImGuiButtonFlags_Repeat;
+
+    bool hovered, held;
+    bool pressed = ButtonBehavior(bb, id, &hovered, &held, flags);
+
+    // Render
+    RenderNavHighlight(bb, id);
+    window->DrawList->AddRectFilled(bb.Min, bb.Max, ImColor(60, 64, 65, 255), 8.f);
+    if (islocked)
+        window->DrawList->AddRect(bb.Min, bb.Max, ImColor(255, 255, 255, 100), 8.f, 0, 1.5f);
+    else
+        window->DrawList->AddRect(bb.Min, bb.Max, ImColor(255, 255, 255, 255), 8.f, 0, 1.5f);
+
+    if (g.LogEnabled)
+        LogSetNextTextDecoration("[", "]");
+
+    PushFont(logo_bigger);
+    if (islocked)
+    {
+        window->DrawList->AddText(bb.Min + ImVec2(28, 5), ImColor(255, 255, 255, 100), "D");
+    }
+    else
+    {
+        window->DrawList->AddText(bb.Min + ImVec2(14, 5), ImColor(255, 255, 255, 255), "A");
+        window->DrawList->AddText(bb.Min + ImVec2(14, 5), ImColor(0, 229, 189, 255), "B");
+        window->DrawList->AddText(bb.Min + ImVec2(14, 5), ImColor(0, 229, 189, 255), "C");
+    }
+    PopFont();
+
+    if (islocked)
+    {
+        PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 1.0f, 1.0f, 0.39f));
+        RenderTextClipped(bb.Min + style.FramePadding, bb.Max - style.FramePadding, label, NULL, &label_size, ImVec2(0.5, 0.95), &bb);
+        PopStyleColor();
+    }
+    else
+    {
+        PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
+        RenderTextClipped(bb.Min + style.FramePadding, bb.Max - style.FramePadding, label, NULL, &label_size, ImVec2(0.5, 0.95), &bb);
+        PopStyleColor();
+    }
+
+    IMGUI_TEST_ENGINE_ITEM_INFO(id, label, g.LastItemData.StatusFlags);
+    return pressed;
+}
 
 struct tab_state {
     ImVec4 bg_col;

@@ -14,7 +14,7 @@
 #include <xenon/services/lua_service.hpp>
 #include <xenon/configs/game_variables.hpp>
 #include <xenon/configs/ui_config.hpp>
-#include <xenon/services/gui_service.hpp>
+#include <xenon/services/ui_service.hpp>
 
 class Game {
 public:
