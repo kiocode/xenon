@@ -481,12 +481,12 @@ bool UIService::CreateWindowUI()
 		return false;
 	}
 
-	std::wstring wideWindowTitle = std::wstring(m_pSystem->GetAppTitle()->begin(), m_pSystem->GetAppTitle()->end());
+	//std::wstring wideWindowTitle = std::wstring(m_pSystem->GetAppTitle()->begin(), m_pSystem->GetAppTitle()->end());
 
 	m_hWindow = CreateWindowExW(
 		WS_EX_TOPMOST | WS_EX_TRANSPARENT | WS_EX_LAYERED,
 		m_wClass.lpszClassName,
-		wideWindowTitle.c_str(),
+		L"xenon",//wideWindowTitle.c_str(),
 		WS_POPUP,
 		0, 0, m_pSystem->GetScreenResolution().x, m_pSystem->GetScreenResolution().y,
 		nullptr, nullptr, m_wClass.hInstance, nullptr

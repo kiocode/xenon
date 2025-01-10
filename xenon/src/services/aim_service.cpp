@@ -57,23 +57,40 @@ void AimService::Spin3D() {
     SetAimPos({ x, y });
 }
 
-Vec2* AimService::GetNearestPos(std::vector<Vec2> positions, Vec2 currentPos) {
+Vec2* AimService::GetNearestPos(std::vector<TargetProfile> targets, TargetProfile local) {
     double maxdist = 99999;
 
-	return GetNearestPos(positions, currentPos, maxdist);
+	return GetNearestPos(targets, local, maxdist);
 }
 
-Vec2* AimService::GetNearestPos(std::vector<Vec2> positions, Vec2 currentPos, double maxdist) {
+Vec2* AimService::GetNearestPos(std::vector<TargetProfile> targets, TargetProfile local, double maxdist) {
 	Vec2* nearest = nullptr;
 	double minDistance = maxdist;
 
-    for (Vec2 pos : positions) {
-		double distance = std::sqrt(std::pow(pos.x - currentPos.x, 2) + std::pow(pos.y - currentPos.y, 2));
-        if (distance < minDistance) {
-			minDistance = distance;
-			nearest = &pos;
-		}
-	}
+    switch (m_pSystem->GetGameDimension()) {
+        case GameDimensions::DIMENSION_2D: {
+
+            for (TargetProfile target : targets) {
+                double distance = std::sqrt(std::pow(target.m_vPos2D.x - local.m_vPos2D.x, 2) + std::pow(target.m_vPos2D.y - local.m_vPos2D.y, 2));
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    nearest = m_pSystem->m_fnW2S2D(target.m_vPos2D);
+                }
+            }
+        } break;
+        case GameDimensions::DIMENSION_3D: {
+
+            for (TargetProfile target : targets) {
+                double distance = std::sqrt(std::pow(target.m_vPos3D.x - local.m_vPos3D.x, 2) + std::pow(target.m_vPos3D.y - local.m_vPos3D.y, 2));
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    nearest = m_pSystem->m_fnW2S3D(target.m_vPos3D);
+                }
+            }
+        } break;
+
+    }
+
 
 	return nearest;
 }

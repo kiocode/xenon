@@ -6,6 +6,7 @@
 #include <xenon/utility/vec2.hpp>
 #include <xenon/configs/aim_config.hpp>
 #include <xenon/core/system.hpp>
+#include <xenon/models/profiles/target_profile.hpp>
 
 class AimService {
 public:
@@ -20,8 +21,8 @@ public:
     void Spin2D();
     void Spin3D();
 
-    Vec2* GetNearestPos(std::vector<Vec2> positions, Vec2 currentPos);
-    Vec2* GetNearestPos(std::vector<Vec2> positions, Vec2 currentPos, double maxdist);
+    Vec2* GetNearestPos(std::vector<TargetProfile> targets, TargetProfile local);
+    Vec2* GetNearestPos(std::vector<TargetProfile> targets, TargetProfile local, double maxdist);
 
 private:
     std::shared_ptr<AimConfig> m_pConfigs;

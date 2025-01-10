@@ -9,8 +9,11 @@ void ESP::RenderSnapline() {
 	float centerX = static_cast<float>(m_pSystem->GetScreenCenter().x);
 	ImVec2 center = ImVec2(centerX, static_cast<float>(m_pSystem->GetScreenCenter().y));
 
-	for (auto& target : m_pGameVariables->g_vTargetsScreen) {
-		ImVec2 targetPos = ImVec2(static_cast<float>(target.x), static_cast<float>(target.y));
+	for (auto& target : m_pGameVariables->g_vTargets) {
+
+		Vec2* targetScreenPos = (m_pSystem->GetGameDimension() == GameDimensions::DIMENSION_3D ? m_pSystem->m_fnW2S3D(target.m_vPos3D) : m_pSystem->m_fnW2S2D(target.m_vPos2D));
+
+		ImVec2 targetPos = ImVec2(static_cast<float>(targetScreenPos->x), static_cast<float>(targetScreenPos->y));
 
 		switch (m_pConfigs->m_nSnaplineType)
 		{
@@ -31,10 +34,12 @@ void ESP::RenderSnapline() {
 
 void ESP::Render2DBox() {
 
-	for (auto& target : m_pGameVariables->g_vTargetsScreen) {
+	for (auto& target : m_pGameVariables->g_vTargets) {
 
-		float targetX = static_cast<float>(target.x);
-		float targetY = static_cast<float>(target.y);
+		Vec2* targetScreenPos = (m_pSystem->GetGameDimension() == GameDimensions::DIMENSION_3D ? m_pSystem->m_fnW2S3D(target.m_vPos3D) : m_pSystem->m_fnW2S2D(target.m_vPos2D));
+
+		float targetX = static_cast<float>(targetScreenPos->x);
+		float targetY = static_cast<float>(targetScreenPos->y);
 
 		ImVec2 head = ImVec2(targetX, targetY);
 		ImVec2 feet = ImVec2(targetX, targetY + 64);
@@ -82,7 +87,7 @@ void ESP::RenderSkeleton() {
 		spdlog::error("No bone pairs or bone getter function set");
 	}
 
-	for (auto& target : m_pGameVariables->g_vTargetsScreen) {
+	for (auto& target : m_pGameVariables->g_vTargets) {
 
 		for (const std::pair<int, int>& pair : m_pConfigs->m_tBonePairs)
 		{

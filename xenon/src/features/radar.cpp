@@ -8,7 +8,7 @@ void Radar::RenderRadar() {
         return;
     }
 
-    bool is3D = false;
+    bool is3D = m_pSystem->GetGameDimension() == GameDimensions::DIMENSION_3D;
 
     switch (m_pConfigs->m_nType) {
     case 0: RenderRadarBase("Circular Radar", RadarShapes::Circular, is3D); break;
@@ -18,6 +18,7 @@ void Radar::RenderRadar() {
         break;
     }
 }
+
 void Radar::RenderRadarBase(const char* title, RadarShapes shape, bool is3D) {
     ImGui::Begin(title, nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
     {
@@ -62,10 +63,10 @@ void Radar::RenderRadarBase(const char* title, RadarShapes shape, bool is3D) {
         const float zoomFactor = m_pConfigs->m_fZoom > 0.0f ? m_pConfigs->m_fZoom : 1.0f;
 
         if (is3D) {
-            const auto& localPlayer = m_pGameVariables->g_vLocalPos3DWorld;
-            for (const auto& target : m_pGameVariables->g_vTargets3DWorld) {
-                const float relativeX = target.x - localPlayer.x;
-                const float relativeY = target.z - localPlayer.z;
+            const auto& localPlayerPos = m_pGameVariables->g_vLocal.m_vPos3D;
+            for (const auto& target : m_pGameVariables->g_vTargets) {
+                const float relativeX = target.m_vPos3D.x - localPlayerPos.x;
+                const float relativeY = target.m_vPos3D.z - localPlayerPos.z;
 
                 const float scaledX = (relativeX / m_pConfigs->m_fDefaultScale) * radarSize * zoomFactor;
                 const float scaledY = (relativeY / m_pConfigs->m_fDefaultScale) * radarSize * zoomFactor;
@@ -79,10 +80,10 @@ void Radar::RenderRadarBase(const char* title, RadarShapes shape, bool is3D) {
             }
         }
         else {
-            const Vec2& localPlayer = m_pGameVariables->g_vLocalPos2DWorld;
-            for (const auto& target : m_pGameVariables->g_vTargets2DWorld) {
-                const float relativeX = target.x - localPlayer.x;
-                const float relativeY = target.y - localPlayer.y;
+            const Vec2& localPlayerPos = m_pGameVariables->g_vLocal.m_vPos2D;
+            for (const auto& target : m_pGameVariables->g_vTargets) {
+                const float relativeX = target.m_vPos2D.x - localPlayerPos.x;
+                const float relativeY = target.m_vPos2D.y - localPlayerPos.y;
 
                 const float scaledX = (relativeX / m_pConfigs->m_fDefaultScale) * radarSize * zoomFactor;
                 const float scaledY = (relativeY / m_pConfigs->m_fDefaultScale) * radarSize * zoomFactor;

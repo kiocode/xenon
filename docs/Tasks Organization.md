@@ -10,13 +10,10 @@ kanban-plugin: board
 
 ## Todo
 
-- [ ] Add Waypoints support
 - [ ] Add on github an activity check for building and formatting
-- [ ] customize GUI
 - [ ] dll loader
 - [ ] packet sniffer + parser
 - [ ] implement il2cppresolver
-- [ ] esp skeleton
 - [ ] write down some Lua binding c++
 - [ ] check configs naming convetions
 - [ ] in update if attached a game check if its opened
@@ -25,13 +22,17 @@ kanban-plugin: board
 - [ ] merge track mouse with the system get mouse fn
 - [ ] move all "use" var in a cheatconfig that will be share by any service
 - [ ] add ui right top show enabled features like minecraft clients
-- [ ] add more universal data, maybe a player profile with health and name and distance from the localplayer
 - [ ] change all, don't have a single update but have a list with all features and services called now components that have a super clas with onupdate synchronized with the original update
 - [ ] add esp and aimbot support for visible/not players behind walls
+- [ ] get nearest maybe generalize the 3d thing
+- [ ] check if the use of pointer makes sense like with vec2
 
 
 ## InProgress
 
+- [ ] Add Waypoints support
+- [ ] customize GUI
+- [ ] add more universal data, maybe a player profile with health and name and distance from the localplayer
 
 
 ## Done
@@ -45,6 +46,7 @@ kanban-plugin: board
 - [x] make tests for radar
 - [x] centralize renderui in another file
 - [x] esp snapline
+- [x] esp skeleton
 - [x] esp box2d/3d
 - [x] implement radar function
 - [x] create a public services pool

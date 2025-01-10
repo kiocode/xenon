@@ -155,11 +155,7 @@ void Game::Update() {
 
 		if (m_pAimConfigs->m_bNearest) {
 
-			Vec2 m_vLocalPos = m_pVariables->g_vLocalPos2DWorld; // or 3d world but converted idk
-
-			// targets different types
-			Vec2* nearest = m_pAimService->GetNearestPos(m_pVariables->g_vTargetsCustom, m_vLocalPos, m_pAimConfigs->m_fNearest);
-
+			Vec2* nearest = m_pAimService->GetNearestPos(m_pVariables->g_vTargets, m_pVariables->g_vLocal, m_pAimConfigs->m_fNearest);
 			if (nearest == nullptr) m_pAimbot->ResetTarget();
 			else m_pAimbot->SetTarget(*nearest);
 

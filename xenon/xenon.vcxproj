@@ -124,7 +124,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>d3d12.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;dxgi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -159,7 +159,9 @@
     <ClInclude Include="includes\xenon\core\cheat.hpp" />
     <ClInclude Include="includes\xenon\features\radar.hpp" />
     <ClInclude Include="includes\xenon\features\waypoints.hpp" />
+    <ClInclude Include="includes\xenon\models\game_dimensions.hpp" />
     <ClInclude Include="includes\xenon\models\notification.hpp" />
+    <ClInclude Include="includes\xenon\models\profiles\target_profile.hpp" />
     <ClInclude Include="includes\xenon\models\quickactions\quickaction.hpp" />
     <ClInclude Include="includes\xenon\models\quickactions\quickactions.hpp" />
     <ClInclude Include="includes\xenon\models\quickactions\quickaction_button.hpp" />

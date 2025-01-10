@@ -12,8 +12,9 @@ public:
 	
 	Radar(
 		std::shared_ptr<RadarConfig> pConfigs,
-		std::shared_ptr<GameVariables> pGameVariables
-	) : m_pConfigs(pConfigs), m_pGameVariables(pGameVariables) { }
+		std::shared_ptr<GameVariables> pGameVariables,
+		std::shared_ptr<System> pSystem
+	) : m_pConfigs(pConfigs), m_pGameVariables(pGameVariables), m_pSystem(pSystem) { }
 
 	void RenderRadar();
 
@@ -22,5 +23,6 @@ public:
 private:
 	std::shared_ptr<RadarConfig> m_pConfigs;
 	std::shared_ptr<GameVariables> m_pGameVariables;
+	std::shared_ptr<System> m_pSystem;
 
 };
