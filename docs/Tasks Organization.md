@@ -18,27 +18,27 @@ kanban-plugin: board
 - [ ] check configs naming convetions
 - [ ] in update if attached a game check if its opened
 - [ ] understand if toggle menu visiblity key is for game config or ui config
-- [ ] add health bar
 - [ ] merge track mouse with the system get mouse fn
 - [ ] move all "use" var in a cheatconfig that will be share by any service
 - [ ] add ui right top show enabled features like minecraft clients
 - [ ] change all, don't have a single update but have a list with all features and services called now components that have a super clas with onupdate synchronized with the original update
 - [ ] add esp and aimbot support for visible/not players behind walls
-- [ ] get nearest maybe generalize the 3d thing
 - [ ] check if the use of pointer makes sense like with vec2
 
 
 ## InProgress
 
-- [ ] Add Waypoints support
 - [ ] customize GUI
-- [ ] add more universal data, maybe a player profile with health and name and distance from the localplayer
+- [ ] add health bar
 
 
 ## Done
 
 - [x] Organize the methods inside `aimbot.cpp` using `#region` to group them, starting with public methods under `#region Public Methods`, followed by private methods under `#region Private Methods`.
 - [x] External cheat gui
+- [x] add more universal data, maybe a player profile with health and name and distance from the localplayer
+- [x] get nearest maybe generalize the 3d thing
+- [x] Add Waypoints support
 - [x] spinbot 2d/3d
 - [x] implement IsUnityGame(type)/IsUnrealGame(version)
 - [x] make tests for Lua

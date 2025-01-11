@@ -83,7 +83,7 @@ void Radar::RenderRadarBase(const char* title, RadarShapes shape, bool is3D) {
                 }
             }
 
-            if (m_pConfigs->m_bShowWaypoints)
+            if (m_pConfigs->m_bWaypoints)
             {
                 for (const auto& waypoint : m_pWaypoints->GetWaypoints()) {
                     const float relativeX = waypoint.m_vPos3D.x - localPlayerPos.x;
@@ -98,7 +98,7 @@ void Radar::RenderRadarBase(const char* title, RadarShapes shape, bool is3D) {
                         float waypointSize = m_pConfigs->m_fWaypointsSize * zoomFactor;
                         drawlist->AddCircleFilled(waypointPos, waypointSize, waypoint.m_cColor);
 
-                        if (m_pConfigs->m_bShowWaypointsNames && !waypoint.m_strName.empty()) {
+                        if (m_pConfigs->m_bWaypointsNames && !waypoint.m_strName.empty()) {
                             drawlist->AddText(ImVec2(waypointPos.x - (ImGui::CalcTextSize(waypoint.m_strName.c_str()).x / 2), waypointPos.y + 5), ImColor(255, 255, 255, 255), waypoint.m_strName.c_str());
                         }
                     }
@@ -125,7 +125,7 @@ void Radar::RenderRadarBase(const char* title, RadarShapes shape, bool is3D) {
                 }
             }
 
-            if (m_pConfigs->m_bShowWaypoints)
+            if (m_pConfigs->m_bWaypoints)
             {
 
                 for (const Waypoint& waypoint : m_pWaypoints->GetWaypoints()) {
@@ -141,7 +141,7 @@ void Radar::RenderRadarBase(const char* title, RadarShapes shape, bool is3D) {
 					    float waypointSize = m_pConfigs->m_fWaypointsSize * zoomFactor;
 					    drawlist->AddCircleFilled(waypointPos, waypointSize, waypoint.m_cColor);
                         
-                        if (m_pConfigs->m_bShowWaypointsNames && !waypoint.m_strName.empty()) {
+                        if (m_pConfigs->m_bWaypointsNames && !waypoint.m_strName.empty()) {
                             drawlist->AddText(ImVec2(waypointPos.x - (ImGui::CalcTextSize(waypoint.m_strName.c_str()).x / 2), waypointPos.y + 5), ImColor(255, 255, 255, 255), waypoint.m_strName.c_str());
                         }
 				    }

@@ -30,10 +30,12 @@ static void AddConfigurations(Builder& builder) {
 	pRadarConfig->m_fLocalSize = 6.0f;
 	pRadarConfig->m_fTargetsSize = 6.0f;
 	pRadarConfig->m_bTargetsName = true;
-	pRadarConfig->m_bShowWaypoints = true;
-	pRadarConfig->m_bShowWaypointsNames = true;
+	pRadarConfig->m_bWaypoints = true;
+	pRadarConfig->m_bWaypointsNames = true;
 
 	std::shared_ptr<ESPConfig> pESPConfig = builder.Services->GetConfiguration<ESPConfig>();
+	pESPConfig->m_bHealthBar = true;
+
 	std::shared_ptr<Waypoints> pWaypoints = builder.Services->GetService<Waypoints>();
 
 	std::shared_ptr<UIConfig> pUIConfig = builder.Services->GetConfiguration<UIConfig>();
@@ -122,6 +124,7 @@ int main()
 			TargetProfile targetProfile;
 			targetProfile.m_vPos2D = server->players[i].pos;
 			targetProfile.m_strName = "Player " + std::to_string(server->players[i].id);
+			targetProfile.m_fHealth = 100;
 			builder.GameGlobalVariables->g_vTargets.push_back(targetProfile);
 		}
 	});

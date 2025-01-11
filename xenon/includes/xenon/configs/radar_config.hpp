@@ -12,8 +12,8 @@ public:
 	float m_fDefaultScale = 1;
 	float m_fZoom = 1;
 	bool m_bTargetsName = true;
-	bool m_bShowWaypointsNames = true;
-	bool m_bShowWaypoints = true;
+	bool m_bWaypointsNames = true;
+	bool m_bWaypoints = true;
 	float m_fWaypointsSize = 3;
 
 	std::function<void()> m_fnCustomRadar;
