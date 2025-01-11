@@ -170,6 +170,7 @@
     <ClInclude Include="includes\xenon\models\enums\radar_shapes.hpp" />
     <ClInclude Include="includes\xenon\models\enums\rendering_hook_types.hpp" />
     <ClInclude Include="includes\xenon\models\enums\unityengine_types.hpp" />
+    <ClInclude Include="includes\xenon\models\waypoint.hpp" />
     <ClInclude Include="includes\xenon\services\aim_service.hpp" />
     <ClInclude Include="includes\xenon\features\esp.hpp" />
     <ClInclude Include="includes\xenon\features\game.hpp" />

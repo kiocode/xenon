@@ -57,7 +57,7 @@ void Game::EnableUpdate() {
 void Game::BindForExternal() {
 
 	auto previousTime = std::chrono::steady_clock::now();
-	m_pSystem->g_fStartPlayTime = previousTime.time_since_epoch().count();
+	m_pSystem->g_fStartPlayTime = static_cast<float>(previousTime.time_since_epoch().count());
 
 	if (m_pConfigs->m_bUseUICustom) {
 		m_pUIService->InitExternal();

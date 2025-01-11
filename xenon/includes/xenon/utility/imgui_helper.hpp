@@ -27,6 +27,10 @@ namespace ImGuiHelper {
 
 	static ImFont* g_pGameFont;
 
+	static ImVec2 CenterText(ImVec2 min, ImVec2 max, const char* text) {
+		return min + (max - min) / 2.0f - ImGui::CalcTextSize(text) / 2.0f;
+	}
+
 	static void RenderHotkeyEditor(Hotkey* hotkey, bool* isEditing) {
 
 		//if(hotkey == nullptr) return;

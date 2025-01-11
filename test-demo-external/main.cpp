@@ -12,9 +12,10 @@ static void AddConfigurations(Builder& builder) {
 	//pAimConfig->m_fRecoilTiltStrength = 0;
 	//pAimConfig->m_fRecoilVerticalStrength = 175; // ash
 	//pAimConfig->m_fRecoilVerticalStrength = 185; // castle
-	pAimConfig->m_fRecoilVerticalStrength = 160; // ela
+	//pAimConfig->m_fRecoilVerticalStrength = 160; // ela
 	//pAimConfig->m_fRecoilVerticalStrength = 190; // ace
 	//pAimConfig->m_fRecoilVerticalStrength = 165; // dokkaebi
+	//pAimConfig->m_fRecoilVerticalStrength = 175; // nomad
 	//pAimConfig->m_fRecoilVerticalStrength = 165; // thermite
 	//pAimConfig->m_fRecoilVerticalStrength = 135; // solis
 	//pAimConfig->m_fRecoilVerticalStrength = 200; // jackal
@@ -261,9 +262,9 @@ static void RunTests() {
 	builder.SetConsoleEnabled();
 	builder.SetDebugLogLevel();
 
-	TestGeneral(builder);
+	//TestGeneral(builder);
 	//TestLua(builder);
-	//TestRecoil(builder);
+	TestRecoil(builder);
 	//TestRedEclipseExternal(builder);
 
 }

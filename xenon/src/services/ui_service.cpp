@@ -123,7 +123,7 @@ void UIService::RenderDefaultMenu() {
 
 		//title
 		drawlist->AddRectFilled(pos, ImVec2(pos.x + 480, pos.y + 25), ImColor(29, 40, 54, 255), 6.f, ImDrawFlags_RoundCornersTop);
-		drawlist->AddText(CenterText(pos, ImVec2(pos.x + 480, pos.y + 25), m_pSystem->GetAppTitle()->c_str()), ImColor(165, 186, 197, 255), m_pSystem->GetAppTitle()->c_str());
+		drawlist->AddText(ImGuiHelper::CenterText(pos, ImVec2(pos.x + 480, pos.y + 25), m_pSystem->GetAppTitle()->c_str()), ImColor(165, 186, 197, 255), m_pSystem->GetAppTitle()->c_str());
 
 		//tabs
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
@@ -350,7 +350,7 @@ void UIService::RenderDefaultUIQuickActions() {
 		//title
 		const char* title = "Quick Actions";
 		drawlist->AddRectFilled(pos, ImVec2(pos.x + 480, pos.y + 25), ImColor(29, 40, 54, 255), 6.f, ImDrawFlags_RoundCornersTop);
-		drawlist->AddText(CenterText(pos, ImVec2(pos.x + 480, pos.y + 25), title), ImColor(165, 186, 197, 255), title);
+		drawlist->AddText(ImGuiHelper::CenterText(pos, ImVec2(pos.x + 480, pos.y + 25), title), ImColor(165, 186, 197, 255), title);
 
 		ImGui::SetCursorPos(ImVec2(15, 40));
 		ImGui::BeginGroup();

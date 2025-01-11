@@ -106,10 +106,6 @@ private:
 
     #pragma endregion
 
-    ImVec2 CenterText(ImVec2 min, ImVec2 max, const char* text) {
-        return min + (max - min) / 2.0f - ImGui::CalcTextSize(text) / 2.0f;
-    }
-
     //HRESULT __stdcall BindForInternal(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags);
     static LRESULT __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 

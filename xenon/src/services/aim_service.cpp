@@ -70,6 +70,11 @@ Vec2* AimService::GetNearestPos(std::vector<TargetProfile> targets, TargetProfil
     switch (m_pSystem->GetGameDimension()) {
         case GameDimensions::DIMENSION_2D: {
 
+            if (!m_pSystem->m_fnW2S2D) {
+                spdlog::error("World to screen 2D function not set");
+				return nullptr;
+            }
+
             for (TargetProfile target : targets) {
                 double distance = std::sqrt(std::pow(target.m_vPos2D.x - local.m_vPos2D.x, 2) + std::pow(target.m_vPos2D.y - local.m_vPos2D.y, 2));
                 if (distance < minDistance) {
@@ -79,6 +84,11 @@ Vec2* AimService::GetNearestPos(std::vector<TargetProfile> targets, TargetProfil
             }
         } break;
         case GameDimensions::DIMENSION_3D: {
+
+            if (!m_pSystem->m_fnW2S3D) {
+				spdlog::error("World to screen 3D function not set");
+                return nullptr;
+            }
 
             for (TargetProfile target : targets) {
                 double distance = std::sqrt(std::pow(target.m_vPos3D.x - local.m_vPos3D.x, 2) + std::pow(target.m_vPos3D.y - local.m_vPos3D.y, 2));

@@ -46,7 +46,7 @@ void Radar::RenderRadarBase(const char* title, RadarShapes shape, bool is3D) {
                 break;
         }
 
-        drawlist->AddCircleFilled(radarCenter, 6.f * m_pConfigs->m_fZoom, ImColor(170, 170, 170, 255));
+        drawlist->AddCircleFilled(radarCenter, m_pConfigs->m_fLocalSize * m_pConfigs->m_fZoom, ImColor(170, 170, 170, 255));
 
         auto isPointInRadar = [&](ImVec2 point) -> bool {
             if (shape == RadarShapes::Circular) {
@@ -74,12 +74,37 @@ void Radar::RenderRadarBase(const char* title, RadarShapes shape, bool is3D) {
                 ImVec2 targetPos = ImVec2(radarCenter.x + scaledX, radarCenter.y + scaledY);
 
                 if (isPointInRadar(targetPos)) {
-                    float targetSize = 4.f * zoomFactor;
+                    float targetSize = m_pConfigs->m_fTargetsSize * zoomFactor;
                     drawlist->AddCircleFilled(targetPos, targetSize, ImColor(255, 0, 0, 255));
+
+                    if (m_pConfigs->m_bTargetsName && !target.m_strName.empty()) {
+						drawlist->AddText(ImVec2(targetPos.x - (ImGui::CalcTextSize(target.m_strName.c_str()).x / 2), targetPos.y + 5), ImColor(255, 255, 255, 255), target.m_strName.c_str());
+					}
                 }
             }
-        }
-        else {
+
+            if (m_pConfigs->m_bShowWaypoints)
+            {
+                for (const auto& waypoint : m_pWaypoints->GetWaypoints()) {
+                    const float relativeX = waypoint.m_vPos3D.x - localPlayerPos.x;
+                    const float relativeY = waypoint.m_vPos3D.z - localPlayerPos.z;
+
+                    const float scaledX = (relativeX / m_pConfigs->m_fDefaultScale) * radarSize * zoomFactor;
+                    const float scaledY = (relativeY / m_pConfigs->m_fDefaultScale) * radarSize * zoomFactor;
+
+                    ImVec2 waypointPos = ImVec2(radarCenter.x + scaledX, radarCenter.y + scaledY);
+
+                    if (isPointInRadar(waypointPos)) {
+                        float waypointSize = m_pConfigs->m_fWaypointsSize * zoomFactor;
+                        drawlist->AddCircleFilled(waypointPos, waypointSize, waypoint.m_cColor);
+
+                        if (m_pConfigs->m_bShowWaypointsNames && !waypoint.m_strName.empty()) {
+                            drawlist->AddText(ImVec2(waypointPos.x - (ImGui::CalcTextSize(waypoint.m_strName.c_str()).x / 2), waypointPos.y + 5), ImColor(255, 255, 255, 255), waypoint.m_strName.c_str());
+                        }
+                    }
+                }
+			}
+        } else {
             const Vec2& localPlayerPos = m_pGameVariables->g_vLocal.m_vPos2D;
             for (const auto& target : m_pGameVariables->g_vTargets) {
                 const float relativeX = target.m_vPos2D.x - localPlayerPos.x;
@@ -91,9 +116,37 @@ void Radar::RenderRadarBase(const char* title, RadarShapes shape, bool is3D) {
                 ImVec2 targetPos = ImVec2(radarCenter.x + scaledX, radarCenter.y + scaledY);
 
                 if (isPointInRadar(targetPos)) {
-                    float targetSize = 4.f * zoomFactor;
+                    float targetSize = m_pConfigs->m_fTargetsSize * zoomFactor;
                     drawlist->AddCircleFilled(targetPos, targetSize, ImColor(255, 0, 0, 255));
+
+                    if (m_pConfigs->m_bTargetsName && !target.m_strName.empty()) {
+                        drawlist->AddText(ImVec2(targetPos.x - (ImGui::CalcTextSize(target.m_strName.c_str()).x / 2), targetPos.y + 5), ImColor(255, 255, 255, 255), target.m_strName.c_str());
+                    }
                 }
+            }
+
+            if (m_pConfigs->m_bShowWaypoints)
+            {
+
+                for (const Waypoint& waypoint : m_pWaypoints->GetWaypoints()) {
+				    const float relativeX = waypoint.m_vPos2D.x - localPlayerPos.x;
+				    const float relativeY = waypoint.m_vPos2D.y - localPlayerPos.y;
+
+				    const float scaledX = (relativeX / m_pConfigs->m_fDefaultScale) * radarSize * zoomFactor;
+				    const float scaledY = (relativeY / m_pConfigs->m_fDefaultScale) * radarSize * zoomFactor;
+
+				    ImVec2 waypointPos = ImVec2(radarCenter.x + scaledX, radarCenter.y + scaledY);
+
+                    if (isPointInRadar(waypointPos)) {
+					    float waypointSize = m_pConfigs->m_fWaypointsSize * zoomFactor;
+					    drawlist->AddCircleFilled(waypointPos, waypointSize, waypoint.m_cColor);
+                        
+                        if (m_pConfigs->m_bShowWaypointsNames && !waypoint.m_strName.empty()) {
+                            drawlist->AddText(ImVec2(waypointPos.x - (ImGui::CalcTextSize(waypoint.m_strName.c_str()).x / 2), waypointPos.y + 5), ImColor(255, 255, 255, 255), waypoint.m_strName.c_str());
+                        }
+				    }
+			    }
+
             }
         }
     }

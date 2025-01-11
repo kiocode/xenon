@@ -16,7 +16,7 @@ void Builder::SetConsoleEnabled() const {
         AllocConsole();
         AttachConsole(GetCurrentProcessId());
     }
-    SetConsoleTitle(SystemVariables->GetAppTitle().c_str());
+    SetConsoleTitle(SystemVariables->GetAppTitle()->c_str());
 
     if (SystemVariables->IsInternal()) {
         FILE* f;
@@ -79,9 +79,11 @@ void Builder::RegisterDefaultServices() {
 
     #pragma region Services
 
+    std::shared_ptr<Waypoints> pWaypoints = Services->AddSingleton<Waypoints>();
+
     std::shared_ptr<Radar> pRadar = Services->AddSingleton<Radar>(
-        [this, pRadarConfig]() {
-            return std::make_shared<Radar>(pRadarConfig, GameGlobalVariables);
+        [this, pRadarConfig, pWaypoints]() {
+            return std::make_shared<Radar>(pRadarConfig, GameGlobalVariables, SystemVariables, pWaypoints);
         }
     );
     std::shared_ptr<NotificationService> pNotificationService = Services->AddSingleton<NotificationService>();
@@ -112,11 +114,6 @@ void Builder::RegisterDefaultServices() {
     std::shared_ptr<Aimbot> pAimbot = Services->AddSingleton<Aimbot>(
         [pAimConfig, pAimService]() {
             return std::make_shared<Aimbot>(pAimConfig, pAimService);
-        }
-    );
-    std::shared_ptr<Waypoints> pWaypoints = Services->AddSingleton<Waypoints>(
-        [pAimConfig, pAimService]() {
-            return std::make_shared<Waypoints>();
         }
     );
 

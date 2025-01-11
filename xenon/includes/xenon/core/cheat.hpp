@@ -32,7 +32,7 @@ public:
     void UseUICustom(RenderingHookTypes renderingType) {
 
         if (!m_pSystem->IsInternal()) {
-			spdlog::warn("Rendering hook type is not necessary if the cheat is Internal");;
+			spdlog::warn("Rendering hook type is not necessary if the cheat is External");;
 		}
         
 		m_pGameConfig->m_bRenderingType = renderingType;

@@ -73,6 +73,19 @@ void ESP::Render2DBox() {
 
 		}
 
+		if (m_pConfigs->m_bDistanceInBox) {
+			switch (m_pSystem->GetGameDimension()) {
+				case GameDimensions::DIMENSION_2D: {
+					int distance2D = static_cast<int>(target.m_vPos2D.Distance(m_pGameVariables->g_vLocal.m_vPos2D));
+					ImGui::GetBackgroundDrawList()->AddText(ImVec2(minBottomLeft.x + 5, minBottomLeft.y - 15), m_pConfigs->m_cBox2DDistance, std::to_string(distance2D).c_str());
+				} break;
+				case GameDimensions::DIMENSION_3D: {
+					int distance3D = static_cast<int>(target.m_vPos3D.Distance(m_pGameVariables->g_vLocal.m_vPos3D));
+					ImGui::GetBackgroundDrawList()->AddText(ImVec2(minBottomLeft.x + 5, minBottomLeft.y - 15), m_pConfigs->m_cBox2DDistance, std::to_string(distance3D).c_str());
+				} break;
+			}
+		}
+
 	}
 
 }

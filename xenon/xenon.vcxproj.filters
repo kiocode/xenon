@@ -606,6 +606,9 @@
     <ClInclude Include="includes\xenon\models\game_dimensions.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="includes\xenon\models\waypoint.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\features\aimbot.cpp">
