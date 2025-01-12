@@ -11,8 +11,8 @@ void Radar::RenderRadar() {
     bool is3D = m_pSystem->GetGameDimension() == GameDimensions::DIMENSION_3D;
 
     switch (m_pConfigs->m_nType) {
-    case 0: RenderRadarBase("Circular Radar", RadarShapes::Circular, is3D); break;
-    case 1: RenderRadarBase("Rectangular Radar", RadarShapes::Rectangular, is3D); break;
+    case 0: RenderRadarBase("Circular Radar", RadarShapes::CIRCULAR, is3D); break;
+    case 1: RenderRadarBase("Rectangular Radar", RadarShapes::RECTANGULAR, is3D); break;
     default:
         spdlog::error("Invalid radar type: {}", m_pConfigs->m_nType);
         break;
@@ -32,11 +32,11 @@ void Radar::RenderRadarBase(const char* title, RadarShapes shape, bool is3D) {
         ImGui::SetWindowSize(ImVec2(radarSize, radarSize));
 
         switch (shape) {
-            case RadarShapes::Circular:
+            case RadarShapes::CIRCULAR:
                 drawlist->AddCircleFilled(radarCenter, radarSize / 2.0f - 5, ImColor(25, 25, 25, 150));
                 drawlist->AddCircle(radarCenter, radarSize / 2.0f - 5, ImColor(83, 83, 83, 255));
                 break;
-            case RadarShapes::Rectangular:
+            case RadarShapes::RECTANGULAR:
                 drawlist->AddRectFilled(ImVec2(pos.x + 5, pos.y + 5),
                     ImVec2(pos.x + radarSize - 5, pos.y + radarSize - 5),
                     ImColor(25, 25, 25, 150), 8.f);
@@ -49,11 +49,11 @@ void Radar::RenderRadarBase(const char* title, RadarShapes shape, bool is3D) {
         drawlist->AddCircleFilled(radarCenter, m_pConfigs->m_fLocalSize * m_pConfigs->m_fZoom, ImColor(170, 170, 170, 255));
 
         auto isPointInRadar = [&](ImVec2 point) -> bool {
-            if (shape == RadarShapes::Circular) {
+            if (shape == RadarShapes::CIRCULAR) {
                 float distance = sqrtf(powf(point.x - radarCenter.x, 2) + powf(point.y - radarCenter.y, 2));
                 return distance <= (radarSize / 2.0f - 5);
             }
-            else if (shape == RadarShapes::Rectangular) {
+            else if (shape == RadarShapes::RECTANGULAR) {
                 return point.x >= (pos.x + 5) && point.x <= (pos.x + radarSize - 5) &&
                     point.y >= (pos.y + 5) && point.y <= (pos.y + radarSize - 5);
             }

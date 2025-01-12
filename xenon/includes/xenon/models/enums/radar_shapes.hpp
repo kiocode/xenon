@@ -1,4 +1,6 @@
+#pragma once
+
 enum class RadarShapes {
-    Circular,
-    Rectangular
+    CIRCULAR,
+    RECTANGULAR
 };

@@ -25,6 +25,8 @@ kanban-plugin: board
 - [ ] add esp and aimbot support for visible/not players behind walls
 - [ ] check if the use of pointer makes sense like with vec2
 - [ ] add NONE to enums
+- [ ] check is use enums with plural or singular name
+- [ ] add fly
 
 
 ## InProgress

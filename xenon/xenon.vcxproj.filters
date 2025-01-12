@@ -603,13 +603,16 @@
     <ClInclude Include="includes\xenon\models\profiles\target_profile.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="includes\xenon\models\game_dimensions.hpp">
+    <ClInclude Include="includes\xenon\models\enums\game_dimensions.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="includes\xenon\models\waypoint.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="includes\xenon\models\enums\rendering_types.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\xenon\models\enums\gameengine_types.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

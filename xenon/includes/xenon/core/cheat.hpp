@@ -194,11 +194,6 @@ public:
         spdlog::info("Skeleton ESP is enabled");
     }
 
-
-    // add check if is internal to use it
-    void IsUnityEngine(UnityEngineTypes type);
-    void IsUnrealEngine(UnrealEngineVersions version);
-
     void Run();
 
 private:

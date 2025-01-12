@@ -14,7 +14,7 @@ void Cheat::Run() {
                 bool bInitialized = false;
                 do
                 {
-                    if (kiero::init(kiero::RenderType::Auto) == kiero::Status::Success)
+                    if (kiero::init(kiero::RenderType::D3D11) == kiero::Status::Success)
                     {
                         m_pGame->EnableUpdate();
                         bInitialized = true;

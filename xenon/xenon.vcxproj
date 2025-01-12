@@ -159,8 +159,9 @@
     <ClInclude Include="includes\xenon\core\cheat.hpp" />
     <ClInclude Include="includes\xenon\features\radar.hpp" />
     <ClInclude Include="includes\xenon\features\waypoints.hpp" />
+    <ClInclude Include="includes\xenon\models\enums\gameengine_types.hpp" />
     <ClInclude Include="includes\xenon\models\enums\rendering_types.hpp" />
-    <ClInclude Include="includes\xenon\models\game_dimensions.hpp" />
+    <ClInclude Include="includes\xenon\models\enums\game_dimensions.hpp" />
     <ClInclude Include="includes\xenon\models\notification.hpp" />
     <ClInclude Include="includes\xenon\models\profiles\target_profile.hpp" />
     <ClInclude Include="includes\xenon\models\quickactions\quickaction.hpp" />

@@ -6,9 +6,12 @@
 #include <spdlog/spdlog.h>
 
 #include <xenon/utility/vec2.hpp>
-#include <xenon/models/game_dimensions.hpp>
 #include <xenon/utility/vec3.hpp>
+#include <xenon/models/enums/game_dimensions.hpp>
 #include <xenon/models/enums/rendering_types.hpp>
+#include <xenon/models/enums/gameengine_types.hpp>
+#include <xenon/models/enums/unityengine_types.hpp>
+#include <xenon/models/enums/unrealengine_versions.hpp>
 
 class System {
 public:
@@ -42,12 +45,30 @@ public:
 		return m_bIsInternal;
 	}
 
+	void IsUnityEngine(UnityEngineTypes type) {
+		if (!m_bIsInternal) {
+			spdlog::warn("External cheat cannot change to Unity Engine.");
+		}
+
+		m_gameEngineType = GameEngineTypes::UNITY_ENGINE;
+		m_unityEngineType = type;
+	}
+
+	void IsUnrealEngine(UnrealEngineVersions version) {
+		if (!m_bIsInternal) {
+			spdlog::warn("External cheat cannot change to Unreal Engine.");
+		}
+
+		m_gameEngineType = GameEngineTypes::UNREAL_ENGINE;
+		m_unrealEngineVersion = version;
+	}
+
 	void SetGameDimension(GameDimensions dim) {
-		m_gameDim = dim;
+		m_gameDimension = dim;
 	}
 
 	GameDimensions GetGameDimension() const {
-		return m_gameDim;
+		return m_gameDimension;
 	}
 
 	void SetRenderingType(RenderingTypes type) {
@@ -66,8 +87,11 @@ public:
 private:
 	std::string m_strAppTitle;
 	bool m_bIsInternal;
-	GameDimensions m_gameDim = GameDimensions::DIMENSION_2D;
-	RenderingTypes m_renderingType = RenderingTypes::DX11;
+	GameEngineTypes m_gameEngineType = GameEngineTypes::ENGINE_NONE;
+	UnityEngineTypes m_unityEngineType = UnityEngineTypes::UNITY_NONE;
+	UnrealEngineVersions m_unrealEngineVersion = UnrealEngineVersions::UNREAL_NONE;
+	GameDimensions m_gameDimension = GameDimensions::DIM_NONE;
+	RenderingTypes m_renderingType = RenderingTypes::REND_NONE;
 
 	void GetDesktopResolution(int& horizontal, int& vertical);
 	
