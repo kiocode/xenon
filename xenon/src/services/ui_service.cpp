@@ -112,7 +112,8 @@ void UIService::RenderDefaultMenu() {
 	if (ImGui::Begin("Default Menu", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoBackground)) {
 
 		//sizing
-		ImGui::SetWindowSize(ImVec2(490, 440));
+		int windowWidth = 490;
+		ImGui::SetWindowSize(ImVec2(windowWidth, 440));
 
 		//helpers def
 		drawlist = ImGui::GetWindowDrawList();
@@ -128,24 +129,19 @@ void UIService::RenderDefaultMenu() {
 		//tabs
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
 		ImGui::SetCursorPos(ImVec2(5, 35));
+
+		int width = devconsole ? windowWidth / 5 : windowWidth / 4;
+
 		ImGui::BeginGroup();
 		{
+			if (ImGui::Tabs("Aim", ImVec2(width, 20), tabs == 0, 0)) tabs = 0;
+			if (ImGui::Tabs("Visual", ImVec2(width, 20), tabs == 1, 0)) tabs = 1;
+			if (ImGui::Tabs("Radar", ImVec2(width, 20), tabs == 2, 0)) tabs = 2;
+			if (ImGui::Tabs("Misc", ImVec2(width, 20), tabs == 3, 0)) tabs = 3;
+
 			if (devconsole)
 			{
-				if (ImGui::Tabs("Players", ImVec2(80, 20), tabs == 0, 0)) tabs = 0;
-				if (ImGui::Tabs("Radar", ImVec2(80, 20), tabs == 1, 0)) tabs = 1;
-				if (ImGui::Tabs("Loot", ImVec2(80, 20), tabs == 2, 0)) tabs = 2;
-				if (ImGui::Tabs("Aim", ImVec2(80, 20), tabs == 3, 0)) tabs = 3;
-				if (ImGui::Tabs("Misc", ImVec2(80, 20), tabs == 4, 0)) tabs = 4;
-				if (ImGui::Tabs("Dev", ImVec2(80, 20), tabs == 5, 0)) tabs = 5;
-			}
-			else
-			{
-				if (ImGui::Tabs("Players", ImVec2(96, 20), tabs == 0, 0)) tabs = 0;
-				if (ImGui::Tabs("Radar", ImVec2(96, 20), tabs == 1, 0)) tabs = 1;
-				if (ImGui::Tabs("Loot", ImVec2(96, 20), tabs == 2, 0)) tabs = 2;
-				if (ImGui::Tabs("Aim", ImVec2(96, 20), tabs == 3, 0)) tabs = 3;
-				if (ImGui::Tabs("Misc", ImVec2(96, 20), tabs == 4, 0)) tabs = 4;
+				if (ImGui::Tabs("Dev", ImVec2(width, 20), tabs == 4, 0)) tabs = 4;
 			}
 		}
 		ImGui::EndGroup();
@@ -156,44 +152,79 @@ void UIService::RenderDefaultMenu() {
 			ImGui::SetCursorPos(ImVec2(5, 55));
 			ImGui::BeginGroup();
 			{
-				if (ImGui::Tabs("Colors", ImVec2(240, 20), subtabs == 0, 0)) subtabs = 0;
-				if (ImGui::Tabs("Settings", ImVec2(240, 20), subtabs == 1, 0)) subtabs = 1;
+				if (ImGui::Tabs("Settings", ImVec2(windowWidth / 2, 20), subtabs == 0, 0)) subtabs = 0;
+				if (ImGui::Tabs("Crosshair", ImVec2(windowWidth / 2, 20), subtabs == 1, 0)) subtabs = 1;
 			}
 			ImGui::EndGroup();
 		}
 
 		ImGui::PopStyleVar(); // this pops the itemspacing push
 
-		//functions
-		if (tabs == 0)
+#pragma region Aim functions
+		if (tabs == 0 && subtabs == 0)
 		{
 			ImGui::SetCursorPos(ImVec2(10, 80));
-			ImGui::BeginChild("MainChild", ImVec2(470, 345));
+			ImGui::BeginChild("Settings", ImVec2(470, 345));
 			{
-				//demo funcs
-				static bool checkbox[8];
-				static int sliderint[4];
-
 				//render funcs
 				ImGui::SetCursorPos(ImVec2(10, 10));
 				ImGui::BeginGroup();
 				{
-					ImGui::Checkbox("Only Visible", &checkbox[0]);
-					ImGui::Checkbox("Friends", &checkbox[1]);
-					ImGui::Checkbox("Name", &checkbox[2]);
-					ImGui::Checkbox("Line", &checkbox[3]);
-					ImGui::Checkbox("Health", &checkbox[4]);
-					ImGui::Checkbox("Box 2D", &checkbox[5]);
-					ImGui::Checkbox("Distance", &checkbox[6]);
-					ImGui::Checkbox("Skeleton", &checkbox[7]);
-					ImGui::SliderInt("Size line skeleton", &sliderint[0], 0, 10);
-					ImGui::SliderInt("Skeleton draw distance", &sliderint[1], 0, 100);
+					ImGui::Checkbox("Silent", &m_pAimConfigs->m_bSilent);
+					ImGui::Checkbox("Visible", &m_pAimConfigs->m_bVisibleCheck);
+					ImGui::Checkbox("Auto scope", &m_pAimConfigs->m_bAutoScope);
+					ImGui::Checkbox("Auto shoot", &m_pAimConfigs->m_bAutoShoot);
+					ImGui::Checkbox("Humanize", &m_pAimConfigs->m_bHumanize);
+					ImGui::Checkbox("No recoil", &m_pAimConfigs->m_bNoRecoil);
+					ImGui::Checkbox("No spread", &m_pAimConfigs->m_bNoSpread);
+
+					ImGui::Checkbox("Smooth", &m_pAimConfigs->m_bSmooth);
+					if (m_pAimConfigs->m_bSmooth) {
+						ImGui::SliderFloat("Smooth value", &m_pAimConfigs->m_fSmooth, 5.f, 50.f, "%.0f");
+					}
+
+					ImGui::Checkbox("Fov", &m_pAimConfigs->m_bFov);
+					if (m_pAimConfigs->m_bFov) {
+						ImGui::SliderFloat("Fov value", &m_pAimConfigs->m_fFov, 30.f, 300.f, "%.0f");
+					}
+
+					ImGui::Checkbox("Nearest", &m_pAimConfigs->m_bNearest);
+					if (m_pAimConfigs->m_bNearest
+						&& ImGui::SliderFloat("Nearest distance", &m_pAimConfigs->m_fNearest, 100.f, 1000.f, "%.0f")) {
+						m_pAimConfigs->m_fNearest = round(m_pAimConfigs->m_fNearest / 100.0f) * 100.0f;
+					}
 					ImGui::Checkbox("Developer Console", &devconsole);
 				}
 				ImGui::EndGroup();
 			}
 			ImGui::EndChild();
 		}
+
+		if (tabs == 0 && subtabs == 1) {
+			ImGui::SetCursorPos(ImVec2(10, 80));
+			ImGui::BeginChild("Crosshair", ImVec2(470, 345));
+			{
+				//render funcs
+				ImGui::SetCursorPos(ImVec2(10, 10));
+				ImGui::BeginGroup();
+				{
+					static ImVec4 color = m_pAimConfigs->m_cCrosshair;
+
+					ImGui::Checkbox("Crosshair", &m_pAimConfigs->m_bCrosshair);
+					if (m_pAimConfigs->m_bCrosshair)
+					{
+						if (ImGui::ColorEdit4("Color", (float*)&color)) {
+							m_pAimConfigs->m_cCrosshair = ImColor(color);
+						}
+						ImGui::Combo("Type", &m_pAimConfigs->m_nCrosshairType, "Cross\0\Circle");
+					}
+
+				}
+				ImGui::EndGroup();
+			}
+			ImGui::EndChild();
+		}
+#pragma endregion
 
 		if (tabs == 1)
 		{
@@ -229,7 +260,7 @@ void UIService::RenderDefaultMenu() {
 			ImGui::EndChild();
 		}
 
-		if (tabs == 5)
+		if (tabs == 4)
 		{
 			ImGui::SetCursorPos(ImVec2(10, 60));
 			ImGui::BeginChild("MainChild", ImVec2(470, 365));
@@ -284,7 +315,8 @@ LRESULT __stdcall UIService::WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, 
 
 	if (DIManager::GetInstance().GetService<System>()->IsInternal()) {
 		return CallWindowProcA(pThis->oWndProc, hWnd, uMsg, wParam, lParam);
-	} else {
+	}
+	else {
 		return DefWindowProcA(hWnd, uMsg, wParam, lParam);
 	}
 }
@@ -300,13 +332,13 @@ void UIService::InitExternal() {
 void UIService::RenderCrosshair() {
 	switch (m_pAimConfigs->m_nCrosshairType)
 	{
-		case 0:
-			ImGui::GetForegroundDrawList()->AddLine(ImVec2(m_pSystem->GetScreenCenter().x - m_pAimConfigs->m_fCrosshair, m_pSystem->GetScreenCenter().y), ImVec2((m_pSystem->GetScreenCenter().x - m_pAimConfigs->m_fCrosshair) + (m_pAimConfigs->m_fCrosshair * 2), m_pSystem->GetScreenCenter().y), m_pAimConfigs->m_cCrosshair, 1.2f);
-			ImGui::GetForegroundDrawList()->AddLine(ImVec2(m_pSystem->GetScreenCenter().x, m_pSystem->GetScreenCenter().y - m_pAimConfigs->m_fCrosshair), ImVec2(m_pSystem->GetScreenCenter().x, (m_pSystem->GetScreenCenter().y - m_pAimConfigs->m_fCrosshair) + (m_pAimConfigs->m_fCrosshair * 2)), m_pAimConfigs->m_cCrosshair, 1.2f);
-			break;
-		case 1:
-			ImGui::GetForegroundDrawList()->AddCircle(ImVec2(m_pSystem->GetScreenCenter().x, m_pSystem->GetScreenCenter().y), m_pAimConfigs->m_fCrosshair, m_cCrosshair, 100, 1.2f);
-			break;
+	case 0:
+		ImGui::GetForegroundDrawList()->AddLine(ImVec2(m_pSystem->GetScreenCenter().x - m_pAimConfigs->m_fCrosshair, m_pSystem->GetScreenCenter().y), ImVec2((m_pSystem->GetScreenCenter().x - m_pAimConfigs->m_fCrosshair) + (m_pAimConfigs->m_fCrosshair * 2), m_pSystem->GetScreenCenter().y), m_pAimConfigs->m_cCrosshair, 1.2f);
+		ImGui::GetForegroundDrawList()->AddLine(ImVec2(m_pSystem->GetScreenCenter().x, m_pSystem->GetScreenCenter().y - m_pAimConfigs->m_fCrosshair), ImVec2(m_pSystem->GetScreenCenter().x, (m_pSystem->GetScreenCenter().y - m_pAimConfigs->m_fCrosshair) + (m_pAimConfigs->m_fCrosshair * 2)), m_pAimConfigs->m_cCrosshair, 1.2f);
+		break;
+	case 1:
+		ImGui::GetForegroundDrawList()->AddCircle(ImVec2(m_pSystem->GetScreenCenter().x, m_pSystem->GetScreenCenter().y), m_pAimConfigs->m_fCrosshair, m_cCrosshair, 100, 1.2f);
+		break;
 	}
 }
 
@@ -316,17 +348,17 @@ void UIService::RenderFov() {
 
 void UIService::RenderMouse() {
 	switch (m_nMouseType) {
-		case 0:
-			ImGui::GetForegroundDrawList()->AddCircleFilled(ImGui::GetMousePos(), 4, m_cMouse);
-			break;
-		case 1:
-			ImGuiHelper::DrawOutlinedTextForeground(ImGuiHelper::g_pGameFont, ImVec2(m_pSystem->GetMousePos().x, m_pSystem->GetMousePos().y), 13.0f, m_cMouse, false, "X");
-			break;
-		case 2:
-			if (!ImGui::GetIO().MouseDrawCursor) {
-				ImGui::GetIO().MouseDrawCursor = true;
-			}
-			break;
+	case 0:
+		ImGui::GetForegroundDrawList()->AddCircleFilled(ImGui::GetMousePos(), 4, m_cMouse);
+		break;
+	case 1:
+		ImGuiHelper::DrawOutlinedTextForeground(ImGuiHelper::g_pGameFont, ImVec2(m_pSystem->GetMousePos().x, m_pSystem->GetMousePos().y), 13.0f, m_cMouse, false, "X");
+		break;
+	case 2:
+		if (!ImGui::GetIO().MouseDrawCursor) {
+			ImGui::GetIO().MouseDrawCursor = true;
+		}
+		break;
 	}
 }
 
@@ -380,14 +412,14 @@ void UIService::Update() {
 		RenderFov();
 	}
 
-	#pragma region Radar
+#pragma region Radar
 
 	if (m_pConfigs->m_bUseUIRadar) {
 		//m_pRadar->SetTargets(m_vTargets2DWorld);
 		m_pRadar->RenderRadar();
 	}
 
-	#pragma endregion
+#pragma endregion
 
 	if (m_bShowMenu) {
 
@@ -550,7 +582,7 @@ bool UIService::CreateDeviceUI() {
 		D3D_FEATURE_LEVEL_11_0,
 		D3D_FEATURE_LEVEL_10_0
 	};
-	
+
 	HRESULT hr = D3D11CreateDeviceAndSwapChain(
 		nullptr,
 		D3D_DRIVER_TYPE_HARDWARE,
@@ -599,29 +631,29 @@ void UIService::ResetDeviceUI()
 {
 
 	switch (m_pSystem->GetRenderingType()) {
-		case RenderingTypes::DX11:
-			ImGui_ImplDX11_InvalidateDeviceObjects();
-			break;
-		case RenderingTypes::OPENGL2:
-			ImGui_ImplOpenGL2_DestroyDeviceObjects();
-			break;
-		case RenderingTypes::OPENGL3:
-			ImGui_ImplOpenGL3_DestroyDeviceObjects();
-			break;
+	case RenderingTypes::DX11:
+		ImGui_ImplDX11_InvalidateDeviceObjects();
+		break;
+	case RenderingTypes::OPENGL2:
+		ImGui_ImplOpenGL2_DestroyDeviceObjects();
+		break;
+	case RenderingTypes::OPENGL3:
+		ImGui_ImplOpenGL3_DestroyDeviceObjects();
+		break;
 	}
 
 	DestroyDeviceUI();
 
 	switch (m_pSystem->GetRenderingType()) {
-		case RenderingTypes::DX11:
-			ImGui_ImplDX11_CreateDeviceObjects();
-			break;
-		case RenderingTypes::OPENGL2:
-			ImGui_ImplOpenGL2_CreateDeviceObjects();
-			break;
-		case RenderingTypes::OPENGL3:
-			ImGui_ImplOpenGL3_CreateDeviceObjects();
-			break;
+	case RenderingTypes::DX11:
+		ImGui_ImplDX11_CreateDeviceObjects();
+		break;
+	case RenderingTypes::OPENGL2:
+		ImGui_ImplOpenGL2_CreateDeviceObjects();
+		break;
+	case RenderingTypes::OPENGL3:
+		ImGui_ImplOpenGL3_CreateDeviceObjects();
+		break;
 	}
 
 }
@@ -651,15 +683,15 @@ void UIService::CreateImGuiUI()
 	if (m_pSystem->IsInternal()) {
 
 		switch (m_pSystem->GetRenderingType()) {
-			case RenderingTypes::DX11:
-				ImGui_ImplDX11_Init(m_pDevice, m_pContext);
-				break;
-			case RenderingTypes::OPENGL2:
-				ImGui_ImplOpenGL2_Init();
-				break;
-			case RenderingTypes::OPENGL3:
-				ImGui_ImplOpenGL3_Init();
-				break;
+		case RenderingTypes::DX11:
+			ImGui_ImplDX11_Init(m_pDevice, m_pContext);
+			break;
+		case RenderingTypes::OPENGL2:
+			ImGui_ImplOpenGL2_Init();
+			break;
+		case RenderingTypes::OPENGL3:
+			ImGui_ImplOpenGL3_Init();
+			break;
 		}
 	}
 	else {
@@ -674,15 +706,15 @@ void UIService::DestroyImGuiUI()
 {
 
 	switch (m_pSystem->GetRenderingType()) {
-		case RenderingTypes::DX11:
-			ImGui_ImplDX11_Shutdown();
-			break;
-		case RenderingTypes::OPENGL2:
-			ImGui_ImplOpenGL2_Shutdown();
-			break;
-		case RenderingTypes::OPENGL3:
-			ImGui_ImplOpenGL3_Shutdown();
-			break;
+	case RenderingTypes::DX11:
+		ImGui_ImplDX11_Shutdown();
+		break;
+	case RenderingTypes::OPENGL2:
+		ImGui_ImplOpenGL2_Shutdown();
+		break;
+	case RenderingTypes::OPENGL3:
+		ImGui_ImplOpenGL3_Shutdown();
+		break;
 	}
 
 	ImGui_ImplWin32_Shutdown();
@@ -711,17 +743,18 @@ void UIService::BeginRenderUI()
 
 	if (m_pSystem->IsInternal()) {
 		switch (m_pSystem->GetRenderingType()) {
-			case RenderingTypes::DX11:
-				ImGui_ImplDX11_NewFrame();
-				break;
-			case RenderingTypes::OPENGL2:
-				ImGui_ImplOpenGL2_NewFrame();
-				break;
-			case RenderingTypes::OPENGL3:
-				ImGui_ImplOpenGL3_NewFrame();
-				break;
+		case RenderingTypes::DX11:
+			ImGui_ImplDX11_NewFrame();
+			break;
+		case RenderingTypes::OPENGL2:
+			ImGui_ImplOpenGL2_NewFrame();
+			break;
+		case RenderingTypes::OPENGL3:
+			ImGui_ImplOpenGL3_NewFrame();
+			break;
 		}
-	} else {
+	}
+	else {
 		MSG msg;
 		while (PeekMessage(&msg, nullptr, 0U, 0U, PM_REMOVE)) {
 
@@ -759,15 +792,15 @@ void UIService::EndRenderUI()
 	if (m_pSystem->IsInternal()) {
 
 		switch (m_pSystem->GetRenderingType()) {
-			case RenderingTypes::DX11:
-				ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-				break;
-			case RenderingTypes::OPENGL2:
-				ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
-				break;
-			case RenderingTypes::OPENGL3:
-				ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-				break;
+		case RenderingTypes::DX11:
+			ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+			break;
+		case RenderingTypes::OPENGL2:
+			ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
+			break;
+		case RenderingTypes::OPENGL3:
+			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+			break;
 		}
 
 	}
@@ -775,5 +808,5 @@ void UIService::EndRenderUI()
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 	}
 
-	if(!m_pSystem->IsInternal()) m_pSwapChain->Present(1U, 0U);
+	if (!m_pSystem->IsInternal()) m_pSwapChain->Present(1U, 0U);
 }
