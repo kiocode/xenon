@@ -34,7 +34,7 @@ void Aimbot::AimTargetWithPrediction(Vec2& vel) {
 void Aimbot::AimTarget() {
 
     if (IsTargetEmpty()) {
-        spdlog::info("Target is empty");
+        spdlog::debug("Target is empty");
         return;
     }
 

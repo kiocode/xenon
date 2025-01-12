@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include <xenon/xenon.hpp>
-#include <spdlog/spdlog.hpp>
+#include <spdlog/spdlog.h>
 
 #include "OARDump/SDK.hpp"
 
@@ -18,35 +18,35 @@ static bool FetchSDK() {
     m_pWorld = SDK::UWorld::GetWorld();
 
     if (!m_pEngine || m_pEngine == nullptr || !m_pWorld || m_pWorld == nullptr) {
-        spdlog::error("Failed to get engine or world");
+        //spdlog::error("Failed to get engine or world");
         return false;
     }
 
     if (!m_pWorld->OwningGameInstance) {
-		spdlog::error("Failed to get game instance");
+		//spdlog::error("Failed to get game instance");
 		return false;
 	}
 
     if (!m_pWorld->OwningGameInstance->LocalPlayers.Num()) {
-		spdlog::error("Failed to get local players");
+		//spdlog::error("Failed to get local players");
 		return false;
 	}
 
     m_pMyController = m_pWorld->OwningGameInstance->LocalPlayers[0]->PlayerController;
     if (!m_pMyController || m_pMyController == nullptr) {
-		spdlog::error("Failed to get controller");
+		//spdlog::error("Failed to get controller");
 		return false;
 	}
 
 	m_pMyPawn = m_pMyController->AcknowledgedPawn;
     if (!m_pMyPawn || m_pMyPawn == nullptr) {
-		spdlog::error("Failed to get pawn");
+		//spdlog::error("Failed to get pawn");
 		return false;
 	}
 
 	m_pMyCharacter = m_pMyController->Character;
     if (!m_pMyCharacter || m_pMyCharacter == nullptr) {
-		spdlog::error("Failed to get character");
+		//spdlog::error("Failed to get character");
 		return false;
 	}
 
@@ -72,10 +72,13 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 		}
 	};
 
-	builder.SetDebugLogLevel();
+	builder.SetInfoLogLevel();
     builder.SetConsoleEnabled();
 
-	builder.Services->GetConfiguration<UIConfig>()->m_vFnOverlays.push_back([builder]() {
+	std::shared_ptr<RadarConfig> pRadarConfig = builder.Services->GetConfiguration<RadarConfig>();
+	std::shared_ptr<UIConfig> pUIConfig = builder.Services->GetConfiguration<UIConfig>();
+	
+	pUIConfig->m_vFnOverlays.push_back([builder]() {
 		ImGui::Begin("OAR internal");
 
 		ImGui::Text("Engine: %p", m_pEngine);
@@ -89,12 +92,24 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 		ImGui::Text("Targets: %d", builder.GameGlobalVariables->g_vTargets.size());
 		for (auto& target : builder.GameGlobalVariables->g_vTargets) {
 			ImGui::Text("Name: %s", target.m_strName.c_str());
-			ImGui::Text("Health: %f", target.m_fHealth);
+			ImGui::SameLine();
+			ImGui::Text(" - Health: %f", target.m_fHealth);
 			ImGui::Text("Pos: %f %f %f", target.m_vPos3D.x, target.m_vPos3D.y, target.m_vPos3D.z);
 		}
 
 		ImGui::End();
 	});
+
+	pUIConfig->m_qActions->AddSlider("Radar Zoom", &pRadarConfig->m_fZoom, 0.3, 5);
+	pUIConfig->m_qActions->AddButton("Reset Radar Zoom", [pRadarConfig]() { pRadarConfig->m_fZoom = 1; });
+	pUIConfig->m_qActions->AddSlider("Radar Type", &pRadarConfig->m_nType, 0, 1);
+
+	std::shared_ptr<Waypoints> pWaypoints = builder.Services->GetService<Waypoints>();
+	std::shared_ptr<GameVariables> pGameVariables = builder.Services->GetConfiguration<GameVariables>();
+	pUIConfig->m_qActions->AddButton("Set Waypoint", [pGameVariables, pWaypoints]() {
+		pWaypoints->SetWaypoint("test", pGameVariables->g_vLocal.m_vPos3D, ImColor(255, 255, 255));
+	});
+
 
 	builder.GameManager->OnEvent("Update", [builder]() {
 		if(!FetchSDK()) return;
@@ -128,9 +143,12 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
     Cheat cheat = builder.Build();
     cheat.UseUICustom(RenderingHookTypes::KIERO);
     cheat.UseUIMenu();
+    cheat.UseUIRadar();
     cheat.UseUIRenderMouse();
 	cheat.UseESPSnapline();
 	cheat.UseUIRenderOverlays();
+	cheat.UseUIQuickActions();
+	cheat.UseAimbot();
 
     cheat.Run();
 

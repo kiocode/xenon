@@ -24,6 +24,19 @@ extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam
 typedef HRESULT(__stdcall* Present) (IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags);
 typedef LRESULT(CALLBACK* WNDPROC)(HWND, UINT, WPARAM, LPARAM);
 
+enum Tabs {
+    AIM = 0,
+    VISUALS,
+    RADAR,
+    MISC,
+    DEV,
+    NUM_TABS
+};
+
+enum SubTabs {
+	SETTINGS = 0,
+    COLORS,
+};
 
 class UIService {
 public:
@@ -74,41 +87,16 @@ private:
     ID3D11DeviceContext* m_pContext = NULL;
     ID3D11RenderTargetView* m_pMainRenderTargetView = nullptr;
 
-    bool m_bMouse = 0;
-    int m_nMouseType = 0;
-    ImColor m_cMouse = ImColor(255, 255, 255, 255);
+    #pragma region menu vars
 
-    int m_nCrosshairType = 0;
-    float m_fCrosshairSize = 10;
-    ImColor m_cCrosshair = ImColor(255, 255, 255, 255);
-
-    #pragma region shitty vars
-
-    ImDrawList* drawlist;
-    ImVec2 pos;
     ImFont* mainfont;
-    int tabs = 0;
-    int subtabs = 0;
-    //int notifs = 0;
-    //int notiftype = 0;
-
-    //int notifpressed = 0;
-    //float anim = 0;
-    //float resizeanim = 0;
-    //float logomove = 0;
-    //float finalresize = 0;
-    //float closeanim = 0;
-    //bool shouldmove = true;
-    //bool shouldresize = true;
-    //bool logoshouldmove = true;
-    //bool finalresizeshouldmove = true;
-    //bool closemove = true;
+    int m_nSelectedTab = 0;
+    int m_nSelectedSubTab = 0;
 
     bool devconsole = false;
 
     #pragma endregion
 
-    //HRESULT __stdcall BindForInternal(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags);
     static LRESULT __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
     void LoadDefaultFonts();

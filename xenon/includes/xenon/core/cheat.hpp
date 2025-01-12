@@ -106,6 +106,18 @@ public:
 
     }
 
+    void UseUIRenderMouse() {
+        
+        if (!m_pGameConfig->m_bUseUICustom) {
+            spdlog::error("UI Custom Draw List can only be used with Custom UI");
+			return;
+        }
+
+        m_pUIConfig->m_bUseUIRenderMouse = true;
+
+        spdlog::info("UI Custom Draw List of Mouse is enabled");
+    }
+
     void UseUIRenderWindows() {
 
         if (!m_pGameConfig->m_bUseUICustom) {

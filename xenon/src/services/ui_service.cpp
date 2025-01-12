@@ -116,15 +116,14 @@ void UIService::RenderDefaultMenu() {
 		ImGui::SetWindowSize(ImVec2(windowWidth, 440));
 
 		//helpers def
-		drawlist = ImGui::GetWindowDrawList();
-		pos = ImGui::GetWindowPos() + ImVec2(5, 5);
+		ImVec2 pos = ImGui::GetWindowPos() + ImVec2(5, 5);
 
 		//main rect
-		drawlist->AddRectFilled(pos, ImVec2(pos.x + 480, pos.y + 430), ImColor(29, 40, 54, 255), 6.f, ImDrawFlags_RoundCornersAll);
+		ImGui::GetWindowDrawList()->AddRectFilled(pos, ImVec2(pos.x + 480, pos.y + 430), ImColor(29, 40, 54, 255), 6.f, ImDrawFlags_RoundCornersAll);
 
 		//title
-		drawlist->AddRectFilled(pos, ImVec2(pos.x + 480, pos.y + 25), ImColor(29, 40, 54, 255), 6.f, ImDrawFlags_RoundCornersTop);
-		drawlist->AddText(ImGuiHelper::CenterText(pos, ImVec2(pos.x + 480, pos.y + 25), m_pSystem->GetAppTitle()->c_str()), ImColor(165, 186, 197, 255), m_pSystem->GetAppTitle()->c_str());
+		ImGui::GetWindowDrawList()->AddRectFilled(pos, ImVec2(pos.x + 480, pos.y + 25), ImColor(29, 40, 54, 255), 6.f, ImDrawFlags_RoundCornersTop);
+		ImGui::GetWindowDrawList()->AddText(ImGuiHelper::CenterText(pos, ImVec2(pos.x + 480, pos.y + 25), m_pSystem->GetAppTitle()->c_str()), ImColor(165, 186, 197, 255), m_pSystem->GetAppTitle()->c_str());
 
 		//tabs
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
@@ -134,164 +133,228 @@ void UIService::RenderDefaultMenu() {
 
 		ImGui::BeginGroup();
 		{
-			if (ImGui::Tabs("Aim", ImVec2(width, 20), tabs == 0, 0)) tabs = 0;
-			if (ImGui::Tabs("Visual", ImVec2(width, 20), tabs == 1, 0)) tabs = 1;
-			if (ImGui::Tabs("Radar", ImVec2(width, 20), tabs == 2, 0)) tabs = 2;
-			if (ImGui::Tabs("Misc", ImVec2(width, 20), tabs == 3, 0)) tabs = 3;
+			if (ImGui::Tabs("Aim", ImVec2(width, 20), m_nSelectedTab == Tabs::AIM, 0)) m_nSelectedTab = Tabs::AIM;
+			if (ImGui::Tabs("Visuals", ImVec2(width, 20), m_nSelectedTab == Tabs::VISUALS, 0)) m_nSelectedTab = Tabs::VISUALS;
+			if (ImGui::Tabs("Radar", ImVec2(width, 20), m_nSelectedTab == Tabs::RADAR, 0)) m_nSelectedTab = Tabs::RADAR;
+			if (ImGui::Tabs("Misc", ImVec2(width, 20), m_nSelectedTab == Tabs::MISC, 0)) m_nSelectedTab = Tabs::MISC;
 
 			if (devconsole)
 			{
-				if (ImGui::Tabs("Dev", ImVec2(width, 20), tabs == 4, 0)) tabs = 4;
+				if (ImGui::Tabs("Dev", ImVec2(width, 20), m_nSelectedTab == Tabs::DEV, 0)) m_nSelectedTab = Tabs::DEV;
 			}
 		}
 		ImGui::EndGroup();
 
-		//subtabs ( if it's the case )
-		if (tabs == 0)
+		// handle subtabs
+		switch (m_nSelectedTab)
 		{
-			ImGui::SetCursorPos(ImVec2(5, 55));
-			ImGui::BeginGroup();
-			{
-				if (ImGui::Tabs("Settings", ImVec2(windowWidth / 2, 20), subtabs == 0, 0)) subtabs = 0;
-				if (ImGui::Tabs("Crosshair", ImVec2(windowWidth / 2, 20), subtabs == 1, 0)) subtabs = 1;
-			}
-			ImGui::EndGroup();
+			case Tabs::AIM:
+				ImGui::SetCursorPos(ImVec2(5, 55));
+				ImGui::BeginGroup();
+				{
+					if (ImGui::Tabs("Settings", ImVec2(windowWidth / 2, 20), m_nSelectedSubTab == SubTabs::SETTINGS, 0)) m_nSelectedSubTab = SubTabs::SETTINGS;
+					if (ImGui::Tabs("Colors", ImVec2(windowWidth / 2, 20), m_nSelectedSubTab == SubTabs::COLORS, 0)) m_nSelectedSubTab = SubTabs::COLORS;
+				}
+				ImGui::EndGroup();
+				break;
+			case Tabs::VISUALS:
+				ImGui::SetCursorPos(ImVec2(5, 55));
+				ImGui::BeginGroup();
+				{
+					if (ImGui::Tabs("Settings", ImVec2(windowWidth / 2, 20), m_nSelectedSubTab == SubTabs::SETTINGS, 0)) m_nSelectedSubTab = SubTabs::SETTINGS;
+					if (ImGui::Tabs("Colors", ImVec2(windowWidth / 2, 20), m_nSelectedSubTab == SubTabs::COLORS, 0)) m_nSelectedSubTab = SubTabs::COLORS;
+				}
+				ImGui::EndGroup();
+				break;
+			case Tabs::RADAR:
+				ImGui::SetCursorPos(ImVec2(5, 55));
+				ImGui::BeginGroup();
+				{
+					if (ImGui::Tabs("Settings", ImVec2(windowWidth / 2, 20), m_nSelectedSubTab == SubTabs::SETTINGS, 0)) m_nSelectedSubTab = SubTabs::SETTINGS;
+					if (ImGui::Tabs("Colors", ImVec2(windowWidth / 2, 20), m_nSelectedSubTab == SubTabs::COLORS, 0)) m_nSelectedSubTab = SubTabs::COLORS;
+				}
+				ImGui::EndGroup();
+				break;
+			case Tabs::MISC:
+				ImGui::SetCursorPos(ImVec2(5, 55));
+				ImGui::BeginGroup();
+				{
+					if (ImGui::Tabs("Settings", ImVec2(windowWidth / 2, 20), m_nSelectedSubTab == SubTabs::SETTINGS, 0)) m_nSelectedSubTab = SubTabs::SETTINGS;
+					if (ImGui::Tabs("Colors", ImVec2(windowWidth / 2, 20), m_nSelectedSubTab == SubTabs::COLORS, 0)) m_nSelectedSubTab = SubTabs::COLORS;
+				}
+				ImGui::EndGroup();
+				break;
+			case Tabs::DEV:
+				ImGui::SetCursorPos(ImVec2(5, 55));
+				ImGui::BeginGroup();
+				{
+					if (ImGui::Tabs("Settings", ImVec2(windowWidth / 2, 20), m_nSelectedSubTab == SubTabs::SETTINGS, 0)) m_nSelectedSubTab = SubTabs::SETTINGS;
+					if (ImGui::Tabs("Colors", ImVec2(windowWidth / 2, 20), m_nSelectedSubTab == SubTabs::COLORS, 0)) m_nSelectedSubTab = SubTabs::COLORS;
+				}
+				ImGui::EndGroup();
+				break;
 		}
 
 		ImGui::PopStyleVar(); // this pops the itemspacing push
 
-#pragma region Aim functions
-		if (tabs == 0 && subtabs == 0)
-		{
-			ImGui::SetCursorPos(ImVec2(10, 80));
-			ImGui::BeginChild("Settings", ImVec2(470, 345));
-			{
-				//render funcs
-				ImGui::SetCursorPos(ImVec2(10, 10));
-				ImGui::BeginGroup();
-				{
-					ImGui::Checkbox("Silent", &m_pAimConfigs->m_bSilent);
-					ImGui::Checkbox("Visible", &m_pAimConfigs->m_bVisibleCheck);
-					ImGui::Checkbox("Auto scope", &m_pAimConfigs->m_bAutoScope);
-					ImGui::Checkbox("Auto shoot", &m_pAimConfigs->m_bAutoShoot);
-					ImGui::Checkbox("Humanize", &m_pAimConfigs->m_bHumanize);
-					ImGui::Checkbox("No recoil", &m_pAimConfigs->m_bNoRecoil);
-					ImGui::Checkbox("No spread", &m_pAimConfigs->m_bNoSpread);
+		switch (m_nSelectedTab) {
+			case Tabs::AIM:
 
-					ImGui::Checkbox("Smooth", &m_pAimConfigs->m_bSmooth);
-					if (m_pAimConfigs->m_bSmooth) {
-						ImGui::SliderFloat("Smooth value", &m_pAimConfigs->m_fSmooth, 5.f, 50.f, "%.0f");
-					}
+				switch (m_nSelectedSubTab) {
 
-					ImGui::Checkbox("Fov", &m_pAimConfigs->m_bFov);
-					if (m_pAimConfigs->m_bFov) {
-						ImGui::SliderFloat("Fov value", &m_pAimConfigs->m_fFov, 30.f, 300.f, "%.0f");
-					}
+					case SubTabs::SETTINGS: {
+						ImGui::SetCursorPos(ImVec2(10, 80));
+						ImGui::BeginChild("Settings", ImVec2(470, 345));
+						{
+							//render funcs
+							ImGui::SetCursorPos(ImVec2(10, 10));
+							ImGui::BeginGroup();
+							{
+								ImGui::Checkbox("Silent", &m_pAimConfigs->m_bSilent);
+								ImGui::Checkbox("Visible", &m_pAimConfigs->m_bVisibleCheck);
+								ImGui::Checkbox("Auto scope", &m_pAimConfigs->m_bAutoScope);
+								ImGui::Checkbox("Auto shoot", &m_pAimConfigs->m_bAutoShoot);
+								ImGui::Checkbox("Humanize", &m_pAimConfigs->m_bHumanize);
+								ImGui::Checkbox("No recoil", &m_pAimConfigs->m_bNoRecoil);
+								ImGui::Checkbox("No spread", &m_pAimConfigs->m_bNoSpread);
 
-					ImGui::Checkbox("Nearest", &m_pAimConfigs->m_bNearest);
-					if (m_pAimConfigs->m_bNearest
-						&& ImGui::SliderFloat("Nearest distance", &m_pAimConfigs->m_fNearest, 100.f, 1000.f, "%.0f")) {
-						m_pAimConfigs->m_fNearest = round(m_pAimConfigs->m_fNearest / 100.0f) * 100.0f;
-					}
-					ImGui::Checkbox("Developer Console", &devconsole);
-				}
-				ImGui::EndGroup();
-			}
-			ImGui::EndChild();
-		}
+								ImGui::Checkbox("Smooth", &m_pAimConfigs->m_bSmooth);
+								if (m_pAimConfigs->m_bSmooth) {
+									ImGui::SliderFloat("Smooth value", &m_pAimConfigs->m_fSmooth, 5.f, 50.f, "%.0f");
+								}
 
-		if (tabs == 0 && subtabs == 1) {
-			ImGui::SetCursorPos(ImVec2(10, 80));
-			ImGui::BeginChild("Crosshair", ImVec2(470, 345));
-			{
-				//render funcs
-				ImGui::SetCursorPos(ImVec2(10, 10));
-				ImGui::BeginGroup();
-				{
-					static ImVec4 color = m_pAimConfigs->m_cCrosshair;
+								ImGui::Checkbox("Fov", &m_pAimConfigs->m_bFov);
+								if (m_pAimConfigs->m_bFov) {
+									ImGui::SliderFloat("Fov value", &m_pAimConfigs->m_fFov, 30.f, 300.f, "%.0f");
+								}
 
-					ImGui::Checkbox("Crosshair", &m_pAimConfigs->m_bCrosshair);
-					if (m_pAimConfigs->m_bCrosshair)
-					{
-						if (ImGui::ColorEdit4("Color", (float*)&color)) {
-							m_pAimConfigs->m_cCrosshair = ImColor(color);
+								ImGui::Checkbox("Nearest", &m_pAimConfigs->m_bNearest);
+								if (m_pAimConfigs->m_bNearest
+									&& ImGui::SliderFloat("Nearest distance", &m_pAimConfigs->m_fNearest, 100.f, 1000.f, "%.0f")) {
+									m_pAimConfigs->m_fNearest = round(m_pAimConfigs->m_fNearest / 100.0f) * 100.0f;
+								}
+								ImGui::Checkbox("Developer Console", &devconsole);
+							}
+							ImGui::EndGroup();
 						}
-						ImGui::Combo("Type", &m_pAimConfigs->m_nCrosshairType, "Cross\0\Circle");
-					}
+						ImGui::EndChild();
+					} break;
+					case SubTabs::COLORS: {
 
+					} break;
 				}
-				ImGui::EndGroup();
-			}
-			ImGui::EndChild();
-		}
-#pragma endregion
 
-		if (tabs == 1)
-		{
-			ImGui::SetCursorPos(ImVec2(10, 60));
-			ImGui::BeginChild("MainChild", ImVec2(470, 365));
-			{
-				//demo funcs
-				static bool checkbox = false;
-				static int sliderint = 0;
-				static float sliderfloat = 0.f;
-				static int combo = 0;
-				static const char* multi_items[5] = { "One", "Two", "Three", "Four", "Five" };
-				static bool multi_items_count[5];
-				static int key = 0;
+				break;
+			case Tabs::VISUALS:
 
-				//render funcs
-				ImGui::SetCursorPos(ImVec2(10, 10));
-				ImGui::BeginGroup();
-				{
-					ImGui::Checkbox("Checkbox", &checkbox);
-					ImGui::SliderInt("Slider Int", &sliderint, 0, 100);
-					ImGui::SliderFloat("Slider Float", &sliderfloat, 0.f, 100.f, "%.1f");
-					ImGui::Combo("Combo", &combo, "Selectable 1\0\Selectable 2\0\Selectable 3", 3);
-					ImGui::MultiCombo("Multicombo", multi_items_count, multi_items, 5);
-					ImGui::Keybind("Hotkey", &key);
+				switch (m_nSelectedSubTab) {
+					
+					case SubTabs::SETTINGS: {
+						ImGui::SetCursorPos(ImVec2(10, 80));
+						ImGui::BeginChild("Settings", ImVec2(470, 365));
+						{
+							//demo funcs
+							static bool checkbox = false;
+							static int sliderint = 0;
+							static float sliderfloat = 0.f;
+							static int combo = 0;
+							static const char* multi_items[5] = { "One", "Two", "Three", "Four", "Five" };
+							static bool multi_items_count[5];
+							static int key = 0;
 
-					//if(ImGui::Button("Test Hotkey", ImVec2(200, 25)))
-					//	isEditing = true;
-					//ImGuiHelper::RenderHotkeyEditor(&testhotkey, &isEditing);
+							//render funcs
+							ImGui::SetCursorPos(ImVec2(10, 10));
+							ImGui::BeginGroup();
+							{
+								ImGui::Checkbox("Checkbox", &checkbox);
+								ImGui::SliderInt("Slider Int", &sliderint, 0, 100);
+								ImGui::SliderFloat("Slider Float", &sliderfloat, 0.f, 100.f, "%.1f");
+								ImGui::Combo("Combo", &combo, "Selectable 1\0\Selectable 2\0\Selectable 3", 3);
+								ImGui::MultiCombo("Multicombo", multi_items_count, multi_items, 5);
+								ImGui::Keybind("Hotkey", &key);
+
+								//if(ImGui::Button("Test Hotkey", ImVec2(200, 25)))
+								//	isEditing = true;
+								//ImGuiHelper::RenderHotkeyEditor(&testhotkey, &isEditing);
+							}
+							ImGui::EndGroup();
+						}
+						ImGui::EndChild();
+					} break;
+					case SubTabs::COLORS: {
+						ImGui::SetCursorPos(ImVec2(10, 80));
+						ImGui::BeginChild("Crosshair", ImVec2(470, 345));
+						{
+							//render funcs
+							ImGui::SetCursorPos(ImVec2(10, 10));
+							ImGui::BeginGroup();
+							{
+								static ImVec4 color = m_pConfigs->m_cCrosshair;
+
+								ImGui::Checkbox("Crosshair", &m_pConfigs->m_bCrosshair);
+								if (m_pConfigs->m_bCrosshair)
+								{
+									if (ImGui::ColorEdit4("Color", (float*)&color)) {
+										m_pConfigs->m_cCrosshair = ImColor(color);
+									}
+									ImGui::Combo("Type", &m_pConfigs->m_nCrosshairType, "Cross\0\Circle");
+								}
+
+							}
+							ImGui::EndGroup();
+						}
+						ImGui::EndChild();
+					} break;
 				}
-				ImGui::EndGroup();
-			}
-			ImGui::EndChild();
-		}
 
-		if (tabs == 4)
-		{
-			ImGui::SetCursorPos(ImVec2(10, 60));
-			ImGui::BeginChild("MainChild", ImVec2(470, 365));
-			{
-				//demo funcs
-				static bool checkbox[2];
-				static int combo = 0;
-				static char input0[64] = "";
-				static char input1[64] = "";
+				break;
+			case Tabs::RADAR:
 
-				//render funcs
-				ImGui::SetCursorPos(ImVec2(10, 10));
-				ImGui::BeginGroup();
-				{
-					if (checkbox[0])
-					{
-						ImGui::InputText("Pointer or Offset", input0, 64, ImGuiInputTextFlags_ReadOnly);
-						ImGui::InputText("Value", input1, 64, ImGuiInputTextFlags_ReadOnly);
-					}
-					else
-					{
-						ImGui::InputText("Pointer or Offset", input0, 64);
-						ImGui::InputText("Value", input1, 64);
-					}
-					ImGui::Checkbox("Read-Only", &checkbox[0]);
-					ImGui::Checkbox("Loop Command", &checkbox[1]);
-					ImGui::Combo("Type", &combo, "Byte\0\r2 Byte\0\r4 Byte\0\rFloat\0\Double\0\String", 6);
+				switch (m_nSelectedSubTab) {
+
+					case SubTabs::SETTINGS: {
+
+						ImGui::SetCursorPos(ImVec2(10, 80));
+						ImGui::BeginChild("Settings", ImVec2(470, 365));
+						{
+							//demo funcs
+							static bool checkbox[2];
+							static int combo = 0;
+							static char input0[64] = "";
+							static char input1[64] = "";
+
+							//render funcs
+							ImGui::SetCursorPos(ImVec2(10, 10));
+							ImGui::BeginGroup();
+							{
+								if (checkbox[0])
+								{
+									ImGui::InputText("Pointer or Offset", input0, 64, ImGuiInputTextFlags_ReadOnly);
+									ImGui::InputText("Value", input1, 64, ImGuiInputTextFlags_ReadOnly);
+								}
+								else
+								{
+									ImGui::InputText("Pointer or Offset", input0, 64);
+									ImGui::InputText("Value", input1, 64);
+								}
+								ImGui::Checkbox("Read-Only", &checkbox[0]);
+								ImGui::Checkbox("Loop Command", &checkbox[1]);
+								ImGui::Combo("Type", &combo, "Byte\0\r2 Byte\0\r4 Byte\0\rFloat\0\Double\0\String", 6);
+							}
+							ImGui::EndGroup();
+						}
+						ImGui::EndChild();
+					} break;
+					case SubTabs::COLORS: {
+
+					} break;
 				}
-				ImGui::EndGroup();
-			}
-			ImGui::EndChild();
+
+				break;
+			case Tabs::MISC:
+				break;
+			case Tabs::DEV:
+				break;
 		}
 
 	}
@@ -330,14 +393,14 @@ void UIService::InitExternal() {
 }
 
 void UIService::RenderCrosshair() {
-	switch (m_pAimConfigs->m_nCrosshairType)
+	switch (m_pConfigs->m_nCrosshairType)
 	{
 	case 0:
-		ImGui::GetForegroundDrawList()->AddLine(ImVec2(m_pSystem->GetScreenCenter().x - m_pAimConfigs->m_fCrosshair, m_pSystem->GetScreenCenter().y), ImVec2((m_pSystem->GetScreenCenter().x - m_pAimConfigs->m_fCrosshair) + (m_pAimConfigs->m_fCrosshair * 2), m_pSystem->GetScreenCenter().y), m_pAimConfigs->m_cCrosshair, 1.2f);
-		ImGui::GetForegroundDrawList()->AddLine(ImVec2(m_pSystem->GetScreenCenter().x, m_pSystem->GetScreenCenter().y - m_pAimConfigs->m_fCrosshair), ImVec2(m_pSystem->GetScreenCenter().x, (m_pSystem->GetScreenCenter().y - m_pAimConfigs->m_fCrosshair) + (m_pAimConfigs->m_fCrosshair * 2)), m_pAimConfigs->m_cCrosshair, 1.2f);
+		ImGui::GetForegroundDrawList()->AddLine(ImVec2(m_pSystem->GetScreenCenter().x - m_pConfigs->m_fCrosshair, m_pSystem->GetScreenCenter().y), ImVec2((m_pSystem->GetScreenCenter().x - m_pConfigs->m_fCrosshair) + (m_pConfigs->m_fCrosshair * 2), m_pSystem->GetScreenCenter().y), m_pConfigs->m_cCrosshair, 1.2f);
+		ImGui::GetForegroundDrawList()->AddLine(ImVec2(m_pSystem->GetScreenCenter().x, m_pSystem->GetScreenCenter().y - m_pConfigs->m_fCrosshair), ImVec2(m_pSystem->GetScreenCenter().x, (m_pSystem->GetScreenCenter().y - m_pConfigs->m_fCrosshair) + (m_pConfigs->m_fCrosshair * 2)), m_pConfigs->m_cCrosshair, 1.2f);
 		break;
 	case 1:
-		ImGui::GetForegroundDrawList()->AddCircle(ImVec2(m_pSystem->GetScreenCenter().x, m_pSystem->GetScreenCenter().y), m_pAimConfigs->m_fCrosshair, m_cCrosshair, 100, 1.2f);
+		ImGui::GetForegroundDrawList()->AddCircle(ImVec2(m_pSystem->GetScreenCenter().x, m_pSystem->GetScreenCenter().y), m_pConfigs->m_fCrosshair, m_pConfigs->m_cCrosshair, 100, 1.2f);
 		break;
 	}
 }
@@ -347,18 +410,18 @@ void UIService::RenderFov() {
 }
 
 void UIService::RenderMouse() {
-	switch (m_nMouseType) {
-	case 0:
-		ImGui::GetForegroundDrawList()->AddCircleFilled(ImGui::GetMousePos(), 4, m_cMouse);
-		break;
-	case 1:
-		ImGuiHelper::DrawOutlinedTextForeground(ImGuiHelper::g_pGameFont, ImVec2(m_pSystem->GetMousePos().x, m_pSystem->GetMousePos().y), 13.0f, m_cMouse, false, "X");
-		break;
-	case 2:
-		if (!ImGui::GetIO().MouseDrawCursor) {
-			ImGui::GetIO().MouseDrawCursor = true;
-		}
-		break;
+	switch (m_pConfigs->m_nMouseType) {
+		case 0:
+			ImGui::GetForegroundDrawList()->AddCircleFilled(ImGui::GetMousePos(), 4, m_pConfigs->m_cMouse);
+			break;
+		case 1:
+			ImGuiHelper::DrawOutlinedTextForeground(ImGuiHelper::g_pGameFont, ImVec2(m_pSystem->GetMousePos().x, m_pSystem->GetMousePos().y), 13.0f, m_pConfigs->m_cMouse, false, "X");
+			break;
+		case 2:
+			if (!ImGui::GetIO().MouseDrawCursor) {
+				ImGui::GetIO().MouseDrawCursor = true;
+			}
+			break;
 	}
 }
 
@@ -373,16 +436,15 @@ void UIService::RenderDefaultUIQuickActions() {
 
 		ImGui::SetWindowSize(ImVec2(width, height));
 
-		drawlist = ImGui::GetWindowDrawList();
-		pos = ImGui::GetWindowPos() + ImVec2(padding, padding);
+		ImVec2 pos = ImGui::GetWindowPos() + ImVec2(padding, padding);
 
 		//main rect
-		drawlist->AddRectFilled(pos, ImVec2(pos.x + 480, pos.y + 430), ImColor(29, 40, 54, 255), 6.f, ImDrawFlags_RoundCornersAll);
+		ImGui::GetWindowDrawList()->AddRectFilled(pos, ImVec2(pos.x + 480, pos.y + 430), ImColor(29, 40, 54, 255), 6.f, ImDrawFlags_RoundCornersAll);
 
 		//title
 		const char* title = "Quick Actions";
-		drawlist->AddRectFilled(pos, ImVec2(pos.x + 480, pos.y + 25), ImColor(29, 40, 54, 255), 6.f, ImDrawFlags_RoundCornersTop);
-		drawlist->AddText(ImGuiHelper::CenterText(pos, ImVec2(pos.x + 480, pos.y + 25), title), ImColor(165, 186, 197, 255), title);
+		ImGui::GetWindowDrawList()->AddRectFilled(pos, ImVec2(pos.x + 480, pos.y + 25), ImColor(29, 40, 54, 255), 6.f, ImDrawFlags_RoundCornersTop);
+		ImGui::GetWindowDrawList()->AddText(ImGuiHelper::CenterText(pos, ImVec2(pos.x + 480, pos.y + 25), title), ImColor(165, 186, 197, 255), title);
 
 		ImGui::SetCursorPos(ImVec2(15, 40));
 		ImGui::BeginGroup();
@@ -404,7 +466,7 @@ void UIService::RenderDefaultUIQuickActions() {
 
 void UIService::Update() {
 
-	if (m_pAimConfigs->m_bCrosshair) {
+	if (m_pConfigs->m_bCrosshair) {
 		RenderCrosshair();
 	}
 
@@ -423,7 +485,7 @@ void UIService::Update() {
 
 	if (m_bShowMenu) {
 
-		if (m_bMouse) {
+		if (m_pConfigs->m_bUseUIRenderMouse) {
 			RenderMouse();
 		}
 

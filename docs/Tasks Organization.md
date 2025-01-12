@@ -27,6 +27,7 @@ kanban-plugin: board
 - [ ] add NONE to enums
 - [ ] check is use enums with plural or singular name
 - [ ] add fly
+- [ ] convert all vec in float
 
 
 ## InProgress

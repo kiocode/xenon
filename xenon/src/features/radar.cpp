@@ -11,11 +11,11 @@ void Radar::RenderRadar() {
     bool is3D = m_pSystem->GetGameDimension() == GameDimensions::DIMENSION_3D;
 
     switch (m_pConfigs->m_nType) {
-    case 0: RenderRadarBase("Circular Radar", RadarShapes::CIRCULAR, is3D); break;
-    case 1: RenderRadarBase("Rectangular Radar", RadarShapes::RECTANGULAR, is3D); break;
-    default:
-        spdlog::error("Invalid radar type: {}", m_pConfigs->m_nType);
-        break;
+        case 0: RenderRadarBase("Circular Radar", RadarShapes::CIRCULAR, is3D); break;
+        case 1: RenderRadarBase("Rectangular Radar", RadarShapes::RECTANGULAR, is3D); break;
+        default:
+            spdlog::error("Invalid radar type: {}", m_pConfigs->m_nType);
+            break;
     }
 }
 
@@ -50,7 +50,9 @@ void Radar::RenderRadarBase(const char* title, RadarShapes shape, bool is3D) {
 
         auto isPointInRadar = [&](ImVec2 point) -> bool {
             if (shape == RadarShapes::CIRCULAR) {
-                float distance = sqrtf(powf(point.x - radarCenter.x, 2) + powf(point.y - radarCenter.y, 2));
+                Vec2 pointConverted = { point.x, point.y };
+                Vec2 radarCenterConverted = { radarCenter.x, radarCenter.y };
+                double distance = pointConverted.Distance(radarCenterConverted);
                 return distance <= (radarSize / 2.0f - 5);
             }
             else if (shape == RadarShapes::RECTANGULAR) {
