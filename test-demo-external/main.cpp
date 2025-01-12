@@ -211,25 +211,25 @@ static void TestLua(Builder& builder) {
 
 	//pLuaService->ExecuteScriptFile("scripts\\test.lua");
 	pLuaService->ExecuteScript(R"(
-        function OnUpdate()
-			--local staticServerAddr = 0x5ABBA0
-			--local idLocalPlayer = 0x1450
-			--
-			--local mem = MemoryService()
-			--local baseAddress = mem:getModuleAddress("DDNet.exe")
-			--print(string.format("Base Address: 0x%X", baseAddress))
-			--
-			--local staticServer = mem:readPointer(baseAddress + staticServerAddr)
-			--print(string.format("Static Server Address: 0x%X", staticServer))
-			--
-			--local localPlayerId = mem:readInt(staticServer + idLocalPlayer)
-			--print(string.format("Local Player ID: %i", localPlayer))
-
-			local address = memoryService:getModuleAddress("DDNet.exe")
-			local value = memoryService:readPointer(address + 0x1234)
-			print(value)
-
-        end
+        --function OnUpdate()
+		--	--local staticServerAddr = 0x5ABBA0
+		--	--local idLocalPlayer = 0x1450
+		--	--
+		--	--local mem = MemoryService()
+		--	--local baseAddress = mem:getModuleAddress("DDNet.exe")
+		--	--print(string.format("Base Address: 0x%X", baseAddress))
+		--	--
+		--	--local staticServer = mem:readPointer(baseAddress + staticServerAddr)
+		--	--print(string.format("Static Server Address: 0x%X", staticServer))
+		--	--
+		--	--local localPlayerId = mem:readInt(staticServer + idLocalPlayer)
+		--	--print(string.format("Local Player ID: %i", localPlayer))
+		--
+		--	local address = memoryService:getModuleAddress("DDNet.exe")
+		--	local value = memoryService:readPointer(address + 0x1234)
+		--	print(value)
+		--
+        --end
 
     )");
 
@@ -259,12 +259,14 @@ static void RunTests() {
 	Builder builder("Demo external");
 	builder.SystemVariables->IsInternal(false);
 	builder.SystemVariables->SetGameDimension(GameDimensions::DIMENSION_2D);
+	builder.SystemVariables->SetRenderingType(RenderingTypes::OPENGL3);
+	builder.SystemVariables->m_fnW2S2D = [](Vec2 pos) { return new Vec2(pos.x, pos.y); };
 	builder.SetConsoleEnabled();
 	builder.SetDebugLogLevel();
 
 	//TestGeneral(builder);
 	//TestLua(builder);
-	TestRecoil(builder);
+	//TestRecoil(builder);
 	//TestRedEclipseExternal(builder);
 
 }

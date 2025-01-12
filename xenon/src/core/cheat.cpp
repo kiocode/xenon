@@ -37,7 +37,7 @@ void Cheat::Run() {
         m_pGame->EnableUpdate();
     }
 
-    m_pNotificationService->Notify("Status", "Cheat initialized");
+    //m_pNotificationService->Notify("Status", "Cheat initialized");
 }
 
 #pragma region Cheat:Private

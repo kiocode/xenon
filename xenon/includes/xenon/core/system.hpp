@@ -3,9 +3,12 @@
 #include <string>
 #include <functional>
 
+#include <spdlog/spdlog.h>
+
 #include <xenon/utility/vec2.hpp>
 #include <xenon/models/game_dimensions.hpp>
 #include <xenon/utility/vec3.hpp>
+#include <xenon/models/enums/rendering_types.hpp>
 
 class System {
 public:
@@ -47,11 +50,25 @@ public:
 		return m_gameDim;
 	}
 
+	void SetRenderingType(RenderingTypes type) {
+
+		if (!m_bIsInternal) {
+			spdlog::warn("External cheat cannot change rendering type, DX11 will be used.");
+		}
+
+		m_renderingType = type;
+	}
+
+	RenderingTypes GetRenderingType() const {
+		return m_renderingType;
+	}
+
 private:
 	std::string m_strAppTitle;
 	bool m_bIsInternal;
 	GameDimensions m_gameDim = GameDimensions::DIMENSION_2D;
+	RenderingTypes m_renderingType = RenderingTypes::DX11;
 
 	void GetDesktopResolution(int& horizontal, int& vertical);
-
+	
 };

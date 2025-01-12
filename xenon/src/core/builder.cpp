@@ -18,11 +18,11 @@ void Builder::SetConsoleEnabled() const {
     }
     SetConsoleTitle(SystemVariables->GetAppTitle()->c_str());
 
-    if (SystemVariables->IsInternal()) {
-        FILE* f;
-        freopen_s(&f, "CONOUT$", "w", stdout);
+    //if (SystemVariables->IsInternal()) {
+        //FILE* f;
+        //freopen_s(&f, "CONOUT$", "w", stdout);
         system("cls");
-    }
+    //}
 
     auto console_sink = std::make_shared<spdlog::sinks::wincolor_stdout_sink_mt>();
     //console_sink->set_color(spdlog::level::info, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
@@ -32,12 +32,13 @@ void Builder::SetConsoleEnabled() const {
 
     //spdlog::set_pattern("[%H:%M:%S] [%^%l%$] %v");
 
-    spdlog::info(R"(  
-     __  __     __     ______     ______     ______     _____     ______    
-    /\ \/ /    /\ \   /\  __ \   /\  ___\   /\  __ \   /\  __-.  /\  ___\    
-    \ \  _'-.  \ \ \  \ \ \/\ \  \ \ \____  \ \ \/\ \  \ \ \/\ \ \ \  __\   
-     \ \_\ \_\  \ \_\  \ \_____\  \ \_____\  \ \_____\  \ \____-  \ \_____\    
-      \/_/\/_/   \/_/   \/_____/   \/_____/   \/_____/   \/____/   \/_____/
+    spdlog::info(R"(        
+                                   
+  8b,     ,d8  ,adPPYba,  8b,dPPYba,    ,adPPYba,   8b,dPPYba,   
+   `Y8, ,8P'  a8P_____88  88P'   `"8a  a8"     "8a  88P'   `"8a  
+     )888(    8PP"""""""  88       88  8b       d8  88       88  
+   ,d8" "8b,  "8b,   ,aa  88       88  "8a,   ,a8"  88       88  
+  8P'     `Y8  `"Ybbd8"'  88       88   `"YbbdP"'   88       88
     )");
 }
 
@@ -77,7 +78,7 @@ void Builder::RegisterDefaultServices() {
 
     #pragma endregion
 
-    #pragma region Services
+    #pragma region Services & Features
 
     std::shared_ptr<Waypoints> pWaypoints = Services->AddSingleton<Waypoints>();
 
@@ -100,11 +101,6 @@ void Builder::RegisterDefaultServices() {
             return std::make_shared<AimService>(pAimConfig, SystemVariables);
         }
     );
-
-
-    #pragma endregion
-
-    #pragma region Features
 
     std::shared_ptr<ESP> pESP = Services->AddSingleton<ESP>(
         [this, pESPConfig]() {

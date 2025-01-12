@@ -5,6 +5,11 @@
 
 void ESP::RenderSnapline() {
 
+	if (!m_pSystem->m_fnW2S3D && !m_pSystem->m_fnW2S2D) {
+		throw std::runtime_error("No world to screen function set");
+		return;
+	}
+
 	float screenHeight = static_cast<float>(m_pSystem->GetScreenResolution().y);
 	float centerX = static_cast<float>(m_pSystem->GetScreenCenter().x);
 	ImVec2 center = ImVec2(centerX, static_cast<float>(m_pSystem->GetScreenCenter().y));
@@ -33,6 +38,11 @@ void ESP::RenderSnapline() {
 }
 
 void ESP::Render2DBox() {
+
+	if (!m_pSystem->m_fnW2S3D && !m_pSystem->m_fnW2S2D) {
+		throw std::runtime_error("No world to screen function set");
+		return;
+	}
 
 	for (auto& target : m_pGameVariables->g_vTargets) {
 
@@ -92,9 +102,19 @@ void ESP::Render2DBox() {
 
 void ESP::Render3DBox() {
 
+	if (!m_pSystem->m_fnW2S3D && !m_pSystem->m_fnW2S2D) {
+		throw std::runtime_error("No world to screen function set");
+		return;
+	}
+
 }
 
 void ESP::RenderSkeleton() {
+
+	if (!m_pSystem->m_fnW2S3D && !m_pSystem->m_fnW2S2D) {
+		throw std::runtime_error("No world to screen function set");
+		return;
+	}
 
 	if (!m_pConfigs->m_tBonePairs.empty() || !m_pConfigs->m_fnGetBoneScreenPosFromIndex) {
 		spdlog::error("No bone pairs or bone getter function set");
@@ -127,4 +147,10 @@ void ESP::RenderSkeleton() {
 }
 
 void ESP::RenderHealthbar() {
+
+	if (!m_pSystem->m_fnW2S3D && !m_pSystem->m_fnW2S2D) {
+		throw std::runtime_error("No world to screen function set");
+		return;
+	}
+
 }

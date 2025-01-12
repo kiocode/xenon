@@ -24,6 +24,7 @@ kanban-plugin: board
 - [ ] change all, don't have a single update but have a list with all features and services called now components that have a super clas with onupdate synchronized with the original update
 - [ ] add esp and aimbot support for visible/not players behind walls
 - [ ] check if the use of pointer makes sense like with vec2
+- [ ] add NONE to enums
 
 
 ## InProgress

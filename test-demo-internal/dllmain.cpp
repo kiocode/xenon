@@ -9,12 +9,14 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 
 	Builder builder("Demo internal");
     builder.SystemVariables->IsInternal(true);
+    builder.SystemVariables->SetGameDimension(GameDimensions::DIMENSION_2D);
+    builder.SystemVariables->SetRenderingType(RenderingTypes::DIRECTX11);
     builder.SetDebugLogLevel();
     builder.SetConsoleEnabled();
 
     Cheat cheat = builder.Build();
     
-    cheat.UseUICustom();
+    cheat.UseUICustom(RenderingHookTypes::KIERO);
     cheat.UseUIMenu();
     
     cheat.Run();

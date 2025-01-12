@@ -8,6 +8,8 @@
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_win32.h>
 #include <imgui/imgui_impl_dx11.h>
+#include <imgui/imgui_impl_opengl2.h>
+#include <imgui/imgui_impl_opengl3.h>
 
 #include <xenon/core/system.hpp>
 #include <xenon/core/di_manager.hpp>

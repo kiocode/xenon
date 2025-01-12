@@ -550,8 +550,7 @@ bool UIService::CreateDeviceUI() {
 		D3D_FEATURE_LEVEL_11_0,
 		D3D_FEATURE_LEVEL_10_0
 	};
-
-
+	
 	HRESULT hr = D3D11CreateDeviceAndSwapChain(
 		nullptr,
 		D3D_DRIVER_TYPE_HARDWARE,
@@ -598,11 +597,33 @@ void UIService::SetMenuClose() {
 
 void UIService::ResetDeviceUI()
 {
-	ImGui_ImplDX11_InvalidateDeviceObjects();
+
+	switch (m_pSystem->GetRenderingType()) {
+		case RenderingTypes::DX11:
+			ImGui_ImplDX11_InvalidateDeviceObjects();
+			break;
+		case RenderingTypes::OPENGL2:
+			ImGui_ImplOpenGL2_DestroyDeviceObjects();
+			break;
+		case RenderingTypes::OPENGL3:
+			ImGui_ImplOpenGL3_DestroyDeviceObjects();
+			break;
+	}
 
 	DestroyDeviceUI();
 
-	ImGui_ImplDX11_CreateDeviceObjects();
+	switch (m_pSystem->GetRenderingType()) {
+		case RenderingTypes::DX11:
+			ImGui_ImplDX11_CreateDeviceObjects();
+			break;
+		case RenderingTypes::OPENGL2:
+			ImGui_ImplOpenGL2_CreateDeviceObjects();
+			break;
+		case RenderingTypes::OPENGL3:
+			ImGui_ImplOpenGL3_CreateDeviceObjects();
+			break;
+	}
+
 }
 
 void UIService::DestroyDeviceUI()
@@ -626,14 +647,44 @@ void UIService::CreateImGuiUI()
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags = ImGuiConfigFlags_NoMouseCursorChange;
 	ImGui_ImplWin32_Init(m_hWindow);
-	ImGui_ImplDX11_Init(m_pDevice, m_pContext);
+
+	if (m_pSystem->IsInternal()) {
+
+		switch (m_pSystem->GetRenderingType()) {
+			case RenderingTypes::DX11:
+				ImGui_ImplDX11_Init(m_pDevice, m_pContext);
+				break;
+			case RenderingTypes::OPENGL2:
+				ImGui_ImplOpenGL2_Init();
+				break;
+			case RenderingTypes::OPENGL3:
+				ImGui_ImplOpenGL3_Init();
+				break;
+		}
+	}
+	else {
+		ImGui_ImplDX11_Init(m_pDevice, m_pContext);
+	}
+
 
 	LoadDefaultFonts();
 }
 
 void UIService::DestroyImGuiUI()
 {
-	ImGui_ImplDX11_Shutdown();
+
+	switch (m_pSystem->GetRenderingType()) {
+		case RenderingTypes::DX11:
+			ImGui_ImplDX11_Shutdown();
+			break;
+		case RenderingTypes::OPENGL2:
+			ImGui_ImplOpenGL2_Shutdown();
+			break;
+		case RenderingTypes::OPENGL3:
+			ImGui_ImplOpenGL3_Shutdown();
+			break;
+	}
+
 	ImGui_ImplWin32_Shutdown();
 	ImGui::DestroyContext();
 
@@ -658,7 +709,19 @@ void UIService::DestroyImGuiUI()
 void UIService::BeginRenderUI()
 {
 
-	if (!m_pSystem->IsInternal()) {
+	if (m_pSystem->IsInternal()) {
+		switch (m_pSystem->GetRenderingType()) {
+			case RenderingTypes::DX11:
+				ImGui_ImplDX11_NewFrame();
+				break;
+			case RenderingTypes::OPENGL2:
+				ImGui_ImplOpenGL2_NewFrame();
+				break;
+			case RenderingTypes::OPENGL3:
+				ImGui_ImplOpenGL3_NewFrame();
+				break;
+		}
+	} else {
 		MSG msg;
 		while (PeekMessage(&msg, nullptr, 0U, 0U, PM_REMOVE)) {
 
@@ -671,9 +734,11 @@ void UIService::BeginRenderUI()
 				return;
 			}
 		}
+
+		ImGui_ImplDX11_NewFrame();
+
 	}
 
-	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 
@@ -691,7 +756,24 @@ void UIService::EndRenderUI()
 		m_pContext->ClearRenderTargetView(m_pMainRenderTargetView, color);
 	}
 
-	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+	if (m_pSystem->IsInternal()) {
+
+		switch (m_pSystem->GetRenderingType()) {
+			case RenderingTypes::DX11:
+				ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+				break;
+			case RenderingTypes::OPENGL2:
+				ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
+				break;
+			case RenderingTypes::OPENGL3:
+				ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+				break;
+		}
+
+	}
+	else {
+		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+	}
 
 	if(!m_pSystem->IsInternal()) m_pSwapChain->Present(1U, 0U);
 }
