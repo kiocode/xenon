@@ -82,6 +82,10 @@ const uintptr_t MemoryService::GetModuleAddress(const std::string_view moduleNam
 
 uintptr_t MemoryService::ReadPointer(const std::uintptr_t& address)
 {
+    if (m_hProcessHandle == nullptr || m_hProcessHandle == INVALID_HANDLE_VALUE) {
+		throw std::runtime_error("Failed to read pointer, before AttachGame");
+    }
+
     uintptr_t value = { };
     ::ReadProcessMemory(m_hProcessHandle, reinterpret_cast<const void*>(GetModuleAddress(m_strProcessName) + address), &value, sizeof(uintptr_t), NULL);
     return value;
@@ -89,5 +93,9 @@ uintptr_t MemoryService::ReadPointer(const std::uintptr_t& address)
 
 void MemoryService::WritePointer(const std::uintptr_t& address, const uintptr_t& value)
 {
+    if (m_hProcessHandle == nullptr || m_hProcessHandle == INVALID_HANDLE_VALUE) {
+		throw std::runtime_error("Failed to write pointer, before AttachGame");
+    }
+
     ::WriteProcessMemory(m_hProcessHandle, reinterpret_cast<void*>(GetModuleAddress(m_strProcessName) + address), &value, sizeof(uintptr_t), NULL);
 }

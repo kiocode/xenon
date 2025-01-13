@@ -30,8 +30,6 @@ static void AddConfigurations(Builder& builder) {
 	pRadarConfig->m_fLocalSize = 6.0f;
 	pRadarConfig->m_fTargetsSize = 6.0f;
 	pRadarConfig->m_bTargetsName = true;
-	pRadarConfig->m_bWaypoints = true;
-	pRadarConfig->m_bWaypointsNames = true;
 
 	std::shared_ptr<ESPConfig> pESPConfig = builder.Services->GetConfiguration<ESPConfig>();
 	pESPConfig->m_bHealthBar = true;

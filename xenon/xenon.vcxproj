@@ -72,7 +72,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)\build-lib\</OutDir>
+    <OutDir>$(SolutionDir)\lib64-build\</OutDir>
     <IntDir>$(SolutionDir)\xenon\build\intermediates\</IntDir>
     <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
