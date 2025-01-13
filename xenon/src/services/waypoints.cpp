@@ -23,10 +23,10 @@ void Waypoints::RenderInWorld() {
 		Vec2* waypointInScreen = m_pSystem->GetGameDimension() == GameDimensions::DIMENSION_3D ? m_pSystem->m_fnW2S3D(waypoint.m_vPos3D) : m_pSystem->m_fnW2S2D(waypoint.m_vPos2D);
 
 		ImVec2 prismaPoints[4];
-		prismaPoints[0] = ImVec2(waypointInScreen->x, waypointInScreen->y + 5);
-		prismaPoints[1] = ImVec2(waypointInScreen->x - 5, waypointInScreen->y);
-		prismaPoints[2] = ImVec2(waypointInScreen->x + 5, waypointInScreen->y);
-		prismaPoints[3] = ImVec2(waypointInScreen->x, waypointInScreen->y - 5);
+		prismaPoints[0] = ImVec2(waypointInScreen->x, waypointInScreen->y + m_pConfigs->m_fSizeInWorld);
+		prismaPoints[1] = ImVec2(waypointInScreen->x - m_pConfigs->m_fSizeInWorld, waypointInScreen->y);
+		prismaPoints[2] = ImVec2(waypointInScreen->x + m_pConfigs->m_fSizeInWorld, waypointInScreen->y);
+		prismaPoints[3] = ImVec2(waypointInScreen->x, waypointInScreen->y - m_pConfigs->m_fSizeInWorld);
 
 		ImGui::GetBackgroundDrawList()->AddPolyline(prismaPoints, sizeof(prismaPoints), ImColor(0,0,0), 0, 2);
 	}
