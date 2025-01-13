@@ -41,7 +41,8 @@ static void AddConfigurations(Builder& builder) {
 	std::shared_ptr<GameVariables> pGameVariables = builder.Services->GetConfiguration<GameVariables>();
 	std::shared_ptr<Waypoints> pWaypoint = builder.Services->GetService<Waypoints>();
 	std::shared_ptr<NotificationService> pNotificationService = builder.Services->GetService<NotificationService>();
-	pUIConfig->m_qActions->AddButton("Set Waypoint", [pWaypoint, pGameVariables]() { pWaypoint->SetWaypoint("waypointTest", pGameVariables->g_vLocal.m_vPos3D, ImColor(255, 255, 255)); });
+	//pUIConfig->m_qActions->AddButton("Set Waypoint", [pWaypoint, pGameVariables]() { pWaypoint->SetWaypoint("waypointTest", pGameVariables->g_vLocal.m_vPos3D, ImColor(255, 255, 255)); });
+	pUIConfig->m_qActions->AddButton("Set Waypoint", [pWaypoint, pGameVariables]() { pWaypoint->SetWaypoint("waypointTest", pGameVariables->g_vLocal.m_vPos2D, ImColor(255, 255, 255)); });
 
 	pUIConfig->m_qActions->AddSlider("Radar Zoom", &pRadarConfig->m_fZoom, 0.3, 30);
 	pUIConfig->m_qActions->AddButton("Reset Radar Zoom", [pRadarConfig]() { pRadarConfig->m_fZoom = 1; });
@@ -144,33 +145,25 @@ static void TestGeneral(Builder& builder) {
 	AddConfigurations(builder);
 	AddServices(builder);
 
-	//builder.GameGlobalVariables->g_vLocalPos3DWorld = Vec3( 1500, 100, 600 );
-
-	//builder.GameGlobalVariables->g_vTargetsScreen.push_back({ 100, 100 });
-	//builder.GameGlobalVariables->g_vTargetsScreen.push_back({ 200, 200 });
-	//builder.GameGlobalVariables->g_vTargetsScreen.push_back({ 300, 300 });
-	//builder.GameGlobalVariables->g_vTargetsScreen.push_back({ 400, 400 });
-	//builder.GameGlobalVariables->g_vTargetsScreen.push_back({ 500, 500 });
-
 	TargetProfile local = TargetProfile();
 	local.m_vPos2D = Vec2(300, 600);
 	builder.GameGlobalVariables->g_vLocal = local;
 	 
 	TargetProfile target1 = TargetProfile();
 	target1.m_vPos2D = Vec2(100, 100);
-	builder.GameGlobalVariables->g_vTargets.push_back(target1);//{ 100, 100 });
+	builder.GameGlobalVariables->g_vTargets.push_back(target1);
 
 	TargetProfile target2 = TargetProfile();
 	target2.m_vPos2D = Vec2(200, 200);
-	builder.GameGlobalVariables->g_vTargets.push_back(target2);//{ 200, 200 });
+	builder.GameGlobalVariables->g_vTargets.push_back(target2);
 
 	TargetProfile target3 = TargetProfile();
 	target3.m_vPos2D = Vec2(300, 300);
-	builder.GameGlobalVariables->g_vTargets.push_back(target3);//{ 300, 300 });
+	builder.GameGlobalVariables->g_vTargets.push_back(target3);
 
 	TargetProfile target4 = TargetProfile();
 	target4.m_vPos2D = Vec2(400, 400);
-	builder.GameGlobalVariables->g_vTargets.push_back(target4);//{ 400, 400 });
+	builder.GameGlobalVariables->g_vTargets.push_back(target4);
 
 
 	Cheat cheat = builder.Build();
@@ -259,12 +252,11 @@ static void RunTests() {
 	Builder builder("Demo external");
 	builder.SystemVariables->IsInternal(false);
 	builder.SystemVariables->SetGameDimension(GameDimensions::DIMENSION_2D);
-	builder.SystemVariables->SetRenderingType(RenderingTypes::OPENGL3);
 	builder.SystemVariables->m_fnW2S2D = [](Vec2 pos) { return new Vec2(pos.x, pos.y); };
 	builder.SetConsoleEnabled();
 	builder.SetDebugLogLevel();
 
-	//TestGeneral(builder);
+	TestGeneral(builder);
 	//TestLua(builder);
 	//TestRecoil(builder);
 	//TestRedEclipseExternal(builder);

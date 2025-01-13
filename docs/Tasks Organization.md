@@ -28,6 +28,7 @@ kanban-plugin: board
 - [ ] check is use enums with plural or singular name
 - [ ] add fly
 - [ ] convert all vec in float
+- [ ] create a single centralized object accessible from any object that have access to any component
 
 
 ## InProgress

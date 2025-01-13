@@ -13,12 +13,14 @@
 
 #include <xenon/core/system.hpp>
 #include <xenon/core/di_manager.hpp>
-#include <xenon/configs/aim_config.hpp>
 #include <xenon/models/hotkey.hpp>
-#include <xenon/configs/ui_config.hpp>
 #include <xenon/utility/imgui_helper.hpp>
 #include <xenon/features/radar.hpp>
+#include <xenon/features/waypoints.hpp>
 #include <xenon/services/notification_service.hpp>
+#include <xenon/configs/aim_config.hpp>
+#include <xenon/configs/ui_config.hpp>
+#include <xenon/configs/waypoints_config.hpp>
 
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 typedef HRESULT(__stdcall* Present) (IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags);
@@ -45,9 +47,17 @@ public:
         std::shared_ptr<UIConfig> pConfigs,
         std::shared_ptr<System> pSystem,
         std::shared_ptr<AimConfig> pAimConfigs,
+        std::shared_ptr<WaypointsConfig> pWaypointsConfig,
         std::shared_ptr<Radar> pRadar,
-        std::shared_ptr<NotificationService> pNotificationService
-    ) : m_pConfigs(pConfigs), m_pSystem(pSystem), m_pAimConfigs(pAimConfigs), m_pRadar(pRadar), m_pNotificationService(pNotificationService) {}
+        std::shared_ptr<NotificationService> pNotificationService,
+        std::shared_ptr<Waypoints> pWaypoints
+    ) : m_pConfigs(pConfigs), 
+        m_pSystem(pSystem), 
+        m_pAimConfigs(pAimConfigs), 
+        m_pWaypointsConfig(pWaypointsConfig),
+        m_pWaypoints(pWaypoints),
+        m_pRadar(pRadar), 
+        m_pNotificationService(pNotificationService) {}
 
     Hotkey testhotkey;
     bool isEditing = false;
@@ -76,6 +86,8 @@ private:
     std::shared_ptr<AimConfig> m_pAimConfigs;
     std::shared_ptr<Radar> m_pRadar;
     std::shared_ptr<NotificationService> m_pNotificationService;
+    std::shared_ptr<WaypointsConfig> m_pWaypointsConfig;
+    std::shared_ptr<Waypoints> m_pWaypoints;
 
     HWND m_hWindow = NULL;
 
@@ -105,10 +117,6 @@ private:
     bool CreateDeviceUI();
 
     void RenderDefaultTheme(bool rainbowBorders);
-
-    void RenderTabs();
-    void RenderPlayersTab();
-    void RenderDevTab();    
 
     void RenderDefaultUIQuickActions();
     void RenderDefaultMenu();

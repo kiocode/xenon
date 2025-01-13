@@ -13,4 +13,5 @@ public:
 
 	float m_fHealth;
 	std::string m_strName;
+	std::string m_strTag;
 };

@@ -11,21 +11,17 @@
             "id": "9d65ac3cab51b524",
             "type": "leaf",
             "state": {
-              "type": "kanban",
+              "type": "canvas",
               "state": {
-                "file": "Tasks Organization.md",
-                "kanbanViewState": {
-                  "kanban-plugin": "board",
-                  "list-collapse": [
-                    false,
-                    false,
-                    false,
-                    false
-                  ]
+                "file": "Project Schema.canvas",
+                "viewState": {
+                  "x": 618.742385786802,
+                  "y": -202.46256345177665,
+                  "zoom": -0.9511219652301094
                 }
               },
-              "icon": "lucide-trello",
-              "title": "Tasks Organization"
+              "icon": "lucide-layout-dashboard",
+              "title": "Project Schema"
             }
           }
         ]
@@ -198,9 +194,9 @@
   },
   "active": "9d65ac3cab51b524",
   "lastOpenFiles": [
+    "Tasks Organization.md",
     "Project Schema.canvas",
     "Project Notes.md",
-    "Tasks Organization.md",
     "Untitled.canvas",
     "Classes/Game.md",
     "Classes/Hooks.md",

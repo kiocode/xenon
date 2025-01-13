@@ -785,7 +785,7 @@
     <ClCompile Include="src\features\radar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\features\waypoints.cpp">
+    <ClCompile Include="src\services\waypoints.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\services\notification_service.cpp">

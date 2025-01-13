@@ -68,6 +68,7 @@ void Builder::RegisterDefaultServices() {
     std::shared_ptr<UIConfig> pUIConfig = Services->AddConfiguration<UIConfig>();
     std::shared_ptr<ESPConfig> pESPConfig = Services->AddConfiguration<ESPConfig>();
     std::shared_ptr<RadarConfig> pRadarConfig = Services->AddConfiguration<RadarConfig>();
+    std::shared_ptr<WaypointsConfig> pWaypointsConfig = Services->AddConfiguration<WaypointsConfig>();
     
     #pragma endregion
 
@@ -80,18 +81,22 @@ void Builder::RegisterDefaultServices() {
 
     #pragma region Services & Features
 
-    std::shared_ptr<Waypoints> pWaypoints = Services->AddSingleton<Waypoints>();
+    std::shared_ptr<Waypoints> pWaypoints = Services->AddSingleton<Waypoints>(
+        [this, pWaypointsConfig]() {
+            return std::make_shared<Waypoints>(pWaypointsConfig, SystemVariables);
+        }
+    );
 
     std::shared_ptr<Radar> pRadar = Services->AddSingleton<Radar>(
-        [this, pRadarConfig, pWaypoints]() {
-            return std::make_shared<Radar>(pRadarConfig, GameGlobalVariables, SystemVariables, pWaypoints);
+        [this, pRadarConfig, pWaypoints, pWaypointsConfig]() {
+            return std::make_shared<Radar>(pRadarConfig, pWaypointsConfig, GameGlobalVariables, SystemVariables, pWaypoints);
         }
     );
     std::shared_ptr<NotificationService> pNotificationService = Services->AddSingleton<NotificationService>();
 
     std::shared_ptr<UIService> pUIService = Services->AddSingleton<UIService>(
-        [this, pUIConfig, pAimConfig, pRadar, pNotificationService]() {
-            return std::make_shared<UIService>(pUIConfig, SystemVariables, pAimConfig, pRadar, pNotificationService);
+        [this, pUIConfig, pAimConfig, pWaypointsConfig, pRadar, pNotificationService, pWaypoints]() {
+            return std::make_shared<UIService>(pUIConfig, SystemVariables, pAimConfig, pWaypointsConfig, pRadar, pNotificationService, pWaypoints);
         }
     );
     MemoryManager = Services->AddSingleton<MemoryService>();

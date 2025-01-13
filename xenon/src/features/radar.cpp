@@ -2,7 +2,7 @@
 #include <imgui/imgui.h>
 #include <spdlog/spdlog.h>
 
-void Radar::RenderRadar() {
+void Radar::Render() {
     if (m_pConfigs->m_fnCustomRadar) {
         m_pConfigs->m_fnCustomRadar();
         return;
@@ -65,7 +65,7 @@ void Radar::RenderRadarBase(const char* title, RadarShapes shape, bool is3D) {
         const float zoomFactor = m_pConfigs->m_fZoom > 0.0f ? m_pConfigs->m_fZoom : 1.0f;
 
         if (is3D) {
-            const auto& localPlayerPos = m_pGameVariables->g_vLocal.m_vPos3D;
+            const Vec3& localPlayerPos = m_pGameVariables->g_vLocal.m_vPos3D;
             for (const auto& target : m_pGameVariables->g_vTargets) {
                 const float relativeX = target.m_vPos3D.x - localPlayerPos.x;
                 const float relativeY = target.m_vPos3D.z - localPlayerPos.z;
@@ -85,27 +85,11 @@ void Radar::RenderRadarBase(const char* title, RadarShapes shape, bool is3D) {
                 }
             }
 
-            if (m_pConfigs->m_bWaypoints)
+            if (m_pWaypointsConfig->m_bRenderInRadar)
             {
-                for (const auto& waypoint : m_pWaypoints->GetWaypoints()) {
-                    const float relativeX = waypoint.m_vPos3D.x - localPlayerPos.x;
-                    const float relativeY = waypoint.m_vPos3D.z - localPlayerPos.z;
+                m_pWaypoints->RenderInRadar(isPointInRadar, localPlayerPos, m_pConfigs->m_fDefaultScale, radarSize, zoomFactor, radarCenter);
+            }
 
-                    const float scaledX = (relativeX / m_pConfigs->m_fDefaultScale) * radarSize * zoomFactor;
-                    const float scaledY = (relativeY / m_pConfigs->m_fDefaultScale) * radarSize * zoomFactor;
-
-                    ImVec2 waypointPos = ImVec2(radarCenter.x + scaledX, radarCenter.y + scaledY);
-
-                    if (isPointInRadar(waypointPos)) {
-                        float waypointSize = m_pConfigs->m_fWaypointsSize * zoomFactor;
-                        drawlist->AddCircleFilled(waypointPos, waypointSize, waypoint.m_cColor);
-
-                        if (m_pConfigs->m_bWaypointsNames && !waypoint.m_strName.empty()) {
-                            drawlist->AddText(ImVec2(waypointPos.x - (ImGui::CalcTextSize(waypoint.m_strName.c_str()).x / 2), waypointPos.y + 5), ImColor(255, 255, 255, 255), waypoint.m_strName.c_str());
-                        }
-                    }
-                }
-			}
         } else {
             const Vec2& localPlayerPos = m_pGameVariables->g_vLocal.m_vPos2D;
             for (const auto& target : m_pGameVariables->g_vTargets) {
@@ -127,28 +111,9 @@ void Radar::RenderRadarBase(const char* title, RadarShapes shape, bool is3D) {
                 }
             }
 
-            if (m_pConfigs->m_bWaypoints)
+            if (m_pWaypointsConfig->m_bRenderInRadar)
             {
-
-                for (const Waypoint& waypoint : m_pWaypoints->GetWaypoints()) {
-				    const float relativeX = waypoint.m_vPos2D.x - localPlayerPos.x;
-				    const float relativeY = waypoint.m_vPos2D.y - localPlayerPos.y;
-
-				    const float scaledX = (relativeX / m_pConfigs->m_fDefaultScale) * radarSize * zoomFactor;
-				    const float scaledY = (relativeY / m_pConfigs->m_fDefaultScale) * radarSize * zoomFactor;
-
-				    ImVec2 waypointPos = ImVec2(radarCenter.x + scaledX, radarCenter.y + scaledY);
-
-                    if (isPointInRadar(waypointPos)) {
-					    float waypointSize = m_pConfigs->m_fWaypointsSize * zoomFactor;
-					    drawlist->AddCircleFilled(waypointPos, waypointSize, waypoint.m_cColor);
-                        
-                        if (m_pConfigs->m_bWaypointsNames && !waypoint.m_strName.empty()) {
-                            drawlist->AddText(ImVec2(waypointPos.x - (ImGui::CalcTextSize(waypoint.m_strName.c_str()).x / 2), waypointPos.y + 5), ImColor(255, 255, 255, 255), waypoint.m_strName.c_str());
-                        }
-				    }
-			    }
-
+                m_pWaypoints->RenderInRadar(isPointInRadar, localPlayerPos, m_pConfigs->m_fDefaultScale, radarSize, zoomFactor, radarCenter);
             }
         }
     }

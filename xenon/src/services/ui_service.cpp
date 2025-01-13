@@ -411,17 +411,17 @@ void UIService::RenderFov() {
 
 void UIService::RenderMouse() {
 	switch (m_pConfigs->m_nMouseType) {
-		case 0:
-			ImGui::GetForegroundDrawList()->AddCircleFilled(ImGui::GetMousePos(), 4, m_pConfigs->m_cMouse);
-			break;
-		case 1:
-			ImGuiHelper::DrawOutlinedTextForeground(ImGuiHelper::g_pGameFont, ImVec2(m_pSystem->GetMousePos().x, m_pSystem->GetMousePos().y), 13.0f, m_pConfigs->m_cMouse, false, "X");
-			break;
-		case 2:
-			if (!ImGui::GetIO().MouseDrawCursor) {
-				ImGui::GetIO().MouseDrawCursor = true;
-			}
-			break;
+	case 0:
+		ImGui::GetForegroundDrawList()->AddCircleFilled(ImGui::GetMousePos(), 4, m_pConfigs->m_cMouse);
+		break;
+	case 1:
+		ImGuiHelper::DrawOutlinedTextForeground(ImGuiHelper::g_pGameFont, ImVec2(m_pSystem->GetMousePos().x, m_pSystem->GetMousePos().y), 13.0f, m_pConfigs->m_cMouse, false, "X");
+		break;
+	case 2:
+		if (!ImGui::GetIO().MouseDrawCursor) {
+			ImGui::GetIO().MouseDrawCursor = true;
+		}
+		break;
 	}
 }
 
@@ -474,14 +474,22 @@ void UIService::Update() {
 		RenderFov();
 	}
 
-#pragma region Radar
+	#pragma region Radar
 
 	if (m_pConfigs->m_bUseUIRadar) {
 		//m_pRadar->SetTargets(m_vTargets2DWorld);
-		m_pRadar->RenderRadar();
+		m_pRadar->Render();
 	}
 
-#pragma endregion
+	#pragma endregion
+
+	#pragma region Waypoints
+
+	if (m_pWaypointsConfig->m_bRenderInWorld) {
+		m_pWaypoints->RenderInWorld();
+	}
+
+	#pragma endregion
 
 	if (m_bShowMenu) {
 
