@@ -86,8 +86,10 @@ uintptr_t MemoryService::ReadPointer(const std::uintptr_t& address)
 		throw std::runtime_error("Failed to read pointer, before AttachGame");
     }
 
+    uintptr_t moduleAddr = GetModuleAddress(m_strProcessName);
+
     uintptr_t value = { };
-    ::ReadProcessMemory(m_hProcessHandle, reinterpret_cast<const void*>(GetModuleAddress(m_strProcessName) + address), &value, sizeof(uintptr_t), NULL);
+    ::ReadProcessMemory(m_hProcessHandle, reinterpret_cast<const void*>(moduleAddr + address), &value, sizeof(uintptr_t), NULL);
     return value;
 }
 

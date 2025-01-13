@@ -7,8 +7,10 @@
 struct offsets {
 	uintptr_t staticFovAddr = 0x18A7CC;
 	uintptr_t staticPlayersCountAddr = 0x18AC0C;
-	uintptr_t staticLocalPlayerAddr = 0x17E0A8;
 	uintptr_t staticEntityListAddr = 0x18AC04;
+
+	uintptr_t staticLocalPlayerAddr = 0x195404;
+	uintptr_t playerAmmoOffset = 0x140;
 
 };
 
@@ -23,19 +25,19 @@ int main()
 	builder.SetConsoleEnabled();
 	builder.SetDebugLogLevel();
 
-	builder.MemoryManager->AttachGame("");
-	uintptr_t fovAddr = builder.MemoryManager->ReadPointer(offsets.staticFovAddr);
-	uintptr_t playersCountAddr = builder.MemoryManager->ReadPointer(offsets.staticPlayersCountAddr);
-	uintptr_t localPlayerAddr = builder.MemoryManager->ReadPointer(offsets.staticLocalPlayerAddr);
-	uintptr_t entityListAddr = builder.MemoryManager->ReadPointer(offsets.staticEntityListAddr);
+	builder.MemoryManager->AttachGame("D:\\AssaultCube 1.3.0.2\\bin_win32\\ac_client.exe");
+	//uintptr_t fovAddr = builder.MemoryManager->ReadPointer(offsets.staticFovAddr);
+	//uintptr_t playersCountAddr = builder.MemoryManager->ReadPointer(offsets.staticPlayersCountAddr);
+	//uintptr_t entityListAddr = builder.MemoryManager->ReadPointer(offsets.staticEntityListAddr);
+	uintptr_t localPlayerAddr = builder.MemoryManager->ReadPointer(offsets.staticLocalPlayerAddr)- 0x200000000;
 
-	if (!fovAddr || !playersCountAddr || !localPlayerAddr || !entityListAddr) {
+	if (!localPlayerAddr){// || !fovAddr || !playersCountAddr || !entityListAddr) {
 		spdlog::error("Failed to find fov, players count, local player or entity list address");
 		return 1;
 	}
 
-	builder.GameManager->OnEvent("Update", [builder]() {
-
+	builder.GameManager->OnEvent("Update", [builder, localPlayerAddr]() {
+		spdlog::info("Ammo: {}", builder.MemoryManager->Read<int>(localPlayerAddr + offsets.playerAmmoOffset));
 	});
 
 	Cheat cheat = builder.Build();
