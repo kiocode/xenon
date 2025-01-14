@@ -17,22 +17,36 @@ void ESP::RenderSnapline() {
 	for (auto& target : m_pGameVariables->g_vTargets) {
 
 		Vec2* targetScreenPos = (m_pSystem->GetGameDimension() == GameDimensions::DIMENSION_3D ? m_pSystem->m_fnW2S3D(target.m_vPos3D) : m_pSystem->m_fnW2S2D(target.m_vPos2D));
+		Vec2* targetHeadScreenPos = (m_pSystem->GetGameDimension() == GameDimensions::DIMENSION_3D ? m_pSystem->m_fnW2S3D(target.m_vHeadPos3D) : m_pSystem->m_fnW2S2D(target.m_vHeadPos2D));
+		Vec2* targetFeetScreenPos = (m_pSystem->GetGameDimension() == GameDimensions::DIMENSION_3D ? m_pSystem->m_fnW2S3D(target.m_vFeetPos3D) : m_pSystem->m_fnW2S2D(target.m_vFeetPos2D));
 
-		ImVec2 targetPos = ImVec2(static_cast<float>(targetScreenPos->x), static_cast<float>(targetScreenPos->y));
+		ImVec2 targetPos = ImVec2(targetScreenPos->x, targetScreenPos->y);
+		ImVec2 startPoint = center;
 
-		switch (m_pConfigs->m_nSnaplineType)
+		switch (m_pConfigs->m_nSnaplineTypeStart)
 		{
-			case 0:
-				ImGui::GetBackgroundDrawList()->AddLine(center, targetPos, m_pConfigs->m_cSnapline, 1.0f);
+			case 0: // center
+				startPoint = center;
 				break;
-			case 1:
-				ImGui::GetBackgroundDrawList()->AddLine(ImVec2(centerX, 0), targetPos, m_pConfigs->m_cSnapline, 1.0f);
+			case 1: // top
+				startPoint = ImVec2(centerX, 0);
 				break;
-			case 2:
-				ImGui::GetBackgroundDrawList()->AddLine(ImVec2(centerX, screenHeight), targetPos, m_pConfigs->m_cSnapline, 1.0f);
+			case 2: // bottom
+				startPoint = ImVec2(centerX, screenHeight);
 				break;
 		}
 
+		switch (m_pConfigs->m_nSnaplineTypeEnd) {
+			case 0: // head
+				targetPos = ImVec2(static_cast<float>(targetHeadScreenPos->x), static_cast<float>(targetHeadScreenPos->y));
+				break;
+			case 1: // body
+				targetPos = ImVec2(static_cast<float>(targetScreenPos->x), static_cast<float>(targetScreenPos->y));
+			case 2: // feet
+				targetPos = ImVec2(static_cast<float>(targetFeetScreenPos->x), static_cast<float>(targetFeetScreenPos->y));
+		}
+
+		ImGui::GetBackgroundDrawList()->AddLine(startPoint, targetPos, m_pConfigs->m_cSnapline, 1.0f);
 	}
 
 }
@@ -48,12 +62,17 @@ void ESP::Render2DBox() {
 
 		Vec2* targetScreenPos = (m_pSystem->GetGameDimension() == GameDimensions::DIMENSION_3D ? m_pSystem->m_fnW2S3D(target.m_vPos3D) : m_pSystem->m_fnW2S2D(target.m_vPos2D));
 		Vec2* targetScreenHeadPos = (m_pSystem->GetGameDimension() == GameDimensions::DIMENSION_3D ? m_pSystem->m_fnW2S3D(target.m_vHeadPos3D) : m_pSystem->m_fnW2S2D(target.m_vHeadPos2D));
+		Vec2* targetScreenFeetPos = (m_pSystem->GetGameDimension() == GameDimensions::DIMENSION_3D ? m_pSystem->m_fnW2S3D(target.m_vFeetPos3D) : m_pSystem->m_fnW2S2D(target.m_vFeetPos2D));
 
 		ImVec2 head = ImVec2(targetScreenHeadPos->x, targetScreenHeadPos->y);
-		ImVec2 feet = ImVec2(targetScreenPos->x, targetScreenPos->y);
+		ImVec2 feet = ImVec2(targetScreenFeetPos->x, targetScreenFeetPos->y);
+		ImVec2 pos = ImVec2(targetScreenPos->x, targetScreenPos->y);
 
-		float height = head.y - feet.y;
-		float width = height / 3;
+		ImVec2 up = head, down = feet;
+		if (head.y < feet.y) std::swap(up, down);
+
+		float height = up.y - down.y;
+		float width = (height / 3) / 2;
 
 		ImVec2 minBottomLeft = ImVec2(feet.x - width, feet.y);
 		ImVec2 maxTopRight = ImVec2(feet.x + width, head.y);
@@ -88,11 +107,15 @@ void ESP::Render2DBox() {
 			switch (m_pSystem->GetGameDimension()) {
 				case GameDimensions::DIMENSION_2D: {
 					int distance2D = static_cast<int>(target.m_vPos2D.Distance(m_pGameVariables->g_vLocal.m_vPos2D));
-					ImGui::GetBackgroundDrawList()->AddText(ImVec2(minBottomLeft.x + 5, minBottomLeft.y - 15), m_pConfigs->m_cBox2DDistance, std::to_string(distance2D).c_str());
+					char distance2DStr[32];
+					sprintf_s(distance2DStr, "%dpx", distance2D);
+					ImGui::GetBackgroundDrawList()->AddText(ImVec2(minBottomLeft.x + 5, minBottomLeft.y - 15), m_pConfigs->m_cBox2DDistance, distance2DStr);
 				} break;
 				case GameDimensions::DIMENSION_3D: {
 					int distance3D = static_cast<int>(target.m_vPos3D.Distance(m_pGameVariables->g_vLocal.m_vPos3D));
-					ImGui::GetBackgroundDrawList()->AddText(ImVec2(minBottomLeft.x + 5, minBottomLeft.y - 15), m_pConfigs->m_cBox2DDistance, std::to_string(distance3D).c_str());
+					char distance3DStr[100];
+					sprintf_s(distance3DStr, "%dpx", distance3D);
+					ImGui::GetBackgroundDrawList()->AddText(ImVec2(minBottomLeft.x + 5, minBottomLeft.y - 15), m_pConfigs->m_cBox2DDistance, distance3DStr);
 				} break;
 			}
 		}
@@ -155,28 +178,45 @@ void ESP::RenderHealthBar() {
 	}
 
 	for (auto& target : m_pGameVariables->g_vTargets) {
+		float healthPercentage = target.m_fHealth / target.m_fMaxHealth;
+		if (healthPercentage <= 0.0f) healthPercentage = 0;
 
 		Vec2* targetScreenPos = (m_pSystem->GetGameDimension() == GameDimensions::DIMENSION_3D ? m_pSystem->m_fnW2S3D(target.m_vPos3D) : m_pSystem->m_fnW2S2D(target.m_vPos2D));
+		Vec2* targetScreenFeetPos = (m_pSystem->GetGameDimension() == GameDimensions::DIMENSION_3D ? m_pSystem->m_fnW2S3D(target.m_vFeetPos3D) : m_pSystem->m_fnW2S2D(target.m_vFeetPos2D));
 		Vec2* targetScreenHeadPos = (m_pSystem->GetGameDimension() == GameDimensions::DIMENSION_3D ? m_pSystem->m_fnW2S3D(target.m_vHeadPos3D) : m_pSystem->m_fnW2S2D(target.m_vHeadPos2D));
 
 		ImVec2 head = ImVec2(targetScreenHeadPos->x, targetScreenHeadPos->y);
-		ImVec2 feet = ImVec2(targetScreenPos->x, targetScreenPos->y);
+		ImVec2 feet = ImVec2(targetScreenFeetPos->x, targetScreenFeetPos->y);
+		ImVec2 pos = ImVec2(targetScreenPos->x, targetScreenPos->y);
 
-		float height = head.y - feet.y;
+		ImVec2 up = head, down = feet;
+		if (head.y < feet.y) std::swap(up, down);
+
+		float height = up.y - down.y;
 		float currentHeight = height;
-		float width = height / 4;
+		float targetWidth = height / 3;
 
-		float healthPercentage = target.m_fHealth / target.m_fMaxHealth;
 		currentHeight *= healthPercentage;
 
-		ImVec2 minBottomLeftBg = ImVec2(feet.x - 50, feet.y);
-		ImVec2 maxTopRightBg = ImVec2(head.x - 30, head.y);
+		int barWidth = 15;
+		int margin = 2;
 
-		ImVec2 minBottomLeftFilled = ImVec2(feet.x - 50, feet.y);
-		ImVec2 maxTopRightFilled = ImVec2(head.x - 30, feet.y + currentHeight);
+		ImVec2 minBottomLeftBg = ImVec2(feet.x - (targetWidth / 2) - barWidth, feet.y);
+		ImVec2 maxTopRightBg = ImVec2(feet.x - (targetWidth / 2), head.y);
+
+		ImVec2 minBottomLeftFilled = ImVec2(feet.x - (targetWidth / 2) - barWidth + margin, feet.y - margin);
+		ImVec2 maxTopRightFilled = ImVec2(feet.x - (targetWidth / 2) - margin, (feet.y + margin) - currentHeight);
 
 		ImGui::GetBackgroundDrawList()->AddRectFilled(minBottomLeftBg, maxTopRightBg, m_pConfigs->m_cHealthBarBg, 0, 0);
 		ImGui::GetBackgroundDrawList()->AddRectFilled(minBottomLeftFilled, maxTopRightFilled, m_pConfigs->m_cHealthBarFilled, 0, 0);
+			
+		ImVec2 center = ImVec2(minBottomLeftBg.x + barWidth / 2, maxTopRightBg.y + height / 2);
+		if (m_pConfigs->m_bHealthInBar) {
+			char healthStr[100];
+			sprintf_s(healthStr, "%d", static_cast<int>(target.m_fHealth));
+			ImGui::GetBackgroundDrawList()->AddText(center, m_pConfigs->m_cHealthBarText, healthStr);
+		}
+
 	}
 
 }

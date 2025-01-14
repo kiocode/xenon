@@ -93,7 +93,7 @@ private:
 
     WNDCLASSEXW m_wClass{};
     IDXGISwapChain* m_pSwapChain = nullptr;
-    D3D_FEATURE_LEVEL m_dLevel;
+    D3D_FEATURE_LEVEL m_dLevel{};
 
     ID3D11Device* m_pDevice = NULL;
     ID3D11DeviceContext* m_pContext = NULL;
@@ -101,7 +101,7 @@ private:
 
     #pragma region menu vars
 
-    ImFont* mainfont;
+    ImFont* m_pMainFont = nullptr;
     int m_nSelectedTab = 0;
     int m_nSelectedSubTab = 0;
 

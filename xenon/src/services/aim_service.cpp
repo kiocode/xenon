@@ -9,9 +9,9 @@
 void AimService::KeepRecoil() {
     float playTime = m_pSystem->GetPlayTime();
 
-    double adjustedVerticalOffset = m_pConfigs->m_fRecoilVerticalStrength * 10 * m_pSystem->g_fDeltaTime;
+    float adjustedVerticalOffset = m_pConfigs->m_fRecoilVerticalStrength * 10 * m_pSystem->g_fDeltaTime;
 
-    double adjustedHorizontalOffset = m_pConfigs->m_fRecoilTiltStrength * std::sin(playTime) * m_pSystem->g_fDeltaTime;
+    float adjustedHorizontalOffset = m_pConfigs->m_fRecoilTiltStrength * std::sin(playTime) * m_pSystem->g_fDeltaTime;
 
     MoveMouseTo({ adjustedHorizontalOffset, adjustedVerticalOffset });
 }
@@ -36,8 +36,8 @@ void AimService::Spin2D() {
     angle += m_pConfigs->m_fSpinbotSpeed;
     if (angle >= 360.0f) angle = 0.0f;
 
-    float x = std::cos(angle * M_PI / 180.0f) * m_pConfigs->m_fSpinbotRadius + m_pSystem->GetScreenCenter().x;
-    float y = std::sin(angle * M_PI / 180.0f) * m_pConfigs->m_fSpinbotRadius + m_pSystem->GetScreenCenter().y;
+    float x = static_cast<float>(std::cos(angle * M_PI / 180.0f)) * m_pConfigs->m_fSpinbotRadius + m_pSystem->GetScreenCenter().x;
+    float y = static_cast<float>(std::sin(angle * M_PI / 180.0f)) * m_pConfigs->m_fSpinbotRadius + m_pSystem->GetScreenCenter().y;
 
     SetAimPos({ x, y });
 }
@@ -50,22 +50,22 @@ void AimService::Spin3D() {
     angle += m_pConfigs->m_fSpinbotSpeed;  
     if (angle >= 360.0f) angle = 0.0f;
 
-    float x = std::cos(angle * M_PI / 180.0f) * m_pConfigs->m_fSpinbotRadius + centerX;
-    float y = std::sin(angle * M_PI / 180.0f) * m_pConfigs->m_fSpinbotRadius + centerY;
-    float z = std::cos(angle * M_PI / 180.0f) * m_pConfigs->m_fSpinbotDepth;
+    float x = static_cast<float>(std::cos(angle * M_PI / 180.0f) * m_pConfigs->m_fSpinbotRadius + centerX);
+    float y = static_cast<float>(std::sin(angle * M_PI / 180.0f) * m_pConfigs->m_fSpinbotRadius + centerY);
+    float z = static_cast<float>(std::cos(angle * M_PI / 180.0f) * m_pConfigs->m_fSpinbotDepth);
 
     SetAimPos({ x, y });
 }
 
 Vec2* AimService::GetNearestPos(std::vector<TargetProfile> targets, TargetProfile local) {
-    double maxdist = 99999;
+    float maxdist = 99999;
 
 	return GetNearestPos(targets, local, maxdist);
 }
 
-Vec2* AimService::GetNearestPos(std::vector<TargetProfile> targets, TargetProfile local, double maxdist) {
+Vec2* AimService::GetNearestPos(std::vector<TargetProfile> targets, TargetProfile local, float maxdist) {
 	Vec2* nearest = nullptr;
-	double minDistance = maxdist;
+	float minDistance = maxdist;
 
     switch (m_pSystem->GetGameDimension()) {
         case GameDimensions::DIMENSION_2D: {
@@ -76,7 +76,7 @@ Vec2* AimService::GetNearestPos(std::vector<TargetProfile> targets, TargetProfil
             }
 
             for (TargetProfile target : targets) {
-                double distance = std::sqrt(std::pow(target.m_vPos2D.x - local.m_vPos2D.x, 2) + std::pow(target.m_vPos2D.y - local.m_vPos2D.y, 2));
+                float distance = target.m_vPos2D.Distance(local.m_vPos2D);
                 if (distance < minDistance) {
                     minDistance = distance;
                     nearest = m_pSystem->m_fnW2S2D(target.m_vPos2D);
@@ -91,7 +91,7 @@ Vec2* AimService::GetNearestPos(std::vector<TargetProfile> targets, TargetProfil
             }
 
             for (TargetProfile target : targets) {
-                double distance = std::sqrt(std::pow(target.m_vPos3D.x - local.m_vPos3D.x, 2) + std::pow(target.m_vPos3D.y - local.m_vPos3D.y, 2));
+                float distance = target.m_vPos3D.Distance(local.m_vPos3D);
                 if (distance < minDistance) {
                     minDistance = distance;
                     nearest = m_pSystem->m_fnW2S3D(target.m_vPos3D);
@@ -111,12 +111,12 @@ void AimService::SmoothMoveToTarget(Vec2& target) {
     POINT cursorPos;
     GetCursorPos(&cursorPos);
 
-    double stepX = (target.x - cursorPos.x) / m_pConfigs->m_fSmooth;
-    double stepY = (target.y - cursorPos.y) / m_pConfigs->m_fSmooth;
+    float stepX = (target.x - cursorPos.x) / m_pConfigs->m_fSmooth;
+    float stepY = (target.y - cursorPos.y) / m_pConfigs->m_fSmooth;
 
     for (int i = 1; i <= m_pConfigs->m_fSmooth; ++i) {
-        double nextX = cursorPos.x + stepX * i;
-        double nextY = cursorPos.y + stepY * i;
+        float nextX = cursorPos.x + stepX * i;
+        float nextY = cursorPos.y + stepY * i;
 
         SetAimPos({ nextX, nextY });
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
@@ -139,10 +139,10 @@ void AimService::Humanize(Vec2& target) {
 std::vector<Vec2> AimService::GenerateBezierControlPoints(const Vec2& start, const Vec2& target) {
     std::vector<Vec2> points;
 
-    double minX = std::min(start.x, target.x);
-    double maxX = std::max(start.x, target.x);
-    double minY = std::min(start.y, target.y);
-    double maxY = std::max(start.y, target.y);
+    float minX = std::min(start.x, target.x);
+    float maxX = std::max(start.x, target.x);
+    float minY = std::min(start.y, target.y);
+    float maxY = std::max(start.y, target.y);
 
     points.push_back({ start.x, start.y });
     points.push_back({ Random::randomFloat(minX, maxX), Random::randomFloat(minY, maxY) });
@@ -153,15 +153,15 @@ std::vector<Vec2> AimService::GenerateBezierControlPoints(const Vec2& start, con
 }
 
 Vec2 AimService::CalculateBezierPoint(float t, const std::vector<Vec2>& points) {
-    float x = std::pow(1 - t, 3) * points[0].x +
+    float x = static_cast<float>(std::pow(1 - t, 3) * points[0].x +
         3 * std::pow(1 - t, 2) * t * points[1].x +
         3 * (1 - t) * std::pow(t, 2) * points[2].x +
-        std::pow(t, 3) * points[3].x;
+        std::pow(t, 3) * points[3].x);
 
-    float y = std::pow(1 - t, 3) * points[0].y +
+    float y = static_cast<float>(std::pow(1 - t, 3) * points[0].y +
         3 * std::pow(1 - t, 2) * t * points[1].y +
         3 * (1 - t) * std::pow(t, 2) * points[2].y +
-        std::pow(t, 3) * points[3].y;
+        std::pow(t, 3) * points[3].y);
 
     return { x, y };
 }

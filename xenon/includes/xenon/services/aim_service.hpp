@@ -22,7 +22,7 @@ public:
     void Spin3D();
 
     Vec2* GetNearestPos(std::vector<TargetProfile> targets, TargetProfile local);
-    Vec2* GetNearestPos(std::vector<TargetProfile> targets, TargetProfile local, double maxdist);
+    Vec2* GetNearestPos(std::vector<TargetProfile> targets, TargetProfile local, float maxdist);
 
 private:
     std::shared_ptr<AimConfig> m_pConfigs;

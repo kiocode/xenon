@@ -42,6 +42,7 @@ static void AddConfigurations(Builder& builder) {
 	std::shared_ptr<Waypoints> pWaypoint = builder.Services->GetService<Waypoints>();
 	std::shared_ptr<NotificationService> pNotificationService = builder.Services->GetService<NotificationService>();
 	//pUIConfig->m_qActions->AddButton("Set Waypoint", [pWaypoint, pGameVariables]() { pWaypoint->SetWaypoint("waypointTest", pGameVariables->g_vLocal.m_vPos3D, ImColor(255, 255, 255)); });
+	pUIConfig->m_qActions->AddButton("Damage", [pWaypoint, pGameVariables]() { pGameVariables->g_vTargets[0].m_fHealth -= 5; });
 	pUIConfig->m_qActions->AddButton("Set Waypoint", [pWaypoint, pGameVariables]() { pWaypoint->SetWaypoint("waypointTest", pGameVariables->g_vLocal.m_vPos2D, ImColor(255, 255, 255)); });
 
 	pUIConfig->m_qActions->AddSlider("Radar Zoom", &pRadarConfig->m_fZoom, 0.3, 30);
@@ -145,24 +146,50 @@ static void TestGeneral(Builder& builder) {
 	AddConfigurations(builder);
 	AddServices(builder);
 
+	std::shared_ptr<ESPConfig> pEspConfig = builder.Services->GetConfiguration<ESPConfig>();
+	pEspConfig->m_cBox2DDistance = ImColor(255, 255, 255, 255);
+
+	std::shared_ptr<RadarConfig> pRadarConfig = builder.Services->GetConfiguration<RadarConfig>();
+	pRadarConfig->m_fDefaultScale = 2000;
+
 	TargetProfile local = TargetProfile();
-	local.m_vPos2D = Vec2(300, 600);
+	local.m_vPos2D = builder.SystemVariables->GetScreenCenter();
+	local.m_vHeadPos2D = Vec2(local.m_vPos2D.x, local.m_vPos2D.y + 100);
+	local.m_vFeetPos2D = Vec2(local.m_vPos2D.x, local.m_vPos2D.y - 100);
+	local.m_fHealth = 100;
+	local.m_fMaxHealth = 100;
 	builder.GameGlobalVariables->g_vLocal = local;
 	 
 	TargetProfile target1 = TargetProfile();
-	target1.m_vPos2D = Vec2(100, 100);
+	target1.m_vPos2D = Vec2(300, 500);
+	target1.m_vHeadPos2D = Vec2(target1.m_vPos2D.x, target1.m_vPos2D.y - 100);
+	target1.m_vFeetPos2D = Vec2(target1.m_vPos2D.x, target1.m_vPos2D.y + 100);
+	target1.m_fHealth = 100;
+	target1.m_fMaxHealth = 100;
 	builder.GameGlobalVariables->g_vTargets.push_back(target1);
 
 	TargetProfile target2 = TargetProfile();
-	target2.m_vPos2D = Vec2(200, 200);
+	target2.m_vPos2D = Vec2(1000, 400);
+	target2.m_vHeadPos2D = Vec2(target2.m_vPos2D.x, target2.m_vPos2D.y - 100);
+	target2.m_vFeetPos2D = Vec2(target2.m_vPos2D.x, target2.m_vPos2D.y + 100);
+	target2.m_fHealth = 80;
+	target2.m_fMaxHealth = 100;
 	builder.GameGlobalVariables->g_vTargets.push_back(target2);
 
 	TargetProfile target3 = TargetProfile();
-	target3.m_vPos2D = Vec2(300, 300);
+	target3.m_vPos2D = Vec2(1500, 800);
+	target3.m_vHeadPos2D = Vec2(target3.m_vPos2D.x, target3.m_vPos2D.y - 100);
+	target3.m_vFeetPos2D = Vec2(target3.m_vPos2D.x, target3.m_vPos2D.y + 100);
+	target3.m_fHealth = 70;
+	target3.m_fMaxHealth = 100;
 	builder.GameGlobalVariables->g_vTargets.push_back(target3);
 
 	TargetProfile target4 = TargetProfile();
 	target4.m_vPos2D = Vec2(400, 400);
+	target4.m_vHeadPos2D = Vec2(target4.m_vPos2D.x, target4.m_vPos2D.y - 100);
+	target4.m_vFeetPos2D = Vec2(target4.m_vPos2D.x, target4.m_vPos2D.y + 100);
+	target4.m_fHealth = 50;
+	target4.m_fMaxHealth = 100;
 	builder.GameGlobalVariables->g_vTargets.push_back(target4);
 
 
@@ -170,8 +197,8 @@ static void TestGeneral(Builder& builder) {
 
 	cheat.UseUpdate();
 	cheat.UseUICustom(RenderingHookTypes::KIERO);
-	cheat.UseUIRadar();
 	cheat.UseUIMenu();
+	cheat.UseUIRadar();
 	//cheat.UseUIRenderWindows();
 	cheat.UseUIRenderOverlays();
 	cheat.UseUIQuickActions();
@@ -180,6 +207,7 @@ static void TestGeneral(Builder& builder) {
 	//cheat.Use2DSpinbot();
 	cheat.UseESPSnapline();
 	cheat.UseESPBox2D();
+	cheat.UseESPHealthBar();
 
 	cheat.Run();
 

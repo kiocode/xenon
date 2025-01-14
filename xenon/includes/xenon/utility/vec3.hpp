@@ -4,12 +4,12 @@
 
 class Vec3 {
 public:
-	double x, y, z;
+	float x, y, z;
 
 	Vec3() : x(-99), y(-99), z(-99) {}
-	Vec3(double x, double y, double z) : x(x), y(y), z(z) {}
+	Vec3(float x, float y, float z) : x(x), y(y), z(z) {}
 
-	double Distance(Vec3 v) {
-		return sqrt(pow(v.x - x, 2) + pow(v.y - y, 2) + pow(v.z - z, 2));
+	float Distance(Vec3 v) {
+		return static_cast<float>(sqrt(pow(v.x - x, 2) + pow(v.y - y, 2) + pow(v.z - z, 2)));
 	}
 };

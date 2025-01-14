@@ -17,13 +17,14 @@ public:
 	}
 
 private:
-	bool m_bIsFloat;
+	bool m_bIsFloat = false;
 	std::string m_strLabel;
-	float* m_fValue;
-	float m_fMin;
-	float m_fMax;	
+
+	float* m_fValue = nullptr;
+	float m_fMin = 0;
+	float m_fMax = 10;	
 	
-	int* m_nValue;
-	int m_nMin;
-	int m_nMax;
+	int* m_nValue = nullptr;
+	int m_nMin = 0;
+	int m_nMax = 10;
 };

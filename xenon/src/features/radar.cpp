@@ -52,7 +52,7 @@ void Radar::RenderRadarBase(RadarShapes shape, bool is3D) {
             if (shape == RadarShapes::CIRCULAR) {
                 Vec2 pointConverted = { point.x, point.y };
                 Vec2 radarCenterConverted = { radarCenter.x, radarCenter.y };
-                double distance = pointConverted.Distance(radarCenterConverted);
+                float distance = pointConverted.Distance(radarCenterConverted);
                 return distance <= (radarSize / 2.0f - 5);
             }
             else if (shape == RadarShapes::RECTANGULAR) {

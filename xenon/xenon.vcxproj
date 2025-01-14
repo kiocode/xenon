@@ -404,7 +404,7 @@
     <ClCompile Include="libs\lua\lzio.c" />
     <ClCompile Include="src\features\aimbot.cpp" />
     <ClCompile Include="includes\xenon\core\di_manager.hpp" />
-    <ClCompile Include="src\services\waypoints.cpp" />
+    <ClCompile Include="src\features\waypoints.cpp" />
     <ClCompile Include="src\services\aim_service.cpp" />
     <ClCompile Include="src\features\esp.cpp" />
     <ClCompile Include="src\features\feature.cpp" />

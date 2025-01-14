@@ -6,6 +6,8 @@
 #include <imgui/imgui_internal.h>
 #include <xenon/utility/fonts.h>
 
+#pragma warning(suppress : 6387)
+
 bool UIService::InitPresent(IDXGISwapChain* pSwapChain) {
 	if (!SUCCEEDED(pSwapChain->GetDevice(__uuidof(ID3D11Device), (void**)&m_pDevice)))
 	{
@@ -32,7 +34,7 @@ void UIService::LoadDefaultFonts()
 	//ImFontConfig font_cfg;
 	//font_cfg.GlyphExtraSpacing.x = 1.2f;
 
-	mainfont = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(&mainFontBytes, sizeof(mainFontBytes), 14, NULL, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
+	m_pMainFont = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(&mainFontBytes, sizeof(mainFontBytes), 14, NULL, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
 	ImFont* notiffont = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(&boldFontBytes, sizeof(boldFontBytes), 18, NULL, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
 	ImFont* logo = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(&logoBytes, sizeof(logoBytes), 48, NULL, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
 	//ImFont* logo_bigger = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(&logoBytes, sizeof(logoBytes), 80, NULL, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
@@ -112,7 +114,7 @@ void UIService::RenderDefaultMenu() {
 	if (ImGui::Begin("Default Menu", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoBackground)) {
 
 		//sizing
-		int windowWidth = 490;
+		float windowWidth = 490;
 		ImGui::SetWindowSize(ImVec2(windowWidth, 440));
 
 		//helpers def
@@ -129,7 +131,7 @@ void UIService::RenderDefaultMenu() {
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
 		ImGui::SetCursorPos(ImVec2(5, 35));
 
-		int width = devconsole ? windowWidth / 5 : windowWidth / 4;
+		float width = devconsole ? windowWidth / 5 : windowWidth / 4;
 
 		ImGui::BeginGroup();
 		{
@@ -269,7 +271,7 @@ void UIService::RenderDefaultMenu() {
 								ImGui::Checkbox("Checkbox", &checkbox);
 								ImGui::SliderInt("Slider Int", &sliderint, 0, 100);
 								ImGui::SliderFloat("Slider Float", &sliderfloat, 0.f, 100.f, "%.1f");
-								ImGui::Combo("Combo", &combo, "Selectable 1\0\Selectable 2\0\Selectable 3", 3);
+								ImGui::Combo("Combo", &combo, "Selectable 1\0Selectable 2\0Selectable 3", 3);
 								ImGui::MultiCombo("Multicombo", multi_items_count, multi_items, 5);
 								ImGui::Keybind("Hotkey", &key);
 
@@ -297,7 +299,7 @@ void UIService::RenderDefaultMenu() {
 									if (ImGui::ColorEdit4("Color", (float*)&color)) {
 										m_pConfigs->m_cCrosshair = ImColor(color);
 									}
-									ImGui::Combo("Type", &m_pConfigs->m_nCrosshairType, "Cross\0\Circle");
+									ImGui::Combo("Type", &m_pConfigs->m_nCrosshairType, "Cross\0Circle");
 								}
 
 							}
@@ -339,7 +341,7 @@ void UIService::RenderDefaultMenu() {
 								}
 								ImGui::Checkbox("Read-Only", &checkbox[0]);
 								ImGui::Checkbox("Loop Command", &checkbox[1]);
-								ImGui::Combo("Type", &combo, "Byte\0\r2 Byte\0\r4 Byte\0\rFloat\0\Double\0\String", 6);
+								ImGui::Combo("Type", &combo, "Byte\0\r2 Byte\0\r4 Byte\0\rFloat\0Double\0String", 6);
 							}
 							ImGui::EndGroup();
 						}
@@ -430,9 +432,9 @@ void UIService::RenderDefaultUIQuickActions() {
 
 	if (ImGui::Begin("QuickActions", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoBackground)) {
 
-		int width = 490;
-		int height = 440;
-		int padding = 5;
+		float width = 490;
+		float height = 440;
+		float padding = 5;
 
 		ImGui::SetWindowSize(ImVec2(width, height));
 
@@ -542,8 +544,8 @@ void UIService::Update() {
 	{
 		ImColor color = ImColor(255, 255, 255, 255); // or rainbow
 
-		ImGuiHelper::DrawOutlinedText(mainfont, ImVec2(m_pSystem->GetScreenCenter().x, m_pSystem->GetScreenResolution().y - 20), 13.0f, color, true, m_pSystem->GetAppTitle()->c_str());
-		ImGuiHelper::DrawOutlinedText(mainfont, ImVec2(m_pSystem->GetScreenCenter().x, 5), 13.0f, color, true, "[ %.1f FPS ]", ImGui::GetIO().Framerate);
+		ImGuiHelper::DrawOutlinedText(m_pMainFont, ImVec2(m_pSystem->GetScreenCenter().x, m_pSystem->GetScreenResolution().y - 20), 13.0f, color, true, m_pSystem->GetAppTitle()->c_str());
+		ImGuiHelper::DrawOutlinedText(m_pMainFont, ImVec2(m_pSystem->GetScreenCenter().x, 5), 13.0f, color, true, "[ %.1f FPS ]", ImGui::GetIO().Framerate);
 	}
 
 	m_pNotificationService->RenderNotifications();
@@ -590,7 +592,7 @@ bool UIService::CreateWindowUI()
 		m_wClass.lpszClassName,
 		L"xenon",//wideWindowTitle.c_str(),
 		WS_POPUP,
-		0, 0, m_pSystem->GetScreenResolution().x, m_pSystem->GetScreenResolution().y,
+		0, 0, static_cast<int>(m_pSystem->GetScreenResolution().x), static_cast<int>(m_pSystem->GetScreenResolution().y),
 		nullptr, nullptr, m_wClass.hInstance, nullptr
 	);
 
