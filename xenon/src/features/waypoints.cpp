@@ -19,7 +19,7 @@ void Waypoints::ClearWaypoints() {
 
 void Waypoints::RenderInWorld() {
 	for (auto& waypoint : m_vWaypoints) {
-		Vec2* waypointInScreen = m_pSystem->GetGameDimension() == GameDimensions::DIMENSION_3D ? m_pSystem->m_fnW2S3D(waypoint.m_vPos3D) : m_pSystem->m_fnW2S2D(waypoint.m_vPos2D);
+		Vec2* waypointInScreen = m_pSystem->Is3DGame() ? m_pSystem->m_fnW2S3D(waypoint.m_vPos3D) : m_pSystem->m_fnW2S2D(waypoint.m_vPos2D);
 
 		if (!waypointInScreen) continue;
 

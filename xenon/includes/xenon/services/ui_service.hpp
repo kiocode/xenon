@@ -47,15 +47,11 @@ public:
         std::shared_ptr<UIConfig> pConfigs,
         std::shared_ptr<System> pSystem,
         std::shared_ptr<AimConfig> pAimConfigs,
-        std::shared_ptr<WaypointsConfig> pWaypointsConfig,
         std::shared_ptr<Radar> pRadar,
-        std::shared_ptr<NotificationService> pNotificationService,
-        std::shared_ptr<Waypoints> pWaypoints
+        std::shared_ptr<NotificationService> pNotificationService
     ) : m_pConfigs(pConfigs), 
         m_pSystem(pSystem), 
         m_pAimConfigs(pAimConfigs), 
-        m_pWaypointsConfig(pWaypointsConfig),
-        m_pWaypoints(pWaypoints),
         m_pRadar(pRadar), 
         m_pNotificationService(pNotificationService) {}
 
@@ -80,14 +76,15 @@ public:
 
     void CreateImGuiUI();
 
+    void RenderCrosshair();
+    void RenderFov();
+
 private:
     std::shared_ptr<UIConfig> m_pConfigs;
     std::shared_ptr<System> m_pSystem;
     std::shared_ptr<AimConfig> m_pAimConfigs;
     std::shared_ptr<Radar> m_pRadar;
     std::shared_ptr<NotificationService> m_pNotificationService;
-    std::shared_ptr<WaypointsConfig> m_pWaypointsConfig;
-    std::shared_ptr<Waypoints> m_pWaypoints;
 
     HWND m_hWindow = NULL;
 
@@ -98,6 +95,9 @@ private:
     ID3D11Device* m_pDevice = NULL;
     ID3D11DeviceContext* m_pContext = NULL;
     ID3D11RenderTargetView* m_pMainRenderTargetView = nullptr;
+
+    ID3D11DepthStencilState* m_pNoDepthStencilState;      
+    ID3D11DepthStencilState* m_pDefaultDepthStencilState;
 
     #pragma region menu vars
 
@@ -111,6 +111,8 @@ private:
 
     static LRESULT __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
+    void InitializeDepthStencilStates();
+
     void LoadDefaultFonts();
 
     bool CreateWindowUI();
@@ -120,8 +122,6 @@ private:
 
     void RenderDefaultUIQuickActions();
     void RenderDefaultMenu();
-    void RenderCrosshair();
-    void RenderFov();
     void RenderMouse();
 
     void ResetDeviceUI();

@@ -67,37 +67,35 @@ Vec2* AimService::GetNearestPos(std::vector<TargetProfile> targets, TargetProfil
 	Vec2* nearest = nullptr;
 	float minDistance = maxdist;
 
-    switch (m_pSystem->GetGameDimension()) {
-        case GameDimensions::DIMENSION_2D: {
+    if (m_pSystem->Is3DGame()) {
 
-            if (!m_pSystem->m_fnW2S2D) {
-                spdlog::error("World to screen 2D function not set");
-				return nullptr;
-            }
+        if (!m_pSystem->m_fnW2S3D) {
+            spdlog::error("World to screen 3D function not set");
+            return nullptr;
+        }
 
-            for (TargetProfile target : targets) {
-                float distance = target.m_vPos2D.Distance(local.m_vPos2D);
-                if (distance < minDistance) {
-                    minDistance = distance;
-                    nearest = m_pSystem->m_fnW2S2D(target.m_vPos2D);
-                }
+        for (TargetProfile target : targets) {
+            float distance = target.m_vPos3D.Distance(local.m_vPos3D);
+            if (distance < minDistance) {
+                minDistance = distance;
+                nearest = m_pSystem->m_fnW2S3D(target.m_vPos3D);
             }
-        } break;
-        case GameDimensions::DIMENSION_3D: {
+        }
 
-            if (!m_pSystem->m_fnW2S3D) {
-				spdlog::error("World to screen 3D function not set");
-                return nullptr;
-            }
+    } else {
 
-            for (TargetProfile target : targets) {
-                float distance = target.m_vPos3D.Distance(local.m_vPos3D);
-                if (distance < minDistance) {
-                    minDistance = distance;
-                    nearest = m_pSystem->m_fnW2S3D(target.m_vPos3D);
-                }
+        if (!m_pSystem->m_fnW2S2D) {
+            spdlog::error("World to screen 2D function not set");
+			return nullptr;
+        }
+
+        for (TargetProfile target : targets) {
+            float distance = target.m_vPos2D.Distance(local.m_vPos2D);
+            if (distance < minDistance) {
+                minDistance = distance;
+                nearest = m_pSystem->m_fnW2S2D(target.m_vPos2D);
             }
-        } break;
+        }
 
     }
 

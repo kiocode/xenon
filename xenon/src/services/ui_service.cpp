@@ -6,8 +6,6 @@
 #include <imgui/imgui_internal.h>
 #include <xenon/utility/fonts.h>
 
-#pragma warning(suppress : 6387)
-
 bool UIService::InitPresent(IDXGISwapChain* pSwapChain) {
 	if (!SUCCEEDED(pSwapChain->GetDevice(__uuidof(ID3D11Device), (void**)&m_pDevice)))
 	{
@@ -468,31 +466,6 @@ void UIService::RenderDefaultUIQuickActions() {
 
 void UIService::Update() {
 
-	if (m_pConfigs->m_bCrosshair) {
-		RenderCrosshair();
-	}
-
-	if (m_pAimConfigs->m_bFov) {
-		RenderFov();
-	}
-
-	#pragma region Radar
-
-	if (m_pConfigs->m_bUseUIRadar) {
-		//m_pRadar->SetTargets(m_vTargets2DWorld);
-		m_pRadar->Render();
-	}
-
-	#pragma endregion
-
-	#pragma region Waypoints
-
-	if (m_pWaypointsConfig->m_bRenderInWorld) {
-		m_pWaypoints->RenderInWorld();
-	}
-
-	#pragma endregion
-
 	if (m_bShowMenu) {
 
 		if (m_pConfigs->m_bUseUIRenderMouse) {
@@ -550,7 +523,6 @@ void UIService::Update() {
 
 	m_pNotificationService->RenderNotifications();
 
-	EndRenderUI();
 }
 
 void UIService::Destroy() {
@@ -747,6 +719,8 @@ void UIService::DestroyDeviceUI()
 
 void UIService::CreateImGuiUI()
 {
+	InitializeDepthStencilStates();
+
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags = ImGuiConfigFlags_NoMouseCursorChange;
@@ -846,11 +820,38 @@ void UIService::BeginRenderUI()
 
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
+	m_pContext->OMSetDepthStencilState(m_pNoDepthStencilState, 0);
 
+}
+
+void UIService::InitializeDepthStencilStates() {
+	D3D11_DEPTH_STENCIL_DESC noDepthStencilDesc = {};
+	noDepthStencilDesc.DepthEnable = FALSE;
+	noDepthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+	noDepthStencilDesc.DepthFunc = D3D11_COMPARISON_ALWAYS;
+	noDepthStencilDesc.StencilEnable = FALSE;
+
+	HRESULT hr = m_pDevice->CreateDepthStencilState(&noDepthStencilDesc, &m_pNoDepthStencilState);
+	if (FAILED(hr)) {
+		return;
+	}
+
+	D3D11_DEPTH_STENCIL_DESC defaultDepthStencilDesc = {};
+	defaultDepthStencilDesc.DepthEnable = TRUE;
+	defaultDepthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	defaultDepthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
+	defaultDepthStencilDesc.StencilEnable = FALSE;
+
+	hr = m_pDevice->CreateDepthStencilState(&defaultDepthStencilDesc, &m_pDefaultDepthStencilState);
+	if (FAILED(hr)) {
+		return;
+	}
 }
 
 void UIService::EndRenderUI()
 {
+	m_pContext->OMSetDepthStencilState(m_pDefaultDepthStencilState, 0);
+
 	ImGui::EndFrame();
 
 	ImGui::Render();

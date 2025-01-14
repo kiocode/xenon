@@ -95,8 +95,8 @@ void Builder::RegisterDefaultServices() {
     std::shared_ptr<NotificationService> pNotificationService = Services->AddSingleton<NotificationService>();
 
     std::shared_ptr<UIService> pUIService = Services->AddSingleton<UIService>(
-        [this, pUIConfig, pAimConfig, pWaypointsConfig, pRadar, pNotificationService, pWaypoints]() {
-            return std::make_shared<UIService>(pUIConfig, SystemVariables, pAimConfig, pWaypointsConfig, pRadar, pNotificationService, pWaypoints);
+        [this, pUIConfig, pAimConfig, pRadar, pNotificationService]() {
+            return std::make_shared<UIService>(pUIConfig, SystemVariables, pAimConfig, pRadar, pNotificationService);
         }
     );
     MemoryManager = Services->AddSingleton<MemoryService>();
@@ -118,8 +118,8 @@ void Builder::RegisterDefaultServices() {
         }
     );
 
-    GameManager = Services->AddSingleton<Game>([this, pGameConfig, pAimbot, pAimService, pAimConfig, pUIService, pESP, pLuaService, pRadar, pUIConfig]() {
-        return std::make_shared<Game>(pGameConfig, GameGlobalVariables, pUIConfig, pAimConfig, pAimService, pUIService, pLuaService, pAimbot, pESP, pRadar, SystemVariables);
+    GameManager = Services->AddSingleton<Game>([this, pGameConfig, pAimbot, pAimService, pAimConfig, pUIService, pESP, pLuaService, pRadar, pUIConfig, pWaypointsConfig, pWaypoints]() {
+        return std::make_shared<Game>(pGameConfig, GameGlobalVariables, pUIConfig, pAimConfig, pAimService, pUIService, pLuaService, pAimbot, pESP, pRadar, SystemVariables, pWaypointsConfig, pWaypoints);
     });
 
     #pragma endregion

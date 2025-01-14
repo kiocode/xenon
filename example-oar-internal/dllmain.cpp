@@ -144,8 +144,8 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 			if (unrealTargetPos.X == 0 || unrealTargetPos.Y == 0 || unrealTargetPos.Z == 0) continue;
 
 			TargetProfile targetProfile;
-			targetProfile.m_vHeadPos3D = Vec3(unrealTargetPos.X, unrealTargetPos.Z + 100, unrealTargetPos.Y);
-			targetProfile.m_vFeetPos3D = Vec3(unrealTargetPos.X, unrealTargetPos.Z - 100, unrealTargetPos.Y);
+			targetProfile.m_vHeadPos3D = Vec3(unrealTargetPos.X, unrealTargetPos.Z - 100, unrealTargetPos.Y);
+			targetProfile.m_vFeetPos3D = Vec3(unrealTargetPos.X, unrealTargetPos.Z + 100, unrealTargetPos.Y);
 			targetProfile.m_vPos3D = Vec3(unrealTargetPos.X, unrealTargetPos.Z, unrealTargetPos.Y);
 			targetProfile.m_strName = npc->GetName();
 			targetProfile.m_fHealth = npc->Health;

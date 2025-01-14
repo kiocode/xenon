@@ -6,11 +6,12 @@ kanban-plugin: board
 
 ## Brainstorming
 
+- [ ] add esp and aimbot support for visible/not players behind walls
+- [ ] Add on github an activity check for building and formatting
 
 
 ## Todo
 
-- [ ] Add on github an activity check for building and formatting
 - [ ] dll loader
 - [ ] packet sniffer + parser
 - [ ] implement il2cppresolver
@@ -19,27 +20,24 @@ kanban-plugin: board
 - [ ] in update if attached a game check if its opened
 - [ ] understand if toggle menu visiblity key is for game config or ui config
 - [ ] merge track mouse with the system get mouse fn
-- [ ] move all "use" var in a cheatconfig that will be share by any service
 - [ ] add ui right top show enabled features like minecraft clients
-- [ ] change all, don't have a single update but have a list with all features and services called now components that have a super clas with onupdate synchronized with the original update
-- [ ] add esp and aimbot support for visible/not players behind walls
 - [ ] check if the use of pointer makes sense like with vec2
-- [ ] add NONE to enums
 - [ ] check is use enums with plural or singular name
 - [ ] add fly
-- [ ] convert all vec in float
-- [ ] create a single centralized object accessible from any object that have access to any component
 
 
 ## InProgress
 
 - [ ] customize GUI
-- [ ] add health bar
+- [ ] move all "use" var in a cheatconfig that will be share by any service
+- [ ] change all, don't have a single update but have a list with all features and services called now components that have a super clas with onupdate synchronized with the original update
+- [ ] create a single centralized object accessible from any object that have access to any component
 
 
 ## Done
 
 - [x] Organize the methods inside `aimbot.cpp` using `#region` to group them, starting with public methods under `#region Public Methods`, followed by private methods under `#region Private Methods`.
+- [x] add health bar
 - [x] External cheat gui
 - [x] add more universal data, maybe a player profile with health and name and distance from the localplayer
 - [x] get nearest maybe generalize the 3d thing
@@ -47,6 +45,8 @@ kanban-plugin: board
 - [x] spinbot 2d/3d
 - [x] implement IsUnityGame(type)/IsUnrealGame(version)
 - [x] make tests for Lua
+- [x] add NONE to enums
+- [x] convert all vec in float
 - [x] delete GetModuleAddress (make overload but use it privately) ADD READPOINTER/READVALUE USE AUTOMATICALLY THE GETMODULE - SetModuleAddress
 - [x] make tests for radar
 - [x] centralize renderui in another file

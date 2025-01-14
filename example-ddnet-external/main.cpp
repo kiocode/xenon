@@ -120,12 +120,24 @@ int main()
 		} while (i != 63); //builder.MemoryManager->Read<int>(serverAddr + offsets.gametick + (i * 0xF8)) != -1);
 
 		builder.GameGlobalVariables->g_vTargets.clear();
-		builder.GameGlobalVariables->g_vLocal.m_vPos2D = server->players[server->localPlayerId].pos;
+		builder.GameGlobalVariables->g_vLocal.m_vPos2D = Vec2(server->players[server->localPlayerId].pos.x - 32, server->players[server->localPlayerId].pos.y - 32);
 		for (int i = 0; i < server->players.size(); i++) {
 			if (server->players[i].gametick == 0 || server->players[i].id == server->localPlayerId) continue;
+			
+			float distance = builder.GameGlobalVariables->g_vLocal.m_vPos2D.Distance(Vec2(server->players[i].pos.x, server->players[i].pos.y));
+
+			float distanceFactor = distance / 15; // to change
+
+			Vec2 originalPos(server->players[i].pos.x, server->players[i].pos.y);
+			Vec2 localPos = builder.GameGlobalVariables->g_vLocal.m_vPos2D;
+			Vec2 direction = (originalPos - localPos).Normalized();
+			Vec2 modifiedPos = originalPos + direction * distanceFactor;
 
 			TargetProfile targetProfile;
-			targetProfile.m_vPos2D = server->players[i].pos;
+			targetProfile.m_fWidth = 64;
+			targetProfile.m_vPos2D = modifiedPos;
+			targetProfile.m_vHeadPos2D = modifiedPos - Vec2(0, 32);;
+			targetProfile.m_vFeetPos2D = modifiedPos + Vec2(0, 32);;
 			targetProfile.m_strName = "Player " + std::to_string(server->players[i].id);
 			targetProfile.m_fHealth = 100;
 			builder.GameGlobalVariables->g_vTargets.push_back(targetProfile);
@@ -134,7 +146,6 @@ int main()
 
 	std::shared_ptr<AimConfig> pAimConfig = builder.Services->GetConfiguration<AimConfig>();
 	pAimConfig->m_fnCustomAim = [builder, clientAddr](const Vec2& pos) {
-
 		Vec2 gamePlayerRelativePos = Vec2(pos.x - builder.GameGlobalVariables->g_vLocal.m_vPos2D.x, pos.y - builder.GameGlobalVariables->g_vLocal.m_vPos2D.y);
 
 		builder.MemoryManager->Write<float>(clientAddr + offsets.aimPos, gamePlayerRelativePos.x);
@@ -151,6 +162,7 @@ int main()
 	cheat.UseUIQuickActions();
 	cheat.UseESPSnapline();
 	cheat.UseESPBox2D();
+	cheat.UseESPHealthBar();
 	//cheat.UseAimbot();
 
 	builder.SystemVariables->m_fnW2S2D = [builder](Vec2 pos) -> Vec2* {

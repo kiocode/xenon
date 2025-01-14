@@ -71,6 +71,10 @@ public:
 		return m_gameDimension;
 	}
 
+	bool Is3DGame() const {
+		return m_gameDimension == GameDimensions::DIMENSION_3D;
+	}
+
 	void SetRenderingType(RenderingTypes type) {
 
 		if (!m_bIsInternal) {

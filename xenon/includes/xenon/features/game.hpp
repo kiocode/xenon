@@ -30,8 +30,23 @@ public:
 		std::shared_ptr<Aimbot> aimbot, 
 		std::shared_ptr<ESP> esp,
 		std::shared_ptr<Radar> radar,
-		std::shared_ptr<System> system
-	) : m_pConfigs(configs), m_pVariables(variables), m_pAimbot(aimbot), m_pAimService(aimService), m_pSystem(system), m_pAimConfigs(aimConfig), m_pUIService(uiService), m_pESP(esp), m_pLuaService(luaService), m_pRadar(radar), m_pUIConfig(uiConfig) {}
+		std::shared_ptr<System> system,
+		std::shared_ptr<WaypointsConfig> pWaypointsConfig,
+		std::shared_ptr<Waypoints> pWaypoints
+	) : m_pConfigs(configs), 
+		m_pVariables(variables), 
+		m_pAimbot(aimbot), 
+		m_pAimService(aimService),
+		m_pSystem(system), 
+		m_pAimConfigs(aimConfig), 
+		m_pUIService(uiService), 
+		m_pESP(esp), 
+		m_pLuaService(luaService), 
+		m_pRadar(radar), 
+		m_pUIConfig(uiConfig),
+		m_pWaypointsConfig(pWaypointsConfig),
+		m_pWaypoints(pWaypoints) {}
+
 
 	void EnableUpdate();
 
@@ -65,6 +80,8 @@ private:
 	std::shared_ptr<LuaService> m_pLuaService;
 	std::shared_ptr<Radar> m_pRadar;
 	std::shared_ptr<UIConfig> m_pUIConfig;
+	std::shared_ptr<WaypointsConfig> m_pWaypointsConfig;
+	std::shared_ptr<Waypoints> m_pWaypoints;
 
     bool m_bInit = false;
 

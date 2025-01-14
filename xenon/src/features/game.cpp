@@ -81,7 +81,7 @@ void Game::BindForExternal() {
 			m_pUIService->EndRenderUI();
 		}
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(5));
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	}
 
 	if (m_pConfigs->m_bUseUICustom) {
@@ -126,6 +126,33 @@ void Game::Update() {
 	HandleShortcuts();
 
 	#pragma endregion
+
+
+	if (m_pUIConfig->m_bCrosshair) {
+		m_pUIService->RenderCrosshair();
+	}
+
+	if (m_pAimConfigs->m_bFov) {
+		m_pUIService->RenderFov();
+	}
+
+	#pragma region Radar
+
+	if (m_pUIConfig->m_bUseUIRadar) {
+		//m_pRadar->SetTargets(m_vTargets2DWorld);
+		m_pRadar->Render();
+	}
+
+	#pragma endregion
+
+	#pragma region Waypoints
+
+	if (m_pWaypointsConfig->m_bRenderInWorld) {
+		m_pWaypoints->RenderInWorld();
+	}
+
+	#pragma endregion
+
 
 	if (m_pConfigs->m_bUseUICustom) {
 		m_pUIService->Update();

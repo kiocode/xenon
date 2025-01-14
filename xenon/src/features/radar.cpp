@@ -8,11 +8,9 @@ void Radar::Render() {
         return;
     }
 
-    bool is3D = m_pSystem->GetGameDimension() == GameDimensions::DIMENSION_3D;
-
     switch (m_pConfigs->m_nType) {
-        case 0: RenderRadarBase(RadarShapes::CIRCULAR, is3D); break;
-        case 1: RenderRadarBase(RadarShapes::RECTANGULAR, is3D); break;
+        case 0: RenderRadarBase(RadarShapes::CIRCULAR, m_pSystem->Is3DGame()); break;
+        case 1: RenderRadarBase(RadarShapes::RECTANGULAR, m_pSystem->Is3DGame()); break;
         default:
             spdlog::error("Invalid radar type: {}", m_pConfigs->m_nType);
             break;
