@@ -22,7 +22,7 @@ public:
 
 	void Render();
 
-	void RenderRadarBase(const char* title, RadarShapes shape, bool is3D);
+	void RenderRadarBase(RadarShapes shape, bool is3D);
 
 private:
 	std::shared_ptr<RadarConfig> m_pConfigs;

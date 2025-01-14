@@ -78,7 +78,12 @@ int main()
 
 	builder.SystemVariables->SetGameDimension(GameDimensions::DIMENSION_2D);
 
-	builder.MemoryManager->AttachGame("C:\\Program Files (x86)\\Steam\\steamapps\\common\\DDraceNetwork\\ddnet\\DDNet.exe");
+	try {
+		builder.MemoryManager->AttachGame("D:\\Steam\\steamapps\\common\\DDraceNetwork\\ddnet\\DDNet.exe");
+	}
+	catch (const std::exception& e) {
+		builder.MemoryManager->AttachGame("C:\\Program Files (x86)\\Steam\\steamapps\\common\\DDraceNetwork\\ddnet\\DDNet.exe");
+	}
 	uintptr_t serverAddr = builder.MemoryManager->ReadPointer(offsets.staticServerAddr);
 	uintptr_t clientAddr = builder.MemoryManager->ReadPointer(offsets.staticClientAddr);
 
@@ -141,11 +146,11 @@ int main()
 	cheat.UseUpdate();
 	cheat.UseUICustom(RenderingHookTypes::KIERO);
 	cheat.UseUIMenu();
-	//cheat.UseUIRenderOverlays();
-	//cheat.UseUIRadar();
-	//cheat.UseUIQuickActions();
-	//cheat.UseESPSnapline();
-	//cheat.UseESPBox2D();
+	cheat.UseUIRenderOverlays();
+	cheat.UseUIRadar();
+	cheat.UseUIQuickActions();
+	cheat.UseESPSnapline();
+	cheat.UseESPBox2D();
 	//cheat.UseAimbot();
 
 	builder.SystemVariables->m_fnW2S2D = [builder](Vec2 pos) -> Vec2* {

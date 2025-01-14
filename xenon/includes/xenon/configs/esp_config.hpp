@@ -13,6 +13,8 @@ public:
 	ImColor m_cBox2DDistance = ImColor(0, 0, 0, 255);
 	ImColor m_cBox3D = ImColor(255, 255, 255, 255);
 	ImColor m_cSkeleton = ImColor(255, 255, 255, 255);
+	ImColor m_cHealthBarBg = ImColor(0, 0, 0, 255);
+	ImColor m_cHealthBarFilled = ImColor(0, 255, 0, 255);
 
 	std::vector<std::pair<int, int>> m_tBonePairs;
 

@@ -11,16 +11,16 @@ void Radar::Render() {
     bool is3D = m_pSystem->GetGameDimension() == GameDimensions::DIMENSION_3D;
 
     switch (m_pConfigs->m_nType) {
-        case 0: RenderRadarBase("Circular Radar", RadarShapes::CIRCULAR, is3D); break;
-        case 1: RenderRadarBase("Rectangular Radar", RadarShapes::RECTANGULAR, is3D); break;
+        case 0: RenderRadarBase(RadarShapes::CIRCULAR, is3D); break;
+        case 1: RenderRadarBase(RadarShapes::RECTANGULAR, is3D); break;
         default:
             spdlog::error("Invalid radar type: {}", m_pConfigs->m_nType);
             break;
     }
 }
 
-void Radar::RenderRadarBase(const char* title, RadarShapes shape, bool is3D) {
-    ImGui::Begin(title, nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+void Radar::RenderRadarBase(RadarShapes shape, bool is3D) {
+    ImGui::Begin("Radar", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
     {
         ImDrawList* drawlist = ImGui::GetWindowDrawList();
         ImVec2 pos = ImGui::GetWindowPos();

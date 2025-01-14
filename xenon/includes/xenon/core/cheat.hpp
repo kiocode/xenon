@@ -206,6 +206,18 @@ public:
         spdlog::info("Skeleton ESP is enabled");
     }
 
+    void UseESPHealthBar() {
+        
+        if (!m_pGameConfig->m_bUseUICustom) {
+			spdlog::error("Health Bar ESP can only be used with Custom UI");
+			return;
+		}
+
+		m_pGameConfig->m_bUseESPHealthBar = true;
+
+		spdlog::info("Health Bar ESP is enabled");
+    }
+
     void Run();
 
 private:

@@ -149,6 +149,10 @@ void Game::Update() {
 		m_pESP->RenderSkeleton();
 	}
 
+	if (m_pConfigs->m_bUseESPHealthBar) {
+		m_pESP->RenderHealthBar();
+	}
+
 	#pragma endregion
 
 	if (m_pConfigs->m_bUseAimbot) {

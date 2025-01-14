@@ -13,6 +13,7 @@ public:
 	bool m_bUseESPBox2D;
 	bool m_bUseESPBox3D;
 	bool m_bUseESPSkeleton;
+	bool m_bUseESPHealthBar;
 	bool m_bUseRecoil;
 	bool m_bUse2DSpinbot;
 	bool m_bUse3DSpinbot;

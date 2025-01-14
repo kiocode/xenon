@@ -47,18 +47,19 @@ void ESP::Render2DBox() {
 	for (auto& target : m_pGameVariables->g_vTargets) {
 
 		Vec2* targetScreenPos = (m_pSystem->GetGameDimension() == GameDimensions::DIMENSION_3D ? m_pSystem->m_fnW2S3D(target.m_vPos3D) : m_pSystem->m_fnW2S2D(target.m_vPos2D));
+		Vec2* targetScreenHeadPos = (m_pSystem->GetGameDimension() == GameDimensions::DIMENSION_3D ? m_pSystem->m_fnW2S3D(target.m_vHeadPos3D) : m_pSystem->m_fnW2S2D(target.m_vHeadPos2D));
 
-		float targetX = static_cast<float>(targetScreenPos->x);
-		float targetY = static_cast<float>(targetScreenPos->y);
+		ImVec2 head = ImVec2(targetScreenHeadPos->x, targetScreenHeadPos->y);
+		ImVec2 feet = ImVec2(targetScreenPos->x, targetScreenPos->y);
 
-		ImVec2 head = ImVec2(targetX, targetY);
-		ImVec2 feet = ImVec2(targetX, targetY + 64);
+		float height = head.y - feet.y;
+		float width = height / 3;
 
-		ImVec2 minBottomLeft = ImVec2(feet.x - 32, feet.y);
-		ImVec2 maxTopRight = ImVec2(head.x + 32, head.y);
+		ImVec2 minBottomLeft = ImVec2(feet.x - width, feet.y);
+		ImVec2 maxTopRight = ImVec2(feet.x + width, head.y);
 
 		ImColor colorAlpha = m_pConfigs->m_cBox2D;
-		colorAlpha.Value.w = 0.5f;
+		colorAlpha.Value.w = 0.3f;
 
 		switch (m_pConfigs->m_nBox2DType) {
 			case 0: // regular
@@ -146,11 +147,36 @@ void ESP::RenderSkeleton() {
 	}
 }
 
-void ESP::RenderHealthbar() {
+void ESP::RenderHealthBar() {
 
 	if (!m_pSystem->m_fnW2S3D && !m_pSystem->m_fnW2S2D) {
 		throw std::runtime_error("No world to screen function set");
 		return;
+	}
+
+	for (auto& target : m_pGameVariables->g_vTargets) {
+
+		Vec2* targetScreenPos = (m_pSystem->GetGameDimension() == GameDimensions::DIMENSION_3D ? m_pSystem->m_fnW2S3D(target.m_vPos3D) : m_pSystem->m_fnW2S2D(target.m_vPos2D));
+		Vec2* targetScreenHeadPos = (m_pSystem->GetGameDimension() == GameDimensions::DIMENSION_3D ? m_pSystem->m_fnW2S3D(target.m_vHeadPos3D) : m_pSystem->m_fnW2S2D(target.m_vHeadPos2D));
+
+		ImVec2 head = ImVec2(targetScreenHeadPos->x, targetScreenHeadPos->y);
+		ImVec2 feet = ImVec2(targetScreenPos->x, targetScreenPos->y);
+
+		float height = head.y - feet.y;
+		float currentHeight = height;
+		float width = height / 4;
+
+		float healthPercentage = target.m_fHealth / target.m_fMaxHealth;
+		currentHeight *= healthPercentage;
+
+		ImVec2 minBottomLeftBg = ImVec2(feet.x - 50, feet.y);
+		ImVec2 maxTopRightBg = ImVec2(head.x - 30, head.y);
+
+		ImVec2 minBottomLeftFilled = ImVec2(feet.x - 50, feet.y);
+		ImVec2 maxTopRightFilled = ImVec2(head.x - 30, feet.y + currentHeight);
+
+		ImGui::GetBackgroundDrawList()->AddRectFilled(minBottomLeftBg, maxTopRightBg, m_pConfigs->m_cHealthBarBg, 0, 0);
+		ImGui::GetBackgroundDrawList()->AddRectFilled(minBottomLeftFilled, maxTopRightFilled, m_pConfigs->m_cHealthBarFilled, 0, 0);
 	}
 
 }

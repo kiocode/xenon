@@ -18,21 +18,27 @@ void Waypoints::ClearWaypoints() {
 }
 
 void Waypoints::RenderInWorld() {
-
 	for (auto& waypoint : m_vWaypoints) {
 		Vec2* waypointInScreen = m_pSystem->GetGameDimension() == GameDimensions::DIMENSION_3D ? m_pSystem->m_fnW2S3D(waypoint.m_vPos3D) : m_pSystem->m_fnW2S2D(waypoint.m_vPos2D);
 
-		ImVec2 prismaPoints[4];
-		prismaPoints[0] = ImVec2(waypointInScreen->x, waypointInScreen->y + m_pConfigs->m_fSizeInWorld);
-		prismaPoints[1] = ImVec2(waypointInScreen->x - m_pConfigs->m_fSizeInWorld, waypointInScreen->y);
-		prismaPoints[2] = ImVec2(waypointInScreen->x + m_pConfigs->m_fSizeInWorld, waypointInScreen->y);
-		prismaPoints[3] = ImVec2(waypointInScreen->x, waypointInScreen->y - m_pConfigs->m_fSizeInWorld);
+		if (!waypointInScreen) continue;
 
-		ImGui::GetBackgroundDrawList()->AddPolyline(prismaPoints, sizeof(prismaPoints), ImColor(0,0,0), 0, 2);
+		float size = m_pConfigs->m_fSizeInWorld;
+
+		ImVec2 top(waypointInScreen->x, waypointInScreen->y - size);
+		ImVec2 right(waypointInScreen->x + (size / 1.5), waypointInScreen->y);
+		ImVec2 bottom(waypointInScreen->x, waypointInScreen->y + size);
+		ImVec2 left(waypointInScreen->x - (size / 1.5), waypointInScreen->y);
+
+		ImGui::GetBackgroundDrawList()->AddQuadFilled(top, right, bottom, left, waypoint.m_cColor);
+
+		if (m_pConfigs->m_bNamesInWorld && !waypoint.m_strName.empty()) {
+			ImGui::GetBackgroundDrawList()->AddText(ImVec2(waypointInScreen->x - (ImGui::CalcTextSize(waypoint.m_strName.c_str()).x / 2), waypointInScreen->y + size + 5), ImColor(255, 255, 255, 255), waypoint.m_strName.c_str());
+		}
 	}
 }
 
-void Waypoints::RenderInRadar(std::function<bool(ImVec2)> fnIsPointInRadar, Vec3 localPos, float defaultScale, float radarSize, float zoomFactor, ImVec2 radarCenter) {
+void Waypoints::RenderInRadar(std::function<bool(ImVec2)> fnIsPointInRadar, Vec2 localPos, float defaultScale, float radarSize, float zoomFactor, ImVec2 radarCenter) {
 	for (const Waypoint& waypoint : m_vWaypoints) {
 		const float relativeX = waypoint.m_vPos2D.x - localPos.x;
 		const float relativeY = waypoint.m_vPos2D.y - localPos.y;
@@ -53,10 +59,10 @@ void Waypoints::RenderInRadar(std::function<bool(ImVec2)> fnIsPointInRadar, Vec3
 	}
 }
 
-void Waypoints::RenderInRadar(std::function<bool(ImVec2)> fnIsPointInRadar, Vec2 localPos, float defaultScale, float radarSize, float zoomFactor, ImVec2 radarCenter) {
+void Waypoints::RenderInRadar(std::function<bool(ImVec2)> fnIsPointInRadar, Vec3 localPos, float defaultScale, float radarSize, float zoomFactor, ImVec2 radarCenter) {
 	for (const Waypoint& waypoint : m_vWaypoints) {
-		const float relativeX = waypoint.m_vPos2D.x - localPos.x;
-		const float relativeY = waypoint.m_vPos2D.y - localPos.y;
+		const float relativeX = waypoint.m_vPos3D.x - localPos.x;
+		const float relativeY = waypoint.m_vPos3D.z - localPos.z;
 
 		const float scaledX = (relativeX / defaultScale) * radarSize * zoomFactor;
 		const float scaledY = (relativeY / defaultScale) * radarSize * zoomFactor;

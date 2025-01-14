@@ -64,7 +64,8 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
     builder.SystemVariables->SetRenderingType(RenderingTypes::DX11);
 	builder.SystemVariables->m_fnW2S3D = [](Vec3 pos) {
 		SDK::FVector2D screenPos;
-		if (m_pMyController->ProjectWorldLocationToScreen(SDK::FVector(pos.x, pos.y, pos.z), &screenPos, false)) {
+		SDK::FVector unrealPos(pos.x, pos.z, pos.y);
+		if (m_pMyController->ProjectWorldLocationToScreen(unrealPos, &screenPos, false)) {
 			return new Vec2(screenPos.X, screenPos.Y);
 		}
 		else {
@@ -77,8 +78,9 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 
 	std::shared_ptr<RadarConfig> pRadarConfig = builder.Services->GetConfiguration<RadarConfig>();
 	std::shared_ptr<UIConfig> pUIConfig = builder.Services->GetConfiguration<UIConfig>();
+	std::shared_ptr<Waypoints> pWaypoints = builder.Services->GetService<Waypoints>();
 	
-	pUIConfig->m_vFnOverlays.push_back([builder]() {
+	pUIConfig->m_vFnOverlays.push_back([builder, pWaypoints]() {
 		ImGui::Begin("OAR internal");
 
 		ImGui::Text("Engine: %p", m_pEngine);
@@ -98,13 +100,20 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 		}
 
 		ImGui::End();
+
+		ImGui::Begin("Waypoints");
+
+		for (const Waypoint& waypoint : pWaypoints->GetWaypoints()) {
+			ImGui::Text("Waypoint: %s, %f, %f, %f", waypoint.m_strName.c_str(), waypoint.m_vPos3D.x, waypoint.m_vPos3D.y, waypoint.m_vPos3D.z);
+		}
+
+		ImGui::End();
 	});
 
 	pUIConfig->m_qActions->AddSlider("Radar Zoom", &pRadarConfig->m_fZoom, 0.3, 5);
 	pUIConfig->m_qActions->AddButton("Reset Radar Zoom", [pRadarConfig]() { pRadarConfig->m_fZoom = 1; });
 	pUIConfig->m_qActions->AddSlider("Radar Type", &pRadarConfig->m_nType, 0, 1);
 
-	std::shared_ptr<Waypoints> pWaypoints = builder.Services->GetService<Waypoints>();
 	std::shared_ptr<GameVariables> pGameVariables = builder.Services->GetConfiguration<GameVariables>();
 	pUIConfig->m_qActions->AddButton("Set Waypoint", [pGameVariables, pWaypoints]() {
 		pWaypoints->SetWaypoint("test", pGameVariables->g_vLocal.m_vPos3D, ImColor(255, 255, 255));
@@ -117,7 +126,7 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 		builder.GameGlobalVariables->g_vTargets.clear();
 
 		SDK::FVector myPos = m_pMyCharacter->K2_GetActorLocation();
-		builder.GameGlobalVariables->g_vLocal.m_vPos3D = Vec3(myPos.X, myPos.Y, myPos.Z);
+		builder.GameGlobalVariables->g_vLocal.m_vPos3D = Vec3(myPos.X, myPos.Z, myPos.Y);
 
 		for (int i = 0; i < SDK::UObject::GObjects->Num(); i++) {
 			SDK::UObject* obj = SDK::UObject::GObjects->GetByIndex(i);
@@ -132,8 +141,12 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 
 			SDK::FVector unrealTargetPos = npc->K2_GetActorLocation();
 
+			if (unrealTargetPos.X == 0 || unrealTargetPos.Y == 0 || unrealTargetPos.Z == 0) continue;
+
 			TargetProfile targetProfile;
-			targetProfile.m_vPos3D = Vec3(unrealTargetPos.X, unrealTargetPos.Y, unrealTargetPos.Z);
+			targetProfile.m_vHeadPos3D = Vec3(unrealTargetPos.X, unrealTargetPos.Z + 100, unrealTargetPos.Y);
+			targetProfile.m_vFeetPos3D = Vec3(unrealTargetPos.X, unrealTargetPos.Z - 100, unrealTargetPos.Y);
+			targetProfile.m_vPos3D = Vec3(unrealTargetPos.X, unrealTargetPos.Z, unrealTargetPos.Y);
 			targetProfile.m_strName = npc->GetName();
 			targetProfile.m_fHealth = npc->Health;
 			builder.GameGlobalVariables->g_vTargets.push_back(targetProfile);
@@ -146,9 +159,11 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
     cheat.UseUIRadar();
     cheat.UseUIRenderMouse();
 	cheat.UseESPSnapline();
+	cheat.UseESPBox2D();
+	cheat.UseESPHealthBar();
 	cheat.UseUIRenderOverlays();
 	cheat.UseUIQuickActions();
-	cheat.UseAimbot();
+	//cheat.UseAimbot();
 
     cheat.Run();
 

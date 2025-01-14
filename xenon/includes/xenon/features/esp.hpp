@@ -19,7 +19,7 @@ public:
 	void Render2DBox();
 	void Render3DBox();
 	void RenderSkeleton();
-	void RenderHealthbar();
+	void RenderHealthBar();
 
 private:
 	std::shared_ptr<ESPConfig> m_pConfigs;
