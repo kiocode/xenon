@@ -15,6 +15,8 @@ public:
 	Vec3 m_vFeetPos3D;
 	Vec3 m_vPos3D;
 
+	bool m_bTemmate;
+	bool m_bVisible = true;
 	float m_fWidth;
 	float m_fHealth;
 	float m_fMaxHealth = 100;
