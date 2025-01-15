@@ -158,6 +158,7 @@ static void TestGeneral(Builder& builder) {
 	local.m_vFeetPos2D = Vec2(local.m_vPos2D.x, local.m_vPos2D.y - 100);
 	local.m_fHealth = 100;
 	local.m_fMaxHealth = 100;
+	local.m_fWidth = 80;
 	builder.GameGlobalVariables->g_vLocal = local;
 	 
 	TargetProfile target1 = TargetProfile();
@@ -166,6 +167,7 @@ static void TestGeneral(Builder& builder) {
 	target1.m_vFeetPos2D = Vec2(target1.m_vPos2D.x, target1.m_vPos2D.y + 100);
 	target1.m_fHealth = 100;
 	target1.m_fMaxHealth = 100;
+	target1.m_fWidth = 80;
 	builder.GameGlobalVariables->g_vTargets.push_back(target1);
 
 	TargetProfile target2 = TargetProfile();
@@ -174,6 +176,7 @@ static void TestGeneral(Builder& builder) {
 	target2.m_vFeetPos2D = Vec2(target2.m_vPos2D.x, target2.m_vPos2D.y + 100);
 	target2.m_fHealth = 80;
 	target2.m_fMaxHealth = 100;
+	target2.m_fWidth = 80;
 	builder.GameGlobalVariables->g_vTargets.push_back(target2);
 
 	TargetProfile target3 = TargetProfile();
@@ -182,6 +185,7 @@ static void TestGeneral(Builder& builder) {
 	target3.m_vFeetPos2D = Vec2(target3.m_vPos2D.x, target3.m_vPos2D.y + 100);
 	target3.m_fHealth = 70;
 	target3.m_fMaxHealth = 100;
+	target3.m_fWidth = 80;
 	builder.GameGlobalVariables->g_vTargets.push_back(target3);
 
 	TargetProfile target4 = TargetProfile();
@@ -190,6 +194,7 @@ static void TestGeneral(Builder& builder) {
 	target4.m_vFeetPos2D = Vec2(target4.m_vPos2D.x, target4.m_vPos2D.y + 100);
 	target4.m_fHealth = 50;
 	target4.m_fMaxHealth = 100;
+	target4.m_fWidth = 80;
 	builder.GameGlobalVariables->g_vTargets.push_back(target4);
 
 
