@@ -6,27 +6,24 @@
 #include <xenon/utility/vec2.hpp>
 #include <xenon/core/di_manager.hpp>
 #include <xenon/core/cheat.hpp>
-#include <xenon/features/game.hpp>
-#include <xenon/services/aim_service.hpp>
-#include <xenon/services/memory_service.hpp>
+#include <xenon/components/features/game.hpp>
+#include <xenon/components/services/memory_service.hpp>
 
 class Builder {
 public:
-    DIManager* Services;
-    std::shared_ptr<MemoryService> MemoryManager;
-    std::shared_ptr<Game> GameManager;
-    std::shared_ptr<GameVariables> GameGlobalVariables;
-    std::shared_ptr<System> SystemVariables;
+    std::shared_ptr<Xenon> xenon;
+    std::shared_ptr<XenonConfigs> xenonConfigs;
+    std::shared_ptr<XenonVariables> xenonVariables;
 
-    Builder() {
-        Services = &DIManager::GetInstance();
-        RegisterDefaultServices();
-    }
+    std::shared_ptr<Game> GameManager;
+
+    std::vector<std::shared_ptr<CComponent>> Components;
 
     Builder(std::string appTitle) : m_strAppTitle(appTitle) {
-        Services = &DIManager::GetInstance();
         RegisterDefaultServices();
     }
+
+    Builder() : Builder("Unknown") {}
 
     void SetConsoleEnabled() const;
     void SetDebugLogLevel();
@@ -34,7 +31,7 @@ public:
     void SetWarnLogLevel();
     void SetErrorLogLevel();
 
-    Cheat Build();
+    Cheat Build() const;
 
 private:
     std:: string m_strAppTitle;

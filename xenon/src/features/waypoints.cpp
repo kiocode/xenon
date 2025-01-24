@@ -1,5 +1,8 @@
-#include <xenon/features/waypoints.hpp>
+#include <xenon/components/features/waypoints.hpp>
+
 #include <xenon/models/enums/game_dimensions.hpp>
+
+#include <xenon/core/system.hpp>
 
 void Waypoints::SetWaypoint(std::string title, const Vec2& pos, ImColor color) {
 	m_vWaypoints.push_back(Waypoint(title, pos, color));
@@ -19,11 +22,11 @@ void Waypoints::ClearWaypoints() {
 
 void Waypoints::RenderInWorld() {
 	for (auto& waypoint : m_vWaypoints) {
-		Vec2* waypointInScreen = m_pSystem->Is3DGame() ? m_pSystem->m_fnW2S3D(waypoint.m_vPos3D) : m_pSystem->m_fnW2S2D(waypoint.m_vPos2D);
+		Vec2* waypointInScreen = g_pXenon->g_pSystem->Is3DGame() ? g_pXenon->g_pSystem->m_fnW2S3D(waypoint.m_vPos3D) : g_pXenon->g_pSystem->m_fnW2S2D(waypoint.m_vPos2D);
 
 		if (!waypointInScreen) continue;
 
-		float size = m_pConfigs->m_fSizeInWorld;
+		float size = g_pXenonConfigs->g_pWaypointsConfig->m_fSizeInWorld;
 
 		ImVec2 top(waypointInScreen->x, waypointInScreen->y - size);
 		ImVec2 right(waypointInScreen->x + (size / 1.5), waypointInScreen->y);
@@ -32,7 +35,7 @@ void Waypoints::RenderInWorld() {
 
 		ImGui::GetBackgroundDrawList()->AddQuadFilled(top, right, bottom, left, waypoint.m_cColor);
 
-		if (m_pConfigs->m_bNamesInWorld && !waypoint.m_strName.empty()) {
+		if (g_pXenonConfigs->g_pWaypointsConfig->m_bNamesInWorld && !waypoint.m_strName.empty()) {
 			ImGui::GetBackgroundDrawList()->AddText(ImVec2(waypointInScreen->x - (ImGui::CalcTextSize(waypoint.m_strName.c_str()).x / 2), waypointInScreen->y + size + 5), ImColor(255, 255, 255, 255), waypoint.m_strName.c_str());
 		}
 	}
@@ -49,10 +52,10 @@ void Waypoints::RenderInRadar(std::function<bool(ImVec2)> fnIsPointInRadar, Vec2
 		ImVec2 waypointPos = ImVec2(radarCenter.x + scaledX, radarCenter.y + scaledY);
 
 		if (fnIsPointInRadar(waypointPos)) {
-			float waypointSize = m_pConfigs->m_fSizeInRadar * zoomFactor;
+			float waypointSize = g_pXenonConfigs->g_pWaypointsConfig->m_fSizeInRadar * zoomFactor;
 			ImGui::GetBackgroundDrawList()->AddCircleFilled(waypointPos, waypointSize, waypoint.m_cColor);
 
-			if (m_pConfigs->m_bNamesInRadar && !waypoint.m_strName.empty()) {
+			if (g_pXenonConfigs->g_pWaypointsConfig->m_bNamesInRadar && !waypoint.m_strName.empty()) {
 				ImGui::GetBackgroundDrawList()->AddText(ImVec2(waypointPos.x - (ImGui::CalcTextSize(waypoint.m_strName.c_str()).x / 2), waypointPos.y + 5), ImColor(255, 255, 255, 255), waypoint.m_strName.c_str());
 			}
 		}
@@ -70,10 +73,10 @@ void Waypoints::RenderInRadar(std::function<bool(ImVec2)> fnIsPointInRadar, Vec3
 		ImVec2 waypointPos = ImVec2(radarCenter.x + scaledX, radarCenter.y + scaledY);
 
 		if (fnIsPointInRadar(waypointPos)) {
-			float waypointSize = m_pConfigs->m_fSizeInRadar * zoomFactor;
+			float waypointSize = g_pXenonConfigs->g_pWaypointsConfig->m_fSizeInRadar * zoomFactor;
 			ImGui::GetBackgroundDrawList()->AddCircleFilled(waypointPos, waypointSize, waypoint.m_cColor);
 
-			if (m_pConfigs->m_bNamesInRadar && !waypoint.m_strName.empty()) {
+			if (g_pXenonConfigs->g_pWaypointsConfig->m_bNamesInRadar && !waypoint.m_strName.empty()) {
 				ImGui::GetBackgroundDrawList()->AddText(ImVec2(waypointPos.x - (ImGui::CalcTextSize(waypoint.m_strName.c_str()).x / 2), waypointPos.y + 5), ImColor(255, 255, 255, 255), waypoint.m_strName.c_str());
 			}
 		}

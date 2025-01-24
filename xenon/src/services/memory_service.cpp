@@ -1,4 +1,4 @@
-#include <xenon/services/memory_service.hpp>
+#include <xenon/components/services/memory_service.hpp>
 
 #include <spdlog/spdlog.h>
 

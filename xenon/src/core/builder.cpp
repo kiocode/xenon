@@ -1,31 +1,32 @@
 #include <xenon/core/builder.hpp>
-#include <spdlog/spdlog.h>
-#include <xenon/configs/aim_config.hpp>
-#include <xenon/features/aimbot.hpp>
-#include <xenon/services/lua_service.hpp>
-#include <xenon/services/notification_service.hpp>
 
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/wincolor_sink.h>
-#include <xenon/features/esp.hpp>
-#include <xenon/features/waypoints.hpp>
+
+#include <xenon/core/system.hpp>
+#include <xenon/components/features/aimbot.hpp>
+#include <xenon/components/features/esp.hpp>
+#include <xenon/components/features/waypoints.hpp>
+#include <xenon/components/features/radar.hpp>
+#include <xenon/components/services/aim_service.hpp>
+#include <xenon/components/services/lua_service.hpp>
+#include <xenon/components/services/ui_service.hpp>
 
 void Builder::SetConsoleEnabled() const {
 
-    if (SystemVariables->IsInternal()) {
+    if (xenon->g_pSystem->IsInternal()) {
         AllocConsole();
         AttachConsole(GetCurrentProcessId());
     }
-    SetConsoleTitle(SystemVariables->GetAppTitle()->c_str());
+    SetConsoleTitle(xenon->g_pSystem->GetAppTitle()->c_str());
 
     //if (SystemVariables->IsInternal()) {
         //FILE* f;
         //freopen_s(&f, "CONOUT$", "w", stdout);
-        system("cls");
+    system("cls");
     //}
 
     auto console_sink = std::make_shared<spdlog::sinks::wincolor_stdout_sink_mt>();
-    //console_sink->set_color(spdlog::level::info, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
 
     auto logger = std::make_shared<spdlog::logger>("", console_sink);
     spdlog::set_default_logger(logger);
@@ -60,80 +61,45 @@ void Builder::SetErrorLogLevel() {
 
 void Builder::RegisterDefaultServices() {
 
-    #pragma region Configurations
+    xenon = std::make_shared<Xenon>();
+    xenonConfigs = std::make_shared<XenonConfigs>();
+    xenonVariables = std::make_shared<XenonVariables>();
 
-    std::shared_ptr<AimConfig> pAimConfig = Services->AddConfiguration<AimConfig>();
-    std::shared_ptr<GameConfig> pGameConfig = Services->AddConfiguration<GameConfig>();
-    GameGlobalVariables = Services->AddConfiguration<GameVariables>();
-    std::shared_ptr<UIConfig> pUIConfig = Services->AddConfiguration<UIConfig>();
-    std::shared_ptr<ESPConfig> pESPConfig = Services->AddConfiguration<ESPConfig>();
-    std::shared_ptr<RadarConfig> pRadarConfig = Services->AddConfiguration<RadarConfig>();
-    std::shared_ptr<WaypointsConfig> pWaypointsConfig = Services->AddConfiguration<WaypointsConfig>();
-    
-    #pragma endregion
+    xenon->g_pSystem = std::make_shared<System>();
 
-    #pragma region Utils
+    xenon->g_cAimbot = std::make_shared<Aimbot>();
+    xenon->g_cEsp = std::make_shared<Esp>();
+    xenon->g_cWaypoints = std::make_shared<Waypoints>();
+    xenon->g_cRadar = std::make_shared<Radar>();
 
-    SystemVariables = Services->AddSingleton<System>();
-    SystemVariables->SetAppTitle(m_strAppTitle);
+    xenon->g_cAimService = std::make_shared<AimService>();
+    xenon->g_cLuaService = std::make_shared<LuaService>();
+    xenon->g_cMemoryService = std::make_shared<MemoryService>();
+    xenon->g_cNotificationService = std::make_shared<NotificationService>();
+    xenon->g_cUIService = std::make_shared<UIService>();
 
-    #pragma endregion
+    //Components = {
+    //    xenon->g_cAimbot,
+    //    xenon->g_cEsp,
+    //    xenon->g_cWaypoints,
+    //    xenon->g_cRadar,
+    //    xenon->g_cAimService,
+    //    xenon->g_cLuaService,
+    //    xenon->g_cMemoryService,
+    //    xenon->g_cNotificationService,
+    //    xenon->g_cUIService
+    //};
 
-    #pragma region Services & Features
+    for (std::shared_ptr<CComponent> component : Components) {
+        component->g_pXenon = xenon;
+        component->g_pXenonVariables = xenonVariables;
+        component->g_pXenonConfigs = xenonConfigs;
+    }
 
-    std::shared_ptr<Waypoints> pWaypoints = Services->AddSingleton<Waypoints>(
-        [this, pWaypointsConfig]() {
-            return std::make_shared<Waypoints>(pWaypointsConfig, SystemVariables);
-        }
-    );
-
-    std::shared_ptr<Radar> pRadar = Services->AddSingleton<Radar>(
-        [this, pRadarConfig, pWaypoints, pWaypointsConfig]() {
-            return std::make_shared<Radar>(pRadarConfig, pWaypointsConfig, GameGlobalVariables, SystemVariables, pWaypoints);
-        }
-    );
-    std::shared_ptr<NotificationService> pNotificationService = Services->AddSingleton<NotificationService>();
-
-    std::shared_ptr<UIService> pUIService = Services->AddSingleton<UIService>(
-        [this, pUIConfig, pAimConfig, pRadar, pNotificationService]() {
-            return std::make_shared<UIService>(pUIConfig, SystemVariables, pAimConfig, pRadar, pNotificationService);
-        }
-    );
-    MemoryManager = Services->AddSingleton<MemoryService>();
-    std::shared_ptr<LuaService> pLuaService = Services->AddSingleton<LuaService>();
-    std::shared_ptr<AimService> pAimService = Services->AddSingleton<AimService>(
-        [this, pAimConfig]() {
-            return std::make_shared<AimService>(pAimConfig, SystemVariables);
-        }
-    );
-
-    std::shared_ptr<ESP> pESP = Services->AddSingleton<ESP>(
-        [this, pESPConfig]() {
-            return std::make_shared<ESP>(pESPConfig, SystemVariables, GameGlobalVariables);
-        }
-    );
-    std::shared_ptr<Aimbot> pAimbot = Services->AddSingleton<Aimbot>(
-        [pAimConfig, pAimService]() {
-            return std::make_shared<Aimbot>(pAimConfig, pAimService);
-        }
-    );
-
-    GameManager = Services->AddSingleton<Game>([this, pGameConfig, pAimbot, pAimService, pAimConfig, pUIService, pESP, pLuaService, pRadar, pUIConfig, pWaypointsConfig, pWaypoints]() {
-        return std::make_shared<Game>(pGameConfig, GameGlobalVariables, pUIConfig, pAimConfig, pAimService, pUIService, pLuaService, pAimbot, pESP, pRadar, SystemVariables, pWaypointsConfig, pWaypoints);
-    });
-
-    #pragma endregion
-
+    GameManager = std::make_shared<Game>(xenon, xenonConfigs, xenonVariables, Components);
 }
 
-Cheat Builder::Build() {
+Cheat Builder::Build() const {
     spdlog::debug("Building cheat");
-    return Cheat(
-        GameManager, 
-        Services->GetConfiguration<GameConfig>(), 
-        Services->GetService<UIService>(), 
-        Services->GetConfiguration<UIConfig>(), 
-        SystemVariables,
-        Services->GetService<NotificationService>()
-    );
+    return Cheat(xenon, xenonVariables, GameManager);
 }

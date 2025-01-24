@@ -1,10 +1,15 @@
-#include <xenon/services/ui_service.hpp>
+#include <xenon/components/services/ui_service.hpp>
 
 #include <dwmapi.h>
 #include <spdlog/spdlog.h>
 
 #include <imgui/imgui_internal.h>
 #include <xenon/utility/fonts.h>
+
+#include <xenon/core/system.hpp>
+#include <xenon/components/features/radar.hpp>
+#include <xenon/components/features/waypoints.hpp>
+#include <xenon/components/services/notification_service.hpp>
 
 bool UIService::InitPresent(IDXGISwapChain* pSwapChain) {
 	if (!SUCCEEDED(pSwapChain->GetDevice(__uuidof(ID3D11Device), (void**)&m_pDevice)))
@@ -37,7 +42,7 @@ void UIService::LoadDefaultFonts()
 	ImFont* logo = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(&logoBytes, sizeof(logoBytes), 48, NULL, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
 	//ImFont* logo_bigger = ImGui::GetIO().Fonts->AddFontFromMemoryTTF(&logoBytes, sizeof(logoBytes), 80, NULL, ImGui::GetIO().Fonts->GetGlyphRangesCyrillic());
 
-	m_pNotificationService->SetFonts(notiffont, logo);//, logo_bigger);
+	g_pXenon->g_cNotificationService->SetFonts(notiffont, logo);//, logo_bigger);
 
 }
 
@@ -123,7 +128,7 @@ void UIService::RenderDefaultMenu() {
 
 		//title
 		ImGui::GetWindowDrawList()->AddRectFilled(pos, ImVec2(pos.x + 480, pos.y + 25), ImColor(29, 40, 54, 255), 6.f, ImDrawFlags_RoundCornersTop);
-		ImGui::GetWindowDrawList()->AddText(ImGuiHelper::CenterText(pos, ImVec2(pos.x + 480, pos.y + 25), m_pSystem->GetAppTitle()->c_str()), ImColor(165, 186, 197, 255), m_pSystem->GetAppTitle()->c_str());
+		ImGui::GetWindowDrawList()->AddText(ImGuiHelper::CenterText(pos, ImVec2(pos.x + 480, pos.y + 25), g_pXenon->g_pSystem->GetAppTitle()->c_str()), ImColor(165, 186, 197, 255), g_pXenon->g_pSystem->GetAppTitle()->c_str());
 
 		//tabs
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
@@ -148,213 +153,213 @@ void UIService::RenderDefaultMenu() {
 		// handle subtabs
 		switch (m_nSelectedTab)
 		{
-			case Tabs::AIM:
-				ImGui::SetCursorPos(ImVec2(5, 55));
-				ImGui::BeginGroup();
-				{
-					if (ImGui::Tabs("Settings", ImVec2(windowWidth / 2, 20), m_nSelectedSubTab == SubTabs::SETTINGS, 0)) m_nSelectedSubTab = SubTabs::SETTINGS;
-					if (ImGui::Tabs("Colors", ImVec2(windowWidth / 2, 20), m_nSelectedSubTab == SubTabs::COLORS, 0)) m_nSelectedSubTab = SubTabs::COLORS;
-				}
-				ImGui::EndGroup();
-				break;
-			case Tabs::VISUALS:
-				ImGui::SetCursorPos(ImVec2(5, 55));
-				ImGui::BeginGroup();
-				{
-					if (ImGui::Tabs("Settings", ImVec2(windowWidth / 2, 20), m_nSelectedSubTab == SubTabs::SETTINGS, 0)) m_nSelectedSubTab = SubTabs::SETTINGS;
-					if (ImGui::Tabs("Colors", ImVec2(windowWidth / 2, 20), m_nSelectedSubTab == SubTabs::COLORS, 0)) m_nSelectedSubTab = SubTabs::COLORS;
-				}
-				ImGui::EndGroup();
-				break;
-			case Tabs::RADAR:
-				ImGui::SetCursorPos(ImVec2(5, 55));
-				ImGui::BeginGroup();
-				{
-					if (ImGui::Tabs("Settings", ImVec2(windowWidth / 2, 20), m_nSelectedSubTab == SubTabs::SETTINGS, 0)) m_nSelectedSubTab = SubTabs::SETTINGS;
-					if (ImGui::Tabs("Colors", ImVec2(windowWidth / 2, 20), m_nSelectedSubTab == SubTabs::COLORS, 0)) m_nSelectedSubTab = SubTabs::COLORS;
-				}
-				ImGui::EndGroup();
-				break;
-			case Tabs::MISC:
-				ImGui::SetCursorPos(ImVec2(5, 55));
-				ImGui::BeginGroup();
-				{
-					if (ImGui::Tabs("Settings", ImVec2(windowWidth / 2, 20), m_nSelectedSubTab == SubTabs::SETTINGS, 0)) m_nSelectedSubTab = SubTabs::SETTINGS;
-					if (ImGui::Tabs("Colors", ImVec2(windowWidth / 2, 20), m_nSelectedSubTab == SubTabs::COLORS, 0)) m_nSelectedSubTab = SubTabs::COLORS;
-				}
-				ImGui::EndGroup();
-				break;
-			case Tabs::DEV:
-				ImGui::SetCursorPos(ImVec2(5, 55));
-				ImGui::BeginGroup();
-				{
-					if (ImGui::Tabs("Settings", ImVec2(windowWidth / 2, 20), m_nSelectedSubTab == SubTabs::SETTINGS, 0)) m_nSelectedSubTab = SubTabs::SETTINGS;
-					if (ImGui::Tabs("Colors", ImVec2(windowWidth / 2, 20), m_nSelectedSubTab == SubTabs::COLORS, 0)) m_nSelectedSubTab = SubTabs::COLORS;
-				}
-				ImGui::EndGroup();
-				break;
+		case Tabs::AIM:
+			ImGui::SetCursorPos(ImVec2(5, 55));
+			ImGui::BeginGroup();
+			{
+				if (ImGui::Tabs("Settings", ImVec2(windowWidth / 2, 20), m_nSelectedSubTab == SubTabs::SETTINGS, 0)) m_nSelectedSubTab = SubTabs::SETTINGS;
+				if (ImGui::Tabs("Colors", ImVec2(windowWidth / 2, 20), m_nSelectedSubTab == SubTabs::COLORS, 0)) m_nSelectedSubTab = SubTabs::COLORS;
+			}
+			ImGui::EndGroup();
+			break;
+		case Tabs::VISUALS:
+			ImGui::SetCursorPos(ImVec2(5, 55));
+			ImGui::BeginGroup();
+			{
+				if (ImGui::Tabs("Settings", ImVec2(windowWidth / 2, 20), m_nSelectedSubTab == SubTabs::SETTINGS, 0)) m_nSelectedSubTab = SubTabs::SETTINGS;
+				if (ImGui::Tabs("Colors", ImVec2(windowWidth / 2, 20), m_nSelectedSubTab == SubTabs::COLORS, 0)) m_nSelectedSubTab = SubTabs::COLORS;
+			}
+			ImGui::EndGroup();
+			break;
+		case Tabs::RADAR:
+			ImGui::SetCursorPos(ImVec2(5, 55));
+			ImGui::BeginGroup();
+			{
+				if (ImGui::Tabs("Settings", ImVec2(windowWidth / 2, 20), m_nSelectedSubTab == SubTabs::SETTINGS, 0)) m_nSelectedSubTab = SubTabs::SETTINGS;
+				if (ImGui::Tabs("Colors", ImVec2(windowWidth / 2, 20), m_nSelectedSubTab == SubTabs::COLORS, 0)) m_nSelectedSubTab = SubTabs::COLORS;
+			}
+			ImGui::EndGroup();
+			break;
+		case Tabs::MISC:
+			ImGui::SetCursorPos(ImVec2(5, 55));
+			ImGui::BeginGroup();
+			{
+				if (ImGui::Tabs("Settings", ImVec2(windowWidth / 2, 20), m_nSelectedSubTab == SubTabs::SETTINGS, 0)) m_nSelectedSubTab = SubTabs::SETTINGS;
+				if (ImGui::Tabs("Colors", ImVec2(windowWidth / 2, 20), m_nSelectedSubTab == SubTabs::COLORS, 0)) m_nSelectedSubTab = SubTabs::COLORS;
+			}
+			ImGui::EndGroup();
+			break;
+		case Tabs::DEV:
+			ImGui::SetCursorPos(ImVec2(5, 55));
+			ImGui::BeginGroup();
+			{
+				if (ImGui::Tabs("Settings", ImVec2(windowWidth / 2, 20), m_nSelectedSubTab == SubTabs::SETTINGS, 0)) m_nSelectedSubTab = SubTabs::SETTINGS;
+				if (ImGui::Tabs("Colors", ImVec2(windowWidth / 2, 20), m_nSelectedSubTab == SubTabs::COLORS, 0)) m_nSelectedSubTab = SubTabs::COLORS;
+			}
+			ImGui::EndGroup();
+			break;
 		}
 
 		ImGui::PopStyleVar(); // this pops the itemspacing push
 
 		switch (m_nSelectedTab) {
-			case Tabs::AIM:
+		case Tabs::AIM:
 
-				switch (m_nSelectedSubTab) {
+			switch (m_nSelectedSubTab) {
 
-					case SubTabs::SETTINGS: {
-						ImGui::SetCursorPos(ImVec2(10, 80));
-						ImGui::BeginChild("Settings", ImVec2(470, 345));
-						{
-							//render funcs
-							ImGui::SetCursorPos(ImVec2(10, 10));
-							ImGui::BeginGroup();
-							{
-								ImGui::Checkbox("Silent", &m_pAimConfigs->m_bSilent);
-								ImGui::Checkbox("Visible", &m_pAimConfigs->m_bVisibleCheck);
-								ImGui::Checkbox("Auto scope", &m_pAimConfigs->m_bAutoScope);
-								ImGui::Checkbox("Auto shoot", &m_pAimConfigs->m_bAutoShoot);
-								ImGui::Checkbox("Humanize", &m_pAimConfigs->m_bHumanize);
-								ImGui::Checkbox("No recoil", &m_pAimConfigs->m_bNoRecoil);
-								ImGui::Checkbox("No spread", &m_pAimConfigs->m_bNoSpread);
+			case SubTabs::SETTINGS: {
+				ImGui::SetCursorPos(ImVec2(10, 80));
+				ImGui::BeginChild("Settings", ImVec2(470, 345));
+				{
+					//render funcs
+					ImGui::SetCursorPos(ImVec2(10, 10));
+					ImGui::BeginGroup();
+					{
+						ImGui::Checkbox("Silent", &g_pXenonConfigs->g_pAimConfig->m_bSilent);
+						ImGui::Checkbox("Visible", &g_pXenonConfigs->g_pAimConfig->m_bVisibleCheck);
+						ImGui::Checkbox("Auto scope", &g_pXenonConfigs->g_pAimConfig->m_bAutoScope);
+						ImGui::Checkbox("Auto shoot", &g_pXenonConfigs->g_pAimConfig->m_bAutoShoot);
+						ImGui::Checkbox("Humanize", &g_pXenonConfigs->g_pAimConfig->m_bHumanize);
+						ImGui::Checkbox("No recoil", &g_pXenonConfigs->g_pAimConfig->m_bNoRecoil);
+						ImGui::Checkbox("No spread", &g_pXenonConfigs->g_pAimConfig->m_bNoSpread);
 
-								ImGui::Checkbox("Smooth", &m_pAimConfigs->m_bSmooth);
-								if (m_pAimConfigs->m_bSmooth) {
-									ImGui::SliderFloat("Smooth value", &m_pAimConfigs->m_fSmooth, 5.f, 50.f, "%.0f");
-								}
-
-								ImGui::Checkbox("Fov", &m_pAimConfigs->m_bFov);
-								if (m_pAimConfigs->m_bFov) {
-									ImGui::SliderFloat("Fov value", &m_pAimConfigs->m_fFov, 30.f, 300.f, "%.0f");
-								}
-
-								ImGui::Checkbox("Nearest", &m_pAimConfigs->m_bNearest);
-								if (m_pAimConfigs->m_bNearest
-									&& ImGui::SliderFloat("Nearest distance", &m_pAimConfigs->m_fNearest, 100.f, 1000.f, "%.0f")) {
-									m_pAimConfigs->m_fNearest = round(m_pAimConfigs->m_fNearest / 100.0f) * 100.0f;
-								}
-								ImGui::Checkbox("Developer Console", &devconsole);
-							}
-							ImGui::EndGroup();
+						ImGui::Checkbox("Smooth", &g_pXenonConfigs->g_pAimConfig->m_bSmooth);
+						if (g_pXenonConfigs->g_pAimConfig->m_bSmooth) {
+							ImGui::SliderFloat("Smooth value", &g_pXenonConfigs->g_pAimConfig->m_fSmooth, 5.f, 50.f, "%.0f");
 						}
-						ImGui::EndChild();
-					} break;
-					case SubTabs::COLORS: {
 
-					} break;
+						ImGui::Checkbox("Fov", &g_pXenonConfigs->g_pAimConfig->m_bFov);
+						if (g_pXenonConfigs->g_pAimConfig->m_bFov) {
+							ImGui::SliderFloat("Fov value", &g_pXenonConfigs->g_pAimConfig->m_fFov, 30.f, 300.f, "%.0f");
+						}
+
+						ImGui::Checkbox("Nearest", &g_pXenonConfigs->g_pAimConfig->m_bNearest);
+						if (g_pXenonConfigs->g_pAimConfig->m_bNearest
+							&& ImGui::SliderFloat("Nearest distance", &g_pXenonConfigs->g_pAimConfig->m_fNearest, 100.f, 1000.f, "%.0f")) {
+							g_pXenonConfigs->g_pAimConfig->m_fNearest = round(g_pXenonConfigs->g_pAimConfig->m_fNearest / 100.0f) * 100.0f;
+						}
+						ImGui::Checkbox("Developer Console", &devconsole);
+					}
+					ImGui::EndGroup();
 				}
+				ImGui::EndChild();
+			} break;
+			case SubTabs::COLORS: {
 
-				break;
-			case Tabs::VISUALS:
+			} break;
+			}
 
-				switch (m_nSelectedSubTab) {
-					
-					case SubTabs::SETTINGS: {
-						ImGui::SetCursorPos(ImVec2(10, 80));
-						ImGui::BeginChild("Settings", ImVec2(470, 365));
-						{
-							//demo funcs
-							static bool checkbox = false;
-							static int sliderint = 0;
-							static float sliderfloat = 0.f;
-							static int combo = 0;
-							static const char* multi_items[5] = { "One", "Two", "Three", "Four", "Five" };
-							static bool multi_items_count[5];
-							static int key = 0;
+			break;
+		case Tabs::VISUALS:
 
-							//render funcs
-							ImGui::SetCursorPos(ImVec2(10, 10));
-							ImGui::BeginGroup();
-							{
-								ImGui::Checkbox("Checkbox", &checkbox);
-								ImGui::SliderInt("Slider Int", &sliderint, 0, 100);
-								ImGui::SliderFloat("Slider Float", &sliderfloat, 0.f, 100.f, "%.1f");
-								ImGui::Combo("Combo", &combo, "Selectable 1\0Selectable 2\0Selectable 3", 3);
-								ImGui::MultiCombo("Multicombo", multi_items_count, multi_items, 5);
-								ImGui::Keybind("Hotkey", &key);
+			switch (m_nSelectedSubTab) {
 
-								//if(ImGui::Button("Test Hotkey", ImVec2(200, 25)))
-								//	isEditing = true;
-								//ImGuiHelper::RenderHotkeyEditor(&testhotkey, &isEditing);
-							}
-							ImGui::EndGroup();
-						}
-						ImGui::EndChild();
-					} break;
-					case SubTabs::COLORS: {
-						ImGui::SetCursorPos(ImVec2(10, 80));
-						ImGui::BeginChild("Crosshair", ImVec2(470, 345));
-						{
-							//render funcs
-							ImGui::SetCursorPos(ImVec2(10, 10));
-							ImGui::BeginGroup();
-							{
-								static ImVec4 color = m_pConfigs->m_cCrosshair;
+			case SubTabs::SETTINGS: {
+				ImGui::SetCursorPos(ImVec2(10, 80));
+				ImGui::BeginChild("Settings", ImVec2(470, 365));
+				{
+					//demo funcs
+					static bool checkbox = false;
+					static int sliderint = 0;
+					static float sliderfloat = 0.f;
+					static int combo = 0;
+					static const char* multi_items[5] = { "One", "Two", "Three", "Four", "Five" };
+					static bool multi_items_count[5];
+					static int key = 0;
 
-								ImGui::Checkbox("Crosshair", &m_pConfigs->m_bCrosshair);
-								if (m_pConfigs->m_bCrosshair)
-								{
-									if (ImGui::ColorEdit4("Color", (float*)&color)) {
-										m_pConfigs->m_cCrosshair = ImColor(color);
-									}
-									ImGui::Combo("Type", &m_pConfigs->m_nCrosshairType, "Cross\0Circle");
-								}
+					//render funcs
+					ImGui::SetCursorPos(ImVec2(10, 10));
+					ImGui::BeginGroup();
+					{
+						ImGui::Checkbox("Checkbox", &checkbox);
+						ImGui::SliderInt("Slider Int", &sliderint, 0, 100);
+						ImGui::SliderFloat("Slider Float", &sliderfloat, 0.f, 100.f, "%.1f");
+						ImGui::Combo("Combo", &combo, "Selectable 1\0Selectable 2\0Selectable 3", 3);
+						ImGui::MultiCombo("Multicombo", multi_items_count, multi_items, 5);
+						ImGui::Keybind("Hotkey", &key);
 
-							}
-							ImGui::EndGroup();
-						}
-						ImGui::EndChild();
-					} break;
+						//if(ImGui::Button("Test Hotkey", ImVec2(200, 25)))
+						//	isEditing = true;
+						//ImGuiHelper::RenderHotkeyEditor(&testhotkey, &isEditing);
+					}
+					ImGui::EndGroup();
 				}
+				ImGui::EndChild();
+			} break;
+			case SubTabs::COLORS: {
+				ImGui::SetCursorPos(ImVec2(10, 80));
+				ImGui::BeginChild("Crosshair", ImVec2(470, 345));
+				{
+					//render funcs
+					ImGui::SetCursorPos(ImVec2(10, 10));
+					ImGui::BeginGroup();
+					{
+						static ImVec4 color = g_pXenonConfigs->g_pUIConfig->m_cCrosshair;
 
-				break;
-			case Tabs::RADAR:
-
-				switch (m_nSelectedSubTab) {
-
-					case SubTabs::SETTINGS: {
-
-						ImGui::SetCursorPos(ImVec2(10, 80));
-						ImGui::BeginChild("Settings", ImVec2(470, 365));
+						ImGui::Checkbox("Crosshair", &g_pXenonConfigs->g_pUIConfig->m_bCrosshair);
+						if (g_pXenonConfigs->g_pUIConfig->m_bCrosshair)
 						{
-							//demo funcs
-							static bool checkbox[2];
-							static int combo = 0;
-							static char input0[64] = "";
-							static char input1[64] = "";
-
-							//render funcs
-							ImGui::SetCursorPos(ImVec2(10, 10));
-							ImGui::BeginGroup();
-							{
-								if (checkbox[0])
-								{
-									ImGui::InputText("Pointer or Offset", input0, 64, ImGuiInputTextFlags_ReadOnly);
-									ImGui::InputText("Value", input1, 64, ImGuiInputTextFlags_ReadOnly);
-								}
-								else
-								{
-									ImGui::InputText("Pointer or Offset", input0, 64);
-									ImGui::InputText("Value", input1, 64);
-								}
-								ImGui::Checkbox("Read-Only", &checkbox[0]);
-								ImGui::Checkbox("Loop Command", &checkbox[1]);
-								ImGui::Combo("Type", &combo, "Byte\0\r2 Byte\0\r4 Byte\0\rFloat\0Double\0String", 6);
+							if (ImGui::ColorEdit4("Color", (float*)&color)) {
+								g_pXenonConfigs->g_pUIConfig->m_cCrosshair = ImColor(color);
 							}
-							ImGui::EndGroup();
+							ImGui::Combo("Type", &g_pXenonConfigs->g_pUIConfig->m_nCrosshairType, "Cross\0Circle");
 						}
-						ImGui::EndChild();
-					} break;
-					case SubTabs::COLORS: {
 
-					} break;
+					}
+					ImGui::EndGroup();
 				}
+				ImGui::EndChild();
+			} break;
+			}
 
-				break;
-			case Tabs::MISC:
-				break;
-			case Tabs::DEV:
-				break;
+			break;
+		case Tabs::RADAR:
+
+			switch (m_nSelectedSubTab) {
+
+			case SubTabs::SETTINGS: {
+
+				ImGui::SetCursorPos(ImVec2(10, 80));
+				ImGui::BeginChild("Settings", ImVec2(470, 365));
+				{
+					//demo funcs
+					static bool checkbox[2];
+					static int combo = 0;
+					static char input0[64] = "";
+					static char input1[64] = "";
+
+					//render funcs
+					ImGui::SetCursorPos(ImVec2(10, 10));
+					ImGui::BeginGroup();
+					{
+						if (checkbox[0])
+						{
+							ImGui::InputText("Pointer or Offset", input0, 64, ImGuiInputTextFlags_ReadOnly);
+							ImGui::InputText("Value", input1, 64, ImGuiInputTextFlags_ReadOnly);
+						}
+						else
+						{
+							ImGui::InputText("Pointer or Offset", input0, 64);
+							ImGui::InputText("Value", input1, 64);
+						}
+						ImGui::Checkbox("Read-Only", &checkbox[0]);
+						ImGui::Checkbox("Loop Command", &checkbox[1]);
+						ImGui::Combo("Type", &combo, "Byte\0\r2 Byte\0\r4 Byte\0\rFloat\0Double\0String", 6);
+					}
+					ImGui::EndGroup();
+				}
+				ImGui::EndChild();
+			} break;
+			case SubTabs::COLORS: {
+
+			} break;
+			}
+
+			break;
+		case Tabs::MISC:
+			break;
+		case Tabs::DEV:
+			break;
 		}
 
 	}
@@ -365,11 +370,11 @@ LRESULT __stdcall UIService::WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, 
 
 	std::shared_ptr<UIService> pThis = DIManager::GetInstance().GetService<UIService>();
 
-	if (pThis->m_bShowMenu && ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam))
-		return true;
+	//if (pThis->m_bShowMenu && ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam))
+	//	return true;
 
-	if (pThis->m_bShowMenu)
-		return true;
+	//if (pThis->m_bShowMenu)
+	//	return true;
 
 	if (!DIManager::GetInstance().GetService<System>()->IsInternal() && uMsg == WM_DESTROY) {
 		PostQuitMessage(0);
@@ -393,29 +398,29 @@ void UIService::InitExternal() {
 }
 
 void UIService::RenderCrosshair() {
-	switch (m_pConfigs->m_nCrosshairType)
+	switch (g_pXenonConfigs->g_pUIConfig->m_nCrosshairType)
 	{
 	case 0:
-		ImGui::GetForegroundDrawList()->AddLine(ImVec2(m_pSystem->GetScreenCenter().x - m_pConfigs->m_fCrosshair, m_pSystem->GetScreenCenter().y), ImVec2((m_pSystem->GetScreenCenter().x - m_pConfigs->m_fCrosshair) + (m_pConfigs->m_fCrosshair * 2), m_pSystem->GetScreenCenter().y), m_pConfigs->m_cCrosshair, 1.2f);
-		ImGui::GetForegroundDrawList()->AddLine(ImVec2(m_pSystem->GetScreenCenter().x, m_pSystem->GetScreenCenter().y - m_pConfigs->m_fCrosshair), ImVec2(m_pSystem->GetScreenCenter().x, (m_pSystem->GetScreenCenter().y - m_pConfigs->m_fCrosshair) + (m_pConfigs->m_fCrosshair * 2)), m_pConfigs->m_cCrosshair, 1.2f);
+		ImGui::GetForegroundDrawList()->AddLine(ImVec2(g_pXenon->g_pSystem->GetScreenCenter().x - g_pXenonConfigs->g_pUIConfig->m_fCrosshair, g_pXenon->g_pSystem->GetScreenCenter().y), ImVec2((g_pXenon->g_pSystem->GetScreenCenter().x - g_pXenonConfigs->g_pUIConfig->m_fCrosshair) + (g_pXenonConfigs->g_pUIConfig->m_fCrosshair * 2), g_pXenon->g_pSystem->GetScreenCenter().y), g_pXenonConfigs->g_pUIConfig->m_cCrosshair, 1.2f);
+		ImGui::GetForegroundDrawList()->AddLine(ImVec2(g_pXenon->g_pSystem->GetScreenCenter().x, g_pXenon->g_pSystem->GetScreenCenter().y - g_pXenonConfigs->g_pUIConfig->m_fCrosshair), ImVec2(g_pXenon->g_pSystem->GetScreenCenter().x, (g_pXenon->g_pSystem->GetScreenCenter().y - g_pXenonConfigs->g_pUIConfig->m_fCrosshair) + (g_pXenonConfigs->g_pUIConfig->m_fCrosshair * 2)), g_pXenonConfigs->g_pUIConfig->m_cCrosshair, 1.2f);
 		break;
 	case 1:
-		ImGui::GetForegroundDrawList()->AddCircle(ImVec2(m_pSystem->GetScreenCenter().x, m_pSystem->GetScreenCenter().y), m_pConfigs->m_fCrosshair, m_pConfigs->m_cCrosshair, 100, 1.2f);
+		ImGui::GetForegroundDrawList()->AddCircle(ImVec2(g_pXenon->g_pSystem->GetScreenCenter().x, g_pXenon->g_pSystem->GetScreenCenter().y), g_pXenonConfigs->g_pUIConfig->m_fCrosshair, g_pXenonConfigs->g_pUIConfig->m_cCrosshair, 100, 1.2f);
 		break;
 	}
 }
 
 void UIService::RenderFov() {
-	ImGui::GetForegroundDrawList()->AddCircle(ImVec2(m_pSystem->GetScreenCenter().x, m_pSystem->GetScreenCenter().y), m_pAimConfigs->m_fFov, m_pAimConfigs->m_cFov, 360);
+	ImGui::GetForegroundDrawList()->AddCircle(ImVec2(g_pXenon->g_pSystem->GetScreenCenter().x, g_pXenon->g_pSystem->GetScreenCenter().y), g_pXenonConfigs->g_pAimConfig->m_fFov, g_pXenonConfigs->g_pAimConfig->m_cFov, 360);
 }
 
 void UIService::RenderMouse() {
-	switch (m_pConfigs->m_nMouseType) {
+	switch (g_pXenonConfigs->g_pUIConfig->m_nMouseType) {
 	case 0:
-		ImGui::GetForegroundDrawList()->AddCircleFilled(ImGui::GetMousePos(), 4, m_pConfigs->m_cMouse);
+		ImGui::GetForegroundDrawList()->AddCircleFilled(ImGui::GetMousePos(), 4, g_pXenonConfigs->g_pUIConfig->m_cMouse);
 		break;
 	case 1:
-		ImGuiHelper::DrawOutlinedTextForeground(ImGuiHelper::g_pGameFont, ImVec2(m_pSystem->GetMousePos().x, m_pSystem->GetMousePos().y), 13.0f, m_pConfigs->m_cMouse, false, "X");
+		ImGuiHelper::DrawOutlinedTextForeground(ImGuiHelper::g_pGameFont, ImVec2(g_pXenon->g_pSystem->GetMousePos().x, g_pXenon->g_pSystem->GetMousePos().y), 13.0f, g_pXenonConfigs->g_pUIConfig->m_cMouse, false, "X");
 		break;
 	case 2:
 		if (!ImGui::GetIO().MouseDrawCursor) {
@@ -452,7 +457,7 @@ void UIService::RenderDefaultUIQuickActions() {
 			int buttonWidth = 100;
 			int buttonHeight = 30;
 
-			for (const auto& action : m_pConfigs->m_qActions->GetComponents()) {
+			for (const auto& action : g_pXenonConfigs->g_pUIConfig->m_qActions->GetComponents()) {
 				action->Render();
 			}
 		}
@@ -466,62 +471,62 @@ void UIService::RenderDefaultUIQuickActions() {
 
 void UIService::Update() {
 
-	if (m_bShowMenu) {
+	if (g_pXenonVariables->g_bShowMenu) {
 
-		if (m_pConfigs->m_bUseUIRenderMouse) {
+		if (g_pXenonConfigs->g_pUIConfig->m_bUseUIRenderMouse) {
 			RenderMouse();
 		}
 
-		//if (m_pConfigs->m_fnCustomTheme) {
-		//	m_pConfigs->m_fnCustomTheme();
+		//if (g_pXenonConfigs->g_pUIConfig->m_fnCustomTheme) {
+		//	g_pXenonConfigs->g_pUIConfig->m_fnCustomTheme();
 		//}
 		//else {
 		//	RenderDefaultTheme(false);
 		//}
 
-		if (m_pConfigs->m_bUseUIMenu) {
-			if (m_pConfigs->m_fnCustomMenu) {
-				m_pConfigs->m_fnCustomMenu();
+		if (g_pXenonConfigs->g_pUIConfig->m_bUseUIMenu) {
+			if (g_pXenonConfigs->g_pUIConfig->m_fnCustomMenu) {
+				g_pXenonConfigs->g_pUIConfig->m_fnCustomMenu();
 			}
 			else {
 				RenderDefaultMenu();
 			}
 		}
 
-		if (m_pConfigs->m_bUseUIRenderWindows) {
-			for (auto& fn : m_pConfigs->m_vFnWindows) {
+		if (g_pXenonConfigs->g_pUIConfig->m_bUseUIRenderWindows) {
+			for (auto& fn : g_pXenonConfigs->g_pUIConfig->m_vFnWindows) {
 				fn();
 			}
 		}
 
-		if (m_pConfigs->m_bUseUIQuickActions && m_pConfigs->m_qActions->GetSize() > 0) {
+		if (g_pXenonConfigs->g_pUIConfig->m_bUseUIQuickActions && g_pXenonConfigs->g_pUIConfig->m_qActions->GetSize() > 0) {
 			RenderDefaultUIQuickActions();
 		}
 
 	}
 
-	if (m_pConfigs->m_bUseUIRenderOverlays) {
-		for (auto& fn : m_pConfigs->m_vFnOverlays) {
+	if (g_pXenonConfigs->g_pUIConfig->m_bUseUIRenderOverlays) {
+		for (auto& fn : g_pXenonConfigs->g_pUIConfig->m_vFnOverlays) {
 			fn();
 		}
 	}
 
-	//if (m_pConfigs->m_fnCustomNotification) {
-	//	m_pConfigs->m_fnCustomNotification();
+	//if (g_pXenonConfigs->g_pUIConfig->m_fnCustomNotification) {
+	//	g_pXenonConfigs->g_pUIConfig->m_fnCustomNotification();
 	//}
 	//else {
 	//	RenderTopLeftNotification();
 	//}
 
-	if (m_pConfigs->m_bWatermark)
+	if (g_pXenonConfigs->g_pUIConfig->m_bWatermark)
 	{
 		ImColor color = ImColor(255, 255, 255, 255); // or rainbow
 
-		ImGuiHelper::DrawOutlinedText(m_pMainFont, ImVec2(m_pSystem->GetScreenCenter().x, m_pSystem->GetScreenResolution().y - 20), 13.0f, color, true, m_pSystem->GetAppTitle()->c_str());
-		ImGuiHelper::DrawOutlinedText(m_pMainFont, ImVec2(m_pSystem->GetScreenCenter().x, 5), 13.0f, color, true, "[ %.1f FPS ]", ImGui::GetIO().Framerate);
+		ImGuiHelper::DrawOutlinedText(m_pMainFont, ImVec2(g_pXenon->g_pSystem->GetScreenCenter().x, g_pXenon->g_pSystem->GetScreenResolution().y - 20), 13.0f, color, true, g_pXenon->g_pSystem->GetAppTitle()->c_str());
+		ImGuiHelper::DrawOutlinedText(m_pMainFont, ImVec2(g_pXenon->g_pSystem->GetScreenCenter().x, 5), 13.0f, color, true, "[ %.1f FPS ]", ImGui::GetIO().Framerate);
 	}
 
-	m_pNotificationService->RenderNotifications();
+	g_pXenon->g_cNotificationService->RenderNotifications();
 
 }
 
@@ -557,14 +562,14 @@ bool UIService::CreateWindowUI()
 		return false;
 	}
 
-	//std::wstring wideWindowTitle = std::wstring(m_pSystem->GetAppTitle()->begin(), m_pSystem->GetAppTitle()->end());
+	//std::wstring wideWindowTitle = std::wstring(g_pXenon->g_pSystem->GetAppTitle()->begin(), g_pXenon->g_pSystem->GetAppTitle()->end());
 
 	m_hWindow = CreateWindowExW(
 		WS_EX_TOPMOST | WS_EX_TRANSPARENT | WS_EX_LAYERED,
 		m_wClass.lpszClassName,
 		L"xenon",//wideWindowTitle.c_str(),
 		WS_POPUP,
-		0, 0, static_cast<int>(m_pSystem->GetScreenResolution().x), static_cast<int>(m_pSystem->GetScreenResolution().y),
+		0, 0, static_cast<int>(g_pXenon->g_pSystem->GetScreenResolution().x), static_cast<int>(g_pXenon->g_pSystem->GetScreenResolution().y),
 		nullptr, nullptr, m_wClass.hInstance, nullptr
 	);
 
@@ -674,7 +679,7 @@ void UIService::SetMenuClose() {
 void UIService::ResetDeviceUI()
 {
 
-	switch (m_pSystem->GetRenderingType()) {
+	switch (g_pXenon->g_pSystem->GetRenderingType()) {
 	case RenderingTypes::DX11:
 		ImGui_ImplDX11_InvalidateDeviceObjects();
 		break;
@@ -688,7 +693,7 @@ void UIService::ResetDeviceUI()
 
 	DestroyDeviceUI();
 
-	switch (m_pSystem->GetRenderingType()) {
+	switch (g_pXenon->g_pSystem->GetRenderingType()) {
 	case RenderingTypes::DX11:
 		ImGui_ImplDX11_CreateDeviceObjects();
 		break;
@@ -726,9 +731,9 @@ void UIService::CreateImGuiUI()
 	io.ConfigFlags = ImGuiConfigFlags_NoMouseCursorChange;
 	ImGui_ImplWin32_Init(m_hWindow);
 
-	if (m_pSystem->IsInternal()) {
+	if (g_pXenon->g_pSystem->IsInternal()) {
 
-		switch (m_pSystem->GetRenderingType()) {
+		switch (g_pXenon->g_pSystem->GetRenderingType()) {
 		case RenderingTypes::DX11:
 			ImGui_ImplDX11_Init(m_pDevice, m_pContext);
 			break;
@@ -751,7 +756,7 @@ void UIService::CreateImGuiUI()
 void UIService::DestroyImGuiUI()
 {
 
-	switch (m_pSystem->GetRenderingType()) {
+	switch (g_pXenon->g_pSystem->GetRenderingType()) {
 	case RenderingTypes::DX11:
 		ImGui_ImplDX11_Shutdown();
 		break;
@@ -787,8 +792,8 @@ void UIService::DestroyImGuiUI()
 void UIService::BeginRenderUI()
 {
 
-	if (m_pSystem->IsInternal()) {
-		switch (m_pSystem->GetRenderingType()) {
+	if (g_pXenon->g_pSystem->IsInternal()) {
+		switch (g_pXenon->g_pSystem->GetRenderingType()) {
 		case RenderingTypes::DX11:
 			ImGui_ImplDX11_NewFrame();
 			break;
@@ -857,14 +862,14 @@ void UIService::EndRenderUI()
 	ImGui::Render();
 
 	m_pContext->OMSetRenderTargets(1U, &m_pMainRenderTargetView, nullptr);
-	if (!m_pSystem->IsInternal()) {
+	if (!g_pXenon->g_pSystem->IsInternal()) {
 		constexpr float color[4] = { 0.f, 0.f, 0.f, 0.f };
 		m_pContext->ClearRenderTargetView(m_pMainRenderTargetView, color);
 	}
 
-	if (m_pSystem->IsInternal()) {
+	if (g_pXenon->g_pSystem->IsInternal()) {
 
-		switch (m_pSystem->GetRenderingType()) {
+		switch (g_pXenon->g_pSystem->GetRenderingType()) {
 		case RenderingTypes::DX11:
 			ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 			break;
@@ -881,5 +886,5 @@ void UIService::EndRenderUI()
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 	}
 
-	if (!m_pSystem->IsInternal()) m_pSwapChain->Present(1U, 0U);
+	if (!g_pXenon->g_pSystem->IsInternal()) m_pSwapChain->Present(1U, 0U);
 }

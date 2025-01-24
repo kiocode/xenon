@@ -1,26 +1,28 @@
-#include <xenon/services/aim_service.hpp>
+#include <xenon/components/services/aim_service.hpp>
+
 #include <spdlog/spdlog.h>
 #include <xenon/utility/random.hpp>
+#include <xenon/core/system.hpp>
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
 
 void AimService::KeepRecoil() {
-    float playTime = m_pSystem->GetPlayTime();
+    float playTime = g_pXenon->g_pSystem->GetPlayTime();
 
-    float adjustedVerticalOffset = m_pConfigs->m_fRecoilVerticalStrength * 10 * m_pSystem->g_fDeltaTime;
+    float adjustedVerticalOffset = g_pXenonConfigs->g_pAimConfig->m_fRecoilVerticalStrength * 10 * g_pXenon->g_pSystem->g_fDeltaTime;
 
-    float adjustedHorizontalOffset = m_pConfigs->m_fRecoilTiltStrength * std::sin(playTime) * m_pSystem->g_fDeltaTime;
+    float adjustedHorizontalOffset = g_pXenonConfigs->g_pAimConfig->m_fRecoilTiltStrength * std::sin(playTime) * g_pXenon->g_pSystem->g_fDeltaTime;
 
     MoveMouseTo({ adjustedHorizontalOffset, adjustedVerticalOffset });
 }
 
 void AimService::Aim(Vec2& target) {
-    if (m_pConfigs->m_bSmooth) {
+    if (g_pXenonConfigs->g_pAimConfig->m_bSmooth) {
         SmoothMoveToTarget(target);
     }
-    else if (m_pConfigs->m_bHumanize) {
+    else if (g_pXenonConfigs->g_pAimConfig->m_bHumanize) {
         Humanize(target);
     }
     else {
@@ -33,11 +35,11 @@ void AimService::Aim(Vec2& target) {
 void AimService::Spin2D() {
     static float angle = 0.0f;
 
-    angle += m_pConfigs->m_fSpinbotSpeed;
+    angle += g_pXenonConfigs->g_pAimConfig->m_fSpinbotSpeed;
     if (angle >= 360.0f) angle = 0.0f;
 
-    float x = static_cast<float>(std::cos(angle * M_PI / 180.0f)) * m_pConfigs->m_fSpinbotRadius + m_pSystem->GetScreenCenter().x;
-    float y = static_cast<float>(std::sin(angle * M_PI / 180.0f)) * m_pConfigs->m_fSpinbotRadius + m_pSystem->GetScreenCenter().y;
+    float x = static_cast<float>(std::cos(angle * M_PI / 180.0f)) * g_pXenonConfigs->g_pAimConfig->m_fSpinbotRadius + g_pXenon->g_pSystem->GetScreenCenter().x;
+    float y = static_cast<float>(std::sin(angle * M_PI / 180.0f)) * g_pXenonConfigs->g_pAimConfig->m_fSpinbotRadius + g_pXenon->g_pSystem->GetScreenCenter().y;
 
     SetAimPos({ x, y });
 }
@@ -47,12 +49,12 @@ void AimService::Spin3D() {
     int centerX = GetSystemMetrics(SM_CXSCREEN) / 2;
     int centerY = GetSystemMetrics(SM_CYSCREEN) / 2;
 
-    angle += m_pConfigs->m_fSpinbotSpeed;  
+    angle += g_pXenonConfigs->g_pAimConfig->m_fSpinbotSpeed;
     if (angle >= 360.0f) angle = 0.0f;
 
-    float x = static_cast<float>(std::cos(angle * M_PI / 180.0f) * m_pConfigs->m_fSpinbotRadius + centerX);
-    float y = static_cast<float>(std::sin(angle * M_PI / 180.0f) * m_pConfigs->m_fSpinbotRadius + centerY);
-    float z = static_cast<float>(std::cos(angle * M_PI / 180.0f) * m_pConfigs->m_fSpinbotDepth);
+    float x = static_cast<float>(std::cos(angle * M_PI / 180.0f) * g_pXenonConfigs->g_pAimConfig->m_fSpinbotRadius + centerX);
+    float y = static_cast<float>(std::sin(angle * M_PI / 180.0f) * g_pXenonConfigs->g_pAimConfig->m_fSpinbotRadius + centerY);
+    float z = static_cast<float>(std::cos(angle * M_PI / 180.0f) * g_pXenonConfigs->g_pAimConfig->m_fSpinbotDepth);
 
     SetAimPos({ x, y });
 }
@@ -67,9 +69,9 @@ Vec2* AimService::GetNearestPos(std::vector<TargetProfile> targets, TargetProfil
 	Vec2* nearest = nullptr;
 	float minDistance = maxdist;
 
-    if (m_pSystem->Is3DGame()) {
+    if (g_pXenon->g_pSystem->Is3DGame()) {
 
-        if (!m_pSystem->m_fnW2S3D) {
+        if (!g_pXenon->g_pSystem->m_fnW2S3D) {
             spdlog::error("World to screen 3D function not set");
             return nullptr;
         }
@@ -78,13 +80,13 @@ Vec2* AimService::GetNearestPos(std::vector<TargetProfile> targets, TargetProfil
             float distance = target.m_vPos3D.Distance(local.m_vPos3D);
             if (distance < minDistance) {
                 minDistance = distance;
-                nearest = m_pSystem->m_fnW2S3D(target.m_vPos3D);
+                nearest = g_pXenon->g_pSystem->m_fnW2S3D(target.m_vPos3D);
             }
         }
 
     } else {
 
-        if (!m_pSystem->m_fnW2S2D) {
+        if (!g_pXenon->g_pSystem->m_fnW2S2D) {
             spdlog::error("World to screen 2D function not set");
 			return nullptr;
         }
@@ -93,7 +95,7 @@ Vec2* AimService::GetNearestPos(std::vector<TargetProfile> targets, TargetProfil
             float distance = target.m_vPos2D.Distance(local.m_vPos2D);
             if (distance < minDistance) {
                 minDistance = distance;
-                nearest = m_pSystem->m_fnW2S2D(target.m_vPos2D);
+                nearest = g_pXenon->g_pSystem->m_fnW2S2D(target.m_vPos2D);
             }
         }
 
@@ -109,10 +111,10 @@ void AimService::SmoothMoveToTarget(Vec2& target) {
     POINT cursorPos;
     GetCursorPos(&cursorPos);
 
-    float stepX = (target.x - cursorPos.x) / m_pConfigs->m_fSmooth;
-    float stepY = (target.y - cursorPos.y) / m_pConfigs->m_fSmooth;
+    float stepX = (target.x - cursorPos.x) / g_pXenonConfigs->g_pAimConfig->m_fSmooth;
+    float stepY = (target.y - cursorPos.y) / g_pXenonConfigs->g_pAimConfig->m_fSmooth;
 
-    for (int i = 1; i <= m_pConfigs->m_fSmooth; ++i) {
+    for (int i = 1; i <= g_pXenonConfigs->g_pAimConfig->m_fSmooth; ++i) {
         float nextX = cursorPos.x + stepX * i;
         float nextY = cursorPos.y + stepY * i;
 
@@ -206,8 +208,8 @@ void AimService::SetMouseTo(Vec2 pos) {
 
 void AimService::SetAimPos(Vec2 pos) {
 
-    if (m_pConfigs->m_fnCustomAim) {
-        m_pConfigs->m_fnCustomAim(pos);
+    if (g_pXenonConfigs->g_pAimConfig->m_fnCustomAim) {
+        g_pXenonConfigs->g_pAimConfig->m_fnCustomAim(pos);
     }
     else {
         SetMouseTo(pos);

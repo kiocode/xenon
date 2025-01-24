@@ -1,18 +1,23 @@
-#include <xenon/features/radar.hpp>
+#include <xenon/components/features/radar.hpp>
+
 #include <imgui/imgui.h>
 #include <spdlog/spdlog.h>
 
+#include <xenon/core/system.hpp>
+#include <xenon/components/features/waypoints.hpp>
+
 void Radar::Render() {
-    if (m_pConfigs->m_fnCustomRadar) {
-        m_pConfigs->m_fnCustomRadar();
+    
+    if (g_pXenonConfigs->g_pRadarConfig->m_fnCustomRadar) {
+        g_pXenonConfigs->g_pRadarConfig->m_fnCustomRadar();
         return;
     }
 
-    switch (m_pConfigs->m_nType) {
-        case 0: RenderRadarBase(RadarShapes::CIRCULAR, m_pSystem->Is3DGame()); break;
-        case 1: RenderRadarBase(RadarShapes::RECTANGULAR, m_pSystem->Is3DGame()); break;
+    switch (g_pXenonConfigs->g_pRadarConfig->m_nType) {
+        case 0: RenderRadarBase(RadarShapes::CIRCULAR, g_pXenon->g_pSystem->Is3DGame()); break;
+        case 1: RenderRadarBase(RadarShapes::RECTANGULAR, g_pXenon->g_pSystem->Is3DGame()); break;
         default:
-            spdlog::error("Invalid radar type: {}", m_pConfigs->m_nType);
+            spdlog::error("Invalid radar type: {}", g_pXenonConfigs->g_pRadarConfig->m_nType);
             break;
     }
 }
@@ -23,7 +28,7 @@ void Radar::RenderRadarBase(RadarShapes shape, bool is3D) {
         ImDrawList* drawlist = ImGui::GetWindowDrawList();
         ImVec2 pos = ImGui::GetWindowPos();
 
-        const float radarSize = m_pConfigs->m_fSize;
+        const float radarSize = g_pXenonConfigs->g_pRadarConfig->m_fSize;
         const float centerOffset = radarSize / 2.0f;
         const ImVec2 radarCenter = ImVec2(pos.x + centerOffset, pos.y + centerOffset);
 
@@ -44,7 +49,7 @@ void Radar::RenderRadarBase(RadarShapes shape, bool is3D) {
                 break;
         }
 
-        drawlist->AddCircleFilled(radarCenter, m_pConfigs->m_fLocalSize * m_pConfigs->m_fZoom, ImColor(170, 170, 170, 255));
+        drawlist->AddCircleFilled(radarCenter, g_pXenonConfigs->g_pRadarConfig->m_fLocalSize * g_pXenonConfigs->g_pRadarConfig->m_fZoom, ImColor(170, 170, 170, 255));
 
         auto isPointInRadar = [&](ImVec2 point) -> bool {
             if (shape == RadarShapes::CIRCULAR) {
@@ -60,58 +65,58 @@ void Radar::RenderRadarBase(RadarShapes shape, bool is3D) {
             return false;
         };
 
-        const float zoomFactor = m_pConfigs->m_fZoom > 0.0f ? m_pConfigs->m_fZoom : 1.0f;
+        const float zoomFactor = g_pXenonConfigs->g_pRadarConfig->m_fZoom > 0.0f ? g_pXenonConfigs->g_pRadarConfig->m_fZoom : 1.0f;
 
         if (is3D) {
-            const Vec3& localPlayerPos = m_pGameVariables->g_vLocal.m_vPos3D;
-            for (const auto& target : m_pGameVariables->g_vTargets) {
+            const Vec3& localPlayerPos = g_pXenonConfigs->g_pGameVariables->g_vLocal.m_vPos3D;
+            for (const auto& target : g_pXenonConfigs->g_pGameVariables->g_vTargets) {
                 const float relativeX = target.m_vPos3D.x - localPlayerPos.x;
                 const float relativeY = target.m_vPos3D.z - localPlayerPos.z;
 
-                const float scaledX = (relativeX / m_pConfigs->m_fDefaultScale) * radarSize * zoomFactor;
-                const float scaledY = (relativeY / m_pConfigs->m_fDefaultScale) * radarSize * zoomFactor;
+                const float scaledX = (relativeX / g_pXenonConfigs->g_pRadarConfig->m_fDefaultScale) * radarSize * zoomFactor;
+                const float scaledY = (relativeY / g_pXenonConfigs->g_pRadarConfig->m_fDefaultScale) * radarSize * zoomFactor;
 
                 ImVec2 targetPos = ImVec2(radarCenter.x + scaledX, radarCenter.y + scaledY);
 
                 if (isPointInRadar(targetPos)) {
-                    float targetSize = m_pConfigs->m_fTargetsSize * zoomFactor;
+                    float targetSize = g_pXenonConfigs->g_pRadarConfig->m_fTargetsSize * zoomFactor;
                     drawlist->AddCircleFilled(targetPos, targetSize, ImColor(255, 0, 0, 255));
 
-                    if (m_pConfigs->m_bTargetsName && !target.m_strName.empty()) {
+                    if (g_pXenonConfigs->g_pRadarConfig->m_bTargetsName && !target.m_strName.empty()) {
 						drawlist->AddText(ImVec2(targetPos.x - (ImGui::CalcTextSize(target.m_strName.c_str()).x / 2), targetPos.y + 5), ImColor(255, 255, 255, 255), target.m_strName.c_str());
 					}
                 }
             }
 
-            if (m_pWaypointsConfig->m_bRenderInRadar)
+            if (g_pXenonConfigs->g_pWaypointsConfig->m_bRenderInRadar)
             {
-                m_pWaypoints->RenderInRadar(isPointInRadar, localPlayerPos, m_pConfigs->m_fDefaultScale, radarSize, zoomFactor, radarCenter);
+                g_pXenon->g_cWaypoints->RenderInRadar(isPointInRadar, localPlayerPos, g_pXenonConfigs->g_pRadarConfig->m_fDefaultScale, radarSize, zoomFactor, radarCenter);
             }
 
         } else {
-            const Vec2& localPlayerPos = m_pGameVariables->g_vLocal.m_vPos2D;
-            for (const auto& target : m_pGameVariables->g_vTargets) {
+            const Vec2& localPlayerPos = g_pXenonConfigs->g_pGameVariables->g_vLocal.m_vPos2D;
+            for (const auto& target : g_pXenonConfigs->g_pGameVariables->g_vTargets) {
                 const float relativeX = target.m_vPos2D.x - localPlayerPos.x;
                 const float relativeY = target.m_vPos2D.y - localPlayerPos.y;
 
-                const float scaledX = (relativeX / m_pConfigs->m_fDefaultScale) * radarSize * zoomFactor;
-                const float scaledY = (relativeY / m_pConfigs->m_fDefaultScale) * radarSize * zoomFactor;
+                const float scaledX = (relativeX / g_pXenonConfigs->g_pRadarConfig->m_fDefaultScale) * radarSize * zoomFactor;
+                const float scaledY = (relativeY / g_pXenonConfigs->g_pRadarConfig->m_fDefaultScale) * radarSize * zoomFactor;
 
                 ImVec2 targetPos = ImVec2(radarCenter.x + scaledX, radarCenter.y + scaledY);
 
                 if (isPointInRadar(targetPos)) {
-                    float targetSize = m_pConfigs->m_fTargetsSize * zoomFactor;
+                    float targetSize = g_pXenonConfigs->g_pRadarConfig->m_fTargetsSize * zoomFactor;
                     drawlist->AddCircleFilled(targetPos, targetSize, ImColor(255, 0, 0, 255));
 
-                    if (m_pConfigs->m_bTargetsName && !target.m_strName.empty()) {
+                    if (g_pXenonConfigs->g_pRadarConfig->m_bTargetsName && !target.m_strName.empty()) {
                         drawlist->AddText(ImVec2(targetPos.x - (ImGui::CalcTextSize(target.m_strName.c_str()).x / 2), targetPos.y + 5), ImColor(255, 255, 255, 255), target.m_strName.c_str());
                     }
                 }
             }
 
-            if (m_pWaypointsConfig->m_bRenderInRadar)
+            if (g_pXenonConfigs->g_pWaypointsConfig->m_bRenderInRadar)
             {
-                m_pWaypoints->RenderInRadar(isPointInRadar, localPlayerPos, m_pConfigs->m_fDefaultScale, radarSize, zoomFactor, radarCenter);
+                g_pXenon->g_cWaypoints->RenderInRadar(isPointInRadar, localPlayerPos, g_pXenonConfigs->g_pRadarConfig->m_fDefaultScale, radarSize, zoomFactor, radarCenter);
             }
         }
     }

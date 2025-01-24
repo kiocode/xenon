@@ -1,5 +1,5 @@
-#include <xenon/services/lua_service.hpp>
-#include <xenon/services/memory_service.hpp>
+#include <xenon/components/services/lua_service.hpp>
+#include <xenon/components/services/memory_service.hpp>
 #include <xenon/core/di_manager.hpp>
 
 void LuaService::RegisterBinds() {

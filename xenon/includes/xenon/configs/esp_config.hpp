@@ -2,7 +2,10 @@
 
 #include <imgui/imgui.h>
 
-class ESPConfig {
+#include <vector>
+#include <functional>
+
+class EspConfig {
 public:
 	int m_nSnaplineTypeStart = 0;
 	int m_nSnaplineTypeEnd = 2;
