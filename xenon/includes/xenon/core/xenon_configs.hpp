@@ -9,13 +9,6 @@
 #include <xenon/configs/ui_config.hpp>
 #include <xenon/configs/waypoints_config.hpp>
 
-//class AimConfig;
-//class EspConfig;
-//class GameVariables;
-//class RadarConfig;
-//class UIConfig;
-//class WaypointsConfig;
-
 class XenonConfigs {
 public:
 

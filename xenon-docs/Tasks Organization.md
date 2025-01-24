@@ -24,6 +24,7 @@ kanban-plugin: board
 - [ ] check if the use of pointer makes sense like with vec2
 - [ ] check is use enums with plural or singular name
 - [ ] add fly
+- [ ] system and gamesvariable needs rename
 
 
 ## InProgress
@@ -31,7 +32,6 @@ kanban-plugin: board
 - [ ] customize GUI
 - [ ] move all "use" var in a cheatconfig that will be share by any service
 - [ ] change all, don't have a single update but have a list with all features and services called now components that have a super clas with onupdate synchronized with the original update
-- [ ] create a single centralized object accessible from any object that have access to any component
 
 
 ## Done
@@ -39,6 +39,7 @@ kanban-plugin: board
 - [x] Organize the methods inside `aimbot.cpp` using `#region` to group them, starting with public methods under `#region Public Methods`, followed by private methods under `#region Private Methods`.
 - [x] add health bar
 - [x] External cheat gui
+- [x] create a single centralized object accessible from any object that have access to any component
 - [x] add more universal data, maybe a player profile with health and name and distance from the localplayer
 - [x] get nearest maybe generalize the 3d thing
 - [x] Add Waypoints support

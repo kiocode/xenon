@@ -65,6 +65,13 @@ void Builder::RegisterDefaultServices() {
     xenonConfigs = std::make_shared<XenonConfigs>();
     xenonVariables = std::make_shared<XenonVariables>();
 
+    xenonConfigs->g_pAimConfig = std::make_shared<AimConfig>();
+    xenonConfigs->g_pEspConfig = std::make_shared<EspConfig>();
+    xenonConfigs->g_pWaypointsConfig = std::make_shared<WaypointsConfig>();
+    xenonConfigs->g_pUIConfig = std::make_shared<UIConfig>();
+    xenonConfigs->g_pRadarConfig = std::make_shared<RadarConfig>();
+    xenonConfigs->g_pGameVariables = std::make_shared<GameVariables>();
+
     xenon->g_pSystem = std::make_shared<System>();
 
     xenon->g_cAimbot = std::make_shared<Aimbot>();

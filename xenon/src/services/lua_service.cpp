@@ -6,7 +6,7 @@ void LuaService::RegisterBinds() {
 
 	lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::string, sol::lib::table, sol::lib::math, sol::lib::os, sol::lib::io);
 
-    lua.set("memoryService", DIManager::GetInstance().GetService<MemoryService>());
+    //lua.set("memoryService", DIManager::GetInstance().GetService<MemoryService>());
 
 	//spdlog::info("LuaService::RegisterBinds() - Binds registered");
 }
