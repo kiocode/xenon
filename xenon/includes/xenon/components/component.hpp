@@ -14,6 +14,7 @@ public:
 	std::shared_ptr<XenonVariables> g_pXenonVariables;
 	std::shared_ptr<XenonConfigs> g_pXenonConfigs;
 
+	virtual void Init() {};
 	virtual void Update() {};
 	virtual ~CComponent() = default;
 };

@@ -350,7 +350,6 @@
     <ClInclude Include="libs\spdlog\version.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="includes\xenon\configs\game_config.hpp" />
     <ClCompile Include="includes\xenon\models\enums\unrealengine_versions.hpp" />
     <ClCompile Include="includes\xenon\utility\imgui_helper.hpp" />
     <ClCompile Include="libs\imgui\imgui.cpp" />

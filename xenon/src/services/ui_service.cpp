@@ -296,8 +296,8 @@ void UIService::RenderDefaultMenu() {
 					{
 						static ImVec4 color = g_pXenonConfigs->g_pUIConfig->m_cCrosshair;
 
-						ImGui::Checkbox("Crosshair", &g_pXenonConfigs->g_pUIConfig->m_bCrosshair);
-						if (g_pXenonConfigs->g_pUIConfig->m_bCrosshair)
+						ImGui::Checkbox("Crosshair", &g_pXenonVariables->g_bCrosshair);
+						if (g_pXenonVariables->g_bCrosshair)
 						{
 							if (ImGui::ColorEdit4("Color", (float*)&color)) {
 								g_pXenonConfigs->g_pUIConfig->m_cCrosshair = ImColor(color);
@@ -366,23 +366,22 @@ void UIService::RenderDefaultMenu() {
 	ImGui::End();
 }
 
+
 LRESULT __stdcall UIService::WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
-	std::shared_ptr<UIService> pThis = DIManager::GetInstance().GetService<UIService>();
+	if (*m_bShowMenu && ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam))
+		return true;
 
-	//if (pThis->m_bShowMenu && ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam))
-	//	return true;
+	if (*m_bShowMenu)
+		return true;
 
-	//if (pThis->m_bShowMenu)
-	//	return true;
-
-	if (!DIManager::GetInstance().GetService<System>()->IsInternal() && uMsg == WM_DESTROY) {
+	if (!m_pSystem->IsInternal() && uMsg == WM_DESTROY) {
 		PostQuitMessage(0);
 		return true;
 	}
 
-	if (DIManager::GetInstance().GetService<System>()->IsInternal()) {
-		return CallWindowProcA(pThis->oWndProc, hWnd, uMsg, wParam, lParam);
+	if (m_pSystem->IsInternal()) {
+		return CallWindowProcA(*m_pOWndProc, hWnd, uMsg, wParam, lParam);
 	}
 	else {
 		return DefWindowProcA(hWnd, uMsg, wParam, lParam);
@@ -473,7 +472,7 @@ void UIService::Update() {
 
 	if (g_pXenonVariables->g_bShowMenu) {
 
-		if (g_pXenonConfigs->g_pUIConfig->m_bUseUIRenderMouse) {
+		if (g_pXenonVariables->g_bRenderMouse) {
 			RenderMouse();
 		}
 
@@ -484,7 +483,7 @@ void UIService::Update() {
 		//	RenderDefaultTheme(false);
 		//}
 
-		if (g_pXenonConfigs->g_pUIConfig->m_bUseUIMenu) {
+		if (g_pXenonVariables->g_bMenu) {
 			if (g_pXenonConfigs->g_pUIConfig->m_fnCustomMenu) {
 				g_pXenonConfigs->g_pUIConfig->m_fnCustomMenu();
 			}
@@ -493,19 +492,19 @@ void UIService::Update() {
 			}
 		}
 
-		if (g_pXenonConfigs->g_pUIConfig->m_bUseUIRenderWindows) {
+		if (g_pXenonVariables->g_bRenderWindows) {
 			for (auto& fn : g_pXenonConfigs->g_pUIConfig->m_vFnWindows) {
 				fn();
 			}
 		}
 
-		if (g_pXenonConfigs->g_pUIConfig->m_bUseUIQuickActions && g_pXenonConfigs->g_pUIConfig->m_qActions->GetSize() > 0) {
+		if (g_pXenonVariables->g_bRenderQuickActions && g_pXenonConfigs->g_pUIConfig->m_qActions->GetSize() > 0) {
 			RenderDefaultUIQuickActions();
 		}
 
 	}
 
-	if (g_pXenonConfigs->g_pUIConfig->m_bUseUIRenderOverlays) {
+	if (g_pXenonVariables->g_bRenderOverlays) {
 		for (auto& fn : g_pXenonConfigs->g_pUIConfig->m_vFnOverlays) {
 			fn();
 		}
@@ -518,7 +517,7 @@ void UIService::Update() {
 	//	RenderTopLeftNotification();
 	//}
 
-	if (g_pXenonConfigs->g_pUIConfig->m_bWatermark)
+	if (g_pXenonVariables->g_bWatermark)
 	{
 		ImColor color = ImColor(255, 255, 255, 255); // or rainbow
 

@@ -638,9 +638,6 @@
     <ClCompile Include="src\services\ui_service.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="includes\xenon\configs\game_config.hpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\core\system.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

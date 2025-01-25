@@ -15,6 +15,7 @@ public:
 
 	// UI
 	bool g_bRenderUI;
+	bool g_bWatermark;
 	bool g_bRenderMouse;
 	bool g_bRenderWindows;
 	bool g_bRenderOverlays;

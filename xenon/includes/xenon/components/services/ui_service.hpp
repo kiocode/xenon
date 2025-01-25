@@ -12,6 +12,7 @@
 #include <imgui/imgui_impl_opengl3.h>
 
 #include <xenon/components/component.hpp>
+#include <xenon/core/system.hpp>
 
 #include <xenon/core/di_manager.hpp>
 #include <xenon/models/hotkey.hpp>
@@ -38,12 +39,20 @@ enum SubTabs {
 class UIService : public CComponent {
 public:
 
+    inline static bool* m_bShowMenu = nullptr;
+    inline static std::shared_ptr<System> m_pSystem = nullptr;
+    inline static WNDPROC* m_pOWndProc = nullptr;
+    void Init() override {
+        m_bShowMenu = &g_pXenonVariables->g_bShowMenu;
+        m_pSystem = g_pXenon->g_pSystem;
+        m_pOWndProc = &oWndProc;
+    }
+
     Hotkey testhotkey;
     bool isEditing = false;
 
 	Present oPresent = NULL;
-    inline static WNDPROC oWndProc = NULL;
-    bool m_bShowMenu = false;
+    WNDPROC oWndProc = NULL;
 
     bool InitPresent(IDXGISwapChain* pSwapChain);
 
@@ -70,12 +79,12 @@ private:
     IDXGISwapChain* m_pSwapChain = nullptr;
     D3D_FEATURE_LEVEL m_dLevel{};
 
-    ID3D11Device* m_pDevice = NULL;
-    ID3D11DeviceContext* m_pContext = NULL;
+    ID3D11Device* m_pDevice = nullptr;
+    ID3D11DeviceContext* m_pContext = nullptr;
     ID3D11RenderTargetView* m_pMainRenderTargetView = nullptr;
 
-    ID3D11DepthStencilState* m_pNoDepthStencilState;      
-    ID3D11DepthStencilState* m_pDefaultDepthStencilState;
+    ID3D11DepthStencilState* m_pNoDepthStencilState = nullptr;
+    ID3D11DepthStencilState* m_pDefaultDepthStencilState = nullptr;
 
     #pragma region menu vars
 

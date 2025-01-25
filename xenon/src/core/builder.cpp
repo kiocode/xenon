@@ -85,25 +85,25 @@ void Builder::RegisterDefaultServices() {
     xenon->g_cNotificationService = std::make_shared<NotificationService>();
     xenon->g_cUIService = std::make_shared<UIService>();
 
-    //Components = {
-    //    xenon->g_cAimbot,
-    //    xenon->g_cEsp,
-    //    xenon->g_cWaypoints,
-    //    xenon->g_cRadar,
-    //    xenon->g_cAimService,
-    //    xenon->g_cLuaService,
-    //    xenon->g_cMemoryService,
-    //    xenon->g_cNotificationService,
-    //    xenon->g_cUIService
-    //};
+    components.push_back(xenon->g_cAimbot);
+    components.push_back(xenon->g_cEsp);
+    components.push_back(xenon->g_cWaypoints);
+    components.push_back(xenon->g_cRadar);
+    components.push_back(xenon->g_cAimService);
+    components.push_back(xenon->g_cLuaService);
+    components.push_back(xenon->g_cMemoryService);
+    components.push_back(xenon->g_cNotificationService);
+    components.push_back(xenon->g_cUIService);
 
-    for (std::shared_ptr<CComponent> component : Components) {
+    for (std::shared_ptr<CComponent> component : components) {
         component->g_pXenon = xenon;
         component->g_pXenonVariables = xenonVariables;
         component->g_pXenonConfigs = xenonConfigs;
+
+        component->Init();
     }
 
-    GameManager = std::make_shared<Game>(xenon, xenonConfigs, xenonVariables, Components);
+    GameManager = std::make_shared<Game>(xenon, xenonConfigs, xenonVariables, components);
 }
 
 Cheat Builder::Build() const {

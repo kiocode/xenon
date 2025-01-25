@@ -17,7 +17,7 @@ public:
 
     std::shared_ptr<Game> GameManager;
 
-    std::vector<std::shared_ptr<CComponent>> Components;
+    std::vector<std::shared_ptr<CComponent>> components;
 
     Builder(std::string appTitle) : m_strAppTitle(appTitle) {
         RegisterDefaultServices();

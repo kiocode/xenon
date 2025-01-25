@@ -1,9 +1,7 @@
 #pragma once
 
-#include <imgui/imgui.h>
-
-#include <vector>
 #include <functional>
+#include <imgui/imgui.h>
 
 class EspConfig {
 public:
