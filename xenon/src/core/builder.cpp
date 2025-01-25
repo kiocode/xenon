@@ -59,19 +59,22 @@ void Builder::SetErrorLogLevel() {
     spdlog::set_level(spdlog::level::err);
 }
 
-void Builder::RegisterDefaultServices() {
+void Builder::RegisterDefaultComponents() {
 
     xenon = std::make_shared<Xenon>();
     xenonConfigs = std::make_shared<XenonConfigs>();
     xenonVariables = std::make_shared<XenonVariables>();
 
+    #pragma region Configs
     xenonConfigs->g_pAimConfig = std::make_shared<AimConfig>();
     xenonConfigs->g_pEspConfig = std::make_shared<EspConfig>();
     xenonConfigs->g_pWaypointsConfig = std::make_shared<WaypointsConfig>();
     xenonConfigs->g_pUIConfig = std::make_shared<UIConfig>();
     xenonConfigs->g_pRadarConfig = std::make_shared<RadarConfig>();
     xenonConfigs->g_pGameVariables = std::make_shared<GameVariables>();
+    #pragma endregion
 
+    #pragma region Components
     xenon->g_pSystem = std::make_shared<System>();
 
     xenon->g_cAimbot = std::make_shared<Aimbot>();
@@ -84,7 +87,9 @@ void Builder::RegisterDefaultServices() {
     xenon->g_cMemoryService = std::make_shared<MemoryService>();
     xenon->g_cNotificationService = std::make_shared<NotificationService>();
     xenon->g_cUIService = std::make_shared<UIService>();
+    #pragma endregion
 
+    // The order is important for rendering priority and initialization order
     components.push_back(xenon->g_cAimbot);
     components.push_back(xenon->g_cEsp);
     components.push_back(xenon->g_cWaypoints);

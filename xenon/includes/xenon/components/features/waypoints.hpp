@@ -22,6 +22,7 @@ public:
 	void RenderInRadar(std::function<bool(ImVec2)> fnIsPointInRadar, Vec2 localPos, float defaultScale, float radarSize, float zoomFactor, ImVec2 radarCenter);
 	void RenderInRadar(std::function<bool(ImVec2)> fnIsPointInRadar, Vec3 localPos, float defaultScale, float radarSize, float zoomFactor, ImVec2 radarCenter);
 
+	void Update() override;
 private:
 	std::vector<Waypoint> m_vWaypoints;
 

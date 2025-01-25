@@ -408,7 +408,7 @@
     <ClCompile Include="src\features\waypoints.cpp" />
     <ClCompile Include="src\services\aim_service.cpp" />
     <ClCompile Include="src\features\esp.cpp" />
-    <ClCompile Include="src\features\game.cpp" />
+    <ClCompile Include="src\core\game.cpp" />
     <ClCompile Include="src\services\ui_service.cpp" />
     <ClCompile Include="src\core\builder.cpp" />
     <ClCompile Include="src\core\cheat.cpp" />

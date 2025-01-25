@@ -53,6 +53,66 @@ static void AddConfigurations(Builder& builder) {
 
 	pUIConfig->m_qActions->AddButton("Test Notification", [pNotificationService]() { pNotificationService->Notify("test", "test message"); });
 
+	pUIConfig->m_vFnWindows.push_back([pGameVariables, pUIConfig, pRadarConfig, pWaypoint, pNotificationService]() {
+		ImGui::Begin("Test Window");
+		
+		{
+			//demo funcs
+			static bool checkbox = false;
+			static int sliderint = 0;
+			static float sliderfloat = 0.f;
+			static int combo = 0;
+			static const char* multi_items[5] = { "One", "Two", "Three", "Four", "Five" };
+			static bool multi_items_count[5];
+			static int key = 0;
+
+			ImGui::BeginGroup();
+			{
+				ImGui::Checkbox("Checkbox", &checkbox);
+				ImGui::SliderInt("Slider Int", &sliderint, 0, 100);
+				ImGui::SliderFloat("Slider Float", &sliderfloat, 0.f, 100.f, "%.1f");
+				ImGui::Combo("Combo", &combo, "Selectable 1\0Selectable 2\0Selectable 3", 3);
+				ImGui::MultiCombo("Multicombo", multi_items_count, multi_items, 5);
+				ImGui::Keybind("Hotkey", &key);
+
+				//if(ImGui::Button("Test Hotkey", ImVec2(200, 25)))
+				//	isEditing = true;
+				//ImGuiHelper::RenderHotkeyEditor(&testhotkey, &isEditing);
+			}
+			ImGui::EndGroup();
+		}
+
+		{
+
+			//demo funcs
+			static bool checkbox[2];
+			static int combo = 0;
+			static char input0[64] = "";
+			static char input1[64] = "";
+
+			//render funcs
+			ImGui::SetCursorPos(ImVec2(10, 10));
+			ImGui::BeginGroup();
+			{
+				if (checkbox[0])
+				{
+					ImGui::InputText("Pointer or Offset", input0, 64, ImGuiInputTextFlags_ReadOnly);
+					ImGui::InputText("Value", input1, 64, ImGuiInputTextFlags_ReadOnly);
+				}
+				else
+				{
+					ImGui::InputText("Pointer or Offset", input0, 64);
+					ImGui::InputText("Value", input1, 64);
+				}
+				ImGui::Checkbox("Read-Only", &checkbox[0]);
+				ImGui::Checkbox("Loop Command", &checkbox[1]);
+				ImGui::Combo("Type", &combo, "Byte\0\r2 Byte\0\r4 Byte\0\rFloat\0Double\0String", 6);
+			}
+			ImGui::EndGroup();
+		}
+
+		ImGui::End();
+	});
 }
 
 static void AddServices(Builder& builder) {
@@ -148,12 +208,15 @@ static void TestGeneral(Builder& builder) {
 	AddConfigurations(builder);
 	AddServices(builder);
 
+	#pragma region Edit Configs
 	std::shared_ptr<EspConfig> pEspConfig = builder.xenonConfigs->g_pEspConfig;
 	pEspConfig->m_cBox2DDistance = ImColor(255, 255, 255, 255);
 
 	std::shared_ptr<RadarConfig> pRadarConfig = builder.xenonConfigs->g_pRadarConfig;
 	pRadarConfig->m_fDefaultScale = 2000;
+	#pragma endregion
 
+	#pragma region Mock 
 	TargetProfile local = TargetProfile();
 	local.m_vPos2D = builder.xenon->g_pSystem->GetScreenCenter();
 	local.m_vHeadPos2D = Vec2(local.m_vPos2D.x, local.m_vPos2D.y + 100);
@@ -162,7 +225,7 @@ static void TestGeneral(Builder& builder) {
 	local.m_fMaxHealth = 100;
 	local.m_fWidth = 80;
 	builder.xenonConfigs->g_pGameVariables->g_vLocal = local;
-	 
+
 	TargetProfile target1 = TargetProfile();
 	target1.m_vPos2D = Vec2(300, 500);
 	target1.m_vHeadPos2D = Vec2(target1.m_vPos2D.x, target1.m_vPos2D.y - 100);
@@ -198,23 +261,24 @@ static void TestGeneral(Builder& builder) {
 	target4.m_fMaxHealth = 100;
 	target4.m_fWidth = 80;
 	builder.xenonConfigs->g_pGameVariables->g_vTargets.push_back(target4);
-
+	#pragma endregion
 
 	Cheat cheat = builder.Build();
 
 	cheat.UseUpdate();
 	cheat.UseUICustom(RenderingHookTypes::KIERO);
 	cheat.UseUIMenu();
-	cheat.UseUIRadar();
 	//cheat.UseUIRenderWindows();
-	cheat.UseUIRenderOverlays();
-	cheat.UseUIQuickActions();
+	//cheat.UseUIRenderOverlays();
+	//cheat.UseUIQuickActions();
+	
+	//cheat.UseUIRadar();
 	//cheat.UseAimbot();
 	//cheat.UseRecoil();
 	//cheat.Use2DSpinbot();
-	cheat.UseESPSnapline();
-	cheat.UseESPBox2D();
-	cheat.UseESPHealthBar();
+	//cheat.UseESPSnapline();
+	//cheat.UseESPBox2D();
+	//cheat.UseESPHealthBar();
 
 	cheat.Run();
 

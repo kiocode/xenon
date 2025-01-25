@@ -11,4 +11,5 @@ public:
 	void RenderSkeleton() const;
 	void RenderHealthBar() const;
 
+	void Update() override;
 };

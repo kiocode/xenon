@@ -20,7 +20,7 @@ public:
     std::vector<std::shared_ptr<CComponent>> components;
 
     Builder(std::string appTitle) : m_strAppTitle(appTitle) {
-        RegisterDefaultServices();
+        RegisterDefaultComponents();
     }
 
     Builder() : Builder("Unknown") {}
@@ -36,5 +36,5 @@ public:
 private:
     std:: string m_strAppTitle;
 
-    void RegisterDefaultServices();
+    void RegisterDefaultComponents();
 };

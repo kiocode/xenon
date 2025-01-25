@@ -57,7 +57,7 @@ public:
     bool InitPresent(IDXGISwapChain* pSwapChain);
 
     void InitExternal();
-    void Update();
+    void UpdateUI();
     void Destroy();
 
     void BeginRenderUI();
@@ -70,6 +70,8 @@ public:
 
     void RenderCrosshair();
     void RenderFov();
+    
+    void Update() override;
 
 private:
 

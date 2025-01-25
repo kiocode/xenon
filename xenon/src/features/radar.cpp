@@ -6,6 +6,12 @@
 #include <xenon/core/system.hpp>
 #include <xenon/components/features/waypoints.hpp>
 
+void Radar::Update() {
+    if (g_pXenonVariables->g_bRadar) {
+        Render();
+    }
+}
+
 void Radar::Render() {
     
     if (g_pXenonConfigs->g_pRadarConfig->m_fnCustomRadar) {

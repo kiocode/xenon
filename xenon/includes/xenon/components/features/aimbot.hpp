@@ -17,6 +17,8 @@ public:
     void AimTarget();
     void AimTargetWithPrediction(Vec2& vel);
 
+    void Update() override;
+
 private:
     Vec2 m_vTarget;
 

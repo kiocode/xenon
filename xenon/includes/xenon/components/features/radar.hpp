@@ -12,4 +12,6 @@ public:
 
 	void RenderRadarBase(RadarShapes shape, bool is3D);
 
+	void Update() override;
+
 };

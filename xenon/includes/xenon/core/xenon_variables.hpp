@@ -27,19 +27,34 @@ public:
 	bool g_bWaypoints;
 
 	// ESP
+	bool g_bEsp;
+
 	bool g_bSnapline;
 	bool g_bBox2D;
 	bool g_bBox3D;
 	bool g_bSkeleton;
 	bool g_bHealthBar;
 
-	// Features
+	// Aimbot
 	bool g_bAimbot;
+
+	bool g_bStartFromCenter;
+	bool g_bSilent;
+	bool g_bVisibleCheck;
+	bool g_bAutoShoot;
+	bool g_bAutoScope;
+	bool g_bSmooth;
+	bool g_bHumanize;
+	bool g_bFov;
+	bool g_bNoRecoil;
+	bool g_bNoSpread;
+	bool g_bNearest;
+
+	// Features
 	bool g_bCrosshair;
 	bool g_bFov;
 	bool g_bRecoil;
 	bool g_bSpinbot2D;
 	bool g_bSpinbot3D;
-	bool g_bEsp;
 
 };

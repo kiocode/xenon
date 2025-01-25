@@ -8,6 +8,24 @@
 #define M_PI 3.14159265358979323846
 #endif
 
+void AimService::Update() {
+
+    if (g_pXenonVariables->g_bRecoil) {
+        if (GetAsyncKeyState(VK_RBUTTON) && GetAsyncKeyState(VK_LBUTTON)) {
+            KeepRecoil();
+        }
+    }
+
+    if (g_pXenonVariables->g_bSpinbot2D) {
+        Spin2D();
+    }
+
+    if (g_pXenonVariables->g_bSpinbot3D) {
+        Spin3D();
+    }
+
+}
+
 void AimService::KeepRecoil() {
     float playTime = g_pXenon->g_pSystem->GetPlayTime();
 

@@ -4,6 +4,30 @@
 #include <spdlog/spdlog.h>
 #include <xenon/core/system.hpp>
 
+void Esp::Update() {
+
+	if (g_pXenonVariables->g_bSnapline) {
+		RenderSnapline();
+	}
+
+	if (g_pXenonVariables->g_bBox2D) {
+		Render2DBox();
+	}
+
+	if (g_pXenonVariables->g_bBox3D) {
+		Render3DBox();
+	}
+
+	if (g_pXenonVariables->g_bSkeleton) {
+		RenderSkeleton();
+	}
+
+	if (g_pXenonVariables->g_bHealthBar) {
+		RenderHealthBar();
+	}
+
+}
+
 void Esp::RenderSnapline() const {
 
 	if (!g_pXenon->g_pSystem->m_fnW2S3D && !g_pXenon->g_pSystem->m_fnW2S2D) {

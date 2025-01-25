@@ -8,6 +8,22 @@
 #include <xenon/utility/random.hpp>
 #include <xenon/components/services/aim_service.hpp>
 
+void Aimbot::Update() {
+
+    if (g_pXenonVariables->g_bAimbot) {
+
+        if (g_pXenonConfigs->g_pAimConfig->m_bNearest) {
+
+            Vec2* nearest = g_pXenon->g_cAimService->GetNearestPos(g_pXenonConfigs->g_pGameVariables->g_vTargets, g_pXenonConfigs->g_pGameVariables->g_vLocal, g_pXenonConfigs->g_pAimConfig->m_fNearest);
+            if (nearest == nullptr) ResetTarget();
+            else SetTarget(*nearest);
+
+        }
+
+        AimTarget();
+    }
+}
+
 bool Aimbot::IsTargetEmpty() const {
     return m_vTarget.x == -99 && m_vTarget.y == -99;
 }

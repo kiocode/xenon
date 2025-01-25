@@ -18,6 +18,7 @@ public:
     Vec2* GetNearestPos(std::vector<TargetProfile> targets, TargetProfile local);
     Vec2* GetNearestPos(std::vector<TargetProfile> targets, TargetProfile local, float maxdist);
 
+    void Update() override;
 private:
     void SetAimPos(Vec2 pos);
     void SetMouseTo(Vec2 pos);

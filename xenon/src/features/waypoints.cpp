@@ -4,6 +4,12 @@
 
 #include <xenon/core/system.hpp>
 
+void Waypoints::Update() {
+	if (g_pXenonConfigs->g_pWaypointsConfig->m_bRenderInWorld) {
+		RenderInWorld();
+	}
+}
+
 void Waypoints::SetWaypoint(std::string title, const Vec2& pos, ImColor color) {
 	m_vWaypoints.push_back(Waypoint(title, pos, color));
 }

@@ -17,6 +17,7 @@ public:
 		m_imFont = imFont;
 		m_imLogo = imLogo;
 	}
+
 private:
 	ImFont* m_imFont = nullptr;
 	ImFont* m_imLogo = nullptr;

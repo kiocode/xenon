@@ -136,86 +136,8 @@ void Game::Update() {
 
 #pragma endregion
 
-
-	if (m_pXenonVariables->g_bCrosshair) {
-		m_pXenon->g_cUIService->RenderCrosshair();
-	}
-
-	if (m_pXenonVariables->g_bFov) {
-		m_pXenon->g_cUIService->RenderFov();
-	}
-
-#pragma region CRadar
-
-	if (m_pXenonVariables->g_bRadar) {
-		//m_pRadar->SetTargets(m_vTargets2DWorld);
-		m_pXenon->g_cRadar->Render();
-	}
-
-#pragma endregion
-
-#pragma region Waypoints
-
-	if (m_pXenonConfigs->g_pWaypointsConfig->m_bRenderInWorld) {
-		m_pXenon->g_cWaypoints->RenderInWorld();
-	}
-
-#pragma endregion
-
-
-	if (m_pXenonVariables->g_bRenderUI) {
-		m_pXenon->g_cUIService->Update();
-	}
-
-#pragma region CESP
-
-	if (m_pXenonVariables->g_bSnapline) {
-		m_pXenon->g_cEsp->RenderSnapline();
-	}
-
-	if (m_pXenonVariables->g_bBox2D) {
-		m_pXenon->g_cEsp->Render2DBox();
-	}
-
-	if (m_pXenonVariables->g_bBox3D) {
-		m_pXenon->g_cEsp->Render3DBox();
-	}
-
-	if (m_pXenonVariables->g_bSkeleton) {
-		m_pXenon->g_cEsp->RenderSkeleton();
-	}
-
-	if (m_pXenonVariables->g_bHealthBar) {
-		m_pXenon->g_cEsp->RenderHealthBar();
-	}
-
-#pragma endregion
-
-	if (m_pXenonVariables->g_bAimbot) {
-
-		if (m_pXenonConfigs->g_pAimConfig->m_bNearest) {
-
-			Vec2* nearest = m_pXenon->g_cAimService->GetNearestPos(m_pXenonConfigs->g_pGameVariables->g_vTargets, m_pXenonConfigs->g_pGameVariables->g_vLocal, m_pXenonConfigs->g_pAimConfig->m_fNearest);
-			if (nearest == nullptr) m_pXenon->g_cAimbot->ResetTarget();
-			else m_pXenon->g_cAimbot->SetTarget(*nearest);
-
-		}
-
-		m_pXenon->g_cAimbot->AimTarget();
-	}
-
-	if (m_pXenonVariables->g_bRecoil) {
-		if (GetAsyncKeyState(VK_RBUTTON) && GetAsyncKeyState(VK_LBUTTON)) {
-			m_pXenon->g_cAimService->KeepRecoil();
-		}
-	}
-
-	if (m_pXenonVariables->g_bSpinbot2D) {
-		m_pXenon->g_cAimService->Spin2D();
-	}
-
-	if (m_pXenonVariables->g_bSpinbot3D) {
-		m_pXenon->g_cAimService->Spin3D();
+	for (std::shared_ptr<CComponent> &component : m_pComponents) {
+		component->Update();
 	}
 
 }
