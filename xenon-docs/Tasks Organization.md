@@ -16,27 +16,27 @@ kanban-plugin: board
 - [ ] packet sniffer + parser
 - [ ] implement il2cppresolver
 - [ ] write down some Lua binding c++
-- [ ] check configs naming convetions
 - [ ] in update if attached a game check if its opened
-- [ ] understand if toggle menu visiblity key is for game config or ui config
 - [ ] merge track mouse with the system get mouse fn
 - [ ] add ui right top show enabled features like minecraft clients
 - [ ] check if the use of pointer makes sense like with vec2
-- [ ] check is use enums with plural or singular name
 - [ ] add fly
+- [ ] check is use enums with plural or singular name
+- [ ] check configs naming convetions
 - [ ] system and gamesvariable needs rename
 
 
 ## InProgress
 
 - [ ] customize GUI
-- [ ] move all "use" var in a cheatconfig that will be share by any service
-- [ ] change all, don't have a single update but have a list with all features and services called now components that have a super clas with onupdate synchronized with the original update
 
 
 ## Done
 
 - [x] Organize the methods inside `aimbot.cpp` using `#region` to group them, starting with public methods under `#region Public Methods`, followed by private methods under `#region Private Methods`.
+- [x] move all "use" var in a cheatconfig that will be share by any service
+- [x] understand if toggle menu visiblity key is for game config or ui config
+- [x] change all, don't have a single update but have a list with all features and services called now components that have a super clas with onupdate synchronized with the original update
 - [x] add health bar
 - [x] External cheat gui
 - [x] create a single centralized object accessible from any object that have access to any component
