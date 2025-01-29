@@ -45,15 +45,13 @@ public:
 	bool g_bAutoScope;
 	bool g_bSmooth;
 	bool g_bHumanize;
-	bool g_bFov;
-	bool g_bNoRecoil;
 	bool g_bNoSpread;
-	bool g_bNearest;
+	bool g_bAimNearest;
+	bool g_bNoRecoil;
+	bool g_bFov;
 
 	// Features
 	bool g_bCrosshair;
-	bool g_bFov;
-	bool g_bRecoil;
 	bool g_bSpinbot2D;
 	bool g_bSpinbot3D;
 

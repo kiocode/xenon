@@ -196,7 +196,7 @@ static void AddServices(Builder& builder) {
 //	cheat.UseUICustom(RenderingHookTypes::KIERO);
 //	cheat.UseUIRenderOverlays();
 //	cheat.UseAimbot();
-//	//cheat.UseRecoil();
+//	//cheat.UseNoRecoil();
 //	//cheat.Use2DSpinbot();
 //
 //	cheat.Run();
@@ -274,7 +274,7 @@ static void TestGeneral(Builder& builder) {
 	
 	//cheat.UseUIRadar();
 	//cheat.UseAimbot();
-	//cheat.UseRecoil();
+	//cheat.UseNoRecoil();
 	//cheat.Use2DSpinbot();
 	//cheat.UseESPSnapline();
 	//cheat.UseESPBox2D();
@@ -339,7 +339,7 @@ static void TestRecoil(Builder& builder) {
 	cheat.UseUpdate();
 	//cheat.UseUICustom(RenderingType::DIRECTX11);
 	//cheat.UseAimbot();
-	cheat.UseRecoil();
+	cheat.UseNoRecoil();
 	//cheat.Use2DSpinbot();
 
 	cheat.Run();

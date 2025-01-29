@@ -10,7 +10,7 @@
 
 void AimService::Update() {
 
-    if (g_pXenonVariables->g_bRecoil) {
+    if (g_pXenonVariables->g_bNoRecoil) {
         if (GetAsyncKeyState(VK_RBUTTON) && GetAsyncKeyState(VK_LBUTTON)) {
             KeepRecoil();
         }
@@ -37,10 +37,10 @@ void AimService::KeepRecoil() {
 }
 
 void AimService::Aim(Vec2& target) {
-    if (g_pXenonConfigs->g_pAimConfig->m_bSmooth) {
+    if (g_pXenonVariables->g_bSmooth) {
         SmoothMoveToTarget(target);
     }
-    else if (g_pXenonConfigs->g_pAimConfig->m_bHumanize) {
+    else if (g_pXenonVariables->g_bHumanize) {
         Humanize(target);
     }
     else {

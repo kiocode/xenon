@@ -12,7 +12,7 @@ void Aimbot::Update() {
 
     if (g_pXenonVariables->g_bAimbot) {
 
-        if (g_pXenonConfigs->g_pAimConfig->m_bNearest) {
+        if (g_pXenonVariables->g_bAimNearest) {
 
             Vec2* nearest = g_pXenon->g_cAimService->GetNearestPos(g_pXenonConfigs->g_pGameVariables->g_vTargets, g_pXenonConfigs->g_pGameVariables->g_vLocal, g_pXenonConfigs->g_pAimConfig->m_fNearest);
             if (nearest == nullptr) ResetTarget();
