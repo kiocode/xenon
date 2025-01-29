@@ -243,8 +243,8 @@ void UIService::RenderDefaultMenu() {
 									ImGui::SliderFloat("Smooth value", &g_pXenonConfigs->g_pAimConfig->m_fSmooth, 5.f, 50.f, "%.0f");
 								}
 
-								ImGui::Checkbox("Nearest", &g_pXenonVariables->g_bNearest);
-								if (g_pXenonVariables->g_bNearest && ImGui::SliderFloat("Nearest distance", &g_pXenonConfigs->g_pAimConfig->m_fNearest, 100.f, 1000.f, "%.0f")) {
+								ImGui::Checkbox("Nearest", &g_pXenonVariables->g_bAimNearest);
+								if (g_pXenonVariables->g_bAimNearest && ImGui::SliderFloat("Nearest distance", &g_pXenonConfigs->g_pAimConfig->m_fNearest, 100.f, 1000.f, "%.0f")) {
 									g_pXenonConfigs->g_pAimConfig->m_fNearest = round(g_pXenonConfigs->g_pAimConfig->m_fNearest / 100.0f) * 100.0f;
 								}
 							}

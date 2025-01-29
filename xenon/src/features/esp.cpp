@@ -215,7 +215,7 @@ void Esp::RenderHealthBar() const {
 
 		currentHeight *= healthPercentage;
 
-		int barWidth = g_pXenonConfigs->g_pEspConfig->m_fHealthBarLength;
+		float barWidth = g_pXenonConfigs->g_pEspConfig->m_fHealthBarLength;
 		int margin = 3;
 
 		ImVec2 minBottomLeftBg = ImVec2(feet.x - (targetWidth / 2) - barWidth, feet.y);

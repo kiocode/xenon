@@ -63,9 +63,9 @@ public:
         spdlog::info("Aimbot is enabled");
     }
 
-    void UseRecoil() {
+    void UseNoRecoil() {
 
-        m_pXenonVariables->g_bRecoil = true;
+        m_pXenonVariables->g_bNoRecoil = true;
 
         spdlog::info("Recoil is enabled");
     }
