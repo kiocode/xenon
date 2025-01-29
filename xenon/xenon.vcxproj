@@ -146,6 +146,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="includes\xenon\components\component.hpp" />
+    <ClInclude Include="includes\xenon\components\features\aimbot.hpp" />
+    <ClInclude Include="includes\xenon\components\features\esp.hpp" />
+    <ClInclude Include="includes\xenon\components\features\game.hpp" />
+    <ClInclude Include="includes\xenon\components\features\radar.hpp" />
+    <ClInclude Include="includes\xenon\components\features\waypoints.hpp" />
+    <ClInclude Include="includes\xenon\components\services\aim_service.hpp" />
+    <ClInclude Include="includes\xenon\components\services\lua_service.hpp" />
+    <ClInclude Include="includes\xenon\components\services\memory_service.hpp" />
+    <ClInclude Include="includes\xenon\components\services\notification_service.hpp" />
+    <ClInclude Include="includes\xenon\components\services\ui_service.hpp" />
     <ClInclude Include="includes\xenon\configs\aim_config.hpp" />
     <ClInclude Include="includes\xenon\configs\esp_config.hpp" />
     <ClInclude Include="includes\xenon\configs\game_variables.hpp" />
@@ -154,11 +165,10 @@
     <ClInclude Include="includes\xenon\configs\waypoints_config.hpp" />
     <ClInclude Include="includes\xenon\core\builder.hpp" />
     <ClInclude Include="includes\xenon\core\system.hpp" />
-    <ClInclude Include="includes\xenon\features\aimbot.hpp" />
-    <ClInclude Include="includes\xenon\features\feature.hpp" />
     <ClInclude Include="includes\xenon\core\cheat.hpp" />
-    <ClInclude Include="includes\xenon\features\radar.hpp" />
-    <ClInclude Include="includes\xenon\features\waypoints.hpp" />
+    <ClInclude Include="includes\xenon\core\xenon_configs.hpp" />
+    <ClInclude Include="includes\xenon\core\xenon_core.hpp" />
+    <ClInclude Include="includes\xenon\core\xenon_variables.hpp" />
     <ClInclude Include="includes\xenon\models\enums\gameengine_types.hpp" />
     <ClInclude Include="includes\xenon\models\enums\rendering_types.hpp" />
     <ClInclude Include="includes\xenon\models\enums\game_dimensions.hpp" />
@@ -173,15 +183,7 @@
     <ClInclude Include="includes\xenon\models\enums\rendering_hook_types.hpp" />
     <ClInclude Include="includes\xenon\models\enums\unityengine_types.hpp" />
     <ClInclude Include="includes\xenon\models\waypoint.hpp" />
-    <ClInclude Include="includes\xenon\services\aim_service.hpp" />
-    <ClInclude Include="includes\xenon\features\esp.hpp" />
-    <ClInclude Include="includes\xenon\features\game.hpp" />
-    <ClInclude Include="includes\xenon\services\ui_service.hpp" />
-    <ClInclude Include="includes\xenon\features\hooks.hpp" />
-    <ClInclude Include="includes\xenon\services\lua_service.hpp" />
-    <ClInclude Include="includes\xenon\services\memory_service.hpp" />
     <ClInclude Include="includes\xenon\models\hotkey.hpp" />
-    <ClInclude Include="includes\xenon\services\notification_service.hpp" />
     <ClInclude Include="includes\xenon\utility\random.hpp" />
     <ClInclude Include="includes\xenon\utility\vec2.hpp" />
     <ClInclude Include="includes\xenon\utility\vec3.hpp" />
@@ -348,7 +350,6 @@
     <ClInclude Include="libs\spdlog\version.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="includes\xenon\configs\game_config.hpp" />
     <ClCompile Include="includes\xenon\models\enums\unrealengine_versions.hpp" />
     <ClCompile Include="includes\xenon\utility\imgui_helper.hpp" />
     <ClCompile Include="libs\imgui\imgui.cpp" />
@@ -407,8 +408,7 @@
     <ClCompile Include="src\features\waypoints.cpp" />
     <ClCompile Include="src\services\aim_service.cpp" />
     <ClCompile Include="src\features\esp.cpp" />
-    <ClCompile Include="src\features\feature.cpp" />
-    <ClCompile Include="src\features\game.cpp" />
+    <ClCompile Include="src\core\game.cpp" />
     <ClCompile Include="src\services\ui_service.cpp" />
     <ClCompile Include="src\core\builder.cpp" />
     <ClCompile Include="src\core\cheat.cpp" />

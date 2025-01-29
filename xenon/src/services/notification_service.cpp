@@ -1,4 +1,4 @@
-#include <xenon/services/notification_service.hpp>
+#include <xenon/components/services/notification_service.hpp>
 
 void NotificationService::RenderNotifications() {
 
@@ -20,6 +20,6 @@ void NotificationService::Notify(std::string title, std::string message) {
 		m_vQueuedNotifications.erase(m_vQueuedNotifications.begin());
 	}
 
-	Notification notification = Notification(m_vQueuedNotifications.size(), title, message);
+	Notification notification = Notification(static_cast<int>(m_vQueuedNotifications.size()), title, message);
 	m_vQueuedNotifications.push_back(notification);
 }

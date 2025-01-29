@@ -1,10 +1,28 @@
-#include <xenon/features/aimbot.hpp>
+#include <xenon/components/features/aimbot.hpp>
 
 #include <windows.h>
 #include <spdlog/spdlog.h>
 #include <cmath>
-#include <xenon/utility/random.hpp>
 #include <thread>
+
+#include <xenon/utility/random.hpp>
+#include <xenon/components/services/aim_service.hpp>
+
+void Aimbot::Update() {
+
+    if (g_pXenonVariables->g_bAimbot) {
+
+        if (g_pXenonConfigs->g_pAimConfig->m_bNearest) {
+
+            Vec2* nearest = g_pXenon->g_cAimService->GetNearestPos(g_pXenonConfigs->g_pGameVariables->g_vTargets, g_pXenonConfigs->g_pGameVariables->g_vLocal, g_pXenonConfigs->g_pAimConfig->m_fNearest);
+            if (nearest == nullptr) ResetTarget();
+            else SetTarget(*nearest);
+
+        }
+
+        AimTarget();
+    }
+}
 
 bool Aimbot::IsTargetEmpty() const {
     return m_vTarget.x == -99 && m_vTarget.y == -99;
@@ -23,7 +41,7 @@ void Aimbot::AimTargetWithPrediction(Vec2& vel) {
     // calc predicted target
     auto predictedTarget = /*prediction*/ m_vTarget;
 
-    m_pAimService->Aim(predictedTarget);
+    g_pXenon->g_cAimService->Aim(predictedTarget);
 
     if (IsTargetReached()) {
         ResetTarget();
@@ -37,8 +55,8 @@ void Aimbot::AimTarget() {
         spdlog::debug("Target is empty");
         return;
     }
-
-    m_pAimService->Aim(m_vTarget);
+    
+    g_pXenon->g_cAimService->Aim(m_vTarget);
 
     if (IsTargetReached()) {
         ResetTarget();

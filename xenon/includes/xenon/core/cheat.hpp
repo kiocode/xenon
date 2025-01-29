@@ -2,130 +2,133 @@
 
 #include <memory>
 
-#include <xenon/configs/game_config.hpp>
 #include <spdlog/spdlog.h>
-#include <xenon/features/game.hpp>
+
 #include <xenon/models/enums/rendering_hook_types.hpp>
 #include <xenon/models/enums/unrealengine_versions.hpp>
 #include <xenon/models/enums/unityengine_types.hpp>
-#include <xenon/services/notification_service.hpp>
+#include <xenon/components/features/game.hpp>
+#include <xenon/components/services/notification_service.hpp>
+
+#include <xenon/core/system.hpp>
+
+#include <xenon/core/xenon_configs.hpp>
+#include <xenon/core/xenon_variables.hpp>
+#include <xenon/core/xenon_core.hpp>
 
 class Cheat {
 public:
 
     Cheat(
-        std::shared_ptr<Game> pGame, 
-        std::shared_ptr<GameConfig> pGameConfig, 
-        std::shared_ptr<UIService> pUiService,
-        std::shared_ptr<UIConfig> pUiConfig, 
-        std::shared_ptr<System> pSystem,
-        std::shared_ptr<NotificationService> pNotificationService
-    ) : m_pGame(pGame), m_pGameConfig(pGameConfig), m_pUIService(pUiService), m_pUIConfig(pUiConfig), m_pSystem(pSystem), m_pNotificationService(pNotificationService){ }
+        std::shared_ptr<Xenon> pXenon,
+        std::shared_ptr<XenonVariables> pXenonVariables,
+        std::shared_ptr<Game> pGame
+    ) : m_pXenon(pXenon), m_pXenonVariables(pXenonVariables), m_pGame(pGame) { }
 
     void UseUpdate() {
 
-        m_pGameConfig->m_bUseUpdate = true;
+        m_pXenonVariables->g_bUpdate = true;
 
         spdlog::info("Update is enabled");
     }
 
     void UseUICustom(RenderingHookTypes renderingType) {
 
-        if (!m_pSystem->IsInternal()) {
-			spdlog::warn("Rendering hook type is not necessary if the cheat is External");;
-		}
-        
-		m_pGameConfig->m_bRenderingType = renderingType;
-		m_pGameConfig->m_bUseUICustom = true;
+        if (!m_pXenon->g_pSystem->IsInternal()) {
+            spdlog::warn("Rendering hook type is not necessary if the cheat is External");;
+        }
 
-		spdlog::info("Custom UI is enabled");
+        m_pXenonVariables->g_renderingType = renderingType;
+        m_pXenonVariables->g_bRenderUI = true;
+
+        spdlog::info("Custom UI is enabled");
     }
 
     void UseUICustom() {
 
-        if (m_pSystem->IsInternal()) {
-			spdlog::error("Rendering hook type must be specified if the cheat is Internal");
+        if (!m_pXenon->g_pSystem->IsInternal()) {
+            spdlog::error("Rendering hook type must be specified if the cheat is Internal");
             return;
-		}
-        
-		m_pGameConfig->m_bUseUICustom = true;
+        }
 
-		spdlog::info("Custom UI is enabled");
+        m_pXenonVariables->g_bRenderUI = true;
+
+        spdlog::info("Custom UI is enabled");
     }
 
     void UseAimbot() {
 
-        m_pGameConfig->m_bUseAimbot = true;
+        m_pXenonVariables->g_bAimbot = true;
 
         spdlog::info("Aimbot is enabled");
     }
 
     void UseRecoil() {
 
-        m_pGameConfig->m_bUseRecoil = true;
+        m_pXenonVariables->g_bRecoil = true;
 
         spdlog::info("Recoil is enabled");
     }
 
     void Use2DSpinbot() {
 
-        m_pGameConfig->m_bUse2DSpinbot = true;
+        m_pXenonVariables->g_bSpinbot2D = true;
 
         spdlog::info("Spinbot 2D is enabled");
     }
 
     void Use3DSpinbot() {
 
-        m_pGameConfig->m_bUse3DSpinbot = true;
+        m_pXenonVariables->g_bSpinbot3D = true;
 
         spdlog::info("Spinbot 3D is enabled");
     }
 
     void UseUIRadar() {
 
-        if (!m_pGameConfig->m_bUseUICustom) {
+        if (!m_pXenonVariables->g_bRenderUI) {
             spdlog::error("UI Radar can only be used with Custom UI");
-			return;
-		}
-        
-        m_pUIConfig->m_bUseUIRadar = true;
+            return;
+        }
 
-		spdlog::info("UI Radar is enabled");
+        m_pXenonVariables->g_bRadar = true;
+
+        spdlog::info("UI Radar is enabled");
 
     }
 
     void UseUIMenu() {
-        if (!m_pGameConfig->m_bUseUICustom) {
-			spdlog::error("UI Menu can only be used with Custom UI");
+        if (!m_pXenonVariables->g_bRenderUI) {
+            spdlog::error("UI Menu can only be used with Custom UI");
             return;
         }
-        
-        m_pUIConfig->m_bUseUIMenu = true;
 
-		spdlog::info("UI Menu is enabled");
+        m_pXenonVariables->g_bMenu = true;
+
+        spdlog::info("UI Menu is enabled");
 
     }
 
     void UseUIRenderMouse() {
-        
-        if (!m_pGameConfig->m_bUseUICustom) {
+
+        if (!m_pXenonVariables->g_bRenderUI) {
             spdlog::error("UI Custom Draw List can only be used with Custom UI");
-			return;
+            return;
         }
 
-        m_pUIConfig->m_bUseUIRenderMouse = true;
+        m_pXenonVariables->g_bRenderMouse = true;
 
         spdlog::info("UI Custom Draw List of Mouse is enabled");
     }
 
     void UseUIRenderWindows() {
 
-        if (!m_pGameConfig->m_bUseUICustom) {
-			spdlog::error("UI Custom Draw List can only be used with Custom UI");
+        if (!m_pXenonVariables->g_bRenderUI) {
+            spdlog::error("UI Custom Draw List can only be used with Custom UI");
             return;
         }
 
-        m_pUIConfig->m_bUseUIRenderWindows = true;
+        m_pXenonVariables->g_bRenderWindows = true;
 
         spdlog::info("UI Custom Draw List of Windows is enabled");
 
@@ -133,12 +136,12 @@ public:
 
     void UseUIRenderOverlays() {
 
-        if (!m_pGameConfig->m_bUseUICustom) {
-			spdlog::error("UI Custom Draw List can only be used with Custom UI");
+        if (!m_pXenonVariables->g_bRenderUI) {
+            spdlog::error("UI Custom Draw List can only be used with Custom UI");
             return;
         }
 
-        m_pUIConfig->m_bUseUIRenderOverlays = true;
+        m_pXenonVariables->g_bRenderOverlays = true;
 
         spdlog::info("UI Custom Draw List of Overlay is enabled");
 
@@ -146,12 +149,12 @@ public:
 
     void UseUIQuickActions() {
 
-        if (!m_pGameConfig->m_bUseUICustom) {
+        if (!m_pXenonVariables->g_bRenderUI) {
             spdlog::error("UI Quick Actions can only be used with Custom UI");
             return;
         }
 
-        m_pUIConfig->m_bUseUIQuickActions = true;
+        m_pXenonVariables->g_bRenderQuickActions = true;
 
         spdlog::info("UI Quick Actions is enabled");
 
@@ -159,73 +162,70 @@ public:
 
     void UseESPSnapline() {
 
-        if (!m_pGameConfig->m_bUseUICustom) {
-			spdlog::error("Snapline ESP can only be used with Custom UI");
-			return;
-		}
+        if (!m_pXenonVariables->g_bRenderUI) {
+            spdlog::error("Snapline ESP can only be used with Custom UI");
+            return;
+        }
 
-		m_pGameConfig->m_bUseESPSnapline = true;
+        m_pXenonVariables->g_bSnapline = true;
 
-		spdlog::info("Snapline ESP is enabled");
+        spdlog::info("Snapline ESP is enabled");
 
-	}
-    
+    }
+
     void UseESPBox2D() {
 
-        if (!m_pGameConfig->m_bUseUICustom) {
+        if (!m_pXenonVariables->g_bRenderUI) {
             spdlog::error("2D Box ESP can only be used with Custom UI");
             return;
         }
 
-        m_pGameConfig->m_bUseESPBox2D = true;
+        m_pXenonVariables->g_bBox2D = true;
 
         spdlog::info("2D Box ESP is enabled");
     }
 
     void UseESPBox3D() {
 
-        if (!m_pGameConfig->m_bUseUICustom) {
-			spdlog::error("3D Box ESP can only be used with Custom UI");
-			return;
-		}
+        if (!m_pXenonVariables->g_bRenderUI) {
+            spdlog::error("3D Box ESP can only be used with Custom UI");
+            return;
+        }
 
-		m_pGameConfig->m_bUseESPBox3D = true;
+        m_pXenonVariables->g_bBox3D = true;
 
-		spdlog::info("3D Box ESP is enabled");
-	}
+        spdlog::info("3D Box ESP is enabled");
+    }
 
     void UseESPSkeleton() {
 
-        if (!m_pGameConfig->m_bUseUICustom) {
+        if (!m_pXenonVariables->g_bRenderUI) {
             spdlog::error("Skeleton ESP can only be used with Custom UI");
             return;
         }
 
-        m_pGameConfig->m_bUseESPSkeleton = true;
+        m_pXenonVariables->g_bSkeleton = true;
 
         spdlog::info("Skeleton ESP is enabled");
     }
 
     void UseESPHealthBar() {
-        
-        if (!m_pGameConfig->m_bUseUICustom) {
-			spdlog::error("Health Bar ESP can only be used with Custom UI");
-			return;
-		}
 
-		m_pGameConfig->m_bUseESPHealthBar = true;
+        if (!m_pXenonVariables->g_bRenderUI) {
+            spdlog::error("Health Bar ESP can only be used with Custom UI");
+            return;
+        }
 
-		spdlog::info("Health Bar ESP is enabled");
+        m_pXenonVariables->g_bHealthBar = true;
+
+        spdlog::info("Health Bar ESP is enabled");
     }
 
     void Run();
 
 private:
+    std::shared_ptr<Xenon> m_pXenon;
+    std::shared_ptr<XenonVariables> m_pXenonVariables;
     std::shared_ptr<Game> m_pGame;
-    std::shared_ptr<GameConfig> m_pGameConfig;
-    std::shared_ptr<UIService> m_pUIService;
-    std::shared_ptr<UIConfig> m_pUIConfig;
-    std::shared_ptr<System> m_pSystem;
-    std::shared_ptr<NotificationService> m_pNotificationService;
 
 };

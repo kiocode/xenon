@@ -1,7 +1,6 @@
 #pragma once
 
 #include <functional>
-#include <xenon/utility/vec2.hpp>
 
 class RadarConfig {
 public:

@@ -1,8 +1,9 @@
 #pragma once
 
+#include <functional>
 #include <imgui/imgui.h>
 
-class ESPConfig {
+class EspConfig {
 public:
 	int m_nSnaplineTypeStart = 0;
 	int m_nSnaplineTypeEnd = 2;

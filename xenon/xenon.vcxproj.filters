@@ -15,21 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="includes\xenon\features\aimbot.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\xenon\features\game.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\xenon\features\hooks.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\xenon\features\esp.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\xenon\services\ui_service.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="libs\spdlog\cfg\argv.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -357,9 +342,6 @@
     <ClInclude Include="includes\xenon\utility\random.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="includes\xenon\services\aim_service.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="includes\xenon\utility\fonts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -495,15 +477,6 @@
     <ClInclude Include="libs\lua\lzio.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="includes\xenon\services\lua_service.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\xenon\services\memory_service.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\xenon\features\feature.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="includes\xenon\models\hotkey.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -531,9 +504,6 @@
     <ClInclude Include="includes\xenon\configs\esp_config.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="includes\xenon\features\radar.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="includes\xenon\configs\radar_config.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -546,13 +516,7 @@
     <ClInclude Include="includes\xenon\xenon.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="includes\xenon\features\waypoints.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="includes\xenon\configs\waypoints_config.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\xenon\services\notification_service.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="includes\xenon\models\notification.hpp">
@@ -615,6 +579,48 @@
     <ClInclude Include="includes\xenon\models\enums\gameengine_types.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="includes\xenon\components\component.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\xenon\components\services\aim_service.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\xenon\components\services\lua_service.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\xenon\components\services\memory_service.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\xenon\components\services\notification_service.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\xenon\components\services\ui_service.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\xenon\components\features\waypoints.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\xenon\components\features\aimbot.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\xenon\components\features\esp.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\xenon\components\features\game.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\xenon\components\features\radar.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\xenon\core\xenon_configs.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\xenon\core\xenon_core.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\xenon\core\xenon_variables.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\features\aimbot.cpp">
@@ -623,16 +629,13 @@
     <ClCompile Include="includes\xenon\core\di_manager.hpp">
       <Filter>Header Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\features\game.cpp">
+    <ClCompile Include="src\core\game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\services\aim_service.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\services\ui_service.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="includes\xenon\configs\game_config.hpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\core\system.cpp">
@@ -771,9 +774,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="includes\xenon\utility\imgui_helper.hpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\features\feature.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="includes\xenon\models\enums\unrealengine_versions.hpp">

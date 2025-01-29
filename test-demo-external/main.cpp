@@ -1,10 +1,12 @@
 #include <windows.h>
+
 #include <xenon/xenon.hpp>
-#include <xenon/features/waypoints.hpp>
+#include <xenon/components/features/waypoints.hpp>
+#include <xenon/components/services/lua_service.hpp>
 
 static void AddConfigurations(Builder& builder) {
 
-	std::shared_ptr<AimConfig> pAimConfig = builder.Services->GetConfiguration<AimConfig>();
+	std::shared_ptr<AimConfig> pAimConfig = builder.xenonConfigs->g_pAimConfig;
 	//pAimConfig->m_bHumanize = true;
 	//pAimConfig->m_bStartFromCenter = true;
 	//pAimConfig->m_bSmooth = true;
@@ -29,7 +31,7 @@ static void AddConfigurations(Builder& builder) {
 	//pAimConfig->m_fSpinbotRadius = 100; 
 	//pAimConfig->m_fSpinbotSpeed = 10; 
 
-	std::shared_ptr<RadarConfig> pRadarConfig = builder.Services->GetConfiguration<RadarConfig>();
+	std::shared_ptr<RadarConfig> pRadarConfig = builder.xenonConfigs->g_pRadarConfig;
 	pRadarConfig->m_nType = 0;
 	pRadarConfig->m_fSize= 200.f;
 	pRadarConfig->m_fDefaultScale = 1000.0f;
@@ -37,10 +39,10 @@ static void AddConfigurations(Builder& builder) {
 	pRadarConfig->m_fLocalSize = 6.0f;
 	pRadarConfig->m_fTargetsSize = 6.0f;
 
-	std::shared_ptr<UIConfig> pUIConfig = builder.Services->GetConfiguration<UIConfig>();
-	std::shared_ptr<GameVariables> pGameVariables = builder.Services->GetConfiguration<GameVariables>();
-	std::shared_ptr<Waypoints> pWaypoint = builder.Services->GetService<Waypoints>();
-	std::shared_ptr<NotificationService> pNotificationService = builder.Services->GetService<NotificationService>();
+	std::shared_ptr<UIConfig> pUIConfig = builder.xenonConfigs->g_pUIConfig;
+	std::shared_ptr<GameVariables> pGameVariables = builder.xenonConfigs->g_pGameVariables;
+	std::shared_ptr<Waypoints> pWaypoint = builder.xenon->g_cWaypoints;
+	std::shared_ptr<NotificationService> pNotificationService = builder.xenon->g_cNotificationService;
 	//pUIConfig->m_qActions->AddButton("Set Waypoint", [pWaypoint, pGameVariables]() { pWaypoint->SetWaypoint("waypointTest", pGameVariables->g_vLocal.m_vPos3D, ImColor(255, 255, 255)); });
 	pUIConfig->m_qActions->AddButton("Damage", [pWaypoint, pGameVariables]() { pGameVariables->g_vTargets[0].m_fHealth -= 5; });
 	pUIConfig->m_qActions->AddButton("Set Waypoint", [pWaypoint, pGameVariables]() { pWaypoint->SetWaypoint("waypointTest", pGameVariables->g_vLocal.m_vPos2D, ImColor(255, 255, 255)); });
@@ -51,6 +53,66 @@ static void AddConfigurations(Builder& builder) {
 
 	pUIConfig->m_qActions->AddButton("Test Notification", [pNotificationService]() { pNotificationService->Notify("test", "test message"); });
 
+	pUIConfig->m_vFnWindows.push_back([pGameVariables, pUIConfig, pRadarConfig, pWaypoint, pNotificationService]() {
+		ImGui::Begin("Test Window");
+		
+		{
+			//demo funcs
+			static bool checkbox = false;
+			static int sliderint = 0;
+			static float sliderfloat = 0.f;
+			static int combo = 0;
+			static const char* multi_items[5] = { "One", "Two", "Three", "Four", "Five" };
+			static bool multi_items_count[5];
+			static int key = 0;
+
+			ImGui::BeginGroup();
+			{
+				ImGui::Checkbox("Checkbox", &checkbox);
+				ImGui::SliderInt("Slider Int", &sliderint, 0, 100);
+				ImGui::SliderFloat("Slider Float", &sliderfloat, 0.f, 100.f, "%.1f");
+				ImGui::Combo("Combo", &combo, "Selectable 1\0Selectable 2\0Selectable 3", 3);
+				ImGui::MultiCombo("Multicombo", multi_items_count, multi_items, 5);
+				ImGui::Keybind("Hotkey", &key);
+
+				//if(ImGui::Button("Test Hotkey", ImVec2(200, 25)))
+				//	isEditing = true;
+				//ImGuiHelper::RenderHotkeyEditor(&testhotkey, &isEditing);
+			}
+			ImGui::EndGroup();
+		}
+
+		{
+
+			//demo funcs
+			static bool checkbox[2];
+			static int combo = 0;
+			static char input0[64] = "";
+			static char input1[64] = "";
+
+			//render funcs
+			ImGui::SetCursorPos(ImVec2(10, 10));
+			ImGui::BeginGroup();
+			{
+				if (checkbox[0])
+				{
+					ImGui::InputText("Pointer or Offset", input0, 64, ImGuiInputTextFlags_ReadOnly);
+					ImGui::InputText("Value", input1, 64, ImGuiInputTextFlags_ReadOnly);
+				}
+				else
+				{
+					ImGui::InputText("Pointer or Offset", input0, 64);
+					ImGui::InputText("Value", input1, 64);
+				}
+				ImGui::Checkbox("Read-Only", &checkbox[0]);
+				ImGui::Checkbox("Loop Command", &checkbox[1]);
+				ImGui::Combo("Type", &combo, "Byte\0\r2 Byte\0\r4 Byte\0\rFloat\0Double\0String", 6);
+			}
+			ImGui::EndGroup();
+		}
+
+		ImGui::End();
+	});
 }
 
 static void AddServices(Builder& builder) {
@@ -90,8 +152,8 @@ static void AddServices(Builder& builder) {
 //
 //	builder.GameManager->OnEvent("Update", [builder, offsets, serverAddr, localPlayerAddr]() {
 //
-//		builder.GameGlobalVariables->g_vTargets3DWorld.clear();
-//		builder.GameGlobalVariables->g_vLocalPos3DWorld = Vec3(builder.MemoryManager->Read<int>(serverAddr + offsets.posX), builder.MemoryManager->Read<int>(serverAddr + offsets.posY), builder.MemoryManager->Read<int>(serverAddr + offsets.posZ));
+//		builder.xenonConfigs->g_pGameVariables->g_vTargets3DWorld.clear();
+//		builder.xenonConfigs->g_pGameVariables->g_vLocalPos3DWorld = Vec3(builder.MemoryManager->Read<int>(serverAddr + offsets.posX), builder.MemoryManager->Read<int>(serverAddr + offsets.posY), builder.MemoryManager->Read<int>(serverAddr + offsets.posZ));
 //
 //		int localPlayerHealth = builder.MemoryManager->Read<int>(localPlayerAddr + offsets.health);
 //
@@ -110,7 +172,7 @@ static void AddServices(Builder& builder) {
 //			float y = builder.MemoryManager->Read<float>(entityAddr + offsets.posY + (i * 0x8));
 //			float z = builder.MemoryManager->Read<float>(entityAddr + offsets.posZ + (i * 0x8));
 //
-//			builder.GameGlobalVariables->g_vTargets3DWorld.push_back(Vec3(x, y, z));
+//			builder.xenonConfigs->g_pGameVariables->g_vTargets3DWorld.push_back(Vec3(x, y, z));
 //
 //			i++;
 //		} while (i != 6);
@@ -146,21 +208,24 @@ static void TestGeneral(Builder& builder) {
 	AddConfigurations(builder);
 	AddServices(builder);
 
-	std::shared_ptr<ESPConfig> pEspConfig = builder.Services->GetConfiguration<ESPConfig>();
+	#pragma region Edit Configs
+	std::shared_ptr<EspConfig> pEspConfig = builder.xenonConfigs->g_pEspConfig;
 	pEspConfig->m_cBox2DDistance = ImColor(255, 255, 255, 255);
 
-	std::shared_ptr<RadarConfig> pRadarConfig = builder.Services->GetConfiguration<RadarConfig>();
+	std::shared_ptr<RadarConfig> pRadarConfig = builder.xenonConfigs->g_pRadarConfig;
 	pRadarConfig->m_fDefaultScale = 2000;
+	#pragma endregion
 
+	#pragma region Mock 
 	TargetProfile local = TargetProfile();
-	local.m_vPos2D = builder.SystemVariables->GetScreenCenter();
+	local.m_vPos2D = builder.xenon->g_pSystem->GetScreenCenter();
 	local.m_vHeadPos2D = Vec2(local.m_vPos2D.x, local.m_vPos2D.y + 100);
 	local.m_vFeetPos2D = Vec2(local.m_vPos2D.x, local.m_vPos2D.y - 100);
 	local.m_fHealth = 100;
 	local.m_fMaxHealth = 100;
 	local.m_fWidth = 80;
-	builder.GameGlobalVariables->g_vLocal = local;
-	 
+	builder.xenonConfigs->g_pGameVariables->g_vLocal = local;
+
 	TargetProfile target1 = TargetProfile();
 	target1.m_vPos2D = Vec2(300, 500);
 	target1.m_vHeadPos2D = Vec2(target1.m_vPos2D.x, target1.m_vPos2D.y - 100);
@@ -168,7 +233,7 @@ static void TestGeneral(Builder& builder) {
 	target1.m_fHealth = 100;
 	target1.m_fMaxHealth = 100;
 	target1.m_fWidth = 80;
-	builder.GameGlobalVariables->g_vTargets.push_back(target1);
+	builder.xenonConfigs->g_pGameVariables->g_vTargets.push_back(target1);
 
 	TargetProfile target2 = TargetProfile();
 	target2.m_vPos2D = Vec2(1000, 400);
@@ -177,7 +242,7 @@ static void TestGeneral(Builder& builder) {
 	target2.m_fHealth = 80;
 	target2.m_fMaxHealth = 100;
 	target2.m_fWidth = 80;
-	builder.GameGlobalVariables->g_vTargets.push_back(target2);
+	builder.xenonConfigs->g_pGameVariables->g_vTargets.push_back(target2);
 
 	TargetProfile target3 = TargetProfile();
 	target3.m_vPos2D = Vec2(1500, 800);
@@ -186,7 +251,7 @@ static void TestGeneral(Builder& builder) {
 	target3.m_fHealth = 70;
 	target3.m_fMaxHealth = 100;
 	target3.m_fWidth = 80;
-	builder.GameGlobalVariables->g_vTargets.push_back(target3);
+	builder.xenonConfigs->g_pGameVariables->g_vTargets.push_back(target3);
 
 	TargetProfile target4 = TargetProfile();
 	target4.m_vPos2D = Vec2(400, 400);
@@ -195,24 +260,25 @@ static void TestGeneral(Builder& builder) {
 	target4.m_fHealth = 50;
 	target4.m_fMaxHealth = 100;
 	target4.m_fWidth = 80;
-	builder.GameGlobalVariables->g_vTargets.push_back(target4);
-
+	builder.xenonConfigs->g_pGameVariables->g_vTargets.push_back(target4);
+	#pragma endregion
 
 	Cheat cheat = builder.Build();
 
 	cheat.UseUpdate();
 	cheat.UseUICustom(RenderingHookTypes::KIERO);
 	cheat.UseUIMenu();
-	cheat.UseUIRadar();
 	//cheat.UseUIRenderWindows();
-	cheat.UseUIRenderOverlays();
-	cheat.UseUIQuickActions();
+	//cheat.UseUIRenderOverlays();
+	//cheat.UseUIQuickActions();
+	
+	//cheat.UseUIRadar();
 	//cheat.UseAimbot();
 	//cheat.UseRecoil();
 	//cheat.Use2DSpinbot();
-	cheat.UseESPSnapline();
-	cheat.UseESPBox2D();
-	cheat.UseESPHealthBar();
+	//cheat.UseESPSnapline();
+	//cheat.UseESPBox2D();
+	//cheat.UseESPHealthBar();
 
 	cheat.Run();
 
@@ -233,7 +299,7 @@ static void TestLua(Builder& builder) {
 	cheat.UseESPBox2D();*/
 
 
-	std::shared_ptr<LuaService> pLuaService = builder.Services->GetService<LuaService>();
+	std::shared_ptr<LuaService> pLuaService = builder.xenon->g_cLuaService;
 
 	//pLuaService->ExecuteScriptFile("scripts\\test.lua");
 	pLuaService->ExecuteScript(R"(
@@ -283,9 +349,9 @@ static void TestRecoil(Builder& builder) {
 static void RunTests() {
 
 	Builder builder("Demo external");
-	builder.SystemVariables->IsInternal(false);
-	builder.SystemVariables->SetGameDimension(GameDimensions::DIMENSION_2D);
-	builder.SystemVariables->m_fnW2S2D = [](Vec2 pos) { return new Vec2(pos.x, pos.y); };
+	builder.xenon->g_pSystem->IsInternal(false);
+	builder.xenon->g_pSystem->SetGameDimension(GameDimensions::DIMENSION_2D);
+	builder.xenon->g_pSystem->m_fnW2S2D = [](Vec2 pos) { return new Vec2(pos.x, pos.y); };
 	builder.SetConsoleEnabled();
 	builder.SetDebugLogLevel();
 

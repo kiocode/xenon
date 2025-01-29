@@ -1,12 +1,12 @@
-#include <xenon/services/lua_service.hpp>
-#include <xenon/services/memory_service.hpp>
+#include <xenon/components/services/lua_service.hpp>
+#include <xenon/components/services/memory_service.hpp>
 #include <xenon/core/di_manager.hpp>
 
 void LuaService::RegisterBinds() {
 
 	lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::string, sol::lib::table, sol::lib::math, sol::lib::os, sol::lib::io);
 
-    lua.set("memoryService", DIManager::GetInstance().GetService<MemoryService>());
+    //lua.set("memoryService", DIManager::GetInstance().GetService<MemoryService>());
 
 	//spdlog::info("LuaService::RegisterBinds() - Binds registered");
 }
