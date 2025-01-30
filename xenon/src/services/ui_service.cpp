@@ -253,7 +253,17 @@ void UIService::RenderDefaultMenu() {
 						ImGui::EndChild();
 					} break;
 					case SubTabs::COLORS: {
-
+						ImGui::SetCursorPos(ImVec2(10, 80));
+						ImGui::BeginChild("Settings", ImVec2(470, 365));
+						{
+							//render funcs
+							ImGui::SetCursorPos(ImVec2(10, 10));
+							ImGui::BeginGroup();
+							{
+							}
+							ImGui::EndGroup();
+						}
+						ImGui::EndChild();
 					} break;
 				}
 
@@ -321,18 +331,33 @@ void UIService::RenderDefaultMenu() {
 						ImGui::SetCursorPos(ImVec2(10, 80));
 						ImGui::BeginChild("Radar Settings", ImVec2(470, 365));
 						{
-							ImGui::Checkbox("Radar", &g_pXenonVariables->g_bRadar);
-							ImGui::Checkbox("Show Targets Name", &g_pXenonConfigs->g_pRadarConfig->m_bTargetsName);
-							ImGui::SliderFloat("Size", &g_pXenonConfigs->g_pRadarConfig->m_fSize, 0.f, 500.f, "%.0f");
-							ImGui::SliderFloat("Zoom", &g_pXenonConfigs->g_pRadarConfig->m_fZoom, 0.f, 100.f, "%.0f");
-							ImGui::SliderFloat("Targets Size", &g_pXenonConfigs->g_pRadarConfig->m_fTargetsSize, 0.f, 100.f, "%.0f");
-							ImGui::SliderFloat("Local Size", &g_pXenonConfigs->g_pRadarConfig->m_fLocalSize, 0.f, 100.f, "%.0f");
-
+							//render funcs
+							ImGui::SetCursorPos(ImVec2(10, 10));
+							ImGui::BeginGroup();
+							{
+								ImGui::Checkbox("Radar", &g_pXenonVariables->g_bRadar);
+								ImGui::Checkbox("Show Targets Name", &g_pXenonConfigs->g_pRadarConfig->m_bTargetsName);
+								ImGui::SliderFloat("Size", &g_pXenonConfigs->g_pRadarConfig->m_fSize, 0.f, 500.f, "%.0f");
+								ImGui::SliderFloat("Zoom", &g_pXenonConfigs->g_pRadarConfig->m_fZoom, 0.f, 100.f, "%.0f");
+								ImGui::SliderFloat("Targets Size", &g_pXenonConfigs->g_pRadarConfig->m_fTargetsSize, 0.f, 100.f, "%.0f");
+								ImGui::SliderFloat("Local Size", &g_pXenonConfigs->g_pRadarConfig->m_fLocalSize, 0.f, 100.f, "%.0f");
+							}
+							ImGui::EndGroup();
 						}
 						ImGui::EndChild();
 					} break;
 					case SubTabs::COLORS: {
-
+						ImGui::SetCursorPos(ImVec2(10, 80));
+						ImGui::BeginChild("Settings", ImVec2(470, 365));
+						{
+							//render funcs
+							ImGui::SetCursorPos(ImVec2(10, 10));
+							ImGui::BeginGroup();
+							{
+							}
+							ImGui::EndGroup();
+						}
+						ImGui::EndChild();
 					} break;
 				}
 
@@ -346,15 +371,21 @@ void UIService::RenderDefaultMenu() {
 						ImGui::SetCursorPos(ImVec2(10, 80));
 						ImGui::BeginChild("Misc Settings", ImVec2(470, 365));
 						{
-							ImGui::Checkbox("Watermark", &g_pXenonVariables->g_bWatermark);
-							ImGui::Checkbox("Render Notifications", &g_pXenonVariables->g_bNotifications);
-							ImGui::Checkbox("Render Windows", &g_pXenonVariables->g_bRenderWindows);
-							ImGui::Checkbox("Render Overlays", &g_pXenonVariables->g_bRenderOverlays);
-							ImGui::Checkbox("Render Mouse", &g_pXenonVariables->g_bRenderMouse);
-							if (g_pXenonVariables->g_bRenderMouse) {
+							//render funcs
+							ImGui::SetCursorPos(ImVec2(10, 10));
+							ImGui::BeginGroup();
+							{
+								ImGui::Checkbox("Watermark", &g_pXenonVariables->g_bWatermark);
+								ImGui::Checkbox("Render Notifications", &g_pXenonVariables->g_bNotifications);
+								ImGui::Checkbox("Render Windows", &g_pXenonVariables->g_bRenderWindows);
+								ImGui::Checkbox("Render Overlays", &g_pXenonVariables->g_bRenderOverlays);
+								ImGui::Checkbox("Render Mouse", &g_pXenonVariables->g_bRenderMouse);
+								if (g_pXenonVariables->g_bRenderMouse) {
 
+								}
+								ImGui::Checkbox("Developer Console", &devconsole);
 							}
-							ImGui::Checkbox("Developer Console", &devconsole);
+							ImGui::EndGroup();
 						}
 						ImGui::EndChild();
 					} break;
@@ -362,11 +393,17 @@ void UIService::RenderDefaultMenu() {
 						ImGui::SetCursorPos(ImVec2(10, 80));
 						ImGui::BeginChild("Misc Colors", ImVec2(470, 365));
 						{
-							ImGui::ColorEdit4("Crossair", (float*)&g_pXenonConfigs->g_pUIConfig->m_cCrosshair);
-							ImGui::Combo("Crossair Type", &g_pXenonConfigs->g_pUIConfig->m_nCrosshairType, "Cross\0Circle");
+							//render funcs
+							ImGui::SetCursorPos(ImVec2(10, 10));
+							ImGui::BeginGroup();
+							{
+								ImGui::ColorEdit4("Crossair", (float*)&g_pXenonConfigs->g_pUIConfig->m_cCrosshair);
+								ImGui::Combo("Crossair Type", &g_pXenonConfigs->g_pUIConfig->m_nCrosshairType, "Cross\0Circle");
 							
-							ImGui::ColorEdit4("Mouse", (float*)&g_pXenonConfigs->g_pUIConfig->m_cMouse);
-							ImGui::Combo("Mouse Type", &g_pXenonConfigs->g_pUIConfig->m_nMouseType, "Cross\0Dot");
+								ImGui::ColorEdit4("Mouse", (float*)&g_pXenonConfigs->g_pUIConfig->m_cMouse);
+								ImGui::Combo("Mouse Type", &g_pXenonConfigs->g_pUIConfig->m_nMouseType, "Cross\0Dot");
+							}
+							ImGui::EndGroup();
 						}
 						ImGui::EndChild();
 	
@@ -382,14 +419,30 @@ void UIService::RenderDefaultMenu() {
 						ImGui::SetCursorPos(ImVec2(10, 80));
 						ImGui::BeginChild("Settings", ImVec2(470, 365));
 						{
-							ImGui::SliderFloat("Default Scale", &g_pXenonConfigs->g_pRadarConfig->m_fDefaultScale, 500.f, 10000.f, "%.0f");
-							ImGui::Checkbox("Lua Editor", &g_pXenonVariables->g_bLuaEditor);
-							ImGui::Checkbox("Quick Actions", &g_pXenonVariables->g_bRenderQuickActions);
+							//render funcs
+							ImGui::SetCursorPos(ImVec2(10, 10));
+							ImGui::BeginGroup();
+							{
+								ImGui::SliderFloat("Default Scale", &g_pXenonConfigs->g_pRadarConfig->m_fDefaultScale, 500.f, 10000.f, "%.0f");
+								ImGui::Checkbox("Lua Editor", &g_pXenonVariables->g_bLuaEditor);
+								ImGui::Checkbox("Quick Actions", &g_pXenonVariables->g_bRenderQuickActions);
+							}
+							ImGui::EndGroup();
 						}
 						ImGui::EndChild();
 					} break;
 					case SubTabs::COLORS: {
-
+						ImGui::SetCursorPos(ImVec2(10, 80));
+						ImGui::BeginChild("Settings", ImVec2(470, 365));
+						{
+							//render funcs
+							ImGui::SetCursorPos(ImVec2(10, 10));
+							ImGui::BeginGroup();
+							{
+							}
+							ImGui::EndGroup();
+						}
+						ImGui::EndChild();
 					} break;
 				}
 

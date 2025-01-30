@@ -46,7 +46,7 @@ public:
 
     void UseUICustom() {
 
-        if (!m_pXenon->g_pSystem->IsInternal()) {
+        if (m_pXenon->g_pSystem->IsInternal()) {
             spdlog::error("Rendering hook type must be specified if the cheat is Internal");
             return;
         }

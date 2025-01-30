@@ -74,7 +74,7 @@ int main()
 	Builder builder("DDNet external");
 	builder.xenon->g_pSystem->IsInternal(false);
 	builder.SetConsoleEnabled();
-	builder.SetDebugLogLevel();
+	builder.SetInfoLogLevel();
 
 	builder.xenon->g_pSystem->SetGameDimension(GameDimensions::DIMENSION_2D);
 
@@ -159,7 +159,7 @@ int main()
 	Cheat cheat = builder.Build();
 
 	cheat.UseUpdate();
-	cheat.UseUICustom(RenderingHookTypes::KIERO);
+	cheat.UseUICustom();
 	cheat.UseUIMenu();
 	cheat.UseUIRenderOverlays();
 	cheat.UseUIQuickActions();

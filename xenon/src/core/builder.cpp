@@ -77,7 +77,7 @@ void Builder::RegisterDefaultComponents() {
     #pragma region Components
     xenon->g_pSystem = std::make_shared<System>();
 
-    xenon->g_cAimbot = std::make_shared<Aimbot>();
+    //xenon->g_cAimbot = std::make_shared<Aimbot>();
     xenon->g_cEsp = std::make_shared<Esp>();
     xenon->g_cWaypoints = std::make_shared<Waypoints>();
     xenon->g_cRadar = std::make_shared<Radar>();
@@ -90,7 +90,7 @@ void Builder::RegisterDefaultComponents() {
     #pragma endregion
 
     // The order is important for rendering priority and initialization order
-    components.push_back(xenon->g_cAimbot);
+    //components.push_back(xenon->g_cAimbot);
     components.push_back(xenon->g_cEsp);
     components.push_back(xenon->g_cWaypoints);
     components.push_back(xenon->g_cRadar);
