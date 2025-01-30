@@ -33,21 +33,21 @@ void Game::EnableUpdate() {
 
 		switch (m_pXenonVariables->g_renderingType) {
 		case RenderingHookTypes::KIERO: {
-			kiero::bind(8, (void**)&m_pXenon->g_cUIService->oPresent, Game::hkPresentWrapper);
+			kiero::bind(8, (void**)&m_pXenon->g_cUIService->oPresent, Game::BindForInternal);
 		} break;
 		case RenderingHookTypes::DISCORD: {
 			uint64_t discordPresentOffset = 0x1060E0;
 			uint64_t presentDiscordAddr = (uint64_t)(GetModuleHandleA("DiscordHook64.dll")) + discordPresentOffset;
 			Present* discordPresent = (Present*)presentDiscordAddr;
 			m_pXenon->g_cUIService->oPresent = *discordPresent;
-			_InterlockedExchangePointer((volatile PVOID*)presentDiscordAddr, Game::hkPresentWrapper);
+			_InterlockedExchangePointer((volatile PVOID*)presentDiscordAddr, Game::BindForInternal);
 		} break;
 		case RenderingHookTypes::STEAM: {
 			uint64_t steamPresentOffset = 0x150D70;
 			uint64_t presentSteamAddr = (uint64_t)(GetModuleHandleA("GameOverlayRenderer64.dll")) + steamPresentOffset;
 			Present* steamPresent = (Present*)presentSteamAddr;
 			m_pXenon->g_cUIService->oPresent = *steamPresent;
-			_InterlockedExchangePointer((volatile PVOID*)presentSteamAddr, Game::hkPresentWrapper);
+			_InterlockedExchangePointer((volatile PVOID*)presentSteamAddr, Game::BindForInternal);
 		} break;
 		}
 
@@ -100,44 +100,50 @@ void Game::BindForExternal() {
 
 // looply called by the hook
 HRESULT __stdcall Game::BindForInternal(IDXGISwapChain* pSwapChain, UINT nSyncInterval, UINT nFlags) {
-	if (!m_bInit && m_pXenonVariables->g_bRenderUI)
+	if (!m_bInit && m_bRenderUI)
 	{
-		if (!m_pXenon->g_cUIService->InitPresent(pSwapChain)) {
-			return m_pXenon->g_cUIService->oPresent(pSwapChain, nSyncInterval, nFlags);
+		if (!m_pUIService->InitPresent(pSwapChain)) {
+			return m_pUIService->oPresent(pSwapChain, nSyncInterval, nFlags);
 		}
 		else {
-			m_pXenon->g_cUIService->CreateImGuiUI();
+			m_pUIService->CreateImGuiUI();
 			m_bInit = true;
 		}
 	}
 
 	if (!GetAsyncKeyState(VK_ESCAPE)) {
 
-		if (m_pXenonVariables->g_bRenderUI) {
-			m_pXenon->g_cUIService->BeginRenderUI();
+		if (m_bRenderUI) {
+			m_pUIService->BeginRenderUI();
 		}
-		Update();
-		if (m_pXenonVariables->g_bRenderUI) {
-			m_pXenon->g_cUIService->EndRenderUI();
+		UpdateWrapper();
+		if (m_bRenderUI) {
+			m_pUIService->EndRenderUI();
 		}
 
 	}
 
-	return m_pXenon->g_cUIService->oPresent(pSwapChain, nSyncInterval, nFlags);
+	return m_pUIService->oPresent(pSwapChain, nSyncInterval, nFlags);
 }
 
 void Game::Update() {
 
-#pragma region System
+	#pragma region System
 
 	TriggerEvent("Update");
 	m_pXenon->g_cLuaService->TriggerOnUpdate();
 	HandleShortcuts();
 
-#pragma endregion
+	#pragma endregion
 
 	for (std::shared_ptr<CComponent> &component : m_pComponents) {
 		component->Update();
+	}
+
+	for (TargetProfile& target : m_pXenonConfigs->g_pGameVariables->g_vTargets) {
+		for (std::shared_ptr<CComponent>& component : m_pComponents) {
+			component->UpdateCurrentTarget(&target);
+		}
 	}
 
 }

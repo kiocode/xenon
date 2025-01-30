@@ -7,22 +7,40 @@
 
 #include <xenon/utility/random.hpp>
 #include <xenon/components/services/aim_service.hpp>
+#include <xenon/core/system.hpp>
 
-void Aimbot::Update() {
 
-    if (g_pXenonVariables->g_bAimbot) {
-
-        if (g_pXenonVariables->g_bAimNearest) {
-
-            Vec2* nearest = g_pXenon->g_cAimService->GetNearestPos(g_pXenonConfigs->g_pGameVariables->g_vTargets, g_pXenonConfigs->g_pGameVariables->g_vLocal, g_pXenonConfigs->g_pAimConfig->m_fNearest);
-            if (nearest == nullptr) ResetTarget();
-            else SetTarget(*nearest);
-
-        }
-
+void Aimbot::UpdateCurrentTarget(TargetProfile* target) {
+    if (!g_pXenonVariables->g_bAimbot || !g_pXenonVariables->g_bAimNearest) {
         AimTarget();
+        return;
     }
+
+    TargetProfile& local = g_pXenonConfigs->g_pGameVariables->g_vLocal;
+    float distance = g_pXenon->g_pSystem->Is3DGame()
+        ? target->m_vPos3D.Distance(local.m_vPos3D)
+        : target->m_vPos2D.Distance(local.m_vPos2D);
+
+    if (distance < nearestDistance) {
+        nearestDistance = distance;
+        g_pXenonConfigs->g_pGameVariables->g_vNearestTarget = target;
+    }
+
+    if (!g_pXenonConfigs->g_pGameVariables->g_vNearestTarget) {
+        ResetTarget();
+        return;
+    }
+
+    Vec2* nearest = g_pXenon->g_pSystem->Is3DGame()
+        ? g_pXenon->g_pSystem->m_fnW2S3D(g_pXenonConfigs->g_pGameVariables->g_vNearestTarget->m_vPos3D)
+        : g_pXenon->g_pSystem->m_fnW2S2D(g_pXenonConfigs->g_pGameVariables->g_vNearestTarget->m_vPos2D);
+
+    if (nearest == nullptr) ResetTarget();
+    else SetTarget(*nearest);
+
+    AimTarget();
 }
+
 
 bool Aimbot::IsTargetEmpty() const {
     return m_vTarget.x == -99 && m_vTarget.y == -99;

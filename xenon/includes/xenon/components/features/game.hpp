@@ -12,7 +12,6 @@
 #include <xenon/core/xenon_configs.hpp>
 #include <xenon/core/xenon_variables.hpp>
 #include <xenon/components/component.hpp>
-#include <xenon/core/di_manager.hpp>
 
 class Game {
 public:
@@ -22,7 +21,11 @@ public:
         std::shared_ptr<XenonConfigs> pXenonConfigs,
         std::shared_ptr<XenonVariables> pXenonVariables,
         std::vector<std::shared_ptr<CComponent>> pComponents
-    ) : m_pXenon(pXenon), m_pXenonConfigs(pXenonConfigs), m_pXenonVariables(pXenonVariables), m_pComponents(pComponents) {}
+    ) : m_pXenon(pXenon), m_pXenonConfigs(pXenonConfigs), m_pXenonVariables(pXenonVariables), m_pComponents(pComponents) {
+        m_bRenderUI = &m_pXenonVariables->g_bRenderUI;
+        m_pUIService = m_pXenon->g_cUIService;
+        UpdateWrapper = std::bind(&Game::Update, this);
+    }
 
 	void EnableUpdate();
 
@@ -50,15 +53,14 @@ private:
     std::shared_ptr<XenonVariables> m_pXenonVariables;
     std::vector<std::shared_ptr<CComponent>> m_pComponents;
 
-    bool m_bInit = false;
-
     void Update();
 	void HandleShortcuts(); 
 
-    static HRESULT __stdcall hkPresentWrapper(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags) {
-        return DIManager::GetInstance().GetService<Game>()->BindForInternal(pSwapChain, SyncInterval, Flags);
-    }
-    HRESULT __stdcall BindForInternal(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags);
+    static HRESULT __stdcall BindForInternal(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags);
     void BindForExternal();
 
+    inline static bool m_bInit = false;
+    inline static bool* m_bRenderUI = nullptr;
+    inline static std::shared_ptr<UIService> m_pUIService = nullptr;
+    inline static std::function<void()> UpdateWrapper;
 };

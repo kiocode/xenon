@@ -8,12 +8,12 @@ kanban-plugin: board
 
 - [ ] add esp and aimbot support for visible/not players behind walls
 - [ ] Add on github an activity check for building and formatting
+- [ ] packet sniffer + parser
+- [ ] dll loader
 
 
 ## Todo
 
-- [ ] dll loader
-- [ ] packet sniffer + parser
 - [ ] implement il2cppresolver
 - [ ] write down some Lua binding c++
 - [ ] in update if attached a game check if its opened

@@ -7,4 +7,6 @@ class GameVariables {
 public:
 	std::vector<TargetProfile> g_vTargets;
 	TargetProfile g_vLocal;
+
+	TargetProfile* g_vNearestTarget = nullptr;
 };

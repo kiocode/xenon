@@ -18,5 +18,6 @@ public:
 
 	virtual void Init() {}
 	virtual void Update() {}
+	virtual void UpdateCurrentTarget(TargetProfile* target) {}
 	virtual ~CComponent() = default;
 };

@@ -4,7 +4,6 @@
 
 #include <spdlog/spdlog.h>
 #include <xenon/utility/vec2.hpp>
-#include <xenon/core/di_manager.hpp>
 #include <xenon/core/cheat.hpp>
 #include <xenon/components/features/game.hpp>
 #include <xenon/components/services/memory_service.hpp>

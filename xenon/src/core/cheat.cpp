@@ -2,7 +2,6 @@
 
 #include <xenon/core/cheat.hpp>
 #include <xenon/components/services/ui_service.hpp>
-#include <xenon/core/di_manager.hpp>
 
 void Cheat::Run() {
 

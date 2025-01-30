@@ -626,9 +626,6 @@
     <ClCompile Include="src\features\aimbot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="includes\xenon\core\di_manager.hpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\core\game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

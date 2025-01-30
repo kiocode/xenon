@@ -5,7 +5,6 @@
 #include <imgui/imgui_internal.h>
 
 #include <xenon/utility/imgui_helper.hpp>
-#include <xenon/core/di_manager.hpp>
 
 class Notification {
 public:

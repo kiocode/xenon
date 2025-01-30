@@ -1,5 +1,4 @@
-#ifndef XENON_COMPONENTS_AIMBOT_HPP
-#define XENON_COMPONENTS_AIMBOT_HPP
+#pragma once
 
 #include <xenon/components/component.hpp>
 
@@ -17,11 +16,10 @@ public:
     void AimTarget();
     void AimTargetWithPrediction(Vec2& vel);
 
-    void Update() override;
+    void UpdateCurrentTarget(TargetProfile* target) override;
 
 private:
     Vec2 m_vTarget;
 
+    float nearestDistance = g_pXenonConfigs->g_pAimConfig->m_fNearest;
 };
-
-#endif // XENON_COMPONENTS_AIMBOT_HPP

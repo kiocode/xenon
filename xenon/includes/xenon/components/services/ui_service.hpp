@@ -14,7 +14,6 @@
 #include <xenon/components/component.hpp>
 #include <xenon/core/system.hpp>
 
-#include <xenon/core/di_manager.hpp>
 #include <xenon/models/hotkey.hpp>
 #include <xenon/utility/imgui_helper.hpp>
 
@@ -39,9 +38,6 @@ enum SubTabs {
 class UIService : public CComponent {
 public:
 
-    inline static bool* m_bShowMenu = nullptr;
-    inline static std::shared_ptr<System> m_pSystem = nullptr;
-    inline static WNDPROC* m_pOWndProc = nullptr;
     void Init() override {
         m_bShowMenu = &g_pXenonVariables->g_bShowMenu;
         m_pSystem = g_pXenon->g_pSystem;
@@ -118,4 +114,8 @@ private:
     void DestroyDeviceUI();
     void DestroyImGuiUI();
 
+
+    inline static bool* m_bShowMenu = nullptr;
+    inline static std::shared_ptr<System> m_pSystem = nullptr;
+    inline static WNDPROC* m_pOWndProc = nullptr;
 };
