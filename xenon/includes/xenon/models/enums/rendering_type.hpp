@@ -1,6 +1,6 @@
 #pragma once
 
-enum RenderingTypes {
+enum RenderingType {
 	REND_NONE = 0,
 	DX9,
 	DX11,

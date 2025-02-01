@@ -62,22 +62,22 @@ void Builder::SetErrorLogLevel() {
 void Builder::RegisterDefaultComponents() {
 
     xenon = std::make_shared<Xenon>();
-    xenonConfigs = std::make_shared<XenonConfigs>();
+    xenonConfig = std::make_shared<XenonConfig>();
     xenonVariables = std::make_shared<XenonVariables>();
 
     #pragma region Configs
-    xenonConfigs->g_pAimConfig = std::make_shared<AimConfig>();
-    xenonConfigs->g_pEspConfig = std::make_shared<EspConfig>();
-    xenonConfigs->g_pWaypointsConfig = std::make_shared<WaypointsConfig>();
-    xenonConfigs->g_pUIConfig = std::make_shared<UIConfig>();
-    xenonConfigs->g_pRadarConfig = std::make_shared<RadarConfig>();
-    xenonConfigs->g_pGameVariables = std::make_shared<GameVariables>();
+    xenonConfig->g_pAimConfig = std::make_shared<AimConfig>();
+    xenonConfig->g_pEspConfig = std::make_shared<EspConfig>();
+    xenonConfig->g_pWaypointsConfig = std::make_shared<WaypointsConfig>();
+    xenonConfig->g_pUIConfig = std::make_shared<UIConfig>();
+    xenonConfig->g_pRadarConfig = std::make_shared<RadarConfig>();
+    xenonConfig->g_pGameVariables = std::make_shared<GameVariables>();
     #pragma endregion
 
     #pragma region Components
     xenon->g_pSystem = std::make_shared<System>();
 
-    //xenon->g_cAimbot = std::make_shared<Aimbot>();
+    xenon->g_cAimbot = std::make_shared<Aimbot>();
     xenon->g_cEsp = std::make_shared<Esp>();
     xenon->g_cWaypoints = std::make_shared<Waypoints>();
     xenon->g_cRadar = std::make_shared<Radar>();
@@ -90,7 +90,7 @@ void Builder::RegisterDefaultComponents() {
     #pragma endregion
 
     // The order is important for rendering priority and initialization order
-    //components.push_back(xenon->g_cAimbot);
+    components.push_back(xenon->g_cAimbot);
     components.push_back(xenon->g_cEsp);
     components.push_back(xenon->g_cWaypoints);
     components.push_back(xenon->g_cRadar);
@@ -103,12 +103,12 @@ void Builder::RegisterDefaultComponents() {
     for (std::shared_ptr<CComponent> component : components) {
         component->g_pXenon = xenon;
         component->g_pXenonVariables = xenonVariables;
-        component->g_pXenonConfigs = xenonConfigs;
+        component->g_pXenonConfigs = xenonConfig;
 
         component->Init();
     }
 
-    GameManager = std::make_shared<Game>(xenon, xenonConfigs, xenonVariables, components);
+    GameManager = std::make_shared<Game>(xenon, xenonConfig, xenonVariables, components);
 }
 
 Cheat Builder::Build() const {

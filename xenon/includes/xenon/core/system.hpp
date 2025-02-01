@@ -7,11 +7,11 @@
 
 #include <xenon/utility/vec2.hpp>
 #include <xenon/utility/vec3.hpp>
-#include <xenon/models/enums/game_dimensions.hpp>
-#include <xenon/models/enums/rendering_types.hpp>
-#include <xenon/models/enums/gameengine_types.hpp>
-#include <xenon/models/enums/unityengine_types.hpp>
-#include <xenon/models/enums/unrealengine_versions.hpp>
+#include <xenon/models/enums/game_dimension.hpp>
+#include <xenon/models/enums/rendering_type.hpp>
+#include <xenon/models/enums/gameengine_type.hpp>
+#include <xenon/models/enums/unityengine_type.hpp>
+#include <xenon/models/enums/unrealengine_version.hpp>
 
 class System {
 public:
@@ -45,37 +45,37 @@ public:
 		return m_bIsInternal;
 	}
 
-	void IsUnityEngine(UnityEngineTypes type) {
+	void IsUnityEngine(UnityEngineType type) {
 		if (!m_bIsInternal) {
 			spdlog::warn("External cheat cannot change to Unity Engine.");
 		}
 
-		m_gameEngineType = GameEngineTypes::UNITY_ENGINE;
+		m_gameEngineType = GameEngineType::UNITY_ENGINE;
 		m_unityEngineType = type;
 	}
 
-	void IsUnrealEngine(UnrealEngineVersions version) {
+	void IsUnrealEngine(UnrealEngineVersion version) {
 		if (!m_bIsInternal) {
 			spdlog::warn("External cheat cannot change to Unreal Engine.");
 		}
 
-		m_gameEngineType = GameEngineTypes::UNREAL_ENGINE;
+		m_gameEngineType = GameEngineType::UNREAL_ENGINE;
 		m_unrealEngineVersion = version;
 	}
 
-	void SetGameDimension(GameDimensions dim) {
+	void SetGameDimension(GameDimension dim) {
 		m_gameDimension = dim;
 	}
 
-	GameDimensions GetGameDimension() const {
+	GameDimension GetGameDimension() const {
 		return m_gameDimension;
 	}
 
 	bool Is3DGame() const {
-		return m_gameDimension == GameDimensions::DIMENSION_3D;
+		return m_gameDimension == GameDimension::DIMENSION_3D;
 	}
 
-	void SetRenderingType(RenderingTypes type) {
+	void SetRenderingType(RenderingType type) {
 
 		if (!m_bIsInternal) {
 			spdlog::warn("External cheat cannot change rendering type, DX11 will be used.");
@@ -84,18 +84,18 @@ public:
 		m_renderingType = type;
 	}
 
-	RenderingTypes GetRenderingType() const {
+	RenderingType GetRenderingType() const {
 		return m_renderingType;
 	}
 
 private:
 	std::string m_strAppTitle;
 	bool m_bIsInternal;
-	GameEngineTypes m_gameEngineType = GameEngineTypes::ENGINE_NONE;
-	UnityEngineTypes m_unityEngineType = UnityEngineTypes::UNITY_NONE;
-	UnrealEngineVersions m_unrealEngineVersion = UnrealEngineVersions::UNREAL_NONE;
-	GameDimensions m_gameDimension = GameDimensions::DIM_NONE;
-	RenderingTypes m_renderingType = RenderingTypes::REND_NONE;
+	GameEngineType m_gameEngineType = GameEngineType::ENGINE_NONE;
+	UnityEngineType m_unityEngineType = UnityEngineType::UNITY_NONE;
+	UnrealEngineVersion m_unrealEngineVersion = UnrealEngineVersion::UNREAL_NONE;
+	GameDimension m_gameDimension = GameDimension::DIM_NONE;
+	RenderingType m_renderingType = RenderingType::REND_NONE;
 
 	void GetDesktopResolution(int& horizontal, int& vertical);
 	

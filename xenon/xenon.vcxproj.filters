@@ -480,10 +480,10 @@
     <ClInclude Include="includes\xenon\models\hotkey.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="includes\xenon\models\enums\rendering_hook_types.hpp">
+    <ClInclude Include="includes\xenon\models\enums\rendering_hook_type.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="includes\xenon\models\enums\unityengine_types.hpp">
+    <ClInclude Include="includes\xenon\models\enums\unityengine_type.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="includes\xenon\models\quickactions\quickactions.hpp">
@@ -510,7 +510,7 @@
     <ClInclude Include="includes\xenon\configs\game_variables.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="includes\xenon\models\enums\radar_shapes.hpp">
+    <ClInclude Include="includes\xenon\models\enums\radar_shape.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="includes\xenon\xenon.hpp">
@@ -567,16 +567,16 @@
     <ClInclude Include="includes\xenon\models\profiles\target_profile.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="includes\xenon\models\enums\game_dimensions.hpp">
+    <ClInclude Include="includes\xenon\models\enums\game_dimension.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="includes\xenon\models\waypoint.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="includes\xenon\models\enums\rendering_types.hpp">
+    <ClInclude Include="includes\xenon\models\enums\rendering_type.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="includes\xenon\models\enums\gameengine_types.hpp">
+    <ClInclude Include="includes\xenon\models\enums\gameengine_type.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="includes\xenon\components\component.hpp">
@@ -612,7 +612,7 @@
     <ClInclude Include="includes\xenon\components\features\radar.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="includes\xenon\core\xenon_configs.hpp">
+    <ClInclude Include="includes\xenon\core\xenon_config.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="includes\xenon\core\xenon_core.hpp">
@@ -773,7 +773,7 @@
     <ClCompile Include="includes\xenon\utility\imgui_helper.hpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="includes\xenon\models\enums\unrealengine_versions.hpp">
+    <ClCompile Include="includes\xenon\models\enums\unrealengine_version.hpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\features\esp.cpp">

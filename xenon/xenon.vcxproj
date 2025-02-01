@@ -166,12 +166,12 @@
     <ClInclude Include="includes\xenon\core\builder.hpp" />
     <ClInclude Include="includes\xenon\core\system.hpp" />
     <ClInclude Include="includes\xenon\core\cheat.hpp" />
-    <ClInclude Include="includes\xenon\core\xenon_configs.hpp" />
+    <ClInclude Include="includes\xenon\core\xenon_config.hpp" />
     <ClInclude Include="includes\xenon\core\xenon_core.hpp" />
     <ClInclude Include="includes\xenon\core\xenon_variables.hpp" />
-    <ClInclude Include="includes\xenon\models\enums\gameengine_types.hpp" />
-    <ClInclude Include="includes\xenon\models\enums\rendering_types.hpp" />
-    <ClInclude Include="includes\xenon\models\enums\game_dimensions.hpp" />
+    <ClInclude Include="includes\xenon\models\enums\gameengine_type.hpp" />
+    <ClInclude Include="includes\xenon\models\enums\rendering_type.hpp" />
+    <ClInclude Include="includes\xenon\models\enums\game_dimension.hpp" />
     <ClInclude Include="includes\xenon\models\notification.hpp" />
     <ClInclude Include="includes\xenon\models\profiles\target_profile.hpp" />
     <ClInclude Include="includes\xenon\models\quickactions\quickaction.hpp" />
@@ -179,9 +179,9 @@
     <ClInclude Include="includes\xenon\models\quickactions\quickaction_button.hpp" />
     <ClInclude Include="includes\xenon\models\quickactions\quickaction_checkbox.hpp" />
     <ClInclude Include="includes\xenon\models\quickactions\quickaction_slider.hpp" />
-    <ClInclude Include="includes\xenon\models\enums\radar_shapes.hpp" />
-    <ClInclude Include="includes\xenon\models\enums\rendering_hook_types.hpp" />
-    <ClInclude Include="includes\xenon\models\enums\unityengine_types.hpp" />
+    <ClInclude Include="includes\xenon\models\enums\radar_shape.hpp" />
+    <ClInclude Include="includes\xenon\models\enums\rendering_hook_type.hpp" />
+    <ClInclude Include="includes\xenon\models\enums\unityengine_type.hpp" />
     <ClInclude Include="includes\xenon\models\waypoint.hpp" />
     <ClInclude Include="includes\xenon\models\hotkey.hpp" />
     <ClInclude Include="includes\xenon\utility\random.hpp" />
@@ -350,7 +350,7 @@
     <ClInclude Include="libs\spdlog\version.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="includes\xenon\models\enums\unrealengine_versions.hpp" />
+    <ClCompile Include="includes\xenon\models\enums\unrealengine_version.hpp" />
     <ClCompile Include="includes\xenon\utility\imgui_helper.hpp" />
     <ClCompile Include="libs\imgui\imgui.cpp" />
     <ClCompile Include="libs\imgui\imgui_draw.cpp" />

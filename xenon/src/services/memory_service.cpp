@@ -55,6 +55,17 @@ void MemoryService::DeattachGame()
 	::CloseHandle(m_hProcessHandle);
 }
 
+bool MemoryService::IsGameRunning() const noexcept {
+	if (m_hProcessHandle == nullptr || m_hProcessHandle == INVALID_HANDLE_VALUE) {
+		return false;
+	}
+
+	DWORD exitCode;
+	GetExitCodeProcess(m_hProcessHandle, &exitCode);
+
+	return exitCode == STILL_ACTIVE;
+}
+
 const uintptr_t MemoryService::GetModuleAddress(const std::string_view moduleName) const noexcept {
 	HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, m_nPid);
     if (snapshot == INVALID_HANDLE_VALUE) {

@@ -11,7 +11,7 @@
 class Builder {
 public:
     std::shared_ptr<Xenon> xenon;
-    std::shared_ptr<XenonConfigs> xenonConfigs;
+    std::shared_ptr<XenonConfig> xenonConfig;
     std::shared_ptr<XenonVariables> xenonVariables;
 
     std::shared_ptr<Game> GameManager;

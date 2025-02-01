@@ -19,4 +19,5 @@ public:
 	ImColor m_cFov = ImColor(255, 255, 255, 255);
 
 	std::function<void(const Vec2&)> m_fnCustomAim;
+	std::function<Vec2()> m_fnGetCustomAim;
 };

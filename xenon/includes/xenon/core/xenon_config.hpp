@@ -9,7 +9,7 @@
 #include <xenon/configs/ui_config.hpp>
 #include <xenon/configs/waypoints_config.hpp>
 
-class XenonConfigs {
+class XenonConfig {
 public:
 
 	std::shared_ptr<AimConfig> g_pAimConfig;

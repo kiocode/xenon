@@ -22,7 +22,7 @@ struct offsets offsets;
 
 static void AddConfigurations(Builder& builder) {
 
-	std::shared_ptr<RadarConfig> pRadarConfig = builder.xenonConfigs->g_pRadarConfig;
+	std::shared_ptr<RadarConfig> pRadarConfig = builder.xenonConfig->g_pRadarConfig;
 	pRadarConfig->m_nType = 0;
 	pRadarConfig->m_fSize = 200.f;
 	pRadarConfig->m_fDefaultScale = 1000.0f;
@@ -31,16 +31,16 @@ static void AddConfigurations(Builder& builder) {
 	pRadarConfig->m_fTargetsSize = 6.0f;
 	pRadarConfig->m_bTargetsName = true;
 
-	std::shared_ptr<EspConfig> pESPConfig = builder.xenonConfigs->g_pEspConfig;
+	std::shared_ptr<EspConfig> pESPConfig = builder.xenonConfig->g_pEspConfig;
 	pESPConfig->m_bHealthBar = true;
 
 	std::shared_ptr<Waypoints> pWaypoints = builder.xenon->g_cWaypoints;
 
-	std::shared_ptr<UIConfig> pUIConfig = builder.xenonConfigs->g_pUIConfig;
+	std::shared_ptr<UIConfig> pUIConfig = builder.xenonConfig->g_pUIConfig;
 	pUIConfig->m_vFnOverlays.push_back([builder, pWaypoints]() {
 		ImGui::Begin("Positions");
 
-		for (const auto &target : builder.xenonConfigs->g_pGameVariables->g_vTargets) {
+		for (const auto &target : builder.xenonConfig->g_pGameVariables->g_vTargets) {
 			ImGui::Text("Position: %f, %f", target.m_vPos2D.x, target.m_vPos2D.y);
 		}
 
@@ -61,7 +61,7 @@ static void AddConfigurations(Builder& builder) {
 	pUIConfig->m_qActions->AddSlider("Radar Type", &pRadarConfig->m_nType, 0, 1);
 	pUIConfig->m_qActions->AddSlider("Box2d Type", &pESPConfig->m_nBox2DType, 0, 1);
 
-	std::shared_ptr<GameVariables> pGameVariables = builder.xenonConfigs->g_pGameVariables;
+	std::shared_ptr<GameVariables> pGameVariables = builder.xenonConfig->g_pGameVariables;
 	pUIConfig->m_qActions->AddButton("Set Waypoint", [pGameVariables, pWaypoints]() { 
 		pWaypoints->SetWaypoint("test", pGameVariables->g_vLocal.m_vPos2D, ImColor(255,255,255)); 
 	});
@@ -76,7 +76,7 @@ int main()
 	builder.SetConsoleEnabled();
 	builder.SetInfoLogLevel();
 
-	builder.xenon->g_pSystem->SetGameDimension(GameDimensions::DIMENSION_2D);
+	builder.xenon->g_pSystem->SetGameDimension(GameDimension::DIMENSION_2D);
 
 	try {
 		builder.xenon->g_cMemoryService->AttachGame("D:\\Steam\\steamapps\\common\\DDraceNetwork\\ddnet\\DDNet.exe");
@@ -96,7 +96,7 @@ int main()
 
 	Server* server = new Server();
 
-	std::shared_ptr<GameVariables> gameVariables = builder.xenonConfigs->g_pGameVariables;
+	std::shared_ptr<GameVariables> gameVariables = builder.xenonConfig->g_pGameVariables;
 	std::shared_ptr<System> system = builder.xenon->g_pSystem;
 	std::shared_ptr<MemoryService> memoryService = builder.xenon->g_cMemoryService;
 
@@ -148,7 +148,7 @@ int main()
 		}
 	});
 
-	std::shared_ptr<AimConfig> pAimConfig = builder.xenonConfigs->g_pAimConfig;
+	std::shared_ptr<AimConfig> pAimConfig = builder.xenonConfig->g_pAimConfig;
 	pAimConfig->m_fnCustomAim = [builder, clientAddr, memoryService, gameVariables](const Vec2& pos) {
 		Vec2 gamePlayerRelativePos = Vec2(pos.x - gameVariables->g_vLocal.m_vPos2D.x, pos.y - gameVariables->g_vLocal.m_vPos2D.y);
 

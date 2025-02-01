@@ -234,18 +234,21 @@ void UIService::RenderDefaultMenu() {
 								//ImGui::Checkbox("Visible", &g_pXenonVariables->g_bVisibleCheck);
 								//ImGui::Checkbox("Auto scope", &g_pXenonVariables->g_bAutoScope);
 								//ImGui::Checkbox("Auto shoot", &g_pXenonVariables->g_bAutoShoot);
-								ImGui::Checkbox("Humanize", &g_pXenonVariables->g_bHumanize);
-								ImGui::Checkbox("No recoil", &g_pXenonVariables->g_bNoRecoil);
-								//ImGui::Checkbox("No spread", &g_pXenonVariables->g_bNoSpread);
+								ImGui::Checkbox("Aimbot", &g_pXenonVariables->g_bAimbot);
+								if (g_pXenonVariables->g_bAimbot) {
+									ImGui::Checkbox("Humanize", &g_pXenonVariables->g_bHumanize);
+									ImGui::Checkbox("No recoil", &g_pXenonVariables->g_bNoRecoil);
+									//ImGui::Checkbox("No spread", &g_pXenonVariables->g_bNoSpread);
 
-								ImGui::Checkbox("Smooth", &g_pXenonVariables->g_bSmooth);
-								if (g_pXenonVariables->g_bSmooth) {
-									ImGui::SliderFloat("Smooth value", &g_pXenonConfigs->g_pAimConfig->m_fSmooth, 5.f, 50.f, "%.0f");
-								}
+									ImGui::Checkbox("Smooth", &g_pXenonVariables->g_bSmooth);
+									if (g_pXenonVariables->g_bSmooth) {
+										ImGui::SliderFloat("Smooth value", &g_pXenonConfigs->g_pAimConfig->m_fSmooth, 5.f, 50.f, "%.0f");
+									}
 
-								ImGui::Checkbox("Nearest", &g_pXenonVariables->g_bAimNearest);
-								if (g_pXenonVariables->g_bAimNearest && ImGui::SliderFloat("Nearest distance", &g_pXenonConfigs->g_pAimConfig->m_fNearest, 100.f, 1000.f, "%.0f")) {
-									g_pXenonConfigs->g_pAimConfig->m_fNearest = round(g_pXenonConfigs->g_pAimConfig->m_fNearest / 100.0f) * 100.0f;
+									ImGui::Checkbox("Nearest", &g_pXenonVariables->g_bAimNearest);
+									if (g_pXenonVariables->g_bAimNearest && ImGui::SliderFloat("Nearest distance", &g_pXenonConfigs->g_pAimConfig->m_fNearest, 100.f, 1000.f, "%.0f")) {
+										g_pXenonConfigs->g_pAimConfig->m_fNearest = round(g_pXenonConfigs->g_pAimConfig->m_fNearest / 100.0f) * 100.0f;
+									}
 								}
 							}
 							ImGui::EndGroup();
@@ -254,7 +257,7 @@ void UIService::RenderDefaultMenu() {
 					} break;
 					case SubTabs::COLORS: {
 						ImGui::SetCursorPos(ImVec2(10, 80));
-						ImGui::BeginChild("Settings", ImVec2(470, 365));
+						ImGui::BeginChild("Aim Colors", ImVec2(470, 365));
 						{
 							//render funcs
 							ImGui::SetCursorPos(ImVec2(10, 10));
@@ -282,15 +285,16 @@ void UIService::RenderDefaultMenu() {
 							{
 
 								ImGui::Checkbox("ESP", &g_pXenonVariables->g_bEsp);
-
-								ImGui::Checkbox("Snapline", &g_pXenonVariables->g_bSnapline);
-								ImGui::Checkbox("Box 2D", &g_pXenonVariables->g_bBox2D);
-								ImGui::Checkbox("Box 3D", &g_pXenonVariables->g_bBox3D);
-								ImGui::Checkbox("Skeleton", &g_pXenonVariables->g_bSkeleton);
-								ImGui::Checkbox("Crosshair", &g_pXenonVariables->g_bCrosshair);
-								ImGui::Checkbox("Fov", &g_pXenonVariables->g_bFov);
-								if (g_pXenonVariables->g_bFov) {
-									ImGui::SliderFloat("Fov value", &g_pXenonConfigs->g_pAimConfig->m_fFov, 30.f, 300.f, "%.0f");
+								if (g_pXenonVariables->g_bEsp) {
+									ImGui::Checkbox("Snapline", &g_pXenonVariables->g_bSnapline);
+									ImGui::Checkbox("Box 2D", &g_pXenonVariables->g_bBox2D);
+									ImGui::Checkbox("Box 3D", &g_pXenonVariables->g_bBox3D);
+									ImGui::Checkbox("Skeleton", &g_pXenonVariables->g_bSkeleton);
+									ImGui::Checkbox("Crosshair", &g_pXenonVariables->g_bCrosshair);
+									ImGui::Checkbox("Fov", &g_pXenonVariables->g_bFov);
+									if (g_pXenonVariables->g_bFov) {
+										ImGui::SliderFloat("Fov value", &g_pXenonConfigs->g_pAimConfig->m_fFov, 30.f, 300.f, "%.0f");
+									}
 								}
 
 							}
@@ -336,11 +340,13 @@ void UIService::RenderDefaultMenu() {
 							ImGui::BeginGroup();
 							{
 								ImGui::Checkbox("Radar", &g_pXenonVariables->g_bRadar);
-								ImGui::Checkbox("Show Targets Name", &g_pXenonConfigs->g_pRadarConfig->m_bTargetsName);
-								ImGui::SliderFloat("Size", &g_pXenonConfigs->g_pRadarConfig->m_fSize, 0.f, 500.f, "%.0f");
-								ImGui::SliderFloat("Zoom", &g_pXenonConfigs->g_pRadarConfig->m_fZoom, 0.f, 100.f, "%.0f");
-								ImGui::SliderFloat("Targets Size", &g_pXenonConfigs->g_pRadarConfig->m_fTargetsSize, 0.f, 100.f, "%.0f");
-								ImGui::SliderFloat("Local Size", &g_pXenonConfigs->g_pRadarConfig->m_fLocalSize, 0.f, 100.f, "%.0f");
+								if (g_pXenonVariables->g_bRadar) {
+									ImGui::Checkbox("Show Targets Name", &g_pXenonConfigs->g_pRadarConfig->m_bTargetsName);
+									ImGui::SliderFloat("Size", &g_pXenonConfigs->g_pRadarConfig->m_fSize, 0.f, 500.f, "%.0f");
+									ImGui::SliderFloat("Zoom", &g_pXenonConfigs->g_pRadarConfig->m_fZoom, 0.f, 100.f, "%.0f");
+									ImGui::SliderFloat("Targets Size", &g_pXenonConfigs->g_pRadarConfig->m_fTargetsSize, 0.f, 100.f, "%.0f");
+									ImGui::SliderFloat("Local Size", &g_pXenonConfigs->g_pRadarConfig->m_fLocalSize, 0.f, 100.f, "%.0f");
+								}
 							}
 							ImGui::EndGroup();
 						}
@@ -348,7 +354,7 @@ void UIService::RenderDefaultMenu() {
 					} break;
 					case SubTabs::COLORS: {
 						ImGui::SetCursorPos(ImVec2(10, 80));
-						ImGui::BeginChild("Settings", ImVec2(470, 365));
+						ImGui::BeginChild("Radar Colors", ImVec2(470, 365));
 						{
 							//render funcs
 							ImGui::SetCursorPos(ImVec2(10, 10));
@@ -417,7 +423,7 @@ void UIService::RenderDefaultMenu() {
 					case SubTabs::SETTINGS: {
 
 						ImGui::SetCursorPos(ImVec2(10, 80));
-						ImGui::BeginChild("Settings", ImVec2(470, 365));
+						ImGui::BeginChild("Dev Settings", ImVec2(470, 365));
 						{
 							//render funcs
 							ImGui::SetCursorPos(ImVec2(10, 10));
@@ -433,7 +439,7 @@ void UIService::RenderDefaultMenu() {
 					} break;
 					case SubTabs::COLORS: {
 						ImGui::SetCursorPos(ImVec2(10, 80));
-						ImGui::BeginChild("Settings", ImVec2(470, 365));
+						ImGui::BeginChild("Dev Colors", ImVec2(470, 365));
 						{
 							//render funcs
 							ImGui::SetCursorPos(ImVec2(10, 10));
@@ -766,13 +772,13 @@ void UIService::ResetDeviceUI()
 {
 
 	switch (g_pXenon->g_pSystem->GetRenderingType()) {
-	case RenderingTypes::DX11:
+	case RenderingType::DX11:
 		ImGui_ImplDX11_InvalidateDeviceObjects();
 		break;
-	case RenderingTypes::OPENGL2:
+	case RenderingType::OPENGL2:
 		ImGui_ImplOpenGL2_DestroyDeviceObjects();
 		break;
-	case RenderingTypes::OPENGL3:
+	case RenderingType::OPENGL3:
 		ImGui_ImplOpenGL3_DestroyDeviceObjects();
 		break;
 	}
@@ -780,13 +786,13 @@ void UIService::ResetDeviceUI()
 	DestroyDeviceUI();
 
 	switch (g_pXenon->g_pSystem->GetRenderingType()) {
-	case RenderingTypes::DX11:
+	case RenderingType::DX11:
 		ImGui_ImplDX11_CreateDeviceObjects();
 		break;
-	case RenderingTypes::OPENGL2:
+	case RenderingType::OPENGL2:
 		ImGui_ImplOpenGL2_CreateDeviceObjects();
 		break;
-	case RenderingTypes::OPENGL3:
+	case RenderingType::OPENGL3:
 		ImGui_ImplOpenGL3_CreateDeviceObjects();
 		break;
 	}
@@ -820,13 +826,13 @@ void UIService::CreateImGuiUI()
 	if (g_pXenon->g_pSystem->IsInternal()) {
 
 		switch (g_pXenon->g_pSystem->GetRenderingType()) {
-		case RenderingTypes::DX11:
+		case RenderingType::DX11:
 			ImGui_ImplDX11_Init(m_pDevice, m_pContext);
 			break;
-		case RenderingTypes::OPENGL2:
+		case RenderingType::OPENGL2:
 			ImGui_ImplOpenGL2_Init();
 			break;
-		case RenderingTypes::OPENGL3:
+		case RenderingType::OPENGL3:
 			ImGui_ImplOpenGL3_Init();
 			break;
 		}
@@ -843,13 +849,13 @@ void UIService::DestroyImGuiUI()
 {
 
 	switch (g_pXenon->g_pSystem->GetRenderingType()) {
-	case RenderingTypes::DX11:
+	case RenderingType::DX11:
 		ImGui_ImplDX11_Shutdown();
 		break;
-	case RenderingTypes::OPENGL2:
+	case RenderingType::OPENGL2:
 		ImGui_ImplOpenGL2_Shutdown();
 		break;
-	case RenderingTypes::OPENGL3:
+	case RenderingType::OPENGL3:
 		ImGui_ImplOpenGL3_Shutdown();
 		break;
 	}
@@ -880,13 +886,13 @@ void UIService::BeginRenderUI()
 
 	if (g_pXenon->g_pSystem->IsInternal()) {
 		switch (g_pXenon->g_pSystem->GetRenderingType()) {
-		case RenderingTypes::DX11:
+		case RenderingType::DX11:
 			ImGui_ImplDX11_NewFrame();
 			break;
-		case RenderingTypes::OPENGL2:
+		case RenderingType::OPENGL2:
 			ImGui_ImplOpenGL2_NewFrame();
 			break;
-		case RenderingTypes::OPENGL3:
+		case RenderingType::OPENGL3:
 			ImGui_ImplOpenGL3_NewFrame();
 			break;
 		}
@@ -956,13 +962,13 @@ void UIService::EndRenderUI()
 	if (g_pXenon->g_pSystem->IsInternal()) {
 
 		switch (g_pXenon->g_pSystem->GetRenderingType()) {
-		case RenderingTypes::DX11:
+		case RenderingType::DX11:
 			ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 			break;
-		case RenderingTypes::OPENGL2:
+		case RenderingType::OPENGL2:
 			ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
 			break;
-		case RenderingTypes::OPENGL3:
+		case RenderingType::OPENGL3:
 			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 			break;
 		}

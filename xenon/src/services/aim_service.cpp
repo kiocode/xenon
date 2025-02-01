@@ -185,11 +185,7 @@ Vec2 AimService::CalculateBezierPoint(float t, const std::vector<Vec2>& points) 
 }
 
 void AimService::TrackMouse() {
-    POINT cursorPos;
-    if (!GetCursorPos(&cursorPos)) {
-        spdlog::error("Failed to get cursor position");
-        return;
-    }
+    Vec2 cursorPos = g_pXenon->g_pSystem->GetMousePos();
 
     spdlog::info("Cursor pos {}, {}", cursorPos.x, cursorPos.y);
 }

@@ -6,7 +6,7 @@
 
 static void AddConfigurations(Builder& builder) {
 
-	std::shared_ptr<AimConfig> pAimConfig = builder.xenonConfigs->g_pAimConfig;
+	std::shared_ptr<AimConfig> pAimConfig = builder.xenonConfig->g_pAimConfig;
 	//pAimConfig->m_bHumanize = true;
 	//pAimConfig->m_bStartFromCenter = true;
 	//pAimConfig->m_bSmooth = true;
@@ -31,7 +31,7 @@ static void AddConfigurations(Builder& builder) {
 	//pAimConfig->m_fSpinbotRadius = 100; 
 	//pAimConfig->m_fSpinbotSpeed = 10; 
 
-	std::shared_ptr<RadarConfig> pRadarConfig = builder.xenonConfigs->g_pRadarConfig;
+	std::shared_ptr<RadarConfig> pRadarConfig = builder.xenonConfig->g_pRadarConfig;
 	pRadarConfig->m_nType = 0;
 	pRadarConfig->m_fSize= 200.f;
 	pRadarConfig->m_fDefaultScale = 1000.0f;
@@ -39,8 +39,8 @@ static void AddConfigurations(Builder& builder) {
 	pRadarConfig->m_fLocalSize = 6.0f;
 	pRadarConfig->m_fTargetsSize = 6.0f;
 
-	std::shared_ptr<UIConfig> pUIConfig = builder.xenonConfigs->g_pUIConfig;
-	std::shared_ptr<GameVariables> pGameVariables = builder.xenonConfigs->g_pGameVariables;
+	std::shared_ptr<UIConfig> pUIConfig = builder.xenonConfig->g_pUIConfig;
+	std::shared_ptr<GameVariables> pGameVariables = builder.xenonConfig->g_pGameVariables;
 	std::shared_ptr<Waypoints> pWaypoint = builder.xenon->g_cWaypoints;
 	std::shared_ptr<NotificationService> pNotificationService = builder.xenon->g_cNotificationService;
 	//pUIConfig->m_qActions->AddButton("Set Waypoint", [pWaypoint, pGameVariables]() { pWaypoint->SetWaypoint("waypointTest", pGameVariables->g_vLocal.m_vPos3D, ImColor(255, 255, 255)); });
@@ -152,8 +152,8 @@ static void AddServices(Builder& builder) {
 //
 //	builder.GameManager->OnEvent("Update", [builder, offsets, serverAddr, localPlayerAddr]() {
 //
-//		builder.xenonConfigs->g_pGameVariables->g_vTargets3DWorld.clear();
-//		builder.xenonConfigs->g_pGameVariables->g_vLocalPos3DWorld = Vec3(builder.MemoryManager->Read<int>(serverAddr + offsets.posX), builder.MemoryManager->Read<int>(serverAddr + offsets.posY), builder.MemoryManager->Read<int>(serverAddr + offsets.posZ));
+//		builder.xenonConfig->g_pGameVariables->g_vTargets3DWorld.clear();
+//		builder.xenonConfig->g_pGameVariables->g_vLocalPos3DWorld = Vec3(builder.MemoryManager->Read<int>(serverAddr + offsets.posX), builder.MemoryManager->Read<int>(serverAddr + offsets.posY), builder.MemoryManager->Read<int>(serverAddr + offsets.posZ));
 //
 //		int localPlayerHealth = builder.MemoryManager->Read<int>(localPlayerAddr + offsets.health);
 //
@@ -172,7 +172,7 @@ static void AddServices(Builder& builder) {
 //			float y = builder.MemoryManager->Read<float>(entityAddr + offsets.posY + (i * 0x8));
 //			float z = builder.MemoryManager->Read<float>(entityAddr + offsets.posZ + (i * 0x8));
 //
-//			builder.xenonConfigs->g_pGameVariables->g_vTargets3DWorld.push_back(Vec3(x, y, z));
+//			builder.xenonConfig->g_pGameVariables->g_vTargets3DWorld.push_back(Vec3(x, y, z));
 //
 //			i++;
 //		} while (i != 6);
@@ -193,7 +193,7 @@ static void AddServices(Builder& builder) {
 //	Cheat cheat = builder.Build();
 //
 //	cheat.UseUpdate();
-//	cheat.UseUICustom(RenderingHookTypes::KIERO);
+//	cheat.UseUICustom(RenderingHookType::KIERO);
 //	cheat.UseUIRenderOverlays();
 //	cheat.UseAimbot();
 //	//cheat.UseNoRecoil();
@@ -209,10 +209,10 @@ static void TestGeneral(Builder& builder) {
 	AddServices(builder);
 
 	#pragma region Edit Configs
-	std::shared_ptr<EspConfig> pEspConfig = builder.xenonConfigs->g_pEspConfig;
+	std::shared_ptr<EspConfig> pEspConfig = builder.xenonConfig->g_pEspConfig;
 	pEspConfig->m_cBox2DDistance = ImColor(255, 255, 255, 255);
 
-	std::shared_ptr<RadarConfig> pRadarConfig = builder.xenonConfigs->g_pRadarConfig;
+	std::shared_ptr<RadarConfig> pRadarConfig = builder.xenonConfig->g_pRadarConfig;
 	pRadarConfig->m_fDefaultScale = 2000;
 	#pragma endregion
 
@@ -224,7 +224,7 @@ static void TestGeneral(Builder& builder) {
 	local.m_fHealth = 100;
 	local.m_fMaxHealth = 100;
 	local.m_fWidth = 80;
-	builder.xenonConfigs->g_pGameVariables->g_vLocal = local;
+	builder.xenonConfig->g_pGameVariables->g_vLocal = local;
 
 	TargetProfile target1 = TargetProfile();
 	target1.m_vPos2D = Vec2(300, 500);
@@ -233,7 +233,7 @@ static void TestGeneral(Builder& builder) {
 	target1.m_fHealth = 100;
 	target1.m_fMaxHealth = 100;
 	target1.m_fWidth = 80;
-	builder.xenonConfigs->g_pGameVariables->g_vTargets.push_back(target1);
+	builder.xenonConfig->g_pGameVariables->g_vTargets.push_back(target1);
 
 	TargetProfile target2 = TargetProfile();
 	target2.m_vPos2D = Vec2(1000, 400);
@@ -242,7 +242,7 @@ static void TestGeneral(Builder& builder) {
 	target2.m_fHealth = 80;
 	target2.m_fMaxHealth = 100;
 	target2.m_fWidth = 80;
-	builder.xenonConfigs->g_pGameVariables->g_vTargets.push_back(target2);
+	builder.xenonConfig->g_pGameVariables->g_vTargets.push_back(target2);
 
 	TargetProfile target3 = TargetProfile();
 	target3.m_vPos2D = Vec2(1500, 800);
@@ -251,7 +251,7 @@ static void TestGeneral(Builder& builder) {
 	target3.m_fHealth = 70;
 	target3.m_fMaxHealth = 100;
 	target3.m_fWidth = 80;
-	builder.xenonConfigs->g_pGameVariables->g_vTargets.push_back(target3);
+	builder.xenonConfig->g_pGameVariables->g_vTargets.push_back(target3);
 
 	TargetProfile target4 = TargetProfile();
 	target4.m_vPos2D = Vec2(400, 400);
@@ -260,13 +260,13 @@ static void TestGeneral(Builder& builder) {
 	target4.m_fHealth = 50;
 	target4.m_fMaxHealth = 100;
 	target4.m_fWidth = 80;
-	builder.xenonConfigs->g_pGameVariables->g_vTargets.push_back(target4);
+	builder.xenonConfig->g_pGameVariables->g_vTargets.push_back(target4);
 	#pragma endregion
 
 	Cheat cheat = builder.Build();
 
 	cheat.UseUpdate();
-	cheat.UseUICustom(RenderingHookTypes::KIERO);
+	cheat.UseUICustom(RenderingHookType::KIERO);
 	cheat.UseUIMenu();
 	//cheat.UseUIRenderWindows();
 	//cheat.UseUIRenderOverlays();
@@ -292,7 +292,7 @@ static void TestLua(Builder& builder) {
 	Cheat cheat = builder.Build();
 
 	cheat.UseUpdate();
-	cheat.UseUICustom(RenderingHookTypes::KIERO);
+	cheat.UseUICustom(RenderingHookType::KIERO);
 	cheat.UseUIMenu();
 	cheat.UseUIQuickActions();
 	/*cheat.UseESPSnapline();
@@ -350,7 +350,7 @@ static void RunTests() {
 
 	Builder builder("Demo external");
 	builder.xenon->g_pSystem->IsInternal(false);
-	builder.xenon->g_pSystem->SetGameDimension(GameDimensions::DIMENSION_2D);
+	builder.xenon->g_pSystem->SetGameDimension(GameDimension::DIMENSION_2D);
 	builder.xenon->g_pSystem->m_fnW2S2D = [](Vec2 pos) { return new Vec2(pos.x, pos.y); };
 	builder.SetConsoleEnabled();
 	builder.SetDebugLogLevel();

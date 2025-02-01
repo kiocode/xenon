@@ -9,7 +9,7 @@ void Cheat::Run() {
         spdlog::info("Internal cheat initialized");
 
         switch (m_pXenonVariables->g_renderingType) {
-        case RenderingHookTypes::KIERO: {
+        case RenderingHookType::KIERO: {
 
             bool bInitialized = false;
             do
@@ -26,7 +26,7 @@ void Cheat::Run() {
             } while (!bInitialized);
 
         } break;
-        case RenderingHookTypes::DISCORD: {
+        case RenderingHookType::DISCORD: {
             m_pGame->EnableUpdate();
         } break;
         }

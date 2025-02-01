@@ -8,6 +8,10 @@
 class Aimbot : public CComponent {
 public:
 
+    void Init() override {
+        nearestDistance = g_pXenonConfigs->g_pAimConfig->m_fNearest;
+    }
+
     bool IsTargetEmpty() const;
     void SetTarget(Vec2& pos);
     bool IsTargetReached() const;
@@ -21,5 +25,5 @@ public:
 private:
     Vec2 m_vTarget;
 
-    float nearestDistance = g_pXenonConfigs->g_pAimConfig->m_fNearest;
+    float nearestDistance = 0;
 };

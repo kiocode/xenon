@@ -1,5 +1,4 @@
-#ifndef XENON_COMPONENTS_MEMORYSERVICE_HPP
-#define XENON_COMPONENTS_MEMORYSERVICE_HPP
+#pragma once
 
 #include <xenon/components/component.hpp>
 
@@ -17,6 +16,8 @@ public:
 	const std::uintptr_t GetModuleAddress(const std::string_view moduleName) const noexcept;
 
 	void DeattachGame();
+
+    bool IsGameRunning() const noexcept;
 
 	uintptr_t ReadPointer(const std::uintptr_t& address);
 	void WritePointer(const std::uintptr_t& address, const uintptr_t& value);
@@ -41,5 +42,3 @@ private:
     HANDLE m_hProcessHandle;
     int m_nPid;
 };
-
-#endif // XENON_COMPONENTS_COMPONENT_HPP

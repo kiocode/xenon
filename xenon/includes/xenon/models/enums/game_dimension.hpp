@@ -1,6 +1,6 @@
 #pragma once
 
-enum GameDimensions {
+enum GameDimension {
 	DIM_NONE = 0,
 	DIMENSION_1D, // 1D
 	DIMENSION_2D, // 2D

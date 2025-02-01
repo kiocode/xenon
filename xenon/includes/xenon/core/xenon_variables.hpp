@@ -1,6 +1,6 @@
 #pragma once
 
-#include <xenon/models/enums/rendering_hook_types.hpp>
+#include <xenon/models/enums/rendering_hook_type.hpp>
 
 #include <winuser.rh>
 
@@ -11,7 +11,7 @@ public:
 	int g_nToggleUIKey = VK_INSERT;
 	bool g_bUpdate;
 	bool g_bShowMenu;
-	RenderingHookTypes g_renderingType = RenderingHookTypes::RENDERHOOK_NONE;
+	RenderingHookType g_renderingType = RenderingHookType::RENDERHOOK_NONE;
 
 	// UI
 	bool g_bRenderUI;

@@ -20,15 +20,15 @@ void Radar::Render() {
     }
 
     switch (g_pXenonConfigs->g_pRadarConfig->m_nType) {
-        case 0: RenderRadarBase(RadarShapes::CIRCULAR, g_pXenon->g_pSystem->Is3DGame()); break;
-        case 1: RenderRadarBase(RadarShapes::RECTANGULAR, g_pXenon->g_pSystem->Is3DGame()); break;
+        case 0: RenderRadarBase(RadarShape::CIRCULAR, g_pXenon->g_pSystem->Is3DGame()); break;
+        case 1: RenderRadarBase(RadarShape::RECTANGULAR, g_pXenon->g_pSystem->Is3DGame()); break;
         default:
             spdlog::error("Invalid radar type: {}", g_pXenonConfigs->g_pRadarConfig->m_nType);
             break;
     }
 }
 
-void Radar::RenderRadarBase(RadarShapes shape, bool is3D) {
+void Radar::RenderRadarBase(RadarShape shape, bool is3D) {
     ImGui::Begin("Radar", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
     {
         ImDrawList* drawlist = ImGui::GetWindowDrawList();
@@ -41,11 +41,11 @@ void Radar::RenderRadarBase(RadarShapes shape, bool is3D) {
         ImGui::SetWindowSize(ImVec2(radarSize, radarSize));
 
         switch (shape) {
-            case RadarShapes::CIRCULAR:
+            case RadarShape::CIRCULAR:
                 drawlist->AddCircleFilled(radarCenter, radarSize / 2.0f - 5, ImColor(25, 25, 25, 150));
                 drawlist->AddCircle(radarCenter, radarSize / 2.0f - 5, ImColor(83, 83, 83, 255));
                 break;
-            case RadarShapes::RECTANGULAR:
+            case RadarShape::RECTANGULAR:
                 drawlist->AddRectFilled(ImVec2(pos.x + 5, pos.y + 5),
                     ImVec2(pos.x + radarSize - 5, pos.y + radarSize - 5),
                     ImColor(25, 25, 25, 150), 8.f);
@@ -58,13 +58,13 @@ void Radar::RenderRadarBase(RadarShapes shape, bool is3D) {
         drawlist->AddCircleFilled(radarCenter, g_pXenonConfigs->g_pRadarConfig->m_fLocalSize * g_pXenonConfigs->g_pRadarConfig->m_fZoom, ImColor(170, 170, 170, 255));
 
         auto isPointInRadar = [&](ImVec2 point) -> bool {
-            if (shape == RadarShapes::CIRCULAR) {
+            if (shape == RadarShape::CIRCULAR) {
                 Vec2 pointConverted = { point.x, point.y };
                 Vec2 radarCenterConverted = { radarCenter.x, radarCenter.y };
                 float distance = pointConverted.Distance(radarCenterConverted);
                 return distance <= (radarSize / 2.0f - 5);
             }
-            else if (shape == RadarShapes::RECTANGULAR) {
+            else if (shape == RadarShape::RECTANGULAR) {
                 return point.x >= (pos.x + 5) && point.x <= (pos.x + radarSize - 5) &&
                     point.y >= (pos.y + 5) && point.y <= (pos.y + radarSize - 5);
             }

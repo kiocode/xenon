@@ -9,7 +9,7 @@
 
 #include <xenon/utility/vec3.hpp>
 #include <xenon/core/xenon_core.hpp>
-#include <xenon/core/xenon_configs.hpp>
+#include <xenon/core/xenon_config.hpp>
 #include <xenon/core/xenon_variables.hpp>
 #include <xenon/components/component.hpp>
 
@@ -18,7 +18,7 @@ public:
 
     Game(
         std::shared_ptr<Xenon> pXenon,
-        std::shared_ptr<XenonConfigs> pXenonConfigs,
+        std::shared_ptr<XenonConfig> pXenonConfigs,
         std::shared_ptr<XenonVariables> pXenonVariables,
         std::vector<std::shared_ptr<CComponent>> pComponents
     ) : m_pXenon(pXenon), m_pXenonConfigs(pXenonConfigs), m_pXenonVariables(pXenonVariables), m_pComponents(pComponents) {
@@ -49,7 +49,7 @@ private:
     std::unordered_map<std::string, std::vector<std::function<void()>>> eventCallbacks;
 
     std::shared_ptr<Xenon> m_pXenon;
-    std::shared_ptr<XenonConfigs> m_pXenonConfigs;
+    std::shared_ptr<XenonConfig> m_pXenonConfigs;
     std::shared_ptr<XenonVariables> m_pXenonVariables;
     std::vector<std::shared_ptr<CComponent>> m_pComponents;
 

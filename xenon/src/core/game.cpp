@@ -2,7 +2,7 @@
 
 #include <xenon/utility/random.hpp>
 #include <kiero/kiero.h>
-#include <xenon/models/enums/rendering_hook_types.hpp>
+#include <xenon/models/enums/rendering_hook_type.hpp>
 #include <xenon/core/system.hpp>
 #include <xenon/components/features/radar.hpp>
 #include <xenon/components/features/esp.hpp>
@@ -11,44 +11,30 @@
 #include <xenon/components/services/ui_service.hpp>
 #include <xenon/components/services/lua_service.hpp>
 #include <xenon/components/services/aim_service.hpp>
-
-static void EnableHooks()
-{
-	// EXAMPLE
-	//// Health__TakeDamage
-	//if (MH_CreateHook(reinterpret_cast<LPVOID*>(
-	//	Offsets::Health__TakeDamage_Offset),
-	//	&HooksFunctions::Health__TakeDamage_hook,
-	//	(LPVOID*)&HooksFunctions::Health__TakeDamage) == MH_OK)
-	//{
-	//	MH_EnableHook(reinterpret_cast<LPVOID*>(Offsets::Health__TakeDamage_Offset));
-	//}
-}
+#include <xenon/components/services/memory_service.hpp>
 
 void Game::EnableUpdate() {
 
 	if (m_pXenon->g_pSystem->IsInternal()) {
 
-		EnableHooks();
-
 		switch (m_pXenonVariables->g_renderingType) {
-		case RenderingHookTypes::KIERO: {
-			kiero::bind(8, (void**)&m_pXenon->g_cUIService->oPresent, Game::BindForInternal);
-		} break;
-		case RenderingHookTypes::DISCORD: {
-			uint64_t discordPresentOffset = 0x1060E0;
-			uint64_t presentDiscordAddr = (uint64_t)(GetModuleHandleA("DiscordHook64.dll")) + discordPresentOffset;
-			Present* discordPresent = (Present*)presentDiscordAddr;
-			m_pXenon->g_cUIService->oPresent = *discordPresent;
-			_InterlockedExchangePointer((volatile PVOID*)presentDiscordAddr, Game::BindForInternal);
-		} break;
-		case RenderingHookTypes::STEAM: {
-			uint64_t steamPresentOffset = 0x150D70;
-			uint64_t presentSteamAddr = (uint64_t)(GetModuleHandleA("GameOverlayRenderer64.dll")) + steamPresentOffset;
-			Present* steamPresent = (Present*)presentSteamAddr;
-			m_pXenon->g_cUIService->oPresent = *steamPresent;
-			_InterlockedExchangePointer((volatile PVOID*)presentSteamAddr, Game::BindForInternal);
-		} break;
+			case RenderingHookType::KIERO: {
+				kiero::bind(8, (void**)&m_pXenon->g_cUIService->oPresent, Game::BindForInternal);
+			} break;
+			case RenderingHookType::DISCORD: {
+				uint64_t discordPresentOffset = 0x1060E0;
+				uint64_t presentDiscordAddr = (uint64_t)(GetModuleHandleA("DiscordHook64.dll")) + discordPresentOffset;
+				Present* discordPresent = (Present*)presentDiscordAddr;
+				m_pXenon->g_cUIService->oPresent = *discordPresent;
+				_InterlockedExchangePointer((volatile PVOID*)presentDiscordAddr, Game::BindForInternal);
+			} break;
+			case RenderingHookType::STEAM: {
+				uint64_t steamPresentOffset = 0x150D70;
+				uint64_t presentSteamAddr = (uint64_t)(GetModuleHandleA("GameOverlayRenderer64.dll")) + steamPresentOffset;
+				Present* steamPresent = (Present*)presentSteamAddr;
+				m_pXenon->g_cUIService->oPresent = *steamPresent;
+				_InterlockedExchangePointer((volatile PVOID*)presentSteamAddr, Game::BindForInternal);
+			} break;
 		}
 
 	}
@@ -74,13 +60,14 @@ void Game::BindForExternal() {
 
 	//update loop
 	while (m_pXenonVariables->g_bUpdate) {
+		if(!m_pXenon->g_cMemoryService->IsGameRunning()) {
+			spdlog::error("Game is not running, exiting...");
+			exit(0);
+		}
+
 		auto currentTime = std::chrono::steady_clock::now();
 		m_pXenon->g_pSystem->g_fDeltaTime = std::chrono::duration<float>(currentTime - previousTime).count();
 		previousTime = currentTime;
-
-		if (GetAsyncKeyState(VK_ESCAPE)) {
-			continue;
-		}
 
 		if (m_pXenonVariables->g_bRenderUI) {
 			m_pXenon->g_cUIService->BeginRenderUI();

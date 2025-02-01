@@ -4,15 +4,15 @@
 
 #include <spdlog/spdlog.h>
 
-#include <xenon/models/enums/rendering_hook_types.hpp>
-#include <xenon/models/enums/unrealengine_versions.hpp>
-#include <xenon/models/enums/unityengine_types.hpp>
+#include <xenon/models/enums/rendering_hook_type.hpp>
+#include <xenon/models/enums/unrealengine_version.hpp>
+#include <xenon/models/enums/unityengine_type.hpp>
 #include <xenon/components/features/game.hpp>
 #include <xenon/components/services/notification_service.hpp>
 
 #include <xenon/core/system.hpp>
 
-#include <xenon/core/xenon_configs.hpp>
+#include <xenon/core/xenon_config.hpp>
 #include <xenon/core/xenon_variables.hpp>
 #include <xenon/core/xenon_core.hpp>
 
@@ -32,7 +32,7 @@ public:
         spdlog::info("Update is enabled");
     }
 
-    void UseUICustom(RenderingHookTypes renderingType) {
+    void UseUICustom(RenderingHookType renderingType) {
 
         if (!m_pXenon->g_pSystem->IsInternal()) {
             spdlog::warn("Rendering hook type is not necessary if the cheat is External");;

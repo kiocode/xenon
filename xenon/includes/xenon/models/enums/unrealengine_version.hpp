@@ -1,6 +1,6 @@
 #pragma once
 
-enum class UnrealEngineVersions {
+enum class UnrealEngineVersion {
     UNREAL_NONE = 0,
     UE3,
     UE4,

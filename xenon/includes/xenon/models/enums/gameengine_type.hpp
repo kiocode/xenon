@@ -1,6 +1,6 @@
 #pragma once
 
-enum GameEngineTypes {
+enum GameEngineType {
 	ENGINE_NONE = 0,
 	UNITY_ENGINE,
 	UNREAL_ENGINE,

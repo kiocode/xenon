@@ -59,9 +59,9 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 
     Builder builder("OAR internal");
     builder.SystemVariables->IsInternal(true);
-    builder.SystemVariables->IsUnrealEngine(UnrealEngineVersions::UE4);
-    builder.SystemVariables->SetGameDimension(GameDimensions::DIMENSION_3D);
-    builder.SystemVariables->SetRenderingType(RenderingTypes::DX11);
+    builder.SystemVariables->IsUnrealEngine(UnrealEngineVersion::UE4);
+    builder.SystemVariables->SetGameDimension(GameDimension::DIMENSION_3D);
+    builder.SystemVariables->SetRenderingType(RenderingType::DX11);
 	builder.SystemVariables->m_fnW2S3D = [](Vec3 pos) {
 		SDK::FVector2D screenPos;
 		SDK::FVector unrealPos(pos.x, pos.z, pos.y);
@@ -154,7 +154,7 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 	});
 
     Cheat cheat = builder.Build();
-    cheat.UseUICustom(RenderingHookTypes::KIERO);
+    cheat.UseUICustom(RenderingHookType::KIERO);
     cheat.UseUIMenu();
     cheat.UseUIRadar();
     cheat.UseUIRenderMouse();

@@ -83,11 +83,8 @@ void Aimbot::AimTarget() {
 }
 
 bool Aimbot::IsTargetReached() const {
-    POINT cursorPos;
-    if (!GetCursorPos(&cursorPos)) {
-        spdlog::error("Failed to get cursor position");
-        return false;
-    }
+
+    Vec2 cursorPos = g_pXenonConfigs->g_pAimConfig->m_fnGetCustomAim ? g_pXenonConfigs->g_pAimConfig->m_fnGetCustomAim() : g_pXenon->g_pSystem->GetMousePos();
 
     spdlog::debug("Cursor pos {}, {}", cursorPos.x, cursorPos.y);
 

@@ -1,6 +1,6 @@
 #pragma once
 
-enum class RenderingHookTypes {
+enum class RenderingHookType {
 	RENDERHOOK_NONE = 0,
 	KIERO,
 	DISCORD,
