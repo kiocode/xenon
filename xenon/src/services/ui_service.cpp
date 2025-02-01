@@ -234,21 +234,34 @@ void UIService::RenderDefaultMenu() {
 								//ImGui::Checkbox("Visible", &g_pXenonVariables->g_bVisibleCheck);
 								//ImGui::Checkbox("Auto scope", &g_pXenonVariables->g_bAutoScope);
 								//ImGui::Checkbox("Auto shoot", &g_pXenonVariables->g_bAutoShoot);
+								ImGui::Checkbox("No recoil", &g_pXenonVariables->g_bNoRecoil);
 								ImGui::Checkbox("Aimbot", &g_pXenonVariables->g_bAimbot);
 								if (g_pXenonVariables->g_bAimbot) {
+									ImGui::Indent(10);
+
 									ImGui::Checkbox("Humanize", &g_pXenonVariables->g_bHumanize);
-									ImGui::Checkbox("No recoil", &g_pXenonVariables->g_bNoRecoil);
 									//ImGui::Checkbox("No spread", &g_pXenonVariables->g_bNoSpread);
 
 									ImGui::Checkbox("Smooth", &g_pXenonVariables->g_bSmooth);
 									if (g_pXenonVariables->g_bSmooth) {
+										ImGui::Indent(10);
+
 										ImGui::SliderFloat("Smooth value", &g_pXenonConfigs->g_pAimConfig->m_fSmooth, 5.f, 50.f, "%.0f");
+										
+										ImGui::Indent(-10);
 									}
 
 									ImGui::Checkbox("Nearest", &g_pXenonVariables->g_bAimNearest);
 									if (g_pXenonVariables->g_bAimNearest && ImGui::SliderFloat("Nearest distance", &g_pXenonConfigs->g_pAimConfig->m_fNearest, 100.f, 1000.f, "%.0f")) {
+										ImGui::Indent(10);
+
 										g_pXenonConfigs->g_pAimConfig->m_fNearest = round(g_pXenonConfigs->g_pAimConfig->m_fNearest / 100.0f) * 100.0f;
+
+										ImGui::Indent(-10);
 									}
+
+									ImGui::Indent(-10);
+
 								}
 							}
 							ImGui::EndGroup();
@@ -284,17 +297,25 @@ void UIService::RenderDefaultMenu() {
 							ImGui::BeginGroup();
 							{
 
+								ImGui::Checkbox("Crosshair", &g_pXenonVariables->g_bCrosshair);
+								ImGui::Checkbox("Fov", &g_pXenonVariables->g_bFov);
+								if (g_pXenonVariables->g_bFov) {
+									ImGui::Indent(10);
+
+									ImGui::SliderFloat("Fov value", &g_pXenonConfigs->g_pAimConfig->m_fFov, 30.f, 300.f, "%.0f");
+
+									ImGui::Indent(-10);
+								}
 								ImGui::Checkbox("ESP", &g_pXenonVariables->g_bEsp);
 								if (g_pXenonVariables->g_bEsp) {
+									ImGui::Indent(10);
+
 									ImGui::Checkbox("Snapline", &g_pXenonVariables->g_bSnapline);
 									ImGui::Checkbox("Box 2D", &g_pXenonVariables->g_bBox2D);
 									ImGui::Checkbox("Box 3D", &g_pXenonVariables->g_bBox3D);
 									ImGui::Checkbox("Skeleton", &g_pXenonVariables->g_bSkeleton);
-									ImGui::Checkbox("Crosshair", &g_pXenonVariables->g_bCrosshair);
-									ImGui::Checkbox("Fov", &g_pXenonVariables->g_bFov);
-									if (g_pXenonVariables->g_bFov) {
-										ImGui::SliderFloat("Fov value", &g_pXenonConfigs->g_pAimConfig->m_fFov, 30.f, 300.f, "%.0f");
-									}
+
+									ImGui::Indent(-10);
 								}
 
 							}
@@ -341,11 +362,15 @@ void UIService::RenderDefaultMenu() {
 							{
 								ImGui::Checkbox("Radar", &g_pXenonVariables->g_bRadar);
 								if (g_pXenonVariables->g_bRadar) {
+									ImGui::Indent(10);
+
 									ImGui::Checkbox("Show Targets Name", &g_pXenonConfigs->g_pRadarConfig->m_bTargetsName);
 									ImGui::SliderFloat("Size", &g_pXenonConfigs->g_pRadarConfig->m_fSize, 0.f, 500.f, "%.0f");
 									ImGui::SliderFloat("Zoom", &g_pXenonConfigs->g_pRadarConfig->m_fZoom, 0.f, 100.f, "%.0f");
 									ImGui::SliderFloat("Targets Size", &g_pXenonConfigs->g_pRadarConfig->m_fTargetsSize, 0.f, 100.f, "%.0f");
 									ImGui::SliderFloat("Local Size", &g_pXenonConfigs->g_pRadarConfig->m_fLocalSize, 0.f, 100.f, "%.0f");
+									
+									ImGui::Indent(-10);
 								}
 							}
 							ImGui::EndGroup();
@@ -383,13 +408,13 @@ void UIService::RenderDefaultMenu() {
 							{
 								ImGui::Checkbox("Watermark", &g_pXenonVariables->g_bWatermark);
 								ImGui::Checkbox("Render Notifications", &g_pXenonVariables->g_bNotifications);
-								ImGui::Checkbox("Render Windows", &g_pXenonVariables->g_bRenderWindows);
-								ImGui::Checkbox("Render Overlays", &g_pXenonVariables->g_bRenderOverlays);
 								ImGui::Checkbox("Render Mouse", &g_pXenonVariables->g_bRenderMouse);
 								if (g_pXenonVariables->g_bRenderMouse) {
 
 								}
-								ImGui::Checkbox("Developer Console", &devconsole);
+								ImGui::Checkbox("Render UI Windows", &g_pXenonVariables->g_bRenderWindows);
+								ImGui::Checkbox("Render UI Overlays", &g_pXenonVariables->g_bRenderOverlays);
+								ImGui::Checkbox("Developer Tab", &devconsole);
 							}
 							ImGui::EndGroup();
 						}
@@ -429,9 +454,9 @@ void UIService::RenderDefaultMenu() {
 							ImGui::SetCursorPos(ImVec2(10, 10));
 							ImGui::BeginGroup();
 							{
-								ImGui::SliderFloat("Default Scale", &g_pXenonConfigs->g_pRadarConfig->m_fDefaultScale, 500.f, 10000.f, "%.0f");
+								ImGui::SliderFloat("Radar Default Scale", &g_pXenonConfigs->g_pRadarConfig->m_fDefaultScale, 500.f, 10000.f, "%.0f");
 								ImGui::Checkbox("Lua Editor", &g_pXenonVariables->g_bLuaEditor);
-								ImGui::Checkbox("Quick Actions", &g_pXenonVariables->g_bRenderQuickActions);
+								ImGui::Checkbox("Render UI Quick Actions", &g_pXenonVariables->g_bRenderQuickActions);
 							}
 							ImGui::EndGroup();
 						}
