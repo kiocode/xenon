@@ -18,6 +18,8 @@ kanban-plugin: board
 - [ ] write down some Lua binding c++
 - [ ] add fly
 - [ ] system and gamesvariable needs rename
+- [ ] fix aimbot broken after update
+- [ ] fix smooth aim and humanized
 
 
 ## InProgress

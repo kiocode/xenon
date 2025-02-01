@@ -11,21 +11,10 @@
             "id": "9d65ac3cab51b524",
             "type": "leaf",
             "state": {
-              "type": "kanban",
-              "state": {
-                "file": "Tasks Organization.md",
-                "kanbanViewState": {
-                  "kanban-plugin": "board",
-                  "list-collapse": [
-                    false,
-                    false,
-                    false,
-                    false
-                  ]
-                }
-              },
-              "icon": "lucide-trello",
-              "title": "Tasks Organization"
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Graph view"
             }
           }
         ]
@@ -47,7 +36,8 @@
             "state": {
               "type": "file-explorer",
               "state": {
-                "sortOrder": "alphabetical"
+                "sortOrder": "alphabetical",
+                "autoReveal": false
               },
               "icon": "lucide-folder-closed",
               "title": "Files"
@@ -181,13 +171,23 @@
               "icon": "calendar-with-checkmark",
               "title": "Timeline"
             }
+          },
+          {
+            "id": "32806d9b3dd47c79",
+            "type": "leaf",
+            "state": {
+              "type": "git-view",
+              "state": {},
+              "icon": "git-pull-request",
+              "title": "Source Control"
+            }
           }
-        ]
+        ],
+        "currentTab": 7
       }
     ],
     "direction": "horizontal",
-    "width": 443.5,
-    "collapsed": true
+    "width": 443.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -208,9 +208,9 @@
   },
   "active": "9d65ac3cab51b524",
   "lastOpenFiles": [
+    "Tasks Organization.md",
     "Project Notes.md",
     "Project Schema.canvas",
-    "Tasks Organization.md",
     "Untitled.canvas",
     "Classes/Game.md",
     "Classes/Hooks.md",
