@@ -1,4 +1,5 @@
 {
+  "showRibbon": true,
   "promptDelete": false,
   "readableLineLength": true,
   "showLineNumber": false
