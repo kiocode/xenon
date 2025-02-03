@@ -98,39 +98,35 @@ HRESULT __stdcall Game::BindForInternal(IDXGISwapChain* pSwapChain, UINT nSyncIn
 		}
 	}
 
-	if (!GetAsyncKeyState(VK_ESCAPE)) {
-
-		if (m_bRenderUI) {
-			m_pUIService->BeginRenderUI();
-		}
-		UpdateWrapper();
-		if (m_bRenderUI) {
-			m_pUIService->EndRenderUI();
-		}
-
-	}
+	UpdateWrapper();
 
 	return m_pUIService->oPresent(pSwapChain, nSyncInterval, nFlags);
 }
 
 void Game::Update() {
 
-	#pragma region System
+	if (m_bRenderUI) {
+		m_pUIService->BeginRenderUI();
+	}
 
 	TriggerEvent("Update");
 	m_pXenon->g_cLuaService->TriggerOnUpdate();
 	HandleShortcuts();
-
-	#pragma endregion
 
 	for (std::shared_ptr<CComponent> &component : m_pComponents) {
 		component->Update();
 	}
 
 	for (TargetProfile& target : m_pXenonConfigs->g_pGameVariables->g_vTargets) {
+		TriggerEvent("UpdateCurrentTarget", &target);
+
 		for (std::shared_ptr<CComponent>& component : m_pComponents) {
 			component->UpdateCurrentTarget(&target);
 		}
+	}
+
+	if (m_bRenderUI) {
+		m_pUIService->EndRenderUI();
 	}
 
 }

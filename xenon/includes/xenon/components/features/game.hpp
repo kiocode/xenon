@@ -30,23 +30,37 @@ public:
 	void EnableUpdate();
 
     void OnEvent(const std::string& eventName, const std::function<void()>& callback) {
-        eventCallbacks[eventName].push_back(callback);
+        updateCallbacks[eventName].push_back(callback);
     }
 
     void TriggerEvent(const std::string& eventName) {
-        if (eventCallbacks.find(eventName) != eventCallbacks.end()) {
-            for (const auto& callback : eventCallbacks[eventName]) {
+        if (updateCallbacks.find(eventName) != updateCallbacks.end()) {
+            for (const auto& callback : updateCallbacks[eventName]) {
                 callback();
             }
         }
     }
 
+    void OnEvent(const std::string& eventName, const std::function<void(TargetProfile* target)>& callback) {
+        updateCurrentTargetCallbacks[eventName].push_back(callback);
+    }
+
+    void TriggerEvent(const std::string& eventName, TargetProfile* target) {
+        if (updateCurrentTargetCallbacks.find(eventName) != updateCurrentTargetCallbacks.end()) {
+            for (const auto& callback : updateCurrentTargetCallbacks[eventName]) {
+                callback(target);
+            }
+        }
+    }
+
     void ClearEvent(const std::string& eventName) {
-        eventCallbacks.erase(eventName);
+        updateCallbacks.erase(eventName);
+        updateCurrentTargetCallbacks.erase(eventName);
     }
 
 private:
-    std::unordered_map<std::string, std::vector<std::function<void()>>> eventCallbacks;
+    std::unordered_map<std::string, std::vector<std::function<void()>>> updateCallbacks;
+    std::unordered_map<std::string, std::vector<std::function<void(TargetProfile* target)>>> updateCurrentTargetCallbacks;
 
     std::shared_ptr<Xenon> m_pXenon;
     std::shared_ptr<XenonConfig> m_pXenonConfigs;
