@@ -1,0 +1,18 @@
+digraph "xenon/includes/xenon/models"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  compound=true
+  subgraph clusterdir_f73f1dd2b51362435482a6cb100d4acf {
+    graph [ bgcolor="#edf0f7", pencolor="grey50", label="xenon", fontname=Helvetica,fontsize=10 style="filled,dashed", URL="dir_f73f1dd2b51362435482a6cb100d4acf.html",tooltip=""]
+  subgraph clusterdir_fdb222603bbc0e26193fb99c0f037cbc {
+    graph [ bgcolor="#edf0f7", pencolor="grey25", label="", fontname=Helvetica,fontsize=10 style="filled,bold", URL="dir_fdb222603bbc0e26193fb99c0f037cbc.html",tooltip=""]
+    dir_fdb222603bbc0e26193fb99c0f037cbc [shape=plaintext, label="models"];
+  dir_68cde46dd12322a1ee908e7e3b256fc8 [label="enums", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_68cde46dd12322a1ee908e7e3b256fc8.html",tooltip=""];
+  dir_a3718a424befc51859e035aaba860e3a [label="profiles", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_a3718a424befc51859e035aaba860e3a.html",tooltip=""];
+  dir_d20dc8d8269cedbade21ae7b55431272 [label="quickactions", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_d20dc8d8269cedbade21ae7b55431272.html",tooltip=""];
+  }
+  }
+}

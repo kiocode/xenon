@@ -1,0 +1,12 @@
+digraph "TargetProfile"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  Node1 [id="Node000001",label="TargetProfile",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip=" "];
+  Node2 -> Node1 [id="edge1_Node000001_Node000002",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" m_vFeetPos2D\nm_vHeadPos2D\nm_vPos2D",fontcolor="grey" ];
+  Node2 [id="Node000002",label="Vec2",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$d3/d95/classVec2.html",tooltip=" "];
+  Node3 -> Node1 [id="edge2_Node000001_Node000003",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" m_vFeetPos3D\nm_vHeadPos3D\nm_vPos3D",fontcolor="grey" ];
+  Node3 [id="Node000003",label="Vec3",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$d9/de4/classVec3.html",tooltip=" "];
+}
