@@ -5,6 +5,7 @@
 #include <xenon/core/system.hpp>
 
 void Esp::Update() {
+	if (!g_pXenonVariables->g_bEsp) return;
 
 	if (g_pXenonVariables->g_bSnapline) {
 		RenderSnapline();
@@ -50,25 +51,27 @@ void Esp::RenderSnapline() const {
 
 		switch (g_pXenonConfigs->g_pEspConfig->m_nSnaplineTypeStart)
 		{
-		case 0: // center
-			startPoint = center;
-			break;
-		case 1: // top
-			startPoint = ImVec2(centerX, 0);
-			break;
-		case 2: // bottom
-			startPoint = ImVec2(centerX, screenHeight);
-			break;
+			case 0: // center
+				startPoint = center;
+				break;
+			case 1: // top
+				startPoint = ImVec2(centerX, 0);
+				break;
+			case 2: // bottom
+				startPoint = ImVec2(centerX, screenHeight);
+				break;
 		}
 
 		switch (g_pXenonConfigs->g_pEspConfig->m_nSnaplineTypeEnd) {
-		case 0: // head
-			targetPos = ImVec2(targetHeadScreenPos->x, targetHeadScreenPos->y);
-			break;
-		case 1: // body
-			targetPos = ImVec2(targetScreenPos->x, targetScreenPos->y);
-		case 2: // feet
-			targetPos = ImVec2(targetFeetScreenPos->x, targetFeetScreenPos->y);
+			case 0: // head
+				targetPos = ImVec2(targetHeadScreenPos->x, targetHeadScreenPos->y);
+				break;
+			case 1: // body
+				targetPos = ImVec2(targetScreenPos->x, targetScreenPos->y);
+				break;
+			case 2: // feet
+				targetPos = ImVec2(targetFeetScreenPos->x, targetFeetScreenPos->y);
+				break;
 		}
 
 		ImGui::GetBackgroundDrawList()->AddLine(startPoint, targetPos, g_pXenonConfigs->g_pEspConfig->m_cSnapline, 1.0f);

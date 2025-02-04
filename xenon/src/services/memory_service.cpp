@@ -56,7 +56,9 @@ void MemoryService::DeattachGame()
 }
 
 bool MemoryService::IsGameRunning() const noexcept {
-	if (m_hProcessHandle == nullptr || m_hProcessHandle == INVALID_HANDLE_VALUE) {
+    if (m_hProcessHandle == nullptr) return true;
+
+	if (m_hProcessHandle == INVALID_HANDLE_VALUE) {
 		return false;
 	}
 

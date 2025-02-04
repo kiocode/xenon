@@ -69,13 +69,7 @@ void Game::BindForExternal() {
 		m_pXenon->g_pSystem->g_fDeltaTime = std::chrono::duration<float>(currentTime - previousTime).count();
 		previousTime = currentTime;
 
-		if (m_pXenonVariables->g_bRenderUI) {
-			m_pXenon->g_cUIService->BeginRenderUI();
-		}
 		Update();
-		if (m_pXenonVariables->g_bRenderUI) {
-			m_pXenon->g_cUIService->EndRenderUI();
-		}
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	}

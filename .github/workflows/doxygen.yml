@@ -1,0 +1,34 @@
+name: Doxygen Documentation
+
+on:
+  push:
+    branches:
+      - main
+      - doc
+  pull_request:
+    branches:
+      - main 
+
+jobs:
+  doxygen:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Doxygen
+      run: |
+        sudo apt-get install doxygen
+
+    - name: Generate documentation with Doxygen
+      run: doxygen Doxyfile  
+
+    - name: Upload documentation to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.TOKEN }}
+        publish_dir: ./docs/generated/html
+        publish_branch: gh-pages 
+        user_name: 'GitHub Actions'
+        user_email: 'actions@github.com'
