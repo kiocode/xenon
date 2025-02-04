@@ -16,12 +16,19 @@ EXTRACT_STATIC         = NO
 
 EXCLUDE 	   		   = xenon/libs/*
 EXCLUDE_SYMBOLS 	   = Random
+SOURCE_BROWSER         = NO
+INLINE_SOURCES         = NO
+REFERENCES_LINK_SOURCE = NO
+STRIP_CODE_COMMENTS    = NO
+VERBATIM_HEADERS       = NO
+SHOW_FILES             = NO
+SHOW_DIRECTORIES       = NO
 
 HTML_OUTPUT            = "html"
 HTML_FILE_EXTENSION    = ".html"
 
 GENERATE_TREEVIEW      = YES
-DISABLE_INDEX          = NO
+DISABLE_INDEX          = YES
 FULL_SIDEBAR           = NO
 HTML_EXTRA_STYLESHEET  = docs/doxygen-awesome.css \
                          docs/doxygen-awesome-sidebar-only.css

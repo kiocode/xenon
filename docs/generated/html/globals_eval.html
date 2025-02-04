@@ -18,6 +18,11 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+  $(function() { init_search(); });
+/* @license-end */
+</script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
@@ -33,6 +38,18 @@
    </div>
    <div id="projectbrief">A framework for cheat development.</div>
   </td>
+    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect"                onmouseover="return searchBox.OnSearchSelectShow()"                onmouseout="return searchBox.OnSearchSelectHide()">&#160;</span>
+          <input type="text" id="MSearchField" value="" placeholder="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.svg" alt=""/></a>
+          </span>
+        </div>
+</td>
  </tr>
  </tbody>
 </table>
@@ -49,17 +66,6 @@ var searchBox = new SearchBox("searchBox", "search/",'.html');
 $(function() { codefold.init(0); });
 /* @license-end */
 </script>
-<script type="text/javascript" src="menudata.js"></script>
-<script type="text/javascript" src="menu.js"></script>
-<script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function() {
-  initMenu('',true,false,'search.php','Search',true);
-  $(function() { init_search(); });
-});
-/* @license-end */
-</script>
-<div id="main-nav"></div>
 </div><!-- top -->
 <div id="side-nav" class="ui-resizable side-nav-resizable">
   <div id="nav-tree">
@@ -100,6 +106,9 @@ $(function(){initNavTree('globals_eval.html',''); initResizable(true); });
 
 <div class="contents">
 <div class="textblock">Here is a list of all enum values with links to the files they belong to:</div><ul>
+<li>AIM&#160;:&#160;<a class="el" href="df/d64/ui__service_8hpp.html#a68b1fc3ba1e2d56d465aa16c89cf599eac6c43083668b4a00e15c904abdb687bf">ui_service.hpp</a></li>
+<li>COLORS&#160;:&#160;<a class="el" href="df/d64/ui__service_8hpp.html#a948dc9aacb084485863c1331618bc290a69a8f9db961ca0ebda0f03f9e5063230">ui_service.hpp</a></li>
+<li>DEV&#160;:&#160;<a class="el" href="df/d64/ui__service_8hpp.html#a68b1fc3ba1e2d56d465aa16c89cf599eaab9bcf71b8a61e1a8c59d2e71a3eaad6">ui_service.hpp</a></li>
 <li>DIM_1D&#160;:&#160;<a class="el" href="d9/db1/game__dimension_8hpp.html#a69c69bc1291f2d2a309dbaed327a37c6aadc70858e351cb09cee561d86d7c3e60">game_dimension.hpp</a></li>
 <li>DIM_2D&#160;:&#160;<a class="el" href="d9/db1/game__dimension_8hpp.html#a69c69bc1291f2d2a309dbaed327a37c6a5a2a5de3dfdf249f106fa372b2c82826">game_dimension.hpp</a></li>
 <li>DIM_3D&#160;:&#160;<a class="el" href="d9/db1/game__dimension_8hpp.html#a69c69bc1291f2d2a309dbaed327a37c6ab23d8a3b8b6129ffb090523eec30fc35">game_dimension.hpp</a></li>
@@ -108,11 +117,16 @@ $(function(){initNavTree('globals_eval.html',''); initResizable(true); });
 <li>DX12&#160;:&#160;<a class="el" href="d4/d5c/rendering__type_8hpp.html#ae43ad0c51fe2a4518d90d2ec274ebe23ac94ac21aac5e71c4dba4c056a6df058b">rendering_type.hpp</a></li>
 <li>DX9&#160;:&#160;<a class="el" href="d4/d5c/rendering__type_8hpp.html#ae43ad0c51fe2a4518d90d2ec274ebe23a29f8dc089ec93cc8df295f50598258bf">rendering_type.hpp</a></li>
 <li>ENGINE_NONE&#160;:&#160;<a class="el" href="df/d83/gameengine__type_8hpp.html#a057143b0cdda7112b5c60fb2bfc39cdeaea52bde9ad0df944f4dbbdcf925d92e7">gameengine_type.hpp</a></li>
+<li>MISC&#160;:&#160;<a class="el" href="df/d64/ui__service_8hpp.html#a68b1fc3ba1e2d56d465aa16c89cf599eac598b9c49caca3da6b36b030315b7ce9">ui_service.hpp</a></li>
+<li>NUM_TABS&#160;:&#160;<a class="el" href="df/d64/ui__service_8hpp.html#a68b1fc3ba1e2d56d465aa16c89cf599eaa55b21199caa0d6a9cc1ff960b08d315">ui_service.hpp</a></li>
 <li>OPENGL2&#160;:&#160;<a class="el" href="d4/d5c/rendering__type_8hpp.html#ae43ad0c51fe2a4518d90d2ec274ebe23ac10abae1129328b7c98dd50e5560f5d7">rendering_type.hpp</a></li>
 <li>OPENGL3&#160;:&#160;<a class="el" href="d4/d5c/rendering__type_8hpp.html#ae43ad0c51fe2a4518d90d2ec274ebe23a25af1d3493b0fe8091f47409e11d1885">rendering_type.hpp</a></li>
+<li>RADAR&#160;:&#160;<a class="el" href="df/d64/ui__service_8hpp.html#a68b1fc3ba1e2d56d465aa16c89cf599ea0fc799db9c8cafef0c535f847f91cd99">ui_service.hpp</a></li>
 <li>REND_NONE&#160;:&#160;<a class="el" href="d4/d5c/rendering__type_8hpp.html#ae43ad0c51fe2a4518d90d2ec274ebe23a8c56a68a395ef6f401fa98f8ef55e328">rendering_type.hpp</a></li>
+<li>SETTINGS&#160;:&#160;<a class="el" href="df/d64/ui__service_8hpp.html#a948dc9aacb084485863c1331618bc290ac678338caea29d77d56be2ea56325610">ui_service.hpp</a></li>
 <li>UNITY_ENGINE&#160;:&#160;<a class="el" href="df/d83/gameengine__type_8hpp.html#a057143b0cdda7112b5c60fb2bfc39cdea909f23a625cda10195a74be22c739ae7">gameengine_type.hpp</a></li>
 <li>UNREAL_ENGINE&#160;:&#160;<a class="el" href="df/d83/gameengine__type_8hpp.html#a057143b0cdda7112b5c60fb2bfc39cdea85f97076c08529a32c2740dc98ddfa40">gameengine_type.hpp</a></li>
+<li>VISUALS&#160;:&#160;<a class="el" href="df/d64/ui__service_8hpp.html#a68b1fc3ba1e2d56d465aa16c89cf599ea62bbc49d0917698c84fe3a914dca3498">ui_service.hpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

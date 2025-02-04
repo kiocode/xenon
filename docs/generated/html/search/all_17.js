@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['y_0',['y',['../d9/d7f/class_vec2.html#a30543787e62f6d915543cf1dfb04c094',1,'Vec2::y'],['../df/d24/class_vec3.html#abc1d241232cb04aa98217a942402ae68',1,'Vec3::y']]]
+  ['_7eccomponent_0',['~CComponent',['../de/d11/class_c_component.html#af2ad4d80f616aedbf6b08f33bdd9d2d5',1,'CComponent']]],
+  ['_7equickaction_1',['~QuickAction',['../d1/dda/class_quick_action.html#a37e36fd5d745beacf267c84cf12e7ea7',1,'QuickAction']]]
 ];

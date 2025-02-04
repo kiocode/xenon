@@ -37,17 +37,6 @@ var NAVTREE =
         [ "Functions", "functions_func.html", null ],
         [ "Variables", "functions_vars.html", null ]
       ] ]
-    ] ],
-    [ "Files", "files.html", [
-      [ "File List", "files.html", "files_dup" ],
-      [ "File Members", "globals.html", [
-        [ "All", "globals.html", null ],
-        [ "Functions", "globals_func.html", null ],
-        [ "Variables", "globals_vars.html", null ],
-        [ "Typedefs", "globals_type.html", null ],
-        [ "Enumerations", "globals_enum.html", null ],
-        [ "Enumerator", "globals_eval.html", null ]
-      ] ]
     ] ]
   ] ]
 ];
@@ -55,8 +44,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"d9/d7f/class_vec2.html#afea5a75f39e0db3d893aa56f11e90a60",
-"dir_fdb222603bbc0e26193fb99c0f037cbc.html"
+"dc/d93/class_target_profile.html#a5931bdb90b82550a7101acd0bfd48b9b"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

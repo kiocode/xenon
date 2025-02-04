@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['logobytes_0',['logoBytes',['../d3/d78/fonts_8h.html#ad79c85b8835e684c439a4fdd41a1e439',1,'fonts.h']]]
+  ['opresent_0',['oPresent',['../de/d79/class_u_i_service.html#a8f457feb72a7efea464374bbdfa5ea8b',1,'UIService']]],
+  ['owndproc_1',['oWndProc',['../de/d79/class_u_i_service.html#a532fd09613359b765bba815585c3a768',1,'UIService']]]
 ];

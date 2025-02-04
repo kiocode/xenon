@@ -1,13 +1,19 @@
 var searchData=
 [
-  ['quickaction_0',['QuickAction',['../d1/dda/class_quick_action.html',1,'']]],
-  ['quickaction_2ehpp_1',['quickaction.hpp',['../d9/df7/quickaction_8hpp.html',1,'']]],
-  ['quickaction_5fbutton_2ehpp_2',['quickaction_button.hpp',['../df/df1/quickaction__button_8hpp.html',1,'']]],
-  ['quickaction_5fcheckbox_2ehpp_3',['quickaction_checkbox.hpp',['../d1/d78/quickaction__checkbox_8hpp.html',1,'']]],
-  ['quickaction_5fslider_2ehpp_4',['quickaction_slider.hpp',['../d8/dbc/quickaction__slider_8hpp.html',1,'']]],
-  ['quickactionbutton_5',['QuickActionButton',['../d0/da1/class_quick_action_button.html',1,'QuickActionButton'],['../d0/da1/class_quick_action_button.html#ac4f5fb49bcb404035c108e5e27df71a6',1,'QuickActionButton::QuickActionButton()']]],
-  ['quickactioncheckbox_6',['QuickActionCheckbox',['../d3/dcf/class_quick_action_checkbox.html',1,'QuickActionCheckbox'],['../d3/dcf/class_quick_action_checkbox.html#a2ef9674aae324da364141ea34956d831',1,'QuickActionCheckbox::QuickActionCheckbox()']]],
-  ['quickactions_7',['QuickActions',['../d6/daf/class_quick_actions.html',1,'']]],
-  ['quickactions_2ehpp_8',['quickactions.hpp',['../d1/d52/quickactions_8hpp.html',1,'']]],
-  ['quickactionslider_9',['QuickActionSlider',['../dc/d01/class_quick_action_slider.html',1,'QuickActionSlider'],['../dc/d01/class_quick_action_slider.html#aa0fc79655429d69c6ebf5878ca483a50',1,'QuickActionSlider::QuickActionSlider(std::string label, float *value, float min, float max)'],['../dc/d01/class_quick_action_slider.html#ac4f8ee062ed4a49e4bef0573041ec84e',1,'QuickActionSlider::QuickActionSlider(std::string label, int *value, int min, int max)']]]
+  ['setapptitle_0',['SetAppTitle',['../d9/d16/class_system.html#a3bd0143115ed4cf5b6bac523d3df0eaa',1,'System']]],
+  ['setconsoleenabled_1',['SetConsoleEnabled',['../d2/d4a/class_builder.html#a40bd1506ffdd1c7f597a81186ac46f4d',1,'Builder']]],
+  ['setdebugloglevel_2',['SetDebugLogLevel',['../d2/d4a/class_builder.html#a908689541d82ce98daaa667e029bd077',1,'Builder']]],
+  ['seterrorloglevel_3',['SetErrorLogLevel',['../d2/d4a/class_builder.html#ab92ee7157fe3e670792c76910136370d',1,'Builder']]],
+  ['setfonts_4',['SetFonts',['../df/d96/class_notification_service.html#a14e9c594526b339a5fe6323de54127f0',1,'NotificationService']]],
+  ['setgamedimension_5',['SetGameDimension',['../d9/d16/class_system.html#acef9ad52fd8a8d55bfa21a0b7f879769',1,'System']]],
+  ['setinfologlevel_6',['SetInfoLogLevel',['../d2/d4a/class_builder.html#a389e792f78f12914816b5d96d34d116a',1,'Builder']]],
+  ['setmenuclose_7',['SetMenuClose',['../de/d79/class_u_i_service.html#a218b4135d792004b59ba94fe79368b99',1,'UIService']]],
+  ['setmenuopen_8',['SetMenuOpen',['../de/d79/class_u_i_service.html#ae94bd4541a7fd86dfb9566858201b22c',1,'UIService']]],
+  ['setrenderingtype_9',['SetRenderingType',['../d9/d16/class_system.html#af6e039fe2d66826157d87786120d407d',1,'System']]],
+  ['settarget_10',['SetTarget',['../de/d26/class_aimbot.html#a03582252842b6baaa1b2dc0bcd1a7aaa',1,'Aimbot']]],
+  ['setwarnloglevel_11',['SetWarnLogLevel',['../d2/d4a/class_builder.html#a15670284d163e077eb7af50dc441ae8d',1,'Builder']]],
+  ['setwaypoint_12',['SetWaypoint',['../de/d1e/class_waypoints.html#aa61cc304ecc098a965ac3e89a29c46ec',1,'Waypoints::SetWaypoint(std::string title, const Vec2 &amp;pos, ImColor color)'],['../de/d1e/class_waypoints.html#ac410138359f091021968ce84fad16e92',1,'Waypoints::SetWaypoint(std::string title, const Vec3 &amp;pos, ImColor color)']]],
+  ['spin2d_13',['Spin2D',['../da/df2/class_aim_service.html#a66d25c275f7c5f586ca8e32e694bc624',1,'AimService']]],
+  ['spin3d_14',['Spin3D',['../da/df2/class_aim_service.html#a956fc6d73eca687825b241a7cc172c35',1,'AimService']]],
+  ['system_15',['System',['../d9/d16/class_system.html',1,'']]]
 ];
