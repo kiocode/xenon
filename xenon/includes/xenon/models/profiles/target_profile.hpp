@@ -18,7 +18,6 @@ public:
 	bool m_bTemmate;
 	bool m_bVisible = true;
 	float m_fWidth;
-	float m_fHeight; 
 	float m_fHealth;
 	float m_fMaxHealth = 100;
 	std::string m_strName;

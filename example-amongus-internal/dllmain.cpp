@@ -15,6 +15,8 @@ intptr_t m_pBase = 0;
 intptr_t m_pGameAssembly = 0;
 intptr_t m_pUnityPlayer = 0;
 
+float scale = 1.f;
+
 static bool FetchSDK() {
 
 	m_pBase = (intptr_t)GetModuleHandle(NULL);
@@ -63,13 +65,18 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 	std::shared_ptr<GameVariables> pGameVariables = builder.xenonConfig->g_pGameVariables;
 	std::shared_ptr<System> pSystem = builder.xenon->g_pSystem;
 
-    pSystem->SetGameDimension(GameDimension::DIM_2D);
+    pSystem->SetGameDimension(GameDimension::DIM_3D);
     pSystem->SetRenderingType(RenderingType::DX11);
-	pSystem->m_fnW2S2D = [pSystem, pGameVariables](Vec2 pos) {
-		Unity::Vector3 worldPos = { pos.x, -pos.y, 0 };
-		Unity::Vector3 screen;
-		Unity::Camera::GetMain()->WorldToScreen(worldPos, screen);
-		return new Vec2(screen.x, screen.y);
+	pSystem->m_fnW2S3D = [pSystem, pGameVariables](Vec3 pos) {
+		Unity::CCamera* cam = Unity::Camera::GetMain();
+
+		float screenWidth = pSystem->GetScreenResolution().x;
+		float screenHeight = pSystem->GetScreenResolution().y;
+
+		float x = (pos.x - pGameVariables->g_vLocal.m_vPos3D.x) * (screenWidth / cam->GetOrthographicSize()) * 0.3;
+		float y = (pos.y - pGameVariables->g_vLocal.m_vPos3D.y) * (screenHeight / cam->GetOrthographicSize()) * 0.5;
+
+		return new Vec2(screenWidth / 2 + x, screenHeight / 2 - y);
 	};
 
 	builder.SetInfoLogLevel();
@@ -86,14 +93,14 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 
 		ImGui::Text("LocalPlayer:");
 		ImGui::Text("Name: %s", pGameVariables->g_vLocal.m_strName.c_str());
-		ImGui::Text("Pos: %f %f", pGameVariables->g_vLocal.m_vPos2D.x, pGameVariables->g_vLocal.m_vPos2D.y);
+		ImGui::Text("Pos: %f %f %f", pGameVariables->g_vLocal.m_vPos3D.x, pGameVariables->g_vLocal.m_vPos3D.y, pGameVariables->g_vLocal.m_vPos3D.z);
 
 		ImGui::Separator();
 
 		ImGui::Text("Targets: %d", pGameVariables->g_vTargets.size());
 		for (auto& target : pGameVariables->g_vTargets) {
 			ImGui::Text("Name: %s", target.m_strName.c_str());
-			ImGui::Text("Pos: %f %f", target.m_vPos2D.x, target.m_vPos2D.y);
+			ImGui::Text("Pos: %f %f %f", target.m_vPos3D.x, target.m_vPos3D.y, target.m_vPos3D.z);
 		}
 
 		ImGui::End();
@@ -106,6 +113,8 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 
 		ImGui::End();
 	});
+
+	pUIConfig->m_qActions->AddSlider("Scale", &scale, 0.1f, 10.f);
 
 	builder.GameManager->OnEvent("Update", [builder, pGameVariables]() {
 		
@@ -121,14 +130,11 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 			auto currTargetPos = pTargets->operator[](i)->GetTransform()->GetPosition();
 
 			TargetProfile targetProfile;
-			targetProfile.m_fWidth = 10.f;
-			targetProfile.m_fHeight = 15.f;
+			targetProfile.m_fWidth = 70.f;
 			targetProfile.m_bTemmate = false;
-			targetProfile.m_vHeadPos2D = Vec2(currTargetPos.x, currTargetPos.y);
-			targetProfile.m_vFeetPos2D = Vec2(currTargetPos.x, currTargetPos.y);
-			targetProfile.m_vPos2D = Vec2(currTargetPos.x, currTargetPos.y);
-
-			current->fields.flashlightAngle = 0.f;
+			targetProfile.m_vHeadPos3D = Vec3(currTargetPos.x, currTargetPos.y + .35f, currTargetPos.z);
+			targetProfile.m_vFeetPos3D = Vec3(currTargetPos.x, currTargetPos.y - .35f, currTargetPos.z);
+			targetProfile.m_vPos3D = Vec3(currTargetPos.x, currTargetPos.y, currTargetPos.z);
 
 			char buffer[64];
 			sprintf_s(buffer, "Player %d", i);
@@ -136,6 +142,12 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 
 			if (current->fields.cosmetics->fields.localPlayer) {
 				pGameVariables->g_vLocal = targetProfile;
+				auto &flashlight = current->fields.lightSource;
+				if (flashlight != nullptr) {
+					flashlight->fields.useFlashlight = true;
+					flashlight->fields.flashlightSize = 1000.f;
+				}
+
 			} else {
 				pGameVariables->g_vTargets.push_back(targetProfile);
 			}

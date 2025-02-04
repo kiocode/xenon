@@ -314,6 +314,14 @@ void UIService::RenderDefaultMenu() {
 
 									ImGui::Checkbox("Healthbar", &g_pXenonVariables->g_bHealthBar);
 									ImGui::Checkbox("Snapline", &g_pXenonVariables->g_bSnapline);
+									if (g_pXenonVariables->g_bSnapline) {
+										ImGui::Indent(10);
+
+										ImGui::SliderInt("Snapline Start", &g_pXenonConfigs->g_pEspConfig->m_nSnaplineTypeStart, 0, 2);
+										ImGui::SliderInt("Snapline End", &g_pXenonConfigs->g_pEspConfig->m_nSnaplineTypeEnd, 0, 2);
+
+										ImGui::Indent(-10);
+									}
 									ImGui::Checkbox("Box 2D", &g_pXenonVariables->g_bBox2D);
 									ImGui::Checkbox("Box 3D", &g_pXenonVariables->g_bBox3D);
 									ImGui::Checkbox("Skeleton", &g_pXenonVariables->g_bSkeleton);
