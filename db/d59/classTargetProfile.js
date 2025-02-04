@@ -3,7 +3,6 @@ var classTargetProfile =
     [ "m_bTemmate", "db/d59/classTargetProfile.html#a3bcb2378f6c3e78e297473c520d04a9d", null ],
     [ "m_bVisible", "db/d59/classTargetProfile.html#a60d56b65e79fed52f85a2c523f17222f", null ],
     [ "m_fHealth", "db/d59/classTargetProfile.html#a9aaf280d8e0cfad3fd007d27eaed81b8", null ],
-    [ "m_fHeight", "db/d59/classTargetProfile.html#af1047187de1d9491a8a7eaa42b192775", null ],
     [ "m_fMaxHealth", "db/d59/classTargetProfile.html#a5e7028b8cdec57b66db34e51e80e1d47", null ],
     [ "m_fWidth", "db/d59/classTargetProfile.html#af6ad2e14a483bb66d3492292d066aa20", null ],
     [ "m_strName", "db/d59/classTargetProfile.html#a46442ace9633087bb44013d1f9111220", null ],
