@@ -21,6 +21,20 @@ extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam
 typedef HRESULT(__stdcall* Present) (IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags);
 typedef LRESULT(CALLBACK* WNDPROC)(HWND, UINT, WPARAM, LPARAM);
 
+enum Tabs {
+    AIM = 0,
+    VISUALS,
+    RADAR,
+    MISC,
+    DEV,
+    NUM_TABS
+};
+
+enum SubTabs {
+    SETTINGS = 0,
+    COLORS,
+};
+
 /**
  * @class UIService
  * @brief A service for managing and rendering the user interface (UI) in the game.
@@ -38,7 +52,11 @@ public:
      * This function sets up essential pointers and resources required for the UI, including
      * setting flags to show the menu and associating system variables.
      */
-    void Init() override;
+    void Init() override {
+        m_bShowMenu = &g_pXenonVariables->g_bShowMenu;
+        m_pSystem = g_pXenon->g_pSystem;
+        m_pOWndProc = &oWndProc;
+    }
 
     Hotkey testhotkey; ///< A hotkey for testing purposes.
     bool isEditing = false; ///< Flag indicating if the UI is currently being edited.
@@ -122,13 +140,11 @@ private:
     ID3D11DepthStencilState* m_pNoDepthStencilState = nullptr; ///< The depth stencil state with no depth.
     ID3D11DepthStencilState* m_pDefaultDepthStencilState = nullptr; ///< The default depth stencil state.
 
-#pragma region menu vars
     ImFont* m_pMainFont = nullptr; ///< Font used for rendering the UI.
     int m_nSelectedTab = 0; ///< The currently selected tab in the menu.
     int m_nSelectedSubTab = 0; ///< The currently selected sub-tab in the menu.
 
-    bool devconsole = false; ///< Flag for showing or hiding the developer console.
-#pragma endregion
+    bool m_bDevTab = false; ///< Flag for showing or hiding the developer console.
 
     /**
      * @brief Window procedure function for handling window messages.

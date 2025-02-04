@@ -37,7 +37,11 @@ public:
         std::shared_ptr<XenonConfig> pXenonConfigs,
         std::shared_ptr<XenonVariables> pXenonVariables,
         std::vector<std::shared_ptr<CComponent>> pComponents
-    );
+    ) : m_pXenon(pXenon), m_pXenonConfigs(pXenonConfigs), m_pXenonVariables(pXenonVariables), m_pComponents(pComponents) {
+        m_bRenderUI = &m_pXenonVariables->g_bRenderUI;
+        m_pUIService = m_pXenon->g_cUIService;
+        UpdateWrapper = std::bind(&Game::Update, this);
+    }
 
     /**
      * @brief Enables the update cycle for the game.
@@ -51,33 +55,52 @@ public:
      * @param eventName The name of the event to listen for.
      * @param callback The callback function to be executed when the event is triggered.
      */
-    void OnEvent(const std::string& eventName, const std::function<void()>& callback);
+    void OnEvent(const std::string& eventName, const std::function<void()>& callback) {
+        updateCallbacks[eventName].push_back(callback);
+    }
 
     /**
      * @brief Triggers an event, executing all registered callbacks for that event.
      * @param eventName The name of the event to trigger.
      */
-    void TriggerEvent(const std::string& eventName);
+    void TriggerEvent(const std::string& eventName) {
+        if (updateCallbacks.find(eventName) != updateCallbacks.end()) {
+            for (const auto& callback : updateCallbacks[eventName]) {
+                callback();
+            }
+        }
+    }
 
     /**
      * @brief Registers a callback function for an event that provides a target profile.
      * @param eventName The name of the event to listen for.
      * @param callback The callback function that takes a TargetProfile* argument to process the target.
      */
-    void OnEvent(const std::string& eventName, const std::function<void(TargetProfile* target)>& callback);
+    void OnEvent(const std::string& eventName, const std::function<void(TargetProfile* target)>& callback) {
+        updateCurrentTargetCallbacks[eventName].push_back(callback);
+    }
 
     /**
      * @brief Triggers an event with a target profile, executing all registered callbacks for that event.
      * @param eventName The name of the event to trigger.
      * @param target The target profile associated with the event.
      */
-    void TriggerEvent(const std::string& eventName, TargetProfile* target);
+    void TriggerEvent(const std::string& eventName, TargetProfile* target) {
+        if (updateCurrentTargetCallbacks.find(eventName) != updateCurrentTargetCallbacks.end()) {
+            for (const auto& callback : updateCurrentTargetCallbacks[eventName]) {
+                callback(target);
+            }
+        }
+    }
 
     /**
      * @brief Clears all callbacks associated with a specific event.
      * @param eventName The name of the event whose callbacks should be cleared.
      */
-    void ClearEvent(const std::string& eventName);
+    void ClearEvent(const std::string& eventName) {
+        updateCallbacks.erase(eventName);
+        updateCurrentTargetCallbacks.erase(eventName);
+    }
 
 private:
     /**
