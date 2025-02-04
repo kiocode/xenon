@@ -21,7 +21,7 @@ int main()
 
 	Builder builder("AssaultCube external");
 	builder.SystemVariables->IsInternal(false);
-	builder.SystemVariables->SetGameDimension(GameDimension::DIMENSION_3D);
+	builder.SystemVariables->SetGameDimension(GameDimension::DIM_3D);
 	builder.SetConsoleEnabled();
 	builder.SetDebugLogLevel();
 

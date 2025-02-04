@@ -9,7 +9,7 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 
 	Builder builder("Demo internal");
     builder.SystemVariables->IsInternal(true);
-    builder.SystemVariables->SetGameDimension(GameDimension::DIMENSION_2D);
+    builder.SystemVariables->SetGameDimension(GameDimension::DIM_2D);
     builder.SystemVariables->SetRenderingType(RenderingType::DX11);
     builder.SetDebugLogLevel();
     builder.SetConsoleEnabled();

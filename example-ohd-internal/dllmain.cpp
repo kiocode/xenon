@@ -60,7 +60,7 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 	Builder builder("OHD internal");
 	builder.SystemVariables->IsInternal(true);
 	builder.SystemVariables->IsUnrealEngine(UnrealEngineVersion::UE4);
-	builder.SystemVariables->SetGameDimension(GameDimension::DIMENSION_3D);
+	builder.SystemVariables->SetGameDimension(GameDimension::DIM_3D);
 	builder.SystemVariables->SetRenderingType(RenderingType::DX11);
 	builder.SystemVariables->m_fnW2S3D = [](Vec3 pos) {
 		SDK::FVector2D screenPos;

@@ -5,48 +5,33 @@
 #include <xenon/xenon.hpp>
 #include <spdlog/spdlog.h>
 
-#include "OARDump/SDK.hpp"
+#include <xenon/components/features/waypoints.hpp>
+#include <xenon/models/waypoint.hpp>
 
-inline static SDK::UEngine* m_pEngine;
-inline static SDK::UWorld* m_pWorld;
-inline static SDK::APlayerController* m_pMyController;
-inline static SDK::APawn* m_pMyPawn;
-inline static SDK::ACharacter* m_pMyCharacter;
+#include "AmongUsDump/il2cpp.h"
+#include <il2cpp_resolver/il2cpp_resolver.hpp>
+
+intptr_t m_pBase = 0;
+intptr_t m_pGameAssembly = 0;
+intptr_t m_pUnityPlayer = 0;
 
 static bool FetchSDK() {
-    m_pEngine = SDK::UEngine::GetEngine();
-    m_pWorld = SDK::UWorld::GetWorld();
 
-    if (!m_pEngine || m_pEngine == nullptr || !m_pWorld || m_pWorld == nullptr) {
-        //spdlog::error("Failed to get engine or world");
-        return false;
-    }
-
-    if (!m_pWorld->OwningGameInstance) {
-		//spdlog::error("Failed to get game instance");
+	m_pBase = (intptr_t)GetModuleHandle(NULL);
+	if (m_pBase == 0) {
+		//spdlog::error("Failed to get base address");
 		return false;
 	}
 
-    if (!m_pWorld->OwningGameInstance->LocalPlayers.Num()) {
-		//spdlog::error("Failed to get local players");
+	m_pGameAssembly = (intptr_t)GetModuleHandle("GameAssembly.dll");
+	if (m_pGameAssembly == 0) {
+		//spdlog::error("Failed to get GameAssembly address");
 		return false;
 	}
 
-    m_pMyController = m_pWorld->OwningGameInstance->LocalPlayers[0]->PlayerController;
-    if (!m_pMyController || m_pMyController == nullptr) {
-		//spdlog::error("Failed to get controller");
-		return false;
-	}
-
-	m_pMyPawn = m_pMyController->AcknowledgedPawn;
-    if (!m_pMyPawn || m_pMyPawn == nullptr) {
-		//spdlog::error("Failed to get pawn");
-		return false;
-	}
-
-	m_pMyCharacter = m_pMyController->Character;
-    if (!m_pMyCharacter || m_pMyCharacter == nullptr) {
-		//spdlog::error("Failed to get character");
+	m_pUnityPlayer = (intptr_t)GetModuleHandle("UnityPlayer.dll");
+	if (m_pUnityPlayer == 0) {
+		//spdlog::error("Failed to get UnityPlayer address");
 		return false;
 	}
 
@@ -57,46 +42,58 @@ static bool FetchSDK() {
 DWORD WINAPI MainThread(LPVOID lpReserved)
 {
 
-    Builder builder("OAR internal");
-    builder.SystemVariables->IsInternal(true);
-    builder.SystemVariables->IsUnrealEngine(UnrealEngineVersion::UE4);
-    builder.SystemVariables->SetGameDimension(GameDimension::DIMENSION_3D);
-    builder.SystemVariables->SetRenderingType(RenderingType::DX11);
-	builder.SystemVariables->m_fnW2S3D = [](Vec3 pos) {
-		SDK::FVector2D screenPos;
-		SDK::FVector unrealPos(pos.x, pos.z, pos.y);
-		if (m_pMyController->ProjectWorldLocationToScreen(unrealPos, &screenPos, false)) {
-			return new Vec2(screenPos.X, screenPos.Y);
-		}
-		else {
-			return new Vec2(-99, -99);
-		}
+    Builder builder("AmongUs internal");
+    builder.xenon->g_pSystem->IsInternal(true);
+    builder.xenon->g_pSystem->IsUnityEngine(UnityEngineType::IL2CPP);
+
+	if (IL2CPP::Initialize(true)) {
+		std::cout << "Il2Cpp initialized\n" << std::endl;
+	}
+	else {
+		std::cout << "Il2Cpp initialize failed, quitting..." << std::endl;
+		Sleep(300);
+		exit(0);
+	}
+	if (!FetchSDK()) return FALSE;
+
+
+	std::shared_ptr<RadarConfig> pRadarConfig = builder.xenonConfig->g_pRadarConfig;
+	std::shared_ptr<UIConfig> pUIConfig = builder.xenonConfig->g_pUIConfig;
+	std::shared_ptr<Waypoints> pWaypoints = builder.xenon->g_cWaypoints;
+	std::shared_ptr<GameVariables> pGameVariables = builder.xenonConfig->g_pGameVariables;
+	std::shared_ptr<System> pSystem = builder.xenon->g_pSystem;
+
+    pSystem->SetGameDimension(GameDimension::DIM_2D);
+    pSystem->SetRenderingType(RenderingType::DX11);
+	pSystem->m_fnW2S2D = [pSystem, pGameVariables](Vec2 pos) {
+		Unity::Vector3 worldPos = { pos.x, -pos.y, 0 };
+		Unity::Vector3 screen;
+		Unity::Camera::GetMain()->WorldToScreen(worldPos, screen);
+		return new Vec2(screen.x, screen.y);
 	};
 
 	builder.SetInfoLogLevel();
     builder.SetConsoleEnabled();
 
-	std::shared_ptr<RadarConfig> pRadarConfig = builder.Services->GetConfiguration<RadarConfig>();
-	std::shared_ptr<UIConfig> pUIConfig = builder.Services->GetConfiguration<UIConfig>();
-	std::shared_ptr<Waypoints> pWaypoints = builder.Services->GetService<Waypoints>();
-	
-	pUIConfig->m_vFnOverlays.push_back([builder, pWaypoints]() {
-		ImGui::Begin("OAR internal");
+	pUIConfig->m_vFnOverlays.push_back([builder, pWaypoints, pGameVariables]() {
+		ImGui::Begin("AmongUs internal");
 
-		ImGui::Text("Engine: %p", m_pEngine);
-		ImGui::Text("World: %p", m_pWorld);
-		ImGui::Text("Controller: %p", m_pMyController);
-		ImGui::Text("Pawn: %p", m_pMyPawn);
-		ImGui::Text("Character: %p", m_pMyCharacter);
+		ImGui::Text("Base: 0x%llx", m_pBase);
+		ImGui::Text("GameAssembly: 0x%llx", m_pGameAssembly);
+		ImGui::Text("UnityPlayer: 0x%llx", m_pUnityPlayer);
 
 		ImGui::Separator();
 
-		ImGui::Text("Targets: %d", builder.GameGlobalVariables->g_vTargets.size());
-		for (auto& target : builder.GameGlobalVariables->g_vTargets) {
+		ImGui::Text("LocalPlayer:");
+		ImGui::Text("Name: %s", pGameVariables->g_vLocal.m_strName.c_str());
+		ImGui::Text("Pos: %f %f", pGameVariables->g_vLocal.m_vPos2D.x, pGameVariables->g_vLocal.m_vPos2D.y);
+
+		ImGui::Separator();
+
+		ImGui::Text("Targets: %d", pGameVariables->g_vTargets.size());
+		for (auto& target : pGameVariables->g_vTargets) {
 			ImGui::Text("Name: %s", target.m_strName.c_str());
-			ImGui::SameLine();
-			ImGui::Text(" - Health: %f", target.m_fHealth);
-			ImGui::Text("Pos: %f %f %f", target.m_vPos3D.x, target.m_vPos3D.y, target.m_vPos3D.z);
+			ImGui::Text("Pos: %f %f", target.m_vPos2D.x, target.m_vPos2D.y);
 		}
 
 		ImGui::End();
@@ -110,60 +107,45 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 		ImGui::End();
 	});
 
-	pUIConfig->m_qActions->AddSlider("Radar Zoom", &pRadarConfig->m_fZoom, 0.3, 5);
-	pUIConfig->m_qActions->AddButton("Reset Radar Zoom", [pRadarConfig]() { pRadarConfig->m_fZoom = 1; });
-	pUIConfig->m_qActions->AddSlider("Radar Type", &pRadarConfig->m_nType, 0, 1);
-
-	std::shared_ptr<GameVariables> pGameVariables = builder.Services->GetConfiguration<GameVariables>();
-	pUIConfig->m_qActions->AddButton("Set Waypoint", [pGameVariables, pWaypoints]() {
-		pWaypoints->SetWaypoint("test", pGameVariables->g_vLocal.m_vPos3D, ImColor(255, 255, 255));
-	});
-
-
-	builder.GameManager->OnEvent("Update", [builder]() {
-		if(!FetchSDK()) return;
+	builder.GameManager->OnEvent("Update", [builder, pGameVariables]() {
 		
-		builder.GameGlobalVariables->g_vTargets.clear();
+		pGameVariables->g_vTargets.clear();
 
-		SDK::FVector myPos = m_pMyCharacter->K2_GetActorLocation();
-		builder.GameGlobalVariables->g_vLocal.m_vPos3D = Vec3(myPos.X, myPos.Z, myPos.Y);
+		Unity::il2cppArray<Unity::CComponent*>* pTargets = Unity::Object::FindObjectsOfType<Unity::CComponent>("PlayerControl");
+		if (!pTargets) return;
 
-		for (int i = 0; i < SDK::UObject::GObjects->Num(); i++) {
-			SDK::UObject* obj = SDK::UObject::GObjects->GetByIndex(i);
+		for (int i = 0; i < pTargets->m_uMaxLength; i++) {
+			PlayerControl_o* current = reinterpret_cast<PlayerControl_o*>(pTargets->operator[](i));
+			if (!current) continue;
 
-			if (!obj || obj == nullptr || obj->IsDefaultObject()) continue;
-			if (!obj->IsA(SDK::ANPCBase_C::StaticClass())) continue;
-
-			SDK::ANPCBase_C* npc = static_cast<SDK::ANPCBase_C*>(obj);
-			if (npc->Controller && npc->Controller->IsLocalPlayerController()) continue;
-
-			if (!npc || npc == nullptr || npc->Health <= 0 || npc->Dead_) continue;
-
-			SDK::FVector unrealTargetPos = npc->K2_GetActorLocation();
-
-			if (unrealTargetPos.X == 0 || unrealTargetPos.Y == 0 || unrealTargetPos.Z == 0) continue;
+			auto currTargetPos = pTargets->operator[](i)->GetTransform()->GetPosition();
 
 			TargetProfile targetProfile;
-			targetProfile.m_vHeadPos3D = Vec3(unrealTargetPos.X, unrealTargetPos.Z - 100, unrealTargetPos.Y);
-			targetProfile.m_vFeetPos3D = Vec3(unrealTargetPos.X, unrealTargetPos.Z + 100, unrealTargetPos.Y);
-			targetProfile.m_vPos3D = Vec3(unrealTargetPos.X, unrealTargetPos.Z, unrealTargetPos.Y);
-			targetProfile.m_strName = npc->GetName();
-			targetProfile.m_fHealth = npc->Health;
-			builder.GameGlobalVariables->g_vTargets.push_back(targetProfile);
+			targetProfile.m_fWidth = 10.f;
+			targetProfile.m_fHeight = 15.f;
+			targetProfile.m_bTemmate = false;
+			targetProfile.m_vHeadPos2D = Vec2(currTargetPos.x, currTargetPos.y);
+			targetProfile.m_vFeetPos2D = Vec2(currTargetPos.x, currTargetPos.y);
+			targetProfile.m_vPos2D = Vec2(currTargetPos.x, currTargetPos.y);
+
+			current->fields.flashlightAngle = 0.f;
+
+			char buffer[64];
+			sprintf_s(buffer, "Player %d", i);
+			targetProfile.m_strName = buffer;
+
+			if (current->fields.cosmetics->fields.localPlayer) {
+				pGameVariables->g_vLocal = targetProfile;
+			} else {
+				pGameVariables->g_vTargets.push_back(targetProfile);
+			}
 		}
 	});
 
     Cheat cheat = builder.Build();
     cheat.UseUICustom(RenderingHookType::KIERO);
     cheat.UseUIMenu();
-    cheat.UseUIRadar();
-    cheat.UseUIRenderMouse();
-	cheat.UseESPSnapline();
-	cheat.UseESPBox2D();
-	cheat.UseESPHealthBar();
 	cheat.UseUIRenderOverlays();
-	cheat.UseUIQuickActions();
-	//cheat.UseAimbot();
 
     cheat.Run();
 

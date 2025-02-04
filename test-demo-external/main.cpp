@@ -350,7 +350,7 @@ static void RunTests() {
 
 	Builder builder("Demo external");
 	builder.xenon->g_pSystem->IsInternal(false);
-	builder.xenon->g_pSystem->SetGameDimension(GameDimension::DIMENSION_2D);
+	builder.xenon->g_pSystem->SetGameDimension(GameDimension::DIM_2D);
 	builder.xenon->g_pSystem->m_fnW2S2D = [](Vec2 pos) { return new Vec2(pos.x, pos.y); };
 	builder.SetConsoleEnabled();
 	builder.SetDebugLogLevel();

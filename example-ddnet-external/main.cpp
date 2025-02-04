@@ -76,7 +76,7 @@ int main()
 	builder.SetConsoleEnabled();
 	builder.SetInfoLogLevel();
 
-	builder.xenon->g_pSystem->SetGameDimension(GameDimension::DIMENSION_2D);
+	builder.xenon->g_pSystem->SetGameDimension(GameDimension::DIM_2D);
 
 	try {
 		builder.xenon->g_cMemoryService->AttachGame("D:\\Steam\\steamapps\\common\\DDraceNetwork\\ddnet\\DDNet.exe");
