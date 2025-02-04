@@ -1,0 +1,36 @@
+PROJECT_NAME           = "Xenon"
+PROJECT_BRIEF          = "A framework for cheat development."
+PROJECT_LOGO           = ""
+OUTPUT_DIRECTORY       = "docs/generated"
+CREATE_SUBDIRS         = YES
+OUTPUT_LANGUAGE        = English
+INPUT                  = xenon/includes
+RECURSIVE              = YES
+
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+EXTRACT_ALL            = YES
+
+EXTRACT_PRIVATE        = NO
+EXTRACT_STATIC         = NO
+
+EXCLUDE 	   		   = xenon/libs/*
+EXCLUDE_SYMBOLS 	   = Random
+
+HTML_OUTPUT            = "html"
+HTML_FILE_EXTENSION    = ".html"
+
+GENERATE_TREEVIEW      = YES
+DISABLE_INDEX          = NO
+FULL_SIDEBAR           = NO
+HTML_EXTRA_STYLESHEET  = docs/doxygen-awesome.css \
+                         docs/doxygen-awesome-sidebar-only.css
+HTML_COLORSTYLE        = DARK
+
+FILE_PATTERNS          = *.cpp *.h *.hpp
+INPUT_ENCODING         = UTF-8
+
+QUIET                  = NO
+WARNINGS               = YES
+WARN_IF_UNDOCUMENTED   = YES
+WARN_NO_PARAMDOC       = YES
