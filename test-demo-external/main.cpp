@@ -55,62 +55,46 @@ static void AddConfigurations(Builder& builder) {
 
 	pUIConfig->m_vFnWindows.push_back([pGameVariables, pUIConfig, pRadarConfig, pWaypoint, pNotificationService]() {
 		ImGui::Begin("Test Window");
-		
+	
+		//demo funcs
+		static bool checkbox1 = false;
+		static bool checkbox2 = false;
+		static bool checkbox3 = false;
+		static int sliderint = 0;
+		static float sliderfloat = 0.f;
+		static int combo = 0;
+		static const char* multi_items[5] = { "One", "Two", "Three", "Four", "Five" };
+		static bool multi_items_count[5];
+		static int key = 0;
+		static char input0[64] = "";
+		static char input1[64] = "";
+
+		ImGui::Checkbox("Checkbox", &checkbox3);
+		ImGui::SliderInt("Slider Int", &sliderint, 0, 100);
+		ImGui::SliderFloat("Slider Float", &sliderfloat, 0.f, 100.f, "%.1f");
+		ImGui::Combo("Combo", &combo, "Selectable 1\0Selectable 2\0Selectable 3", 3);
+		ImGui::MultiCombo("Multicombo", multi_items_count, multi_items, 5);
+		ImGui::Keybind("Hotkey", &key);
+
+		//if(ImGui::Button("Test Hotkey", ImVec2(200, 25)))
+		//	isEditing = true;
+		//ImGuiHelper::RenderHotkeyEditor(&testhotkey, &isEditing);
+				
+		//demo funcs
+
+		if (checkbox1)
 		{
-			//demo funcs
-			static bool checkbox = false;
-			static int sliderint = 0;
-			static float sliderfloat = 0.f;
-			static int combo = 0;
-			static const char* multi_items[5] = { "One", "Two", "Three", "Four", "Five" };
-			static bool multi_items_count[5];
-			static int key = 0;
-
-			ImGui::BeginGroup();
-			{
-				ImGui::Checkbox("Checkbox", &checkbox);
-				ImGui::SliderInt("Slider Int", &sliderint, 0, 100);
-				ImGui::SliderFloat("Slider Float", &sliderfloat, 0.f, 100.f, "%.1f");
-				ImGui::Combo("Combo", &combo, "Selectable 1\0Selectable 2\0Selectable 3", 3);
-				ImGui::MultiCombo("Multicombo", multi_items_count, multi_items, 5);
-				ImGui::Keybind("Hotkey", &key);
-
-				//if(ImGui::Button("Test Hotkey", ImVec2(200, 25)))
-				//	isEditing = true;
-				//ImGuiHelper::RenderHotkeyEditor(&testhotkey, &isEditing);
-			}
-			ImGui::EndGroup();
+			ImGui::InputText("Pointer or Offset", input0, 64, ImGuiInputTextFlags_ReadOnly);
+			ImGui::InputText("Value", input1, 64, ImGuiInputTextFlags_ReadOnly);
 		}
-
+		else
 		{
-
-			//demo funcs
-			static bool checkbox[2];
-			static int combo = 0;
-			static char input0[64] = "";
-			static char input1[64] = "";
-
-			//render funcs
-			ImGui::SetCursorPos(ImVec2(10, 10));
-			ImGui::BeginGroup();
-			{
-				if (checkbox[0])
-				{
-					ImGui::InputText("Pointer or Offset", input0, 64, ImGuiInputTextFlags_ReadOnly);
-					ImGui::InputText("Value", input1, 64, ImGuiInputTextFlags_ReadOnly);
-				}
-				else
-				{
-					ImGui::InputText("Pointer or Offset", input0, 64);
-					ImGui::InputText("Value", input1, 64);
-				}
-				ImGui::Checkbox("Read-Only", &checkbox[0]);
-				ImGui::Checkbox("Loop Command", &checkbox[1]);
-				ImGui::Combo("Type", &combo, "Byte\0\r2 Byte\0\r4 Byte\0\rFloat\0Double\0String", 6);
-			}
-			ImGui::EndGroup();
+			ImGui::InputText("Pointer or Offset", input0, 64);
+			ImGui::InputText("Value", input1, 64);
 		}
-
+		ImGui::Checkbox("Read-Only", &checkbox1);
+		ImGui::Checkbox("Loop Command", &checkbox2);
+	
 		ImGui::End();
 	});
 }

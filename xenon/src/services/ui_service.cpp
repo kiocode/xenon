@@ -149,7 +149,7 @@ void UIService::RenderDefaultMenu() {
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
 		ImGui::SetCursorPos(ImVec2(5, 35));
 
-		float width = devconsole ? windowWidth / 5 : windowWidth / 4;
+		float width = m_bDevTab ? windowWidth / 5 : windowWidth / 4;
 
 		ImGui::BeginGroup();
 		{
@@ -158,7 +158,7 @@ void UIService::RenderDefaultMenu() {
 			if (ImGui::Tabs("Radar", ImVec2(width, 20), m_nSelectedTab == Tabs::RADAR, 0)) m_nSelectedTab = Tabs::RADAR;
 			if (ImGui::Tabs("Misc", ImVec2(width, 20), m_nSelectedTab == Tabs::MISC, 0)) m_nSelectedTab = Tabs::MISC;
 
-			if (devconsole)
+			if (m_bDevTab)
 			{
 				if (ImGui::Tabs("Dev", ImVec2(width, 20), m_nSelectedTab == Tabs::DEV, 0)) m_nSelectedTab = Tabs::DEV;
 			}
@@ -235,6 +235,8 @@ void UIService::RenderDefaultMenu() {
 								//ImGui::Checkbox("Auto scope", &g_pXenonVariables->g_bAutoScope);
 								//ImGui::Checkbox("Auto shoot", &g_pXenonVariables->g_bAutoShoot);
 								ImGui::Checkbox("No recoil", &g_pXenonVariables->g_bNoRecoil);
+								ImGui::Checkbox("Spinbot 2D", &g_pXenonVariables->g_bSpinbot2D);
+								ImGui::Checkbox("Spinbot 3D", &g_pXenonVariables->g_bSpinbot3D);
 								ImGui::Checkbox("Aimbot", &g_pXenonVariables->g_bAimbot);
 								if (g_pXenonVariables->g_bAimbot) {
 									ImGui::Indent(10);
@@ -310,7 +312,16 @@ void UIService::RenderDefaultMenu() {
 								if (g_pXenonVariables->g_bEsp) {
 									ImGui::Indent(10);
 
+									ImGui::Checkbox("Healthbar", &g_pXenonVariables->g_bHealthBar);
 									ImGui::Checkbox("Snapline", &g_pXenonVariables->g_bSnapline);
+									if (g_pXenonVariables->g_bSnapline) {
+										ImGui::Indent(10);
+
+										ImGui::SliderInt("Snapline Start", &g_pXenonConfigs->g_pEspConfig->m_nSnaplineTypeStart, 0, 2);
+										ImGui::SliderInt("Snapline End", &g_pXenonConfigs->g_pEspConfig->m_nSnaplineTypeEnd, 0, 2);
+
+										ImGui::Indent(-10);
+									}
 									ImGui::Checkbox("Box 2D", &g_pXenonVariables->g_bBox2D);
 									ImGui::Checkbox("Box 3D", &g_pXenonVariables->g_bBox3D);
 									ImGui::Checkbox("Skeleton", &g_pXenonVariables->g_bSkeleton);
@@ -366,7 +377,7 @@ void UIService::RenderDefaultMenu() {
 
 									ImGui::Checkbox("Show Targets Name", &g_pXenonConfigs->g_pRadarConfig->m_bTargetsName);
 									ImGui::SliderFloat("Size", &g_pXenonConfigs->g_pRadarConfig->m_fSize, 0.f, 500.f, "%.0f");
-									ImGui::SliderFloat("Zoom", &g_pXenonConfigs->g_pRadarConfig->m_fZoom, 0.f, 100.f, "%.0f");
+									ImGui::SliderFloat("Zoom", &g_pXenonConfigs->g_pRadarConfig->m_fZoom, 0.3f, 50.f, "%.1f");
 									ImGui::SliderFloat("Targets Size", &g_pXenonConfigs->g_pRadarConfig->m_fTargetsSize, 0.f, 100.f, "%.0f");
 									ImGui::SliderFloat("Local Size", &g_pXenonConfigs->g_pRadarConfig->m_fLocalSize, 0.f, 100.f, "%.0f");
 									
@@ -414,7 +425,7 @@ void UIService::RenderDefaultMenu() {
 								}
 								ImGui::Checkbox("Render UI Windows", &g_pXenonVariables->g_bRenderWindows);
 								ImGui::Checkbox("Render UI Overlays", &g_pXenonVariables->g_bRenderOverlays);
-								ImGui::Checkbox("Developer Tab", &devconsole);
+								ImGui::Checkbox("Developer Tab", &m_bDevTab);
 							}
 							ImGui::EndGroup();
 						}
@@ -537,7 +548,7 @@ void UIService::RenderMouse() {
 		ImGui::GetForegroundDrawList()->AddCircleFilled(ImGui::GetMousePos(), 4, g_pXenonConfigs->g_pUIConfig->m_cMouse);
 		break;
 	case 1:
-		ImGuiHelper::DrawOutlinedTextForeground(ImGuiHelper::g_pGameFont, ImVec2(g_pXenon->g_pSystem->GetMousePos().x, g_pXenon->g_pSystem->GetMousePos().y), 13.0f, g_pXenonConfigs->g_pUIConfig->m_cMouse, false, "X");
+		ImGuiHelper::DrawOutlinedTextForeground(m_pMainFont, ImVec2(g_pXenon->g_pSystem->GetMousePos().x, g_pXenon->g_pSystem->GetMousePos().y), 13.0f, g_pXenonConfigs->g_pUIConfig->m_cMouse, false, "X");
 		break;
 	case 2:
 		if (!ImGui::GetIO().MouseDrawCursor) {

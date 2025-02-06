@@ -12,7 +12,6 @@
 
 void Aimbot::UpdateCurrentTarget(TargetProfile* target) {
     if (!g_pXenonVariables->g_bAimbot || !g_pXenonVariables->g_bAimNearest) {
-        AimTarget();
         return;
     }
 
