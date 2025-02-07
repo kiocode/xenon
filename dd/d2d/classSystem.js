@@ -10,7 +10,7 @@ var classSystem =
     [ "Is3DGame", "dd/d2d/classSystem.html#a5328eb6285e94ed297ed97c3e3e329d8", null ],
     [ "IsInternal", "dd/d2d/classSystem.html#a31cf8f3198692aa8776146e11a5d4974", null ],
     [ "IsInternal", "dd/d2d/classSystem.html#ad5aaa569b36ec2fa2c5c10a295799c28", null ],
-    [ "IsUnityEngine", "dd/d2d/classSystem.html#ae8a0638bc78618c112ce1140fd9fb8ce", null ],
+    [ "IsUnityEngine", "dd/d2d/classSystem.html#adf397c20afd0938ca531016498357221", null ],
     [ "IsUnrealEngine", "dd/d2d/classSystem.html#a31bfaf70b388c26eae8cbb2ccfb1d447", null ],
     [ "SetAppTitle", "dd/d2d/classSystem.html#a3bd0143115ed4cf5b6bac523d3df0eaa", null ],
     [ "SetGameDimension", "dd/d2d/classSystem.html#acef9ad52fd8a8d55bfa21a0b7f879769", null ],
@@ -18,5 +18,8 @@ var classSystem =
     [ "g_fDeltaTime", "dd/d2d/classSystem.html#a417bcbc151e1763b25553b7ab07c37f3", null ],
     [ "g_fStartPlayTime", "dd/d2d/classSystem.html#ad88e047830b1326cf50cef3fa0bb05d3", null ],
     [ "m_fnW2S2D", "dd/d2d/classSystem.html#a1e3321348c83212821a5dedad721204f", null ],
-    [ "m_fnW2S3D", "dd/d2d/classSystem.html#a72f6ca5967e7804de06cfa42516b05d9", null ]
+    [ "m_fnW2S3D", "dd/d2d/classSystem.html#a72f6ca5967e7804de06cfa42516b05d9", null ],
+    [ "m_pUnityBase", "dd/d2d/classSystem.html#aa853791c972e2087d5f502e0cad1a9d5", null ],
+    [ "m_pUnityGameAssembly", "dd/d2d/classSystem.html#a20885ed59062f2e262d4710b5068950f", null ],
+    [ "m_pUnityPlayer", "dd/d2d/classSystem.html#a82d42bf17d407d9b54b457768aa1efad", null ]
 ];

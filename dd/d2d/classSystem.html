@@ -126,8 +126,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ad5aaa569b36ec2fa2c5c10a295799c28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a31cf8f3198692aa8776146e11a5d4974" id="r_a31cf8f3198692aa8776146e11a5d4974"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d2d/classSystem.html#a31cf8f3198692aa8776146e11a5d4974">IsInternal</a> () const</td></tr>
 <tr class="separator:a31cf8f3198692aa8776146e11a5d4974"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae8a0638bc78618c112ce1140fd9fb8ce" id="r_ae8a0638bc78618c112ce1140fd9fb8ce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d2d/classSystem.html#ae8a0638bc78618c112ce1140fd9fb8ce">IsUnityEngine</a> (UnityEngineType type)</td></tr>
-<tr class="separator:ae8a0638bc78618c112ce1140fd9fb8ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf397c20afd0938ca531016498357221" id="r_adf397c20afd0938ca531016498357221"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d2d/classSystem.html#adf397c20afd0938ca531016498357221">IsUnityEngine</a> (UnityEngineType type, bool useIL2CPPResolver)</td></tr>
+<tr class="separator:adf397c20afd0938ca531016498357221"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a31bfaf70b388c26eae8cbb2ccfb1d447" id="r_a31bfaf70b388c26eae8cbb2ccfb1d447"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d2d/classSystem.html#a31bfaf70b388c26eae8cbb2ccfb1d447">IsUnrealEngine</a> (UnrealEngineVersion version)</td></tr>
 <tr class="separator:a31bfaf70b388c26eae8cbb2ccfb1d447"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acef9ad52fd8a8d55bfa21a0b7f879769" id="r_acef9ad52fd8a8d55bfa21a0b7f879769"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d2d/classSystem.html#acef9ad52fd8a8d55bfa21a0b7f879769">SetGameDimension</a> (GameDimension dim)</td></tr>
@@ -143,6 +143,12 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
+<tr class="memitem:aa853791c972e2087d5f502e0cad1a9d5" id="r_aa853791c972e2087d5f502e0cad1a9d5"><td class="memItemLeft" align="right" valign="top">intptr_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d2d/classSystem.html#aa853791c972e2087d5f502e0cad1a9d5">m_pUnityBase</a> = 0</td></tr>
+<tr class="separator:aa853791c972e2087d5f502e0cad1a9d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20885ed59062f2e262d4710b5068950f" id="r_a20885ed59062f2e262d4710b5068950f"><td class="memItemLeft" align="right" valign="top">intptr_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d2d/classSystem.html#a20885ed59062f2e262d4710b5068950f">m_pUnityGameAssembly</a> = 0</td></tr>
+<tr class="separator:a20885ed59062f2e262d4710b5068950f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82d42bf17d407d9b54b457768aa1efad" id="r_a82d42bf17d407d9b54b457768aa1efad"><td class="memItemLeft" align="right" valign="top">intptr_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d2d/classSystem.html#a82d42bf17d407d9b54b457768aa1efad">m_pUnityPlayer</a> = 0</td></tr>
+<tr class="separator:a82d42bf17d407d9b54b457768aa1efad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad88e047830b1326cf50cef3fa0bb05d3" id="r_ad88e047830b1326cf50cef3fa0bb05d3"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d2d/classSystem.html#ad88e047830b1326cf50cef3fa0bb05d3">g_fStartPlayTime</a></td></tr>
 <tr class="separator:ad88e047830b1326cf50cef3fa0bb05d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a417bcbc151e1763b25553b7ab07c37f3" id="r_a417bcbc151e1763b25553b7ab07c37f3"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d2d/classSystem.html#a417bcbc151e1763b25553b7ab07c37f3">g_fDeltaTime</a></td></tr>
@@ -372,8 +378,8 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ae8a0638bc78618c112ce1140fd9fb8ce" name="ae8a0638bc78618c112ce1140fd9fb8ce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae8a0638bc78618c112ce1140fd9fb8ce">&#9670;&#160;</a></span>IsUnityEngine()</h2>
+<a id="adf397c20afd0938ca531016498357221" name="adf397c20afd0938ca531016498357221"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf397c20afd0938ca531016498357221">&#9670;&#160;</a></span>IsUnityEngine()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -385,8 +391,18 @@ Public Attributes</h2></td></tr>
           <td class="memname">void System::IsUnityEngine </td>
           <td>(</td>
           <td class="paramtype">UnityEngineType&#160;</td>
-          <td class="paramname"><em>type</em></td><td>)</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>useIL2CPPResolver</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -553,6 +569,48 @@ Public Attributes</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">std::function&lt;<a class="el" href="../../d3/d95/classVec2.html">Vec2</a>* (<a class="el" href="../../d9/de4/classVec3.html">Vec3</a>)&gt; System::m_fnW2S3D</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa853791c972e2087d5f502e0cad1a9d5" name="aa853791c972e2087d5f502e0cad1a9d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa853791c972e2087d5f502e0cad1a9d5">&#9670;&#160;</a></span>m_pUnityBase</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">intptr_t System::m_pUnityBase = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a20885ed59062f2e262d4710b5068950f" name="a20885ed59062f2e262d4710b5068950f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20885ed59062f2e262d4710b5068950f">&#9670;&#160;</a></span>m_pUnityGameAssembly</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">intptr_t System::m_pUnityGameAssembly = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a82d42bf17d407d9b54b457768aa1efad" name="a82d42bf17d407d9b54b457768aa1efad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a82d42bf17d407d9b54b457768aa1efad">&#9670;&#160;</a></span>m_pUnityPlayer</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">intptr_t System::m_pUnityPlayer = 0</td>
         </tr>
       </table>
 </div><div class="memdoc">
