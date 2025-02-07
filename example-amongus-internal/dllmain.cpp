@@ -7,32 +7,27 @@
 
 #include <xenon/components/features/waypoints.hpp>
 #include <xenon/models/waypoint.hpp>
-
-#include "AmongUsDump/il2cpp.h"
 #include <il2cpp_resolver/il2cpp_resolver.hpp>
 
-intptr_t m_pBase = 0;
-intptr_t m_pGameAssembly = 0;
-intptr_t m_pUnityPlayer = 0;
+#include "AmongUsDump/il2cpp.h"
 
-float scale = 1.f;
 
-static bool FetchSDK() {
+bool FetchSDK(Builder builder) {
 
-	m_pBase = (intptr_t)GetModuleHandle(NULL);
-	if (m_pBase == 0) {
+	builder.xenon->g_pSystem->m_pUnityBase = (intptr_t)GetModuleHandle(NULL);
+	if (builder.xenon->g_pSystem->m_pUnityBase == 0) {
 		//spdlog::error("Failed to get base address");
 		return false;
 	}
 
-	m_pGameAssembly = (intptr_t)GetModuleHandle("GameAssembly.dll");
-	if (m_pGameAssembly == 0) {
+	builder.xenon->g_pSystem->m_pUnityGameAssembly = (intptr_t)GetModuleHandle("GameAssembly.dll");
+	if (builder.xenon->g_pSystem->m_pUnityGameAssembly == 0) {
 		//spdlog::error("Failed to get GameAssembly address");
 		return false;
 	}
 
-	m_pUnityPlayer = (intptr_t)GetModuleHandle("UnityPlayer.dll");
-	if (m_pUnityPlayer == 0) {
+	builder.xenon->g_pSystem->m_pUnityPlayer = (intptr_t)GetModuleHandle("UnityPlayer.dll");
+	if (builder.xenon->g_pSystem->m_pUnityPlayer == 0) {
 		//spdlog::error("Failed to get UnityPlayer address");
 		return false;
 	}
@@ -45,25 +40,28 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 {
 
     Builder builder("AmongUs internal");
-    builder.xenon->g_pSystem->IsInternal(true);
-    builder.xenon->g_pSystem->IsUnityEngine(UnityEngineType::IL2CPP);
-
-	if (IL2CPP::Initialize(true)) {
-		std::cout << "Il2Cpp initialized\n" << std::endl;
-	}
-	else {
-		std::cout << "Il2Cpp initialize failed, quitting..." << std::endl;
-		Sleep(300);
-		exit(0);
-	}
-	if (!FetchSDK()) return FALSE;
-
 
 	std::shared_ptr<RadarConfig> pRadarConfig = builder.xenonConfig->g_pRadarConfig;
 	std::shared_ptr<UIConfig> pUIConfig = builder.xenonConfig->g_pUIConfig;
 	std::shared_ptr<Waypoints> pWaypoints = builder.xenon->g_cWaypoints;
 	std::shared_ptr<GameVariables> pGameVariables = builder.xenonConfig->g_pGameVariables;
 	std::shared_ptr<System> pSystem = builder.xenon->g_pSystem;
+
+    pSystem->IsInternal(true);
+    pSystem->IsUnityEngine(UnityEngineType::IL2CPP, true);
+
+	if (IL2CPP::Initialize(true)) {
+		spdlog::info("Il2Cpp initialize success.");
+	}
+	else {
+		spdlog::error("Il2Cpp initialize failed.");
+		Sleep(300);
+		exit(0);
+	}
+	if (!FetchSDK(builder)) return FALSE;
+
+	builder.SetInfoLogLevel();
+	builder.SetConsoleEnabled();
 
     pSystem->SetGameDimension(GameDimension::DIM_3D);
     pSystem->SetRenderingType(RenderingType::DX11);
@@ -79,15 +77,12 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 		return new Vec2(screenWidth / 2 + x, screenHeight / 2 - y);
 	};
 
-	builder.SetInfoLogLevel();
-    builder.SetConsoleEnabled();
-
-	pUIConfig->m_vFnOverlays.push_back([builder, pWaypoints, pGameVariables]() {
+	pUIConfig->m_vFnOverlays.push_back([builder, pWaypoints, pGameVariables, pSystem]() {
 		ImGui::Begin("AmongUs internal");
 
-		ImGui::Text("Base: 0x%llx", m_pBase);
-		ImGui::Text("GameAssembly: 0x%llx", m_pGameAssembly);
-		ImGui::Text("UnityPlayer: 0x%llx", m_pUnityPlayer);
+		ImGui::Text("Base: 0x%llx", pSystem->m_pUnityBase);
+		ImGui::Text("GameAssembly: 0x%llx", pSystem->m_pUnityGameAssembly);
+		ImGui::Text("UnityPlayer: 0x%llx", pSystem->m_pUnityPlayer);
 
 		ImGui::Separator();
 
@@ -113,8 +108,6 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 
 		ImGui::End();
 	});
-
-	pUIConfig->m_qActions->AddSlider("Scale", &scale, 0.1f, 10.f);
 
 	builder.GameManager->OnEvent("Update", [builder, pGameVariables]() {
 		
@@ -142,11 +135,11 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 
 			if (current->fields.cosmetics->fields.localPlayer) {
 				pGameVariables->g_vLocal = targetProfile;
-				auto &flashlight = current->fields.lightSource;
-				if (flashlight != nullptr) {
-					flashlight->fields.useFlashlight = true;
-					flashlight->fields.flashlightSize = 1000.f;
-				}
+				//auto &flashlight = current->fields.lightSource;
+				//if (flashlight != nullptr) {
+				//	flashlight->fields.useFlashlight = true;
+				//	flashlight->fields.flashlightSize = 1000.f;
+				//}
 
 			} else {
 				pGameVariables->g_vTargets.push_back(targetProfile);
@@ -168,13 +161,13 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD dReasonForCall, LPVOID lpReserved)
 {
     switch (dReasonForCall)
     {
-    case DLL_PROCESS_ATTACH:
-        DisableThreadLibraryCalls(hModule);
-        CreateThread(nullptr, 0, MainThread, hModule, 0, nullptr);
-    case DLL_THREAD_ATTACH:
-    case DLL_THREAD_DETACH:
-    case DLL_PROCESS_DETACH:
-        break;
+		case DLL_PROCESS_ATTACH:
+			DisableThreadLibraryCalls(hModule);
+			CreateThread(nullptr, 0, MainThread, hModule, 0, nullptr);
+		case DLL_THREAD_ATTACH:
+		case DLL_THREAD_DETACH:
+		case DLL_PROCESS_DETACH:
+			break;
     }
     return TRUE;
 }

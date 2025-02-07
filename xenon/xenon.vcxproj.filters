@@ -621,6 +621,9 @@
     <ClInclude Include="includes\xenon\core\xenon_variables.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="includes\xenon\utility\unity\helper.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="libs\il2cpp_resolver\API\Callback.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -696,13 +699,10 @@
     <ClInclude Include="libs\il2cpp_resolver\Defines.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="libs\il2cpp_resolver\IL2CPP_Resolver.hpp">
+    <ClInclude Include="libs\il2cpp_resolver\il2cpp_resolver.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="libs\il2cpp_resolver\SystemTypeCache.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\xenon\utility\unity\helper.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

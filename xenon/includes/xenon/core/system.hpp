@@ -12,9 +12,14 @@
 #include <xenon/models/enums/gameengine_type.hpp>
 #include <xenon/models/enums/unityengine_type.hpp>
 #include <xenon/models/enums/unrealengine_version.hpp>
+//#include <il2cpp_resolver/il2cpp_resolver.hpp>
 
 class System {
 public:
+
+	intptr_t m_pUnityBase = 0;
+	intptr_t m_pUnityGameAssembly = 0;
+	intptr_t m_pUnityPlayer = 0;
 
 	float g_fStartPlayTime;
 	float g_fDeltaTime;
@@ -45,13 +50,17 @@ public:
 		return m_bIsInternal;
 	}
 
-	void IsUnityEngine(UnityEngineType type) {
+	void IsUnityEngine(UnityEngineType type, bool useIL2CPPResolver) {
 		if (!m_bIsInternal) {
 			spdlog::warn("External cheat cannot change to Unity Engine.");
 		}
 
 		m_gameEngineType = GameEngineType::UNITY_ENGINE;
 		m_unityEngineType = type;
+
+		if (useIL2CPPResolver) {
+
+		}
 	}
 
 	void IsUnrealEngine(UnrealEngineVersion version) {
@@ -98,5 +107,5 @@ private:
 	RenderingType m_renderingType = RenderingType::REND_NONE;
 
 	void GetDesktopResolution(int& horizontal, int& vertical);
-	
+
 };

@@ -198,7 +198,7 @@
     <ClInclude Include="libs\il2cpp_resolver\API\Thread.hpp" />
     <ClInclude Include="libs\il2cpp_resolver\Data.hpp" />
     <ClInclude Include="libs\il2cpp_resolver\Defines.hpp" />
-    <ClInclude Include="libs\il2cpp_resolver\IL2CPP_Resolver.hpp" />
+    <ClInclude Include="libs\il2cpp_resolver\il2cpp_resolver.hpp" />
     <ClInclude Include="libs\il2cpp_resolver\SystemTypeCache.hpp" />
     <ClInclude Include="libs\il2cpp_resolver\Unity\API\Camera.hpp" />
     <ClInclude Include="libs\il2cpp_resolver\Unity\API\Component.hpp" />
