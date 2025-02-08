@@ -12,7 +12,6 @@
 #include <xenon/models/enums/gameengine_type.hpp>
 #include <xenon/models/enums/unityengine_type.hpp>
 #include <xenon/models/enums/unrealengine_version.hpp>
-//#include <il2cpp_resolver/il2cpp_resolver.hpp>
 
 class System {
 public:
@@ -20,8 +19,6 @@ public:
 	intptr_t g_pUnityBase = 0;
 	intptr_t g_pUnityGameAssembly = 0;
 	intptr_t g_pUnityPlayer = 0;
-
-	bool g_bIL2CPPResolver;
 
 	float g_fStartPlayTime;
 	float g_fDeltaTime;
@@ -52,15 +49,13 @@ public:
 		return m_bIsInternal;
 	}
 
-	void IsUnityEngine(UnityEngineType type, bool useIL2CPPResolver) {
+	void IsUnityEngine(UnityEngineType type) {
 		if (!m_bIsInternal) {
 			spdlog::warn("External cheat cannot change to Unity Engine.");
 		}
 
 		m_gameEngineType = GameEngineType::UNITY_ENGINE;
 		m_unityEngineType = type;
-
-		g_bIL2CPPResolver = useIL2CPPResolver;
 	}
 
 	void IsUnrealEngine(UnrealEngineVersion version) {

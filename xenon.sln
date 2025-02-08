@@ -17,6 +17,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example-amongus-internal", 
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example-auto-injector", "example-auto-injector\example-auto-injector.vcxproj", "{E8FECB4E-0E55-4FD8-8401-D96BAE058C38}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example-redmatch2-internal", "example-redmatch2-internal\example-redmatch2-internal.vcxproj", "{938A056E-C465-4CA1-9373-191F1DD3A729}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM = Debug|ARM
@@ -111,6 +113,18 @@ Global
 		{E8FECB4E-0E55-4FD8-8401-D96BAE058C38}.Release|x64.Build.0 = Release|x64
 		{E8FECB4E-0E55-4FD8-8401-D96BAE058C38}.Release|x86.ActiveCfg = Release|Win32
 		{E8FECB4E-0E55-4FD8-8401-D96BAE058C38}.Release|x86.Build.0 = Release|Win32
+		{938A056E-C465-4CA1-9373-191F1DD3A729}.Debug|ARM.ActiveCfg = Debug|x64
+		{938A056E-C465-4CA1-9373-191F1DD3A729}.Debug|ARM.Build.0 = Debug|x64
+		{938A056E-C465-4CA1-9373-191F1DD3A729}.Debug|x64.ActiveCfg = Debug|x64
+		{938A056E-C465-4CA1-9373-191F1DD3A729}.Debug|x64.Build.0 = Debug|x64
+		{938A056E-C465-4CA1-9373-191F1DD3A729}.Debug|x86.ActiveCfg = Debug|Win32
+		{938A056E-C465-4CA1-9373-191F1DD3A729}.Debug|x86.Build.0 = Debug|Win32
+		{938A056E-C465-4CA1-9373-191F1DD3A729}.Release|ARM.ActiveCfg = Release|x64
+		{938A056E-C465-4CA1-9373-191F1DD3A729}.Release|ARM.Build.0 = Release|x64
+		{938A056E-C465-4CA1-9373-191F1DD3A729}.Release|x64.ActiveCfg = Release|x64
+		{938A056E-C465-4CA1-9373-191F1DD3A729}.Release|x64.Build.0 = Release|x64
+		{938A056E-C465-4CA1-9373-191F1DD3A729}.Release|x86.ActiveCfg = Release|Win32
+		{938A056E-C465-4CA1-9373-191F1DD3A729}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

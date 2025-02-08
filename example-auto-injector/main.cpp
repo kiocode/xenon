@@ -6,13 +6,13 @@
 int main()
 {
 
-	Builder builder("Custom AmongUs Injector");
+	Builder builder("Custom RedMatch2 Injector");
 
 	builder.SetDebugLogLevel();
 
-	std::string exePath = "D:\\Among Us\\Among Us.exe";
+	std::string exePath = "D:\\Steam\\steamapps\\common\\Redmatch 2\\Redmatch 2.exe";
 	std::string launchOptions = "";
-	std::string dllPath = "E:\\Projects\\xenon\\example-amongus-internal\\build\\example-amongus-internal.dll";
+	std::string dllPath = "E:\\Projects\\xenon\\example-redmatch2-internal\\build\\example-redmatch2-internal.dll";
 	spdlog::info("Game Path: {}", exePath);
 	spdlog::info("DLL Path: {}", dllPath);
 

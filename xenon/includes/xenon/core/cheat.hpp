@@ -223,11 +223,6 @@ public:
 
     void Run();
 
-private:
-    std::shared_ptr<Xenon> m_pXenon;
-    std::shared_ptr<XenonVariables> m_pXenonVariables;
-    std::shared_ptr<Game> m_pGame;
-
     bool FetchSDK() const {
 
         m_pXenon->g_pSystem->g_pUnityBase = (intptr_t)GetModuleHandle(NULL);
@@ -251,4 +246,9 @@ private:
         return true;
 
     }
+
+private:
+    std::shared_ptr<Xenon> m_pXenon;
+    std::shared_ptr<XenonVariables> m_pXenonVariables;
+    std::shared_ptr<Game> m_pGame;
 };

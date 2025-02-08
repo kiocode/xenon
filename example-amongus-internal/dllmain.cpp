@@ -7,7 +7,7 @@
 
 #include <xenon/components/features/waypoints.hpp>
 #include <xenon/models/waypoint.hpp>
-//#include <il2cpp_resolver/il2cpp_resolver.hpp>
+#include <il2cpp_resolver/il2cpp_resolver.hpp>
 
 #include "AmongUsDump/il2cpp.h"
 
@@ -25,24 +25,24 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 	std::shared_ptr<System> pSystem = builder.xenon->g_pSystem;
 
     pSystem->IsInternal(true);
-    pSystem->IsUnityEngine(UnityEngineType::IL2CPP, true);
+    pSystem->IsUnityEngine(UnityEngineType::IL2CPP);
 
 	builder.SetInfoLogLevel();
 	builder.SetConsoleEnabled();
 
     pSystem->SetGameDimension(GameDimension::DIM_2D);
     pSystem->SetRenderingType(RenderingType::DX11);
-	//pSystem->m_fnW2S2D = [pSystem, pGameVariables](Vec2 pos) {
-	//	Unity::CCamera* cam = Unity::Camera::GetMain();
+	pSystem->m_fnW2S2D = [pSystem, pGameVariables](Vec2 pos) {
+		Unity::CCamera* cam = Unity::Camera::GetMain();
 
-	//	float screenWidth = pSystem->GetScreenResolution().x;
-	//	float screenHeight = pSystem->GetScreenResolution().y;
+		float screenWidth = pSystem->GetScreenResolution().x;
+		float screenHeight = pSystem->GetScreenResolution().y;
 
-	//	float x = (pos.x - pGameVariables->g_vLocal.m_vPos2D.x) * (screenWidth / cam->GetOrthographicSize()) * 0.3;
-	//	float y = (pos.y - pGameVariables->g_vLocal.m_vPos2D.y) * (screenHeight / cam->GetOrthographicSize()) * 0.4;
+		float x = (pos.x - pGameVariables->g_vLocal.m_vPos2D.x) * (screenWidth / cam->GetOrthographicSize()) * 0.3;
+		float y = (pos.y - pGameVariables->g_vLocal.m_vPos2D.y) * (screenHeight / cam->GetOrthographicSize()) * 0.4;
 
-	//	return new Vec2(screenWidth / 2 + x, screenHeight / 2 - y);
-	//};
+		return new Vec2(screenWidth / 2 + x, screenHeight / 2 - y);
+	};
 
 	pUIConfig->m_vFnOverlays.push_back([builder, pWaypoints, pGameVariables, pSystem]() {
 		ImGui::Begin("AmongUs internal");
@@ -76,48 +76,58 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 		ImGui::End();
 	});
 
-	//builder.GameManager->OnEvent("Update", [builder, pGameVariables]() {
-	//	
-	//	pGameVariables->g_vTargets.clear();
+	builder.GameManager->OnEvent("Update", [builder, pGameVariables]() {
+		
+		pGameVariables->g_vTargets.clear();
 
-	//	Unity::il2cppArray<Unity::CComponent*>* pTargets = Unity::Object::FindObjectsOfType<Unity::CComponent>("PlayerControl");
-	//	if (!pTargets) return;
+		Unity::il2cppArray<Unity::CComponent*>* pTargets = Unity::Object::FindObjectsOfType<Unity::CComponent>("PlayerControl");
+		if (!pTargets) return;
 
-	//	for (int i = 0; i < pTargets->m_uMaxLength; i++) {
-	//		PlayerControl_o* current = reinterpret_cast<PlayerControl_o*>(pTargets->operator[](i));
-	//		if (!current) continue;
+		for (int i = 0; i < pTargets->m_uMaxLength; i++) {
+			PlayerControl_o* current = reinterpret_cast<PlayerControl_o*>(pTargets->operator[](i));
+			if (!current) continue;
 
-	//		auto currTargetPos = pTargets->operator[](i)->GetTransform()->GetPosition();
+			auto currTargetPos = pTargets->operator[](i)->GetTransform()->GetPosition();
 
-	//		TargetProfile targetProfile;
-	//		targetProfile.m_fWidth = 70.f;
-	//		targetProfile.m_bTemmate = false;
-	//		targetProfile.m_vHeadPos2D = Vec2(currTargetPos.x, currTargetPos.y + .35f);
-	//		targetProfile.m_vFeetPos2D = Vec2(currTargetPos.x, currTargetPos.y - .35f);
-	//		targetProfile.m_vPos2D = Vec2(currTargetPos.x, currTargetPos.y);
+			TargetProfile targetProfile;
+			targetProfile.m_fWidth = 70.f;
+			targetProfile.m_bTemmate = false;
+			targetProfile.m_vHeadPos2D = Vec2(currTargetPos.x, currTargetPos.y + .35f);
+			targetProfile.m_vFeetPos2D = Vec2(currTargetPos.x, currTargetPos.y - .35f);
+			targetProfile.m_vPos2D = Vec2(currTargetPos.x, currTargetPos.y);
 
-	//		char buffer[64];
-	//		sprintf_s(buffer, "Player %d", i);
-	//		targetProfile.m_strName = buffer;
+			char buffer[64];
+			sprintf_s(buffer, "Player %d", i);
+			targetProfile.m_strName = buffer;
 
-	//		if (current->fields.cosmetics->fields.localPlayer) {
-	//			pGameVariables->g_vLocal = targetProfile;
-	//			//auto &flashlight = current->fields.lightSource;
-	//			//if (flashlight != nullptr) {
-	//			//	flashlight->fields.useFlashlight = true;
-	//			//	flashlight->fields.flashlightSize = 1000.f;
-	//			//}
-	//		} else {
-	//			pGameVariables->g_vTargets.push_back(targetProfile);
-	//		}
-	//	}
-	//});
+			if (current->fields.cosmetics->fields.localPlayer) {
+				pGameVariables->g_vLocal = targetProfile;
+				//auto &flashlight = current->fields.lightSource;
+				//if (flashlight != nullptr) {
+				//	flashlight->fields.useFlashlight = true;
+				//	flashlight->fields.flashlightSize = 1000.f;
+				//}
+			} else {
+				pGameVariables->g_vTargets.push_back(targetProfile);
+			}
+		}
+	});
 
     Cheat cheat = builder.Build();
     cheat.UseUICustom(RenderingHookType::KIERO);
     cheat.UseUIMenu();
 
     cheat.Run();
+
+	if (IL2CPP::Initialize(true)) {
+		spdlog::info("Il2Cpp initialize success.");
+	}
+	else {
+		spdlog::error("Il2Cpp initialize failed.");
+		Sleep(300);
+		exit(0);
+	}
+	if (!cheat.FetchSDK()) return FALSE;
 
     return TRUE;
 }
