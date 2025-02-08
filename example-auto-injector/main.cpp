@@ -10,15 +10,11 @@ int main()
 
 	builder.SetDebugLogLevel();
 
-	//CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
-
 	std::string exePath = "D:\\Among Us\\Among Us.exe";
 	std::string launchOptions = "";
 	std::string dllPath = "E:\\Projects\\xenon\\example-amongus-internal\\build\\example-amongus-internal.dll";
 	spdlog::info("Game Path: {}", exePath);
 	spdlog::info("DLL Path: {}", dllPath);
-
-	//CoUninitialize();
 
 	HANDLE hProcess, hThread;
 	if (!builder.xenon->g_cInjectionService->OpenGame(&hProcess, &hThread, exePath, launchOptions))

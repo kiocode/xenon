@@ -42,6 +42,7 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
     Builder builder("AmongUs internal");
 
 	std::shared_ptr<RadarConfig> pRadarConfig = builder.xenonConfig->g_pRadarConfig;
+	pRadarConfig->m_fDefaultScale = 10;
 	std::shared_ptr<UIConfig> pUIConfig = builder.xenonConfig->g_pUIConfig;
 	std::shared_ptr<CWaypoints> pWaypoints = builder.xenon->g_cWaypoints;
 	std::shared_ptr<GameVariables> pGameVariables = builder.xenonConfig->g_pGameVariables;
@@ -63,16 +64,16 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 	builder.SetInfoLogLevel();
 	builder.SetConsoleEnabled();
 
-    pSystem->SetGameDimension(GameDimension::DIM_3D);
+    pSystem->SetGameDimension(GameDimension::DIM_2D);
     pSystem->SetRenderingType(RenderingType::DX11);
-	pSystem->m_fnW2S3D = [pSystem, pGameVariables](Vec3 pos) {
+	pSystem->m_fnW2S2D = [pSystem, pGameVariables](Vec2 pos) {
 		Unity::CCamera* cam = Unity::Camera::GetMain();
 
 		float screenWidth = pSystem->GetScreenResolution().x;
 		float screenHeight = pSystem->GetScreenResolution().y;
 
-		float x = (pos.x - pGameVariables->g_vLocal.m_vPos3D.x) * (screenWidth / cam->GetOrthographicSize()) * 0.3;
-		float y = (pos.y - pGameVariables->g_vLocal.m_vPos3D.y) * (screenHeight / cam->GetOrthographicSize()) * 0.5;
+		float x = (pos.x - pGameVariables->g_vLocal.m_vPos2D.x) * (screenWidth / cam->GetOrthographicSize()) * 0.3;
+		float y = (pos.y - pGameVariables->g_vLocal.m_vPos2D.y) * (screenHeight / cam->GetOrthographicSize()) * 0.4;
 
 		return new Vec2(screenWidth / 2 + x, screenHeight / 2 - y);
 	};
@@ -88,14 +89,14 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 
 		ImGui::Text("LocalPlayer:");
 		ImGui::Text("Name: %s", pGameVariables->g_vLocal.m_strName.c_str());
-		ImGui::Text("Pos: %f %f %f", pGameVariables->g_vLocal.m_vPos3D.x, pGameVariables->g_vLocal.m_vPos3D.y, pGameVariables->g_vLocal.m_vPos3D.z);
+		ImGui::Text("Pos: %f %f", pGameVariables->g_vLocal.m_vPos2D.x, pGameVariables->g_vLocal.m_vPos2D.y);
 
 		ImGui::Separator();
 
 		ImGui::Text("Targets: %d", pGameVariables->g_vTargets.size());
 		for (auto& target : pGameVariables->g_vTargets) {
 			ImGui::Text("Name: %s", target.m_strName.c_str());
-			ImGui::Text("Pos: %f %f %f", target.m_vPos3D.x, target.m_vPos3D.y, target.m_vPos3D.z);
+			ImGui::Text("Pos: %f %f", target.m_vPos2D.x, target.m_vPos2D.y);
 		}
 
 		ImGui::End();
@@ -103,7 +104,7 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 		ImGui::Begin("Waypoints");
 
 		for (const Waypoint& waypoint : pWaypoints->GetWaypoints()) {
-			ImGui::Text("Waypoint: %s, %f, %f, %f", waypoint.m_strName.c_str(), waypoint.m_vPos3D.x, waypoint.m_vPos3D.y, waypoint.m_vPos3D.z);
+			ImGui::Text("Waypoint: %s, %f, %f", waypoint.m_strName.c_str(), waypoint.m_vPos2D.x, waypoint.m_vPos2D.y);
 		}
 
 		ImGui::End();
@@ -125,9 +126,9 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 			TargetProfile targetProfile;
 			targetProfile.m_fWidth = 70.f;
 			targetProfile.m_bTemmate = false;
-			targetProfile.m_vHeadPos3D = Vec3(currTargetPos.x, currTargetPos.y + .35f, currTargetPos.z);
-			targetProfile.m_vFeetPos3D = Vec3(currTargetPos.x, currTargetPos.y - .35f, currTargetPos.z);
-			targetProfile.m_vPos3D = Vec3(currTargetPos.x, currTargetPos.y, currTargetPos.z);
+			targetProfile.m_vHeadPos2D = Vec2(currTargetPos.x, currTargetPos.y + .35f);
+			targetProfile.m_vFeetPos2D = Vec2(currTargetPos.x, currTargetPos.y - .35f);
+			targetProfile.m_vPos2D = Vec2(currTargetPos.x, currTargetPos.y);
 
 			char buffer[64];
 			sprintf_s(buffer, "Player %d", i);

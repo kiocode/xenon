@@ -465,7 +465,7 @@ void CUIService::RenderDefaultMenu() {
 							ImGui::SetCursorPos(ImVec2(10, 10));
 							ImGui::BeginGroup();
 							{
-								ImGui::SliderFloat("Radar Default Scale", &g_pXenonConfigs->g_pRadarConfig->m_fDefaultScale, 500.f, 10000.f, "%.0f");
+								ImGui::SliderFloat("Radar Default Scale", &g_pXenonConfigs->g_pRadarConfig->m_fDefaultScale, 0.f, 10000.f, "%.0f");
 								ImGui::Checkbox("Lua Editor", &g_pXenonVariables->g_bLuaEditor);
 								ImGui::Checkbox("Render UI Quick Actions", &g_pXenonVariables->g_bRenderQuickActions);
 							}
