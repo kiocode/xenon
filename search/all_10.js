@@ -1,7 +1,22 @@
 var searchData=
 [
-  ['targetprofile_0',['TargetProfile',['../db/d59/classTargetProfile.html',1,'']]],
-  ['testhotkey_1',['testhotkey',['../da/da8/classUIService.html#aaeabbc0201d00505749e36ebfd4afbe1',1,'UIService']]],
-  ['triggerevent_2',['triggerevent',['../d9/d68/classGame.html#a9706a62f29ad74e866ec4c68dfa2b4a2',1,'Game::TriggerEvent(const std::string &amp;eventName)'],['../d9/d68/classGame.html#a3c3692a3390a4fa82c749e62c9440446',1,'Game::TriggerEvent(const std::string &amp;eventName, TargetProfile *target)']]],
-  ['triggeronupdate_3',['TriggerOnUpdate',['../df/dc4/classLuaService.html#a1278b6d724db94f7761e0c1adaeeb548',1,'LuaService']]]
+  ['radarconfig_0',['RadarConfig',['../df/d07/classRadarConfig.html',1,'']]],
+  ['read_1',['Read',['../d6/d45/classCMemoryService.html#adbcb3d55886410b92ffdaa9106849cbc',1,'CMemoryService']]],
+  ['readpointer_2',['ReadPointer',['../d6/d45/classCMemoryService.html#a72c7d284951da41493513d78575d6b10',1,'CMemoryService']]],
+  ['removequeuednotification_3',['RemoveQueuedNotification',['../d9/da7/classCNotificationService.html#a01294bdb43941c2b5c812a7dc34a40f5',1,'CNotificationService']]],
+  ['render_4',['render',['../d4/d8e/classCRadar.html#adf2904bf2b6619bd2b3482383f52d93a',1,'CRadar::Render()'],['../d2/dc5/classNotification.html#a2d76157eac2ee7d449c3d4bf95191414',1,'Notification::Render()'],['../d5/dba/classQuickAction.html#a37d881c7cbc2193a9d71bffd124d4e70',1,'QuickAction::Render()'],['../dd/d07/classQuickActionButton.html#a03493584ed967badbee670bb8a195947',1,'QuickActionButton::Render()'],['../d8/d1e/classQuickActionCheckbox.html#aefb3fbcb44e7045e59b5f3def93bc3d8',1,'QuickActionCheckbox::Render()'],['../d3/d1c/classQuickActionSlider.html#a40569795573a9a5692bfd14cd0ba1232',1,'QuickActionSlider::Render()']]],
+  ['render2dbox_5',['Render2DBox',['../dd/db7/classCEsp.html#a81ac9a72f1d8575d767011e03ce1b39d',1,'CEsp']]],
+  ['render3dbox_6',['Render3DBox',['../dd/db7/classCEsp.html#a94eb92338fc6d6cdaead199ad3340de1',1,'CEsp']]],
+  ['rendercrosshair_7',['RenderCrosshair',['../d8/de4/classCUIService.html#aedea2be1a961f0dda95ff7959fe3ba6f',1,'CUIService']]],
+  ['renderfov_8',['RenderFov',['../d8/de4/classCUIService.html#a39fecf6a59124f663f959306baf4df91',1,'CUIService']]],
+  ['renderhealthbar_9',['RenderHealthBar',['../dd/db7/classCEsp.html#afd7a63da6073ef5fd5a88a31e3e313a6',1,'CEsp']]],
+  ['renderinradar_10',['renderinradar',['../d4/d9f/classCWaypoints.html#a2f4703c2931c63478459e357ee054937',1,'CWaypoints::RenderInRadar(std::function&lt; bool(ImVec2)&gt; fnIsPointInRadar, Vec2 localPos, float defaultScale, float radarSize, float zoomFactor, ImVec2 radarCenter)'],['../d4/d9f/classCWaypoints.html#aa18955f21576f81459d1be98ef775e5d',1,'CWaypoints::RenderInRadar(std::function&lt; bool(ImVec2)&gt; fnIsPointInRadar, Vec3 localPos, float defaultScale, float radarSize, float zoomFactor, ImVec2 radarCenter)']]],
+  ['renderinworld_11',['RenderInWorld',['../d4/d9f/classCWaypoints.html#ace2d19353cc4c667702c3aebe35c7148',1,'CWaypoints']]],
+  ['rendernotifications_12',['RenderNotifications',['../d9/da7/classCNotificationService.html#a62fef53ddf68a757bd6e7ce7cf0a5760',1,'CNotificationService']]],
+  ['renderradarbase_13',['RenderRadarBase',['../d4/d8e/classCRadar.html#a9904adb8090d5eca86fe5853cb7e53c8',1,'CRadar']]],
+  ['renderskeleton_14',['RenderSkeleton',['../dd/db7/classCEsp.html#aad5b1169af502bb35cf80e9b44a18e9b',1,'CEsp']]],
+  ['rendersnapline_15',['RenderSnapline',['../dd/db7/classCEsp.html#aa1a2fde41f4d8047e49d6b1665b3fffd',1,'CEsp']]],
+  ['reservedparam_16',['reservedParam',['../d0/d6f/structManualMappingData.html#a325bc9bc0102d17a560fd27d59ac3fd4',1,'ManualMappingData']]],
+  ['resettarget_17',['ResetTarget',['../da/df7/classCAimbot.html#a72ec2f4dc676f8bac4e4112454438028',1,'CAimbot']]],
+  ['run_18',['Run',['../d3/d59/classCheat.html#a9bf9b5254c44081ad1306c3a6700e0ed',1,'Cheat']]]
 ];

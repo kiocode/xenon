@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['x_0',['x',['../d3/d95/classVec2.html#adf8ee322d4b4bcc04146762c018d731f',1,'Vec2::x'],['../d9/de4/classVec3.html#a2814580e9b9372738c0a61197ea46b51',1,'Vec3::x']]],
-  ['xenon_1',['xenon',['../d2/d59/classBuilder.html#a506c5c43c1867498200b9517c73b7bb2',1,'Builder']]],
-  ['xenonconfig_2',['xenonConfig',['../d2/d59/classBuilder.html#a0cca72a846202a9effaba0e56dc64752',1,'Builder']]],
-  ['xenonvariables_3',['xenonVariables',['../d2/d59/classBuilder.html#a85c8ad22c63ff1116f7f997d2c97b431',1,'Builder']]]
+  ['opresent_0',['oPresent',['../d8/de4/classCUIService.html#a7288ae62d66659ec662fae0d6f78916a',1,'CUIService']]],
+  ['owndproc_1',['oWndProc',['../d8/de4/classCUIService.html#ac9cbaf559336410542b281141f8be1cc',1,'CUIService']]]
 ];

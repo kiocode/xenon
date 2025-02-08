@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['keeprecoil_0',['KeepRecoil',['../df/d6c/classAimService.html#a5ebd0913b153a63ac2794140c307b6aa',1,'AimService']]]
+  ['keeprecoil_0',['KeepRecoil',['../d9/de9/classCAimService.html#af80a6192d2ee22b8a9506a50f96d6986',1,'CAimService']]]
 ];

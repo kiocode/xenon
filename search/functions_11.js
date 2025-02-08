@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['waypoint_0',['waypoint',['../d9/d8c/classWaypoint.html#a60c1b299877219b777b3964c8a0b232e',1,'Waypoint::Waypoint(std::string sName, Vec2 vPos, ImColor cColor)'],['../d9/d8c/classWaypoint.html#a6a9627ce7e85c4b705606fa93de7030d',1,'Waypoint::Waypoint(std::string sName, Vec3 vPos, ImColor cColor)']]],
-  ['write_1',['Write',['../df/d7b/classMemoryService.html#ac560aa628df53d388bfde4d0cd971622',1,'MemoryService']]],
-  ['writepointer_2',['WritePointer',['../df/d7b/classMemoryService.html#a636cfde51bad5698f686985d892cf0d6',1,'MemoryService']]]
+  ['vec2_0',['vec2',['../d3/d95/classVec2.html#a76080feed7005893ecc634f903cfbae0',1,'Vec2::Vec2()'],['../d3/d95/classVec2.html#a6256fecebf5a43b14d5d5341c58cfdc4',1,'Vec2::Vec2(float x, float y)']]],
+  ['vec3_1',['vec3',['../d9/de4/classVec3.html#aae7a1ffaa1108a30c281da216d1cd312',1,'Vec3::Vec3()'],['../d9/de4/classVec3.html#a842ccdcdb2b4c7ca7cef20e6e786a231',1,'Vec3::Vec3(float x, float y, float z)']]]
 ];

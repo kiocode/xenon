@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['luaservice_0',['LuaService',['../df/dc4/classLuaService.html',1,'']]]
+  ['manualmappingdata_0',['ManualMappingData',['../d0/d6f/structManualMappingData.html',1,'']]]
 ];

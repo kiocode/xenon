@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['targetprofile_0',['TargetProfile',['../db/d59/classTargetProfile.html',1,'']]]
+  ['uiconfig_0',['UIConfig',['../d5/de1/classUIConfig.html',1,'']]]
 ];

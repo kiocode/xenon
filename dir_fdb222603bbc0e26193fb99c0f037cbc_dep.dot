@@ -13,6 +13,7 @@ digraph "xenon/includes/xenon/models"
   dir_68cde46dd12322a1ee908e7e3b256fc8 [label="enums", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_68cde46dd12322a1ee908e7e3b256fc8.html",tooltip=""];
   dir_a3718a424befc51859e035aaba860e3a [label="profiles", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_a3718a424befc51859e035aaba860e3a.html",tooltip=""];
   dir_d20dc8d8269cedbade21ae7b55431272 [label="quickactions", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_d20dc8d8269cedbade21ae7b55431272.html",tooltip=""];
+  dir_924527b25d43ecdbe8ad60bf43280702 [label="structs", fillcolor="#a2b4d6", color="grey25", style="filled", URL="dir_924527b25d43ecdbe8ad60bf43280702.html",tooltip=""];
   }
   }
 }

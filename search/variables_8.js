@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['y_0',['y',['../d3/d95/classVec2.html#a30543787e62f6d915543cf1dfb04c094',1,'Vec2::y'],['../d9/de4/classVec3.html#abc1d241232cb04aa98217a942402ae68',1,'Vec3::y']]]
+  ['pbase_0',['pbase',['../d0/d6f/structManualMappingData.html#a52c72dcc09ad7f63574507e931a31afa',1,'ManualMappingData']]],
+  ['pgetprocaddress_1',['pGetProcAddress',['../d0/d6f/structManualMappingData.html#adc90f6f63790fe04dbcc94e137c0474a',1,'ManualMappingData']]],
+  ['ploadlibrarya_2',['pLoadLibraryA',['../d0/d6f/structManualMappingData.html#a7b69721cea0c18dc5a57175221627476',1,'ManualMappingData']]]
 ];

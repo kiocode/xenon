@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['opresent_0',['oPresent',['../da/da8/classUIService.html#a8f457feb72a7efea464374bbdfa5ea8b',1,'UIService']]],
-  ['owndproc_1',['oWndProc',['../da/da8/classUIService.html#a532fd09613359b765bba815585c3a768',1,'UIService']]]
+  ['key_0',['key',['../d5/dc3/structHotkey.html#a41a6f23f4549f999393b42b6f503c01e',1,'Hotkey']]]
 ];
