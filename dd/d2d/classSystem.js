@@ -15,11 +15,12 @@ var classSystem =
     [ "SetAppTitle", "dd/d2d/classSystem.html#a3bd0143115ed4cf5b6bac523d3df0eaa", null ],
     [ "SetGameDimension", "dd/d2d/classSystem.html#acef9ad52fd8a8d55bfa21a0b7f879769", null ],
     [ "SetRenderingType", "dd/d2d/classSystem.html#af6e039fe2d66826157d87786120d407d", null ],
+    [ "g_bIL2CPPResolver", "dd/d2d/classSystem.html#ad139442958baff7106a92548a343ae22", null ],
     [ "g_fDeltaTime", "dd/d2d/classSystem.html#a417bcbc151e1763b25553b7ab07c37f3", null ],
     [ "g_fStartPlayTime", "dd/d2d/classSystem.html#ad88e047830b1326cf50cef3fa0bb05d3", null ],
+    [ "g_pUnityBase", "dd/d2d/classSystem.html#a1c12d1d898a6dd22f384d29636e1f6d2", null ],
+    [ "g_pUnityGameAssembly", "dd/d2d/classSystem.html#af52ee26e2cc54e854f2023beb6f3e628", null ],
+    [ "g_pUnityPlayer", "dd/d2d/classSystem.html#a0186ea4da1a20909c9517331a13c38a3", null ],
     [ "m_fnW2S2D", "dd/d2d/classSystem.html#a1e3321348c83212821a5dedad721204f", null ],
-    [ "m_fnW2S3D", "dd/d2d/classSystem.html#a72f6ca5967e7804de06cfa42516b05d9", null ],
-    [ "m_pUnityBase", "dd/d2d/classSystem.html#aa853791c972e2087d5f502e0cad1a9d5", null ],
-    [ "m_pUnityGameAssembly", "dd/d2d/classSystem.html#a20885ed59062f2e262d4710b5068950f", null ],
-    [ "m_pUnityPlayer", "dd/d2d/classSystem.html#a82d42bf17d407d9b54b457768aa1efad", null ]
+    [ "m_fnW2S3D", "dd/d2d/classSystem.html#a72f6ca5967e7804de06cfa42516b05d9", null ]
 ];
