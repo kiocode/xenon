@@ -1,20 +1,6 @@
 var searchData=
 [
-  ['read_0',['Read',['../d6/d45/classCMemoryService.html#adbcb3d55886410b92ffdaa9106849cbc',1,'CMemoryService']]],
-  ['readpointer_1',['ReadPointer',['../d6/d45/classCMemoryService.html#a72c7d284951da41493513d78575d6b10',1,'CMemoryService']]],
-  ['removequeuednotification_2',['RemoveQueuedNotification',['../d9/da7/classCNotificationService.html#a01294bdb43941c2b5c812a7dc34a40f5',1,'CNotificationService']]],
-  ['render_3',['render',['../d4/d8e/classCRadar.html#adf2904bf2b6619bd2b3482383f52d93a',1,'CRadar::Render()'],['../d2/dc5/classNotification.html#a2d76157eac2ee7d449c3d4bf95191414',1,'Notification::Render()'],['../d5/dba/classQuickAction.html#a37d881c7cbc2193a9d71bffd124d4e70',1,'QuickAction::Render()'],['../dd/d07/classQuickActionButton.html#a03493584ed967badbee670bb8a195947',1,'QuickActionButton::Render()'],['../d8/d1e/classQuickActionCheckbox.html#aefb3fbcb44e7045e59b5f3def93bc3d8',1,'QuickActionCheckbox::Render()'],['../d3/d1c/classQuickActionSlider.html#a40569795573a9a5692bfd14cd0ba1232',1,'QuickActionSlider::Render()']]],
-  ['render2dbox_4',['Render2DBox',['../dd/db7/classCEsp.html#a81ac9a72f1d8575d767011e03ce1b39d',1,'CEsp']]],
-  ['render3dbox_5',['Render3DBox',['../dd/db7/classCEsp.html#a94eb92338fc6d6cdaead199ad3340de1',1,'CEsp']]],
-  ['rendercrosshair_6',['RenderCrosshair',['../d8/de4/classCUIService.html#aedea2be1a961f0dda95ff7959fe3ba6f',1,'CUIService']]],
-  ['renderfov_7',['RenderFov',['../d8/de4/classCUIService.html#a39fecf6a59124f663f959306baf4df91',1,'CUIService']]],
-  ['renderhealthbar_8',['RenderHealthBar',['../dd/db7/classCEsp.html#afd7a63da6073ef5fd5a88a31e3e313a6',1,'CEsp']]],
-  ['renderinradar_9',['renderinradar',['../d4/d9f/classCWaypoints.html#a2f4703c2931c63478459e357ee054937',1,'CWaypoints::RenderInRadar(std::function&lt; bool(ImVec2)&gt; fnIsPointInRadar, Vec2 localPos, float defaultScale, float radarSize, float zoomFactor, ImVec2 radarCenter)'],['../d4/d9f/classCWaypoints.html#aa18955f21576f81459d1be98ef775e5d',1,'CWaypoints::RenderInRadar(std::function&lt; bool(ImVec2)&gt; fnIsPointInRadar, Vec3 localPos, float defaultScale, float radarSize, float zoomFactor, ImVec2 radarCenter)']]],
-  ['renderinworld_10',['RenderInWorld',['../d4/d9f/classCWaypoints.html#ace2d19353cc4c667702c3aebe35c7148',1,'CWaypoints']]],
-  ['rendernotifications_11',['RenderNotifications',['../d9/da7/classCNotificationService.html#a62fef53ddf68a757bd6e7ce7cf0a5760',1,'CNotificationService']]],
-  ['renderradarbase_12',['RenderRadarBase',['../d4/d8e/classCRadar.html#a9904adb8090d5eca86fe5853cb7e53c8',1,'CRadar']]],
-  ['renderskeleton_13',['RenderSkeleton',['../dd/db7/classCEsp.html#aad5b1169af502bb35cf80e9b44a18e9b',1,'CEsp']]],
-  ['rendersnapline_14',['RenderSnapline',['../dd/db7/classCEsp.html#aa1a2fde41f4d8047e49d6b1665b3fffd',1,'CEsp']]],
-  ['resettarget_15',['ResetTarget',['../da/df7/classCAimbot.html#a72ec2f4dc676f8bac4e4112454438028',1,'CAimbot']]],
-  ['run_16',['Run',['../d3/d59/classCheat.html#a9bf9b5254c44081ad1306c3a6700e0ed',1,'Cheat']]]
+  ['quickactionbutton_0',['QuickActionButton',['../dd/d07/classQuickActionButton.html#ac4f5fb49bcb404035c108e5e27df71a6',1,'QuickActionButton']]],
+  ['quickactioncheckbox_1',['QuickActionCheckbox',['../d8/d1e/classQuickActionCheckbox.html#a2ef9674aae324da364141ea34956d831',1,'QuickActionCheckbox']]],
+  ['quickactionslider_2',['quickactionslider',['../d3/d1c/classQuickActionSlider.html#aa0fc79655429d69c6ebf5878ca483a50',1,'QuickActionSlider::QuickActionSlider(std::string label, float *value, float min, float max)'],['../d3/d1c/classQuickActionSlider.html#ac4f8ee062ed4a49e4bef0573041ec84e',1,'QuickActionSlider::QuickActionSlider(std::string label, int *value, int min, int max)']]]
 ];

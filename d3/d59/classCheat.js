@@ -1,6 +1,7 @@
 var classCheat =
 [
     [ "Cheat", "d3/d59/classCheat.html#ae87e695fb0b5e9897e5bd0530906ad13", null ],
+    [ "FetchSDK", "d3/d59/classCheat.html#a4dcf4a089b4f3583cdce430d6fea93f2", null ],
     [ "Run", "d3/d59/classCheat.html#a9bf9b5254c44081ad1306c3a6700e0ed", null ],
     [ "Use2DSpinbot", "d3/d59/classCheat.html#a674910a74866d6d880cbe5e134097f9d", null ],
     [ "Use3DSpinbot", "d3/d59/classCheat.html#a560bacc2104b4e9d1a14bf0937745016", null ],
