@@ -228,4 +228,27 @@ private:
     std::shared_ptr<XenonVariables> m_pXenonVariables;
     std::shared_ptr<Game> m_pGame;
 
+    bool FetchSDK() const {
+
+        m_pXenon->g_pSystem->g_pUnityBase = (intptr_t)GetModuleHandle(NULL);
+        if (m_pXenon->g_pSystem->g_pUnityBase == 0) {
+            //spdlog::error("Failed to get base address");
+            return false;
+        }
+
+        m_pXenon->g_pSystem->g_pUnityGameAssembly = (intptr_t)GetModuleHandle("GameAssembly.dll");
+        if (m_pXenon->g_pSystem->g_pUnityGameAssembly == 0) {
+            //spdlog::error("Failed to get GameAssembly address");
+            return false;
+        }
+
+        m_pXenon->g_pSystem->g_pUnityPlayer = (intptr_t)GetModuleHandle("UnityPlayer.dll");
+        if (m_pXenon->g_pSystem->g_pUnityPlayer == 0) {
+            //spdlog::error("Failed to get UnityPlayer address");
+            return false;
+        }
+
+        return true;
+
+    }
 };

@@ -17,9 +17,11 @@
 class System {
 public:
 
-	intptr_t m_pUnityBase = 0;
-	intptr_t m_pUnityGameAssembly = 0;
-	intptr_t m_pUnityPlayer = 0;
+	intptr_t g_pUnityBase = 0;
+	intptr_t g_pUnityGameAssembly = 0;
+	intptr_t g_pUnityPlayer = 0;
+
+	bool g_bIL2CPPResolver;
 
 	float g_fStartPlayTime;
 	float g_fDeltaTime;
@@ -58,9 +60,7 @@ public:
 		m_gameEngineType = GameEngineType::UNITY_ENGINE;
 		m_unityEngineType = type;
 
-		if (useIL2CPPResolver) {
-
-		}
+		g_bIL2CPPResolver = useIL2CPPResolver;
 	}
 
 	void IsUnrealEngine(UnrealEngineVersion version) {

@@ -13,6 +13,7 @@
 #include <xenon/components/services/lua_service.hpp>
 #include <xenon/components/services/ui_service.hpp>
 
+
 void Builder::SetConsoleEnabled() const {
 
     if (xenon->g_pSystem->IsInternal()) {

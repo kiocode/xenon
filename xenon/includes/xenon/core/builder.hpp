@@ -4,9 +4,9 @@
 
 #include <spdlog/spdlog.h>
 #include <xenon/utility/vec2.hpp>
-#include <xenon/core/cheat.hpp>
 #include <xenon/components/features/game.hpp>
 #include <xenon/components/services/memory_service.hpp>
+#include <xenon/core/cheat.hpp>
 
 /**
  * @class Builder
@@ -97,4 +97,5 @@ private:
      * @brief Registers the default components required by the framework.
      */
     void RegisterDefaultComponents();
+
 };
