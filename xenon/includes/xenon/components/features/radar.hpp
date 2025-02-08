@@ -6,13 +6,13 @@
 #include <xenon/models/enums/radar_shape.hpp>
 
 /**
- * @class Radar
+ * @class CRadar
  * @brief A class responsible for rendering and updating radar components in the Xenon framework.
  *
- * The Radar class extends from CComponent and provides functionality for rendering radar visuals
+ * The CRadar class extends from CComponent and provides functionality for rendering radar visuals
  * with different shapes and in 3D space, as well as updating the radar elements during each game cycle.
  */
-class Radar : public CComponent {
+class CRadar : public CComponent {
 public:
 
     /**

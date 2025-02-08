@@ -36,18 +36,18 @@ enum SubTabs {
 };
 
 /**
- * @class UIService
+ * @class CUIService
  * @brief A service for managing and rendering the user interface (UI) in the game.
  *
- * The UIService class handles all aspects of the user interface, including initialization,
+ * The CUIService class handles all aspects of the user interface, including initialization,
  * rendering, and interaction with the user. It integrates with DirectX 11 and ImGui to provide
  * a graphical interface for controlling various features of the game.
  */
-class UIService : public CComponent {
+class CUIService : public CComponent {
 public:
 
     /**
-     * @brief Initializes the UIService.
+     * @brief Initializes the CUIService.
      *
      * This function sets up essential pointers and resources required for the UI, including
      * setting flags to show the menu and associating system variables.

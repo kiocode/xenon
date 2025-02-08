@@ -9,15 +9,15 @@
 #include <stdexcept>
 
 /**
- * @class MemoryService
+ * @class CMemoryService
  * @brief A service for interacting with a game's process memory.
  *
- * The MemoryService class provides methods for attaching to a game's process,
+ * The CMemoryService class provides methods for attaching to a game's process,
  * reading from and writing to its memory, and managing the game's process lifecycle.
  * It is essential for tasks like modifying game values, reading game state, and
  * interfacing with the game at the memory level.
  */
-class MemoryService : public CComponent {
+class CMemoryService : public CComponent {
 public:
 
     /**

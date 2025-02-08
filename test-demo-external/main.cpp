@@ -41,8 +41,8 @@ static void AddConfigurations(Builder& builder) {
 
 	std::shared_ptr<UIConfig> pUIConfig = builder.xenonConfig->g_pUIConfig;
 	std::shared_ptr<GameVariables> pGameVariables = builder.xenonConfig->g_pGameVariables;
-	std::shared_ptr<Waypoints> pWaypoint = builder.xenon->g_cWaypoints;
-	std::shared_ptr<NotificationService> pNotificationService = builder.xenon->g_cNotificationService;
+	std::shared_ptr<CWaypoints> pWaypoint = builder.xenon->g_cWaypoints;
+	std::shared_ptr<CNotificationService> pNotificationService = builder.xenon->g_cNotificationService;
 	//pUIConfig->m_qActions->AddButton("Set Waypoint", [pWaypoint, pGameVariables]() { pWaypoint->SetWaypoint("waypointTest", pGameVariables->g_vLocal.m_vPos3D, ImColor(255, 255, 255)); });
 	pUIConfig->m_qActions->AddButton("Damage", [pWaypoint, pGameVariables]() { pGameVariables->g_vTargets[0].m_fHealth -= 5; });
 	pUIConfig->m_qActions->AddButton("Set Waypoint", [pWaypoint, pGameVariables]() { pWaypoint->SetWaypoint("waypointTest", pGameVariables->g_vLocal.m_vPos2D, ImColor(255, 255, 255)); });
@@ -100,7 +100,7 @@ static void AddConfigurations(Builder& builder) {
 }
 
 static void AddServices(Builder& builder) {
-	//builder.Services->AddSingleton<Aimbot>([]() { return std::make_shared<Aimbot>(); });
+	//builder.Services->AddSingleton<CAimbot>([]() { return std::make_shared<CAimbot>(); });
 }
 
 //static void TestRedEclipseExternal(Builder& builder) {
@@ -283,7 +283,7 @@ static void TestLua(Builder& builder) {
 	cheat.UseESPBox2D();*/
 
 
-	std::shared_ptr<LuaService> pLuaService = builder.xenon->g_cLuaService;
+	std::shared_ptr<CLuaService> pLuaService = builder.xenon->g_cLuaService;
 
 	//pLuaService->ExecuteScriptFile("scripts\\test.lua");
 	pLuaService->ExecuteScript(R"(

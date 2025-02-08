@@ -153,6 +153,7 @@
     <ClInclude Include="includes\xenon\components\features\radar.hpp" />
     <ClInclude Include="includes\xenon\components\features\waypoints.hpp" />
     <ClInclude Include="includes\xenon\components\services\aim_service.hpp" />
+    <ClInclude Include="includes\xenon\components\services\injection_service.hpp" />
     <ClInclude Include="includes\xenon\components\services\lua_service.hpp" />
     <ClInclude Include="includes\xenon\components\services\memory_service.hpp" />
     <ClInclude Include="includes\xenon\components\services\notification_service.hpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="includes\xenon\models\enums\radar_shape.hpp" />
     <ClInclude Include="includes\xenon\models\enums\rendering_hook_type.hpp" />
     <ClInclude Include="includes\xenon\models\enums\unityengine_type.hpp" />
+    <ClInclude Include="includes\xenon\models\structs\manual_mapping_data.hpp" />
     <ClInclude Include="includes\xenon\models\waypoint.hpp" />
     <ClInclude Include="includes\xenon\models\hotkey.hpp" />
     <ClInclude Include="includes\xenon\utility\random.hpp" />
@@ -378,6 +380,7 @@
     <ClInclude Include="libs\spdlog\version.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="includes\xenon\models\enums\injection_type.hpp" />
     <ClCompile Include="includes\xenon\models\enums\unrealengine_version.hpp" />
     <ClCompile Include="includes\xenon\utility\imgui_helper.hpp" />
     <ClCompile Include="libs\imgui\imgui.cpp" />
@@ -431,19 +434,20 @@
     <ClCompile Include="libs\lua\lutf8lib.c" />
     <ClCompile Include="libs\lua\lvm.c" />
     <ClCompile Include="libs\lua\lzio.c" />
-    <ClCompile Include="src\features\aimbot.cpp" />
-    <ClCompile Include="src\features\waypoints.cpp" />
-    <ClCompile Include="src\services\aim_service.cpp" />
-    <ClCompile Include="src\features\esp.cpp" />
+    <ClCompile Include="src\components\features\aimbot.cpp" />
+    <ClCompile Include="src\components\features\esp.cpp" />
+    <ClCompile Include="src\components\features\radar.cpp" />
+    <ClCompile Include="src\components\features\waypoints.cpp" />
+    <ClCompile Include="src\components\services\aim_service.cpp" />
+    <ClCompile Include="src\components\services\injection_service.cpp" />
+    <ClCompile Include="src\components\services\lua_service.cpp" />
+    <ClCompile Include="src\components\services\memory_service.cpp" />
+    <ClCompile Include="src\components\services\notification_service.cpp" />
+    <ClCompile Include="src\components\services\ui_service.cpp" />
     <ClCompile Include="src\core\game.cpp" />
-    <ClCompile Include="src\services\ui_service.cpp" />
     <ClCompile Include="src\core\builder.cpp" />
     <ClCompile Include="src\core\cheat.cpp" />
-    <ClCompile Include="src\services\lua_service.cpp" />
-    <ClCompile Include="src\services\memory_service.cpp" />
-    <ClCompile Include="src\features\radar.cpp" />
     <ClCompile Include="src\core\system.cpp" />
-    <ClCompile Include="src\services\notification_service.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libs\kiero\minhook\dll_resources\MinHook.def" />

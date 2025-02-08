@@ -7,14 +7,14 @@
 #include <xenon/components/component.hpp>
 
 /**
- * @class NotificationService
+ * @class CNotificationService
  * @brief A service for managing and rendering in-game notifications.
  *
- * The NotificationService class handles the creation, display, and removal of
+ * The CNotificationService class handles the creation, display, and removal of
  * notifications within the game. Notifications can be queued and rendered
  * using specific fonts. It also supports customizing font rendering.
  */
-class NotificationService : public CComponent {
+class CNotificationService : public CComponent {
 public:
 
     /**

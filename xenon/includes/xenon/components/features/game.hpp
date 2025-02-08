@@ -170,7 +170,7 @@ private:
     /**
      * @brief A static shared pointer to the UI service.
      */
-    inline static std::shared_ptr<UIService> m_pUIService = nullptr;
+    inline static std::shared_ptr<CUIService> m_pUIService = nullptr;
 
     /**
      * @brief A static function wrapper for the update function.

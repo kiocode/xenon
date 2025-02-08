@@ -9,14 +9,14 @@
 #include <imgui/imgui.h>
 
 /**
- * @class Waypoints
+ * @class CWaypoints
  * @brief A class that manages and renders waypoints in both world space and radar view.
  *
- * The Waypoints class extends from CComponent and provides functionality for storing,
+ * The CWaypoints class extends from CComponent and provides functionality for storing,
  * rendering, and interacting with waypoints in a game or application. It supports both
  * world and radar views, allowing waypoints to be set in 2D or 3D space.
  */
-class Waypoints : public CComponent {
+class CWaypoints : public CComponent {
 public:
 
     /**

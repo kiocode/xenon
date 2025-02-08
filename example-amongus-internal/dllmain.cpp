@@ -43,7 +43,7 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 
 	std::shared_ptr<RadarConfig> pRadarConfig = builder.xenonConfig->g_pRadarConfig;
 	std::shared_ptr<UIConfig> pUIConfig = builder.xenonConfig->g_pUIConfig;
-	std::shared_ptr<Waypoints> pWaypoints = builder.xenon->g_cWaypoints;
+	std::shared_ptr<CWaypoints> pWaypoints = builder.xenon->g_cWaypoints;
 	std::shared_ptr<GameVariables> pGameVariables = builder.xenonConfig->g_pGameVariables;
 	std::shared_ptr<System> pSystem = builder.xenon->g_pSystem;
 

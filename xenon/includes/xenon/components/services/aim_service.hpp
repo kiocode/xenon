@@ -7,14 +7,14 @@
 #include <xenon/models/profiles/target_profile.hpp>
 
 /**
- * @class AimService
+ * @class CAimService
  * @brief A class responsible for handling the aiming and recoil control in the Xenon framework.
  *
- * The AimService class extends from CComponent and provides functionality for aiming at targets,
+ * The CAimService class extends from CComponent and provides functionality for aiming at targets,
  * handling recoil, and performing various aiming-related operations like smoothing and humanizing the
  * movement of the cursor.
  */
-class AimService : public CComponent {
+class CAimService : public CComponent {
 public:
 
     /**

@@ -9,23 +9,23 @@
 #include <xenon/components/component.hpp>
 
 /**
- * @class LuaService
+ * @class CLuaService
  * @brief A service for handling Lua script execution and binding in the Xenon framework.
  *
- * The LuaService class extends from CComponent and allows for the execution of Lua scripts
+ * The CLuaService class extends from CComponent and allows for the execution of Lua scripts
  * and binding Lua functions to the Xenon framework, providing a scripting interface for
  * game modifications and automation.
  */
-class LuaService : public CComponent {
+class CLuaService : public CComponent {
 public:
 
     /**
-     * @brief Constructor for the LuaService class.
+     * @brief Constructor for the CLuaService class.
      *
      * Initializes the Lua environment, sets up an exception handler for Lua errors, and
      * registers the necessary bindings for Lua scripting functionality.
      */
-    LuaService() {
+    CLuaService() {
         lua.set_exception_handler([](lua_State* L, sol::optional<const std::exception&> maybe_exception, sol::string_view description) {
             std::string error_message = "Lua exception: ";
             if (maybe_exception) {

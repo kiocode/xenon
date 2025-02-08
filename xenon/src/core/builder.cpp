@@ -8,6 +8,7 @@
 #include <xenon/components/features/esp.hpp>
 #include <xenon/components/features/waypoints.hpp>
 #include <xenon/components/features/radar.hpp>
+#include <xenon/components/services/injection_service.hpp>
 #include <xenon/components/services/aim_service.hpp>
 #include <xenon/components/services/lua_service.hpp>
 #include <xenon/components/services/ui_service.hpp>
@@ -77,16 +78,17 @@ void Builder::RegisterDefaultComponents() {
     #pragma region Components
     xenon->g_pSystem = std::make_shared<System>();
 
-    xenon->g_cAimbot = std::make_shared<Aimbot>();
-    xenon->g_cEsp = std::make_shared<Esp>();
-    xenon->g_cWaypoints = std::make_shared<Waypoints>();
-    xenon->g_cRadar = std::make_shared<Radar>();
+    xenon->g_cAimbot = std::make_shared<CAimbot>();
+    xenon->g_cEsp = std::make_shared<CEsp>();
+    xenon->g_cWaypoints = std::make_shared<CWaypoints>();
+    xenon->g_cRadar = std::make_shared<CRadar>();
 
-    xenon->g_cAimService = std::make_shared<AimService>();
-    xenon->g_cLuaService = std::make_shared<LuaService>();
-    xenon->g_cMemoryService = std::make_shared<MemoryService>();
-    xenon->g_cNotificationService = std::make_shared<NotificationService>();
-    xenon->g_cUIService = std::make_shared<UIService>();
+    xenon->g_cAimService = std::make_shared<CAimService>();
+    xenon->g_cLuaService = std::make_shared<CLuaService>();
+    xenon->g_cMemoryService = std::make_shared<CMemoryService>();
+    xenon->g_cInjectionService = std::make_shared<CInjectionService>();
+    xenon->g_cNotificationService = std::make_shared<CNotificationService>();
+    xenon->g_cUIService = std::make_shared<CUIService>();
     #pragma endregion
 
     // The order is important for rendering priority and initialization order
@@ -97,6 +99,7 @@ void Builder::RegisterDefaultComponents() {
     components.push_back(xenon->g_cAimService);
     components.push_back(xenon->g_cLuaService);
     components.push_back(xenon->g_cMemoryService);
+    components.push_back(xenon->g_cInjectionService);
     components.push_back(xenon->g_cNotificationService);
     components.push_back(xenon->g_cUIService);
 

@@ -34,7 +34,7 @@ static void AddConfigurations(Builder& builder) {
 	std::shared_ptr<EspConfig> pESPConfig = builder.xenonConfig->g_pEspConfig;
 	pESPConfig->m_bHealthBar = true;
 
-	std::shared_ptr<Waypoints> pWaypoints = builder.xenon->g_cWaypoints;
+	std::shared_ptr<CWaypoints> pWaypoints = builder.xenon->g_cWaypoints;
 
 	std::shared_ptr<UIConfig> pUIConfig = builder.xenonConfig->g_pUIConfig;
 	pUIConfig->m_vFnOverlays.push_back([builder, pWaypoints]() {
@@ -98,7 +98,7 @@ int main()
 
 	std::shared_ptr<GameVariables> gameVariables = builder.xenonConfig->g_pGameVariables;
 	std::shared_ptr<System> system = builder.xenon->g_pSystem;
-	std::shared_ptr<MemoryService> memoryService = builder.xenon->g_cMemoryService;
+	std::shared_ptr<CMemoryService> memoryService = builder.xenon->g_cMemoryService;
 
 	builder.GameManager->OnEvent("Update", [builder, server, serverAddr, gameVariables, memoryService]() {
 

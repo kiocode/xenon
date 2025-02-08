@@ -78,7 +78,7 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 
 	std::shared_ptr<RadarConfig> pRadarConfig = builder.Services->GetConfiguration<RadarConfig>();
 	std::shared_ptr<UIConfig> pUIConfig = builder.Services->GetConfiguration<UIConfig>();
-	std::shared_ptr<Waypoints> pWaypoints = builder.Services->GetService<Waypoints>();
+	std::shared_ptr<CWaypoints> pWaypoints = builder.Services->GetService<CWaypoints>();
 	
 	pUIConfig->m_vFnOverlays.push_back([builder, pWaypoints]() {
 		ImGui::Begin("OAR internal");

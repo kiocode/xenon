@@ -5,13 +5,13 @@
 #include <xenon/configs/aim_config.hpp>
 
 /**
- * @class Aimbot
+ * @class CAimbot
  * @brief A class responsible for managing and controlling the aimbot functionality in the Xenon framework.
  *
- * The Aimbot class extends from CComponent and provides various methods for targeting and aiming mechanics,
+ * The CAimbot class extends from CComponent and provides various methods for targeting and aiming mechanics,
  * including target selection, aim prediction, and target resetting.
  */
-class Aimbot : public CComponent {
+class CAimbot : public CComponent {
 public:
 
     /**

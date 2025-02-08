@@ -3,13 +3,13 @@
 #include <xenon/components/component.hpp>
 
 /**
- * @class Esp
+ * @class CEsp
  * @brief A class responsible for rendering various ESP (Extra Sensory Perception) elements in the Xenon framework.
  *
- * The Esp class extends from CComponent and provides methods to render various in-game elements, such as snaplines, boxes,
+ * The CEsp class extends from CComponent and provides methods to render various in-game elements, such as snaplines, boxes,
  * skeletons, and health bars. These visual aids are commonly used in cheats to enhance player awareness and targeting.
  */
-class Esp : public CComponent {
+class CEsp : public CComponent {
 public:
 
     /**
