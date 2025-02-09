@@ -418,6 +418,14 @@ void CUIService::RenderDefaultMenu() {
 							ImGui::BeginGroup();
 							{
 								ImGui::Checkbox("Watermark", &g_pXenonVariables->g_bWatermark);
+								if (ImGui::Button("Set Waypoint")) {
+									if (g_pXenon->g_pSystem->Is3DGame()) {
+										g_pXenon->g_cWaypoints->SetWaypoint("Waypoint", g_pXenonConfigs->g_pGameVariables->g_vLocal.m_vPos3D, ImColor(255,255,255));
+									}
+									else {
+										g_pXenon->g_cWaypoints->SetWaypoint("Waypoint", g_pXenonConfigs->g_pGameVariables->g_vLocal.m_vPos2D, ImColor(255,255,255));
+									}
+								}								
 								ImGui::Checkbox("Render Notifications", &g_pXenonVariables->g_bNotifications);
 								ImGui::Checkbox("Render Mouse", &g_pXenonVariables->g_bRenderMouse);
 								if (g_pXenonVariables->g_bRenderMouse) {

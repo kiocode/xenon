@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Windows.h>
+
 namespace Unity
 {
 	struct ObjectFunctions_t
@@ -39,11 +41,24 @@ namespace Unity
 		{
 			return reinterpret_cast<Unity::il2cppObject*(UNITY_CALLING_CONVENTION)(void*)>(IL2CPP::Functions.m_pObjectNew)(m_pClass);
 		}
-	
 		template<typename T>
 		static il2cppArray<T*>* FindObjectsOfType(il2cppObject* m_pSystemType, bool m_bIncludeInactive = false)
 		{
-			return reinterpret_cast<Unity::il2cppArray<T*>*(UNITY_CALLING_CONVENTION)(void*, bool)>(m_ObjectFunctions.m_FindObjectsOfType)(m_pSystemType, m_bIncludeInactive);
+			if (!m_ObjectFunctions.m_FindObjectsOfType || !m_pSystemType)
+				return nullptr;
+
+			auto func = reinterpret_cast<Unity::il2cppArray<T*>*(UNITY_CALLING_CONVENTION)(void*, bool)>(m_ObjectFunctions.m_FindObjectsOfType);
+			if (!func)
+				return nullptr;
+
+			__try
+			{
+				return func(m_pSystemType, m_bIncludeInactive);
+			}
+			__except (EXCEPTION_EXECUTE_HANDLER)
+			{
+				return nullptr;
+			}
 		}
 
 		template<typename T>
