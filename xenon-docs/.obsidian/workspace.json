@@ -208,7 +208,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 443.5
+    "width": 443.5,
+    "collapsed": true
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -227,7 +228,7 @@
       "obsidian-importer:Open Importer": false
     }
   },
-  "active": "32806d9b3dd47c79",
+  "active": "3cd94ce680359ce7",
   "lastOpenFiles": [
     "Online Doc/Welcome.md",
     "Online Doc",
