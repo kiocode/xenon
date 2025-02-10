@@ -114,6 +114,39 @@ void Game::Update() {
 	for (TargetProfile& target : m_pXenonConfigs->g_pGameVariables->g_vTargets) {
 		TriggerEvent("UpdateCurrentTarget", &target);
 
+		if (m_pXenon->g_pSystem->Is3DGame()) {
+
+			if (!m_pXenon->g_pSystem->m_fnW2S3D) {
+				throw std::runtime_error("No world to screen 3D function set");
+				return;
+			}
+			else {
+
+				auto testPos = m_pXenon->g_pSystem->m_fnW2S3D(target.m_vPos3D);
+
+				if (testPos->x == -99 && testPos->y == -99) {
+					continue;
+				}
+			}
+
+		}
+		else {
+
+			if (!m_pXenon->g_pSystem->m_fnW2S2D) {
+				throw std::runtime_error("No world to screen 2D function set");
+				return;
+			}
+			else {
+
+				auto testPos = m_pXenon->g_pSystem->m_fnW2S2D(target.m_vPos2D);
+
+				if (testPos->x == -99 && testPos->y == -99) {
+					continue;
+				}
+			}
+
+		}
+
 		for (std::shared_ptr<CComponent>& component : m_pComponents) {
 			component->UpdateCurrentTarget(&target);
 		}

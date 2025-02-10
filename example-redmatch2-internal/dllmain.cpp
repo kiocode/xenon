@@ -48,7 +48,7 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 	Builder builder("RedMatch2 internal");
 
 	std::shared_ptr<RadarConfig> pRadarConfig = builder.xenonConfig->g_pRadarConfig;
-	pRadarConfig->m_fDefaultScale = 60;
+	pRadarConfig->m_fDefaultScale = 40;
 	std::shared_ptr<UIConfig> pUIConfig = builder.xenonConfig->g_pUIConfig;
 	std::shared_ptr<CWaypoints> pWaypoints = builder.xenon->g_cWaypoints;
 	std::shared_ptr<GameVariables> pGameVariables = builder.xenonConfig->g_pGameVariables;
@@ -89,6 +89,7 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 		for (auto& target : pGameVariables->g_vTargets) {
 			ImGui::Text("Name: %s", target.m_strName.c_str());
 			ImGui::Text("Pos: %f %f %f", target.m_vPos3D.x, target.m_vPos3D.y, target.m_vPos3D.z);
+			ImGui::Text("Screen Pos: %f %f", pSystem->m_fnW2S3D(target.m_vPos3D)->x, pSystem->m_fnW2S3D(target.m_vPos3D)->y);
 		}
 
 		ImGui::End();
@@ -110,16 +111,6 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 
 		pGameVariables->g_vTargets.clear();
 
-		//Unity::CCamera* camera = Unity::Camera::GetMain();
-		//if (camera) {
-		//	Unity::CTransform* cameraTransform = camera->CallMethodSafe<Unity::CTransform*>("get_transform");
-
-		//	if(cameraTransform) {
-		//		Unity::Vector3 cameraPos = cameraTransform->CallMethodSafe<Unity::Vector3>("get_position");
-		//		pGameVariables->g_vLocal.m_vPos3D = Vec3(cameraPos.x, cameraPos.y, cameraPos.z);
-		//	}
-		//}			
-
 		Unity::il2cppArray<Unity::CComponent*>* pTargets = nullptr;
 		try {
 			pTargets = Unity::Object::FindObjectsOfType<Unity::CComponent>("PlayerController");
@@ -129,25 +120,6 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 			return;
 		}
 		if (!pTargets) return;
-
-		//PlayerController_o* localObject = reinterpret_cast<PlayerController_o*>(pTargets->operator[](0));
-		//if (localObject) {
-		//	PlayerController_o* localInstance = localObject->klass->static_fields->LocalInstance;
-		//	
-		//	if (localInstance) {
-		//		Unity::CComponent* localInstanceGameObject = reinterpret_cast<Unity::CComponent*>(localInstance);
-
-		//		if(localInstanceGameObject) {
-		//			Unity::CTransform* localInstanceTransform = localInstanceGameObject->GetTransform();
-
-		//			if (localInstanceTransform) {
-		//				Unity::Vector3 localPos = localInstanceTransform->GetPosition();
-		//				pGameVariables->g_vLocal.m_vPos3D = Vec3(localPos.x, localPos.y, localPos.z);
-		//			}
-		//		}
-		//	}
-
-		//}	
 
 		for (int i = 0; i < pTargets->m_uMaxLength; i++) {
 			PlayerController_o* current = reinterpret_cast<PlayerController_o*>(pTargets->operator[](i));

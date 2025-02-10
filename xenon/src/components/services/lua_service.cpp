@@ -6,6 +6,9 @@ void CLuaService::RegisterBinds() {
 	lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::string, sol::lib::table, sol::lib::math, sol::lib::os, sol::lib::io);
 
     //lua.set("memoryService", DIManager::GetInstance().GetService<CMemoryService>());
+	lua.set_function("drawLine", []() {
+		ImGui::GetBackgroundDrawList()->AddLine(ImVec2(100, 100), ImVec2(200, 200), IM_COL32(255, 0, 0, 255), 2.0f);
+	});
 
 	//spdlog::info("CLuaService::RegisterBinds() - Binds registered");
 }
