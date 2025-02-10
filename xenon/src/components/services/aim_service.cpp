@@ -134,13 +134,10 @@ void CAimService::SmoothMoveToTarget(Vec2& target) {
     float stepX = (target.x - cursorPos.x) / g_pXenonConfigs->g_pAimConfig->m_fSmooth;
     float stepY = (target.y - cursorPos.y) / g_pXenonConfigs->g_pAimConfig->m_fSmooth;
 
-    for (int i = 1; i <= g_pXenonConfigs->g_pAimConfig->m_fSmooth; ++i) {
-        float nextX = cursorPos.x + stepX * i;
-        float nextY = cursorPos.y + stepY * i;
+    float nextX = cursorPos.x + stepX;
+    float nextY = cursorPos.y + stepY;
 
-        SetAimPos({ nextX, nextY });
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
+    SetAimPos({ nextX, nextY });
 }
 
 void CAimService::Humanize(Vec2& target) {

@@ -11,9 +11,9 @@
 
 #include "RedMatch2Dump/il2cpp.h"
 
-float head = 0.0f;
-float feet = 0.0f;
-float width = 0.0f;
+float head = 0.8f;
+float feet = -0.8f;
+float width = 300.0f;
 
 bool WorldToScreen(Vec2 screenSize, Vec3 world, Vec2& screen)
 {
@@ -62,8 +62,7 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 
 	pSystem->SetGameDimension(GameDimension::DIM_3D);
 	pSystem->SetRenderingType(RenderingType::DX11);
-	pSystem->m_fnW2S3D = [pSystem, pGameVariables](Vec3 pos) {
-	
+	pSystem->m_fnW2S3D = [pSystem, pGameVariables](Vec3 pos) {	
 		Vec2 screenPos;
 		WorldToScreen(pSystem->GetScreenResolution(), pos, screenPos);
 
@@ -90,6 +89,11 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 			ImGui::Text("Name: %s", target.m_strName.c_str());
 			ImGui::Text("Pos: %f %f %f", target.m_vPos3D.x, target.m_vPos3D.y, target.m_vPos3D.z);
 			ImGui::Text("Screen Pos: %f %f", pSystem->m_fnW2S3D(target.m_vPos3D)->x, pSystem->m_fnW2S3D(target.m_vPos3D)->y);
+			ImGui::Text("Head Pos: %f %f %f", target.m_vHeadPos3D.x, target.m_vHeadPos3D.y, target.m_vHeadPos3D.z);
+			ImGui::Text("Head Screen Pos: %f %f", pSystem->m_fnW2S3D(target.m_vHeadPos3D)->x, pSystem->m_fnW2S3D(target.m_vHeadPos3D)->y);
+			ImGui::Text("Feet Pos: %f %f %f", target.m_vFeetPos3D.x, target.m_vFeetPos3D.y, target.m_vFeetPos3D.z);
+			ImGui::Text("Feet Screen Pos: %f %f", pSystem->m_fnW2S3D(target.m_vFeetPos3D)->x, pSystem->m_fnW2S3D(target.m_vFeetPos3D)->y);
+		
 		}
 
 		ImGui::End();
@@ -101,11 +105,16 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 		}
 
 		ImGui::End();
+
 	});
 
-	pUIConfig->m_qActions->AddSlider("Head", &head, -30.0f, 30.0f);
-	pUIConfig->m_qActions->AddSlider("Feet", &feet, -30.0f, 30.0f);
-	pUIConfig->m_qActions->AddSlider("Width", &width, 0.0f, 50.0f);
+	builder.xenonConfig->g_pAimConfig->m_fDistanceScale = 0.6f;
+	builder.xenonConfig->g_pEspConfig->m_fHealthBarWidth = 35;
+
+	pUIConfig->m_qActions->AddSlider("Head", &head, -10.0f, 10.0f);
+	pUIConfig->m_qActions->AddSlider("Feet", &feet, -10.0f, 10.0f);
+	pUIConfig->m_qActions->AddSlider("Width", &width, 0.0f, 300.0f);
+	pUIConfig->m_qActions->AddSlider("Distance Scale", &builder.xenonConfig->g_pAimConfig->m_fDistanceScale, 0.0f, 100.0f);
 
 	builder.GameManager->OnEvent("Update", [builder, pGameVariables]() {
 
@@ -136,6 +145,8 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 			targetProfile.m_bTemmate = false;
 			targetProfile.m_fHealth = 100.f;
 			targetProfile.m_fMaxHealth = 100.f;
+/*			targetProfile.m_vHeadPos3D = Vec3(currTargetPos.x, currTargetPos.y + 1, currTargetPos.z);
+			targetProfile.m_vFeetPos3D = Vec3(currTargetPos.x, currTargetPos.y - 1, currTargetPos.z);	*/		
 			targetProfile.m_vHeadPos3D = Vec3(currTargetPos.x, currTargetPos.y + head, currTargetPos.z);
 			targetProfile.m_vFeetPos3D = Vec3(currTargetPos.x, currTargetPos.y + feet, currTargetPos.z);
 			targetProfile.m_vPos3D = Vec3(currTargetPos.x, currTargetPos.y, currTargetPos.z);
@@ -156,6 +167,7 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 	cheat.UseUICustom(RenderingHookType::KIERO);
 	cheat.UseUIMenu();
 	cheat.UseUIRenderOverlays();
+	cheat.UseUIQuickActions();
 	cheat.UseUIRenderMouse();
 
 	cheat.Run();

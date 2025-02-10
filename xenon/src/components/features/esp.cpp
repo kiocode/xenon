@@ -70,31 +70,34 @@ void CEsp::RenderSnapline(TargetProfile* target) const {
 	ImGui::GetBackgroundDrawList()->AddLine(startPoint, targetPos, g_pXenonConfigs->g_pEspConfig->m_cSnapline, 1.0f);
 
 }
-
 void CEsp::Render2DBox(TargetProfile* target) const {
+	float distance = g_pXenon->g_pSystem->Is3DGame() ?
+		target->m_vPos3D.Distance(g_pXenonConfigs->g_pGameVariables->g_vLocal.m_vPos3D) :
+		target->m_vPos2D.Distance(g_pXenonConfigs->g_pGameVariables->g_vLocal.m_vPos2D);
 
-	Vec2* targetScreenPos = (g_pXenon->g_pSystem->Is3DGame() ? g_pXenon->g_pSystem->m_fnW2S3D(target->m_vPos3D) : g_pXenon->g_pSystem->m_fnW2S2D(target->m_vPos2D));
-	Vec2* targetScreenHeadPos = (g_pXenon->g_pSystem->Is3DGame() ? g_pXenon->g_pSystem->m_fnW2S3D(target->m_vHeadPos3D) : g_pXenon->g_pSystem->m_fnW2S2D(target->m_vHeadPos2D));
-	Vec2* targetScreenFeetPos = (g_pXenon->g_pSystem->Is3DGame() ? g_pXenon->g_pSystem->m_fnW2S3D(target->m_vFeetPos3D) : g_pXenon->g_pSystem->m_fnW2S2D(target->m_vFeetPos2D));
+	float scaleFactor = g_pXenon->g_pSystem->Is3DGame() ? 1.0f / (distance * g_pXenonConfigs->g_pAimConfig->m_fDistanceScale) : 1;
+	float boxWidth = target->m_fWidth * scaleFactor;
 
-	ImVec2 head = ImVec2(targetScreenHeadPos->x, targetScreenHeadPos->y);
-	ImVec2 feet = ImVec2(targetScreenFeetPos->x, targetScreenFeetPos->y);
-	ImVec2 pos = ImVec2(targetScreenPos->x, targetScreenPos->y);
+	Vec2 targetScreenHeadPos = g_pXenon->g_pSystem->Is3DGame() ? *g_pXenon->g_pSystem->m_fnW2S3D(target->m_vHeadPos3D) : *g_pXenon->g_pSystem->m_fnW2S2D(target->m_vHeadPos2D);
+	Vec2 targetScreenFeetPos = g_pXenon->g_pSystem->Is3DGame() ? *g_pXenon->g_pSystem->m_fnW2S3D(target->m_vFeetPos3D) : *g_pXenon->g_pSystem->m_fnW2S2D(target->m_vFeetPos2D);
 
-	float height = abs(head.y - feet.y);
-
-	ImVec2 minBottomLeft = ImVec2(feet.x - target->m_fWidth / 2, feet.y);
-	ImVec2 maxTopRight = ImVec2(feet.x + target->m_fWidth / 2, head.y);
+	ImVec2 minBottomLeft = ImVec2(targetScreenFeetPos.x - boxWidth / 2, targetScreenFeetPos.y);
+	ImVec2 maxTopRight = ImVec2(targetScreenFeetPos.x + boxWidth / 2, targetScreenHeadPos.y);
 
 	ImColor colorAlpha = g_pXenonConfigs->g_pEspConfig->m_cBox2D;
 	colorAlpha.Value.w = 0.3f;
+
+	//// head
+	//ImGui::GetBackgroundDrawList()->AddCircle(ImVec2(g_pXenon->g_pSystem->m_fnW2S3D(target->m_vHeadPos3D)->x, g_pXenon->g_pSystem->m_fnW2S3D(target->m_vHeadPos3D)->y), 5, IM_COL32(255, 255, 0, 255), 12, 1.0f);
+	//// feet
+	//ImGui::GetBackgroundDrawList()->AddCircle(ImVec2(g_pXenon->g_pSystem->m_fnW2S3D(target->m_vFeetPos3D)->x, g_pXenon->g_pSystem->m_fnW2S3D(target->m_vFeetPos3D)->y), 5, IM_COL32(0, 255, 255, 255), 12, 1.0f);
 
 	switch (g_pXenonConfigs->g_pEspConfig->m_nBox2DType) {
 		case 0: // regular
 			ImGui::GetBackgroundDrawList()->AddRectFilled(minBottomLeft, maxTopRight, colorAlpha, 0, 0);
 			ImGui::GetBackgroundDrawList()->AddRect(minBottomLeft, maxTopRight, g_pXenonConfigs->g_pEspConfig->m_cBox2D, 0, 0);
 			break;
-		case 1: // cornered
+		case 1: // cornered			
 			ImGui::GetBackgroundDrawList()->AddLine(ImVec2(minBottomLeft.x, minBottomLeft.y), ImVec2(minBottomLeft.x + 5, minBottomLeft.y), g_pXenonConfigs->g_pEspConfig->m_cBox2D, 1.0f);
 			ImGui::GetBackgroundDrawList()->AddLine(ImVec2(minBottomLeft.x, minBottomLeft.y), ImVec2(minBottomLeft.x, minBottomLeft.y - 5), g_pXenonConfigs->g_pEspConfig->m_cBox2D, 1.0f);
 
@@ -110,18 +113,9 @@ void CEsp::Render2DBox(TargetProfile* target) const {
 	}
 
 	if (g_pXenonConfigs->g_pEspConfig->m_bDistanceInBox) {
-		if (g_pXenon->g_pSystem->Is3DGame()) {
-			int distance3D = static_cast<int>(target->m_vPos3D.Distance(g_pXenonConfigs->g_pGameVariables->g_vLocal.m_vPos3D));
-			char distance3DStr[100];
-			sprintf_s(distance3DStr, "%d", distance3D);
-			ImGui::GetBackgroundDrawList()->AddText(ImVec2(minBottomLeft.x + 5, minBottomLeft.y - 15), g_pXenonConfigs->g_pEspConfig->m_cBox2DDistance, distance3DStr);
-		}
-		else {
-			int distance2D = static_cast<int>(target->m_vPos2D.Distance(g_pXenonConfigs->g_pGameVariables->g_vLocal.m_vPos2D));
-			char distance2DStr[32];
-			sprintf_s(distance2DStr, "%d", distance2D);
-			ImGui::GetBackgroundDrawList()->AddText(ImVec2(minBottomLeft.x + 5, minBottomLeft.y - 15), g_pXenonConfigs->g_pEspConfig->m_cBox2DDistance, distance2DStr);
-		}
+		char distanceStr[32];
+		sprintf_s(distanceStr, "%d", static_cast<int>(distance));
+		ImGui::GetBackgroundDrawList()->AddText(ImVec2(minBottomLeft.x + 5, minBottomLeft.y - 15), g_pXenonConfigs->g_pEspConfig->m_cBox2DDistance, distanceStr);
 	}
 }
 
@@ -165,32 +159,39 @@ void CEsp::RenderHealthBar(TargetProfile* target) const {
 	float healthPercentage = target->m_fHealth / target->m_fMaxHealth;
 	if (healthPercentage <= 0.0f) healthPercentage = 0;
 
-	Vec2* targetScreenPos = (g_pXenon->g_pSystem->Is3DGame() ? g_pXenon->g_pSystem->m_fnW2S3D(target->m_vPos3D) : g_pXenon->g_pSystem->m_fnW2S2D(target->m_vPos2D));
-	Vec2* targetScreenFeetPos = (g_pXenon->g_pSystem->Is3DGame() ? g_pXenon->g_pSystem->m_fnW2S3D(target->m_vFeetPos3D) : g_pXenon->g_pSystem->m_fnW2S2D(target->m_vFeetPos2D));
-	Vec2* targetScreenHeadPos = (g_pXenon->g_pSystem->Is3DGame() ? g_pXenon->g_pSystem->m_fnW2S3D(target->m_vHeadPos3D) : g_pXenon->g_pSystem->m_fnW2S2D(target->m_vHeadPos2D));
+	Vec2 targetScreenPos = g_pXenon->g_pSystem->Is3DGame() ? *g_pXenon->g_pSystem->m_fnW2S3D(target->m_vPos3D) : *g_pXenon->g_pSystem->m_fnW2S2D(target->m_vPos2D);
+	Vec2 targetScreenFeetPos = g_pXenon->g_pSystem->Is3DGame() ? *g_pXenon->g_pSystem->m_fnW2S3D(target->m_vFeetPos3D) : *g_pXenon->g_pSystem->m_fnW2S2D(target->m_vFeetPos2D);
+	Vec2 targetScreenHeadPos = g_pXenon->g_pSystem->Is3DGame() ? *g_pXenon->g_pSystem->m_fnW2S3D(target->m_vHeadPos3D) : *g_pXenon->g_pSystem->m_fnW2S2D(target->m_vHeadPos2D);
 
-	ImVec2 head = ImVec2(targetScreenHeadPos->x, targetScreenHeadPos->y);
-	ImVec2 feet = ImVec2(targetScreenFeetPos->x, targetScreenFeetPos->y);
-	ImVec2 pos = ImVec2(targetScreenPos->x, targetScreenPos->y);
-
-	float height = abs(head.y - feet.y);
+	float height = abs(targetScreenHeadPos.y - targetScreenFeetPos.y);
 
 	float currentHeight = height;
-	float targetWidth = target->m_fWidth;
+	float distance = g_pXenon->g_pSystem->Is3DGame() ?
+		target->m_vPos3D.Distance(g_pXenonConfigs->g_pGameVariables->g_vLocal.m_vPos3D) :
+		target->m_vPos2D.Distance(g_pXenonConfigs->g_pGameVariables->g_vLocal.m_vPos2D);
+
+	float scaleFactor = g_pXenon->g_pSystem->Is3DGame() ? 1.0f / (distance * g_pXenonConfigs->g_pAimConfig->m_fDistanceScale) : 1;
+	float targetWidth = target->m_fWidth * scaleFactor;
 
 	currentHeight *= healthPercentage;
 
-	float barWidth = g_pXenonConfigs->g_pEspConfig->m_fHealthBarLength;
+	float barWidth = g_pXenonConfigs->g_pEspConfig->m_fHealthBarWidth * scaleFactor;
 	int margin = 3;
 
-	ImVec2 minBottomLeftBg = ImVec2(feet.x - (targetWidth / 2) - barWidth, feet.y);
-	ImVec2 maxTopRightBg = ImVec2(feet.x - (targetWidth / 2), head.y);
+	//ImVec2 minBottomLeftBg = ImVec2(targetScreenFeetPos.x - (targetWidth / 2) - barWidth, targetScreenFeetPos.y);
+	//ImVec2 maxTopRightBg = ImVec2(targetScreenHeadPos.x - (targetWidth / 2), targetScreenHeadPos.y);
 
-	ImVec2 minBottomLeftFilled = ImVec2(feet.x - (targetWidth / 2) - barWidth + margin, feet.y - margin);
-	ImVec2 maxTopRightFilled = ImVec2(feet.x - (targetWidth / 2) - margin, (feet.y + margin) - currentHeight);
+	//ImVec2 minBottomLeftFilled = ImVec2(targetScreenFeetPos.x - (targetWidth / 2) - barWidth + margin, targetScreenFeetPos.y - margin);
+	//ImVec2 maxTopRightFilled = ImVec2(targetScreenHeadPos.x - (targetWidth / 2) - margin, (targetScreenFeetPos.y + margin) - currentHeight);
 
-	ImGui::GetBackgroundDrawList()->AddRectFilled(minBottomLeftBg, maxTopRightBg, g_pXenonConfigs->g_pEspConfig->m_cHealthBarBg, 0, 0);
-	ImGui::GetBackgroundDrawList()->AddRectFilled(minBottomLeftFilled, maxTopRightFilled, g_pXenonConfigs->g_pEspConfig->m_cHealthBarFilled, 0, 0);
+	ImVec2 minBottomLeftBg = ImVec2(targetScreenFeetPos.x - (targetWidth / 2) - barWidth, targetScreenFeetPos.y);
+	ImVec2 maxTopRightBg = ImVec2(minBottomLeftBg.x + barWidth, targetScreenHeadPos.y);
+
+	ImVec2 minBottomLeftFilled = ImVec2(minBottomLeftBg.x + margin, targetScreenFeetPos.y - margin);
+	ImVec2 maxTopRightFilled = ImVec2(minBottomLeftBg.x + barWidth - margin, (targetScreenFeetPos.y + margin) - currentHeight);
+
+	ImGui::GetBackgroundDrawList()->AddRectFilled(minBottomLeftBg, maxTopRightBg, g_pXenonConfigs->g_pEspConfig->m_cHealthBarBg);
+	ImGui::GetBackgroundDrawList()->AddRectFilled(minBottomLeftFilled, maxTopRightFilled, g_pXenonConfigs->g_pEspConfig->m_cHealthBarFilled);
 
 	ImVec2 center = ImVec2(minBottomLeftBg.x + barWidth / 2, maxTopRightBg.y + height / 2);
 

@@ -323,6 +323,13 @@ void CUIService::RenderDefaultMenu() {
 										ImGui::Indent(-10);
 									}
 									ImGui::Checkbox("Box 2D", &g_pXenonVariables->g_bBox2D);
+									if (g_pXenonVariables->g_bBox2D) {
+										ImGui::Indent(10);
+
+										ImGui::SliderInt("Box 2D Type", &g_pXenonConfigs->g_pEspConfig->m_nBox2DType, 0, 1);
+
+										ImGui::Indent(-10);
+									}
 									ImGui::Checkbox("Box 3D", &g_pXenonVariables->g_bBox3D);
 									ImGui::Checkbox("Skeleton", &g_pXenonVariables->g_bSkeleton);
 

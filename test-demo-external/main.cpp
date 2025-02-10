@@ -247,6 +247,8 @@ static void TestGeneral(Builder& builder) {
 	builder.xenonConfig->g_pGameVariables->g_vTargets.push_back(target4);
 	#pragma endregion
 
+	builder.xenonConfig->g_pUIConfig->m_qActions->AddSlider("Distance Scale", &builder.xenonConfig->g_pAimConfig->m_fDistanceScale, 0.0f, 100.0f);
+
 	Cheat cheat = builder.Build();
 
 	cheat.UseUpdate();
@@ -393,8 +395,8 @@ static void RunTests() {
 	builder.SetConsoleEnabled();
 	builder.SetDebugLogLevel();
 
-	//TestGeneral(builder);
-	TestLua(builder);
+	TestGeneral(builder);
+	//TestLua(builder);
 	//TestRecoil(builder);
 	//TestRedEclipseExternal(builder);
 

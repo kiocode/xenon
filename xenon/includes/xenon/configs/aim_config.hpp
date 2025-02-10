@@ -68,6 +68,8 @@ public:
      */
     float m_fSpinbotDepth = 5;
 
+    float m_fDistanceScale = 1;
+
     /**
      * @brief The color used to render the FOV circle in the UI.
      * Default is white with full opacity (255, 255, 255, 255).

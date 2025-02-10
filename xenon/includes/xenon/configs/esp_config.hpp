@@ -53,7 +53,7 @@ public:
      * @brief The length of the health bar.
      * Default is 25 units.
      */
-    float m_fHealthBarLength = 25;
+    float m_fHealthBarWidth = 25;
 
     /**
      * @brief The color of the snapline.
