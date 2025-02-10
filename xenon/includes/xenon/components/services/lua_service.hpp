@@ -7,6 +7,7 @@
 #include <spdlog/spdlog.h>
 
 #include <xenon/components/component.hpp>
+#include <ImGuiColorTextEdit/TextEditor.h>
 
 /**
  * @class CLuaService
@@ -36,8 +37,36 @@ public:
             }
             spdlog::error(error_message);
             return sol::stack::push(L, error_message);
-            });
+        });
         RegisterBinds();
+    }
+
+    void Init() override {
+        auto lang = TextEditor::LanguageDefinition::Lua();
+
+        static const char* identifiers[] = { "print", "pairs", "ipairs", "next", "table", "string", "math", "io", "os" };
+        static const char* idecls[] = {
+            "print(...) -> Prints to the console",
+            "pairs(t) -> Iterator for tables",
+            "ipairs(t) -> Ordered iterator for arrays",
+            "next(table, key) -> Returns the next key",
+            "Lua table library",
+            "Lua string library",
+            "Lua math library",
+            "Lua io library",
+            "Lua os library"
+        };
+
+        for (int i = 0; i < sizeof(identifiers) / sizeof(identifiers[0]); ++i) {
+            TextEditor::Identifier id;
+            id.mDeclaration = idecls[i];
+            lang.mIdentifiers.insert(std::make_pair(std::string(identifiers[i]), id));
+        }
+
+        editor.SetLanguageDefinition(lang);
+
+        editor.SetText("-- Write your Lua script here\nprint('Hello, Lua!')");
+
     }
 
     /**
@@ -58,17 +87,12 @@ public:
      */
     void ExecuteScriptFile(std::string path);
 
-    /**
-     * @brief Triggers the `OnUpdate` event in Lua scripting.
-     *
-     * This method is used to trigger a custom update event, allowing Lua scripts to
-     * be executed in sync with the game's update cycle.
-     */
-    void TriggerOnUpdate();
+    void Update() override;
 
 private:
     sol::state lua; ///< The Lua state for managing Lua execution.
 
+    TextEditor editor;
     /**
      * @brief Registers Lua bindings for Xenon framework functions.
      *
@@ -76,4 +100,6 @@ private:
      * environment, enabling Lua scripts to interact with the core functionality of the framework.
      */
     void RegisterBinds();
+
+	void RenderLuaEditor();
 };

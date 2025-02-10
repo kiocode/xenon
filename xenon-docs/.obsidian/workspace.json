@@ -208,8 +208,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 443.5,
-    "collapsed": true
+    "width": 443.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -228,22 +227,24 @@
       "obsidian-importer:Open Importer": false
     }
   },
-  "active": "3cd94ce680359ce7",
+  "active": "32806d9b3dd47c79",
   "lastOpenFiles": [
-    "Classes/component.h.md",
-    "Classes/esp.h.md",
-    "Classes/aimbot.h.md",
-    "Classes/Aimbot.md",
-    "Classes/ESP.md",
     "Online Doc/Welcome.md",
+    "Online Doc",
+    "Classes/esp.h.md",
+    "Classes/component.h.md",
+    "Classes/aimbot.h.md",
+    "Classes",
+    "Online Doc/Quickstart.md",
+    "Classes/Hooks.md",
+    "Classes/Game.md",
+    "Classes/GUI.md",
+    "Classes/ESP.md",
+    "Classes/Aimbot.md",
+    "Tasks Organization.md",
     "Project Notes.md",
     "What's Xenon.md",
-    "Online Doc",
     "Quickstart.md",
-    "Tasks Organization.md",
-    "Classes/Hooks.md",
-    "Classes/GUI.md",
-    "Classes/Game.md",
     "Project Schema.canvas",
     "Untitled.canvas",
     "Drawing 2024-12-13 12.35.25.excalidraw.md",
@@ -258,8 +259,6 @@
     "UniversalCheatsLib/Classes/Hooks.md",
     "UniversalCheatsLib/Classes/Aimbot.md",
     "Untitled Kanban.md",
-    "UniversalCheatsLib/Classes/GUI.md",
-    "Drawing 2024-12-12 21.41.33.excalidraw.md",
     "Excalidraw",
     "Templates",
     "UniversalCheatsLib/Classes",

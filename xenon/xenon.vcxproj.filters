@@ -711,6 +711,9 @@
     <ClInclude Include="includes\xenon\models\structs\manual_mapping_data.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="libs\ImGuiColorTextEdit\TextEditor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\game.cpp">
@@ -915,6 +918,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\components\services\ui_service.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="libs\ImGuiColorTextEdit\TextEditor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

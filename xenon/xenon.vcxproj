@@ -219,6 +219,7 @@
     <ClInclude Include="libs\il2cpp_resolver\Utils\Hash.hpp" />
     <ClInclude Include="libs\il2cpp_resolver\Utils\Helper.hpp" />
     <ClInclude Include="libs\il2cpp_resolver\Utils\VTable.hpp" />
+    <ClInclude Include="libs\ImGuiColorTextEdit\TextEditor.h" />
     <ClInclude Include="libs\imgui\imconfig.h" />
     <ClInclude Include="libs\imgui\imgui.h" />
     <ClInclude Include="libs\imgui\imgui_impl_dx10.h" />
@@ -383,6 +384,7 @@
     <ClCompile Include="includes\xenon\models\enums\injection_type.hpp" />
     <ClCompile Include="includes\xenon\models\enums\unrealengine_version.hpp" />
     <ClCompile Include="includes\xenon\utility\imgui_helper.hpp" />
+    <ClCompile Include="libs\ImGuiColorTextEdit\TextEditor.cpp" />
     <ClCompile Include="libs\imgui\imgui.cpp" />
     <ClCompile Include="libs\imgui\imgui_draw.cpp" />
     <ClCompile Include="libs\imgui\imgui_impl_dx10.cpp" />

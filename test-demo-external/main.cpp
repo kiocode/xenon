@@ -283,14 +283,6 @@ static void TestLua(Builder& builder) {
 	cheat.UseESPBox2D();*/
 
 
-	std::shared_ptr<CLuaService> pLuaService = builder.xenon->g_cLuaService;
-
-	//pLuaService->ExecuteScriptFile("scripts\\test.lua");
-	pLuaService->ExecuteScript(R"(
-        function OnUpdate()
-			drawLine()
-        end
-    )");
 
 	cheat.Run();
 

@@ -104,7 +104,6 @@ void Game::Update() {
 	}
 
 	TriggerEvent("Update");
-	m_pXenon->g_cLuaService->TriggerOnUpdate();
 	HandleShortcuts();
 
 	for (std::shared_ptr<CComponent> &component : m_pComponents) {

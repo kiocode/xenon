@@ -10,6 +10,8 @@
 
 void CAimService::Update() {
 
+	if (GetAsyncKeyState(VK_ESCAPE)) return;
+
     if (g_pXenonVariables->g_bNoRecoil) {
         if (GetAsyncKeyState(VK_RBUTTON) && GetAsyncKeyState(VK_LBUTTON)) {
             KeepRecoil();
