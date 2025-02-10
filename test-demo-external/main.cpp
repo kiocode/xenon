@@ -43,7 +43,7 @@ static void AddConfigurations(Builder& builder) {
 	std::shared_ptr<GameVariables> pGameVariables = builder.xenonConfig->g_pGameVariables;
 	std::shared_ptr<CWaypoints> pWaypoint = builder.xenon->g_cWaypoints;
 	std::shared_ptr<CNotificationService> pNotificationService = builder.xenon->g_cNotificationService;
-	//pUIConfig->m_qActions->AddButton("Set Waypoint", [pWaypoint, pGameVariables]() { pWaypoint->SetWaypoint("waypointTest", pGameVariables->g_vLocal.m_vPos3D, ImColor(255, 255, 255)); });
+	//pUIConfig->m_qActions->AddButton("Set Waypoint", [pWaypoint, pGameVariables]() { pWaypoint->SetWaypoint("waypointTest", pGameVariables->g_vLocal.m_vPos3D, ImColor.new(255, 255, 255)); });
 	pUIConfig->m_qActions->AddButton("Damage", [pWaypoint, pGameVariables]() { pGameVariables->g_vTargets[0].m_fHealth -= 5; });
 	pUIConfig->m_qActions->AddButton("Set Waypoint", [pWaypoint, pGameVariables]() { pWaypoint->SetWaypoint("waypointTest", pGameVariables->g_vLocal.m_vPos2D, ImColor(255, 255, 255)); });
 
@@ -76,7 +76,7 @@ static void AddConfigurations(Builder& builder) {
 		ImGui::MultiCombo("Multicombo", multi_items_count, multi_items, 5);
 		ImGui::Keybind("Hotkey", &key);
 
-		//if(ImGui::Button("Test Hotkey", ImVec2(200, 25)))
+		//if(ImGui::Button("Test Hotkey", ImVec2.new(200, 25)))
 		//	isEditing = true;
 		//ImGuiHelper::RenderHotkeyEditor(&testhotkey, &isEditing);
 				
@@ -282,6 +282,85 @@ static void TestLua(Builder& builder) {
 	/*cheat.UseESPSnapline();
 	cheat.UseESPBox2D();*/
 
+	std::shared_ptr<CLuaService> pLuaService = builder.xenon->g_cLuaService;
+
+	try {
+		sol::protected_function_result result = pLuaService->ExecuteScript(R"(
+			function onUpdate()
+				-- Create a new window and draw content
+				beginWindow("My Window")
+				setCursorPos(50, 50)
+				drawText("Hello, World!")
+				sameLine()
+				createButton("Click Me")
+				endWindow()
+
+				-- Get the draw list
+				local drawList = getDrawList()
+
+				-- Check if drawList is valid
+				if not drawList then
+					print("Error: Draw list is null!")
+				else
+					-- Draw a line
+					local startPos = ImVec2.new(100, 100)
+					local endPos = ImVec2.new(200, 100)
+					local lineColor = ImColor.new(255, 0, 0, 255)
+					drawList:drawLine(startPos, endPos, lineColor:toU32(), 2)
+					print("Line drawn successfully!")
+
+					-- Draw a rectangle
+					local rectMin = ImVec2.new(50, 50)
+					local rectMax = ImVec2.new(150, 150)
+					local rectColor = ImColor.new(0, 255, 0, 255)
+					drawList:drawRect(rectMin, rectMax, rectColor:toU32(), 0.0, 0, 2)
+					print("Rectangle drawn successfully!")
+
+					-- Draw a filled rectangle
+					local filledRectColor = ImColor.new(0, 0, 255, 255)
+					drawList:drawRectFilled(rectMin, rectMax, filledRectColor:toU32(), 0.0, 0)
+					print("Filled rectangle drawn successfully!")
+
+					-- Draw a circle
+					local circleCenter = ImVec2.new(400, 100)
+					local circleColor = ImColor.new(255, 255, 0, 255)
+					drawList:drawCircle(circleCenter, 50, circleColor:toU32(), 12, 2)
+					print("Circle drawn successfully!")
+
+					-- Draw a filled circle
+					local filledCircleColor = ImColor.new(255, 0, 255, 255)
+					drawList:drawCircleFilled(circleCenter, 50, filledCircleColor:toU32(), 12)
+					print("Filled circle drawn successfully!")
+
+					-- Draw a triangle
+					local p1 = ImVec2.new(600, 100)
+					local p2 = ImVec2.new(650, 150)
+					local p3 = ImVec2.new(700, 100)
+					local triangleColor = ImColor.new(255, 0, 0, 255)
+					drawList:drawTriangle(p1, p2, p3, triangleColor:toU32(), 2)
+					print("Triangle drawn successfully!")
+
+					-- Draw a filled triangle
+					local filledTriangleColor = ImColor.new(0, 255, 0, 255)
+					drawList:drawTriangleFilled(p1, p2, p3, filledTriangleColor:toU32())
+					print("Filled triangle drawn successfully!")
+
+				end
+			end
+
+		)");
+
+		if (!result.valid()) {
+			sol::error err = result;
+			spdlog::error("Lua error: {}", err.what()); 
+		}
+		else {
+			spdlog::info("Lua script executed successfully");
+		}
+	}
+	catch (const std::exception& e) {
+		spdlog::error("C++ Exception: {}", e.what());
+	}
 
 
 	cheat.Run();

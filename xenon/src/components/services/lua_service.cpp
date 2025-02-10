@@ -3,9 +3,14 @@
 
 void CLuaService::Update() {
 	#pragma region Trigger Update In Lua Scripts
-	sol::function on_update = lua["OnUpdate"];
+	sol::function on_update = lua["onUpdate"];
     if (on_update.valid()) {
-	    on_update();
+        sol::protected_function_result result = on_update();
+
+        if (!result.valid()) {
+            sol::error err = result;
+            std::cerr << "Lua error occurred in OnUpdate: " << err.what() << std::endl;
+        }
     }
 	#pragma endregion
 
@@ -16,93 +21,72 @@ void CLuaService::Update() {
 }
 
 void CLuaService::RegisterBinds() {
+    lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::string, sol::lib::table, sol::lib::math, sol::lib::os, sol::lib::io);
 
-	lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::string, sol::lib::table, sol::lib::math, sol::lib::os, sol::lib::io);
+    lua.set_function("beginWindow", [](const char* title) { ImGui::Begin(title); });
+    lua.set_function("endWindow", []() { ImGui::End(); });
+    lua.set_function("setCursorPos", [](float x, float y) { ImGui::SetCursorPos(ImVec2(x, y)); });
+    lua.set_function("sameLine", []() { ImGui::SameLine(); });
 
-    // Window-related bindings
-    lua.set_function("beginWindow", [](const char* title) {
-        ImGui::Begin(title);
-        });
+    lua.set_function("drawText", [](const char* text) { ImGui::Text("%s", text); });
+    lua.set_function("drawTextWrapped", [](const char* text) { ImGui::TextWrapped("%s", text); });
 
-    lua.set_function("endWindow", []() {
-        ImGui::End();
-        });
+    lua.set_function("createButton", [](const char* label) { return ImGui::Button(label); });
 
-    lua.set_function("setCursorPos", [](float x, float y) {
-        ImGui::SetCursorPos(ImVec2(x, y));
-        });
+    lua.new_usertype<ImVec2>("ImVec2",
+        sol::constructors<ImVec2(float, float)>(),
+        "x", &ImVec2::x,
+        "y", &ImVec2::y
+    );
 
-    lua.set_function("sameLine", []() {
-        ImGui::SameLine();
-        });
+    lua.new_usertype<ImColor>("ImColor",
+        sol::constructors<ImColor(), ImColor(int, int, int, int), ImColor(float, float, float, float)>(),
+        "toU32", &ImColor::operator ImU32,
+        "toVec4", &ImColor::operator ImVec4
+    );
 
-    // Text rendering
-    lua.set_function("drawText", [](const char* text) {
-        ImGui::Text("%s", text);
-        });
+    lua.new_usertype<ImDrawList>("ImDrawList",
+        "drawLine", &ImDrawList::AddLine,
+        "drawRect", &ImDrawList::AddRect,
+        "drawRectFilled", &ImDrawList::AddRectFilled,
+        "drawQuad", &ImDrawList::AddQuad,
+        "drawQuadFilled", &ImDrawList::AddQuadFilled,
+        "drawTriangle", &ImDrawList::AddTriangle,
+        "drawTriangleFilled", &ImDrawList::AddTriangleFilled,
+        "drawCircle", &ImDrawList::AddCircle,
+        "drawCircleFilled", &ImDrawList::AddCircleFilled,
+        "drawNgon", &ImDrawList::AddNgon,
+        "drawNgonFilled", &ImDrawList::AddNgonFilled,
+        "drawPolyline", &ImDrawList::AddPolyline,
+        "drawConvexPolyFilled", &ImDrawList::AddConvexPolyFilled,
+        "drawBezierCubic", &ImDrawList::AddBezierCubic,
+        "drawBezierQuadratic", &ImDrawList::AddBezierQuadratic,
+        "drawImage", &ImDrawList::AddImage,
+        "drawImageQuad", &ImDrawList::AddImageQuad,
+        "drawImageRounded", &ImDrawList::AddImageRounded,
+        "pathClear", &ImDrawList::PathClear,
+        "pathLineTo", &ImDrawList::PathLineTo,
+        "pathLineToMergeDuplicate", &ImDrawList::PathLineToMergeDuplicate,
+        "pathFillConvex", &ImDrawList::PathFillConvex,
+        "pathStroke", &ImDrawList::PathStroke,
+        "pathArcTo", &ImDrawList::PathArcTo,
+        "pathArcToFast", &ImDrawList::PathArcToFast,
+        "pathBezierCubicCurveTo", &ImDrawList::PathBezierCubicCurveTo,
+        "pathBezierQuadraticCurveTo", &ImDrawList::PathBezierQuadraticCurveTo,
+        "pathRect", &ImDrawList::PathRect
+    );
 
-    lua.set_function("drawTextWrapped", [](const char* text) {
-        ImGui::TextWrapped("%s", text);
-        });
+    lua.set_function("getDrawList", []() { return ImGui::GetBackgroundDrawList(); });
 
-    // Button
-    lua.set_function("createButton", [](const char* label) {
-        return ImGui::Button(label);
-        });
-
-    // Line drawing
-    lua.set_function("drawLine", [](float x1, float y1, float x2, float y2, int r, int g, int b, int a, float thickness = 1) {
-        ImGui::GetBackgroundDrawList()->AddLine(ImVec2(x1, y1), ImVec2(x2, y2), ImColor(r, g, b, a), thickness);
-        });
-
-    // Rectangle drawing
-    lua.set_function("drawRect", [](float x1, float y1, float x2, float y2, int r, int g, int b, int a, float rounding = 0, int rounding_corners_flags = 0, float thickness = 1) {
-        ImGui::GetBackgroundDrawList()->AddRect(ImVec2(x1, y1), ImVec2(x2, y2), ImColor(r, g, b, a), rounding, rounding_corners_flags, thickness);
-        });
-
-    // Filled rectangle drawing
-    lua.set_function("drawRectFilled", [](float x1, float y1, float x2, float y2, int r, int g, int b, int a, float rounding = 0, int rounding_corners_flags = 0) {
-        ImGui::GetBackgroundDrawList()->AddRectFilled(ImVec2(x1, y1), ImVec2(x2, y2), ImColor(r, g, b, a), rounding, rounding_corners_flags);
-        });
-
-    // Circle drawing
-    lua.set_function("drawCircle", [](float x, float y, float radius, int r, int g, int b, int a, int num_segments = 12, float thickness = 1) {
-        ImGui::GetBackgroundDrawList()->AddCircle(ImVec2(x, y), radius, ImColor(r, g, b, a), num_segments, thickness);
-        });
-
-    // Filled circle drawing
-    lua.set_function("drawCircleFilled", [](float x, float y, float radius, int r, int g, int b, int a, int num_segments = 12) {
-        ImGui::GetBackgroundDrawList()->AddCircleFilled(ImVec2(x, y), radius, ImColor(r, g, b, a), num_segments);
-        });
-
-    // Triangle drawing
-    lua.set_function("drawTriangle", [](float x1, float y1, float x2, float y2, float x3, float y3, int r, int g, int b, int a, float thickness = 1) {
-        ImGui::GetBackgroundDrawList()->AddTriangle(ImVec2(x1, y1), ImVec2(x2, y2), ImVec2(x3, y3), ImColor(r, g, b, a), thickness);
-        });
-
-    // Filled triangle drawing
-    lua.set_function("drawTriangleFilled", [](float x1, float y1, float x2, float y2, float x3, float y3, int r, int g, int b, int a) {
-        ImGui::GetBackgroundDrawList()->AddTriangleFilled(ImVec2(x1, y1), ImVec2(x2, y2), ImVec2(x3, y3), ImColor(r, g, b, a));
-        });
-
-    // Polygon drawing
-    lua.set_function("drawPolygon", [](const std::vector<ImVec2>& points, int r, int g, int b, int a, float thickness = 1) {
-        ImGui::GetBackgroundDrawList()->AddPolyline(&points[0], points.size(), ImColor(r, g, b, a), true, thickness);
-        });
-
-    // Filled polygon drawing
-    lua.set_function("drawPolygonFilled", [](const std::vector<ImVec2>& points, int r, int g, int b, int a) {
-        ImGui::GetBackgroundDrawList()->AddConvexPolyFilled(&points[0], points.size(), ImColor(r, g, b, a));
-        });
-
-
-	spdlog::debug("CLuaService::RegisterBinds() - Binds registered");
+    spdlog::debug("CLuaService::RegisterBinds() - Binds registered");
 }
 
-void CLuaService::ExecuteScript(std::string script) {	
-	lua.script(script);
+sol::protected_function_result CLuaService::ExecuteScript(std::string script) {
+    sol::protected_function_result result = lua.script(script);
 
 	spdlog::debug("CLuaService::ExecuteScript() - Script executed");
+
+    return result;
 }
 
 void CLuaService::ExecuteScriptFile(std::string path) {

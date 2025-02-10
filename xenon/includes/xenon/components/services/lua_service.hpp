@@ -35,14 +35,17 @@ public:
             else {
                 error_message += std::string(description);
             }
-            spdlog::error(error_message);
+
+            spdlog::error(error_message);  
             return sol::stack::push(L, error_message);
         });
+
         RegisterBinds();
     }
 
+
     void Init() override {
-        auto lang = TextEditor::LanguageDefinition::Lua();
+        TextEditor::LanguageDefinition lang = TextEditor::LanguageDefinition::Lua();
 
         static const char* identifiers[] = { "print", "pairs", "ipairs", "next", "table", "string", "math", "io", "os" };
         static const char* idecls[] = {
@@ -76,7 +79,7 @@ public:
      * This method allows the execution of Lua scripts that are passed as a string.
      * Any errors will be caught and logged via the exception handler.
      */
-    void ExecuteScript(std::string script);
+    sol::protected_function_result ExecuteScript(std::string script);
 
     /**
      * @brief Executes a Lua script from a file.
