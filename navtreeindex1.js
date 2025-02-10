@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"d9/de4/classVec3.html#abc1d241232cb04aa98217a942402ae68":[1,0,30,16],
 "d9/de4/classVec3.html#aeeee9d24b297e8bc535ce972c3143cb6":[1,0,30,6],
 "d9/de4/classVec3.html#af1d77e8543bd887b509dc74379b8cc30":[1,0,30,11],
 "d9/de4/classVec3.html#afc46ae6022e89d29fe5456cab636d804":[1,0,30,8],

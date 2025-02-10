@@ -1,7 +1,7 @@
 var searchData=
 [
   ['imguihelper_0',['ImGuiHelper',['../d6/db4/namespaceImGuiHelper.html',1,'']]],
-  ['init_1',['init',['../d4/da1/classCComponent.html#ac9bf36b35de54f49a3d604da091228a4',1,'CComponent::Init()'],['../da/df7/classCAimbot.html#ac4aaa5d6ca4f5b16235a8963fbce2280',1,'CAimbot::Init()'],['../d8/de4/classCUIService.html#a85c8c4d6eb7a952413745567e624673b',1,'CUIService::Init() override']]],
+  ['init_1',['init',['../d4/da1/classCComponent.html#ac9bf36b35de54f49a3d604da091228a4',1,'CComponent::Init()'],['../da/df7/classCAimbot.html#ac4aaa5d6ca4f5b16235a8963fbce2280',1,'CAimbot::Init()'],['../d7/d5e/classCLuaService.html#ac0f1b85e5e4c677ebf5d40623d8e6f90',1,'CLuaService::Init()'],['../d8/de4/classCUIService.html#a85c8c4d6eb7a952413745567e624673b',1,'CUIService::Init() override']]],
   ['initexternal_2',['InitExternal',['../d8/de4/classCUIService.html#ad850552b5ace2f5c67f59d0fa04e15ca',1,'CUIService']]],
   ['initpresent_3',['InitPresent',['../d8/de4/classCUIService.html#a21db294a79cc32d446bdb878959d0938',1,'CUIService']]],
   ['inject_4',['Inject',['../d0/d3f/classCInjectionService.html#a367380ec5da79328872c67dc5aaeb853',1,'CInjectionService']]],
