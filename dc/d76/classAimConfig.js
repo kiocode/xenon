@@ -1,6 +1,7 @@
 var classAimConfig =
 [
     [ "m_cFov", "dc/d76/classAimConfig.html#a3b652d43df347506f30c0c79f6f1813c", null ],
+    [ "m_fDistanceScale", "dc/d76/classAimConfig.html#a0b958bc1443bd7db85680677dc67cd02", null ],
     [ "m_fFov", "dc/d76/classAimConfig.html#a36945f862613b5ad74fe0e3f6921804a", null ],
     [ "m_fnCustomAim", "dc/d76/classAimConfig.html#ac4de010246ddbf8e870d81174c6f3915", null ],
     [ "m_fNearest", "dc/d76/classAimConfig.html#ab7cac9e90f341eb4f8aac033e9ceede8", null ],

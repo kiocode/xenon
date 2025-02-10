@@ -11,7 +11,7 @@ var classEspConfig =
     [ "m_cHealthBarText", "dd/d62/classEspConfig.html#ae3dccb12d9d961cf013c3d5af0f01217", null ],
     [ "m_cSkeleton", "dd/d62/classEspConfig.html#a028908367cff9fd382c8940db2ca57cb", null ],
     [ "m_cSnapline", "dd/d62/classEspConfig.html#ae6ecc4f32809b5fc6e30a2c99f720630", null ],
-    [ "m_fHealthBarLength", "dd/d62/classEspConfig.html#a18af6d9ded5dc2913a434bff51891e93", null ],
+    [ "m_fHealthBarWidth", "dd/d62/classEspConfig.html#af8f7d4150d7d95610b8a8fa8cbe64ced", null ],
     [ "m_fnGetBoneScreenPosFromIndex", "dd/d62/classEspConfig.html#a8d308248da96576171203dd01869c8be", null ],
     [ "m_nBox2DType", "dd/d62/classEspConfig.html#a24d63b2e45d20f9b0b001b1ab7df1880", null ],
     [ "m_nSnaplineTypeEnd", "dd/d62/classEspConfig.html#aae0cd50ff841ce19b3539c5aa718b633", null ],
