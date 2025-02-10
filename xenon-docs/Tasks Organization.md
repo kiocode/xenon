@@ -20,6 +20,8 @@ kanban-plugin: board
 - [ ] system and gamesvariable needs rename
 - [ ] fix aimbot broken after update
 - [ ] fix smooth aim and humanized
+- [ ] fix spinbot loop
+- [ ] add lua editor
 
 
 ## InProgress
