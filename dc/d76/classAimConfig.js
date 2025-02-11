@@ -12,5 +12,6 @@ var classAimConfig =
     [ "m_fSmooth", "dc/d76/classAimConfig.html#ac91c71aac0481f6d12800e19e9dcedc8", null ],
     [ "m_fSpinbotDepth", "dc/d76/classAimConfig.html#a2370bd038e1d419fc92cd3745843fe78", null ],
     [ "m_fSpinbotRadius", "dc/d76/classAimConfig.html#a0024bcff2de090b37dcee266c4d73f98", null ],
-    [ "m_fSpinbotSpeed", "dc/d76/classAimConfig.html#a8f2f2052ac55836c409234586cbdd013", null ]
+    [ "m_fSpinbotSpeed", "dc/d76/classAimConfig.html#a8f2f2052ac55836c409234586cbdd013", null ],
+    [ "m_nMouseInputMode", "dc/d76/classAimConfig.html#a2624b49de3b51424c6c60b8bb093e1d9", null ]
 ];
