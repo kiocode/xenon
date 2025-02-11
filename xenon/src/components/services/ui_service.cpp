@@ -234,6 +234,10 @@ void CUIService::RenderDefaultMenu() {
 								//ImGui::Checkbox("Visible", &g_pXenonVariables->g_bVisibleCheck);
 								//ImGui::Checkbox("Auto scope", &g_pXenonVariables->g_bAutoScope);
 								//ImGui::Checkbox("Auto shoot", &g_pXenonVariables->g_bAutoShoot);
+								ImGui::Checkbox("Crosshair", &g_pXenonVariables->g_bCrosshair);
+								if (g_pXenonVariables->g_bCrosshair) {
+									ImGui::Combo("Crossair Type", &g_pXenonConfigs->g_pUIConfig->m_nCrosshairType, "Cross\0Circle");
+								}
 								ImGui::Checkbox("No recoil", &g_pXenonVariables->g_bNoRecoil);
 								ImGui::Checkbox("Spinbot 2D", &g_pXenonVariables->g_bSpinbot2D);
 								ImGui::Checkbox("Spinbot 3D", &g_pXenonVariables->g_bSpinbot3D);
@@ -241,6 +245,14 @@ void CUIService::RenderDefaultMenu() {
 								if (g_pXenonVariables->g_bAimbot) {
 									ImGui::Indent(10);
 
+									ImGui::Checkbox("Fov", &g_pXenonVariables->g_bFov);
+									if (g_pXenonVariables->g_bFov) {
+										ImGui::Indent(10);
+
+										ImGui::SliderFloat("Fov size", &g_pXenonConfigs->g_pAimConfig->m_fFov, 30.f, 300.f, "%.0f");
+
+										ImGui::Indent(-10);
+									}
 									ImGui::Checkbox("Humanize", &g_pXenonVariables->g_bHumanize);
 									//ImGui::Checkbox("No spread", &g_pXenonVariables->g_bNoSpread);
 
@@ -298,16 +310,6 @@ void CUIService::RenderDefaultMenu() {
 							ImGui::SetCursorPos(ImVec2(10, 10));
 							ImGui::BeginGroup();
 							{
-
-								ImGui::Checkbox("Crosshair", &g_pXenonVariables->g_bCrosshair);
-								ImGui::Checkbox("Fov", &g_pXenonVariables->g_bFov);
-								if (g_pXenonVariables->g_bFov) {
-									ImGui::Indent(10);
-
-									ImGui::SliderFloat("Fov value", &g_pXenonConfigs->g_pAimConfig->m_fFov, 30.f, 300.f, "%.0f");
-
-									ImGui::Indent(-10);
-								}
 								ImGui::Checkbox("ESP", &g_pXenonVariables->g_bEsp);
 								if (g_pXenonVariables->g_bEsp) {
 									ImGui::Indent(10);
@@ -317,8 +319,8 @@ void CUIService::RenderDefaultMenu() {
 									if (g_pXenonVariables->g_bSnapline) {
 										ImGui::Indent(10);
 
-										ImGui::SliderInt("Snapline Start", &g_pXenonConfigs->g_pEspConfig->m_nSnaplineTypeStart, 0, 2);
-										ImGui::SliderInt("Snapline End", &g_pXenonConfigs->g_pEspConfig->m_nSnaplineTypeEnd, 0, 2);
+										ImGui::Combo("Snapline Start", &g_pXenonConfigs->g_pEspConfig->m_nSnaplineTypeStart, "Center\0Top\0Bottom");
+										ImGui::Combo("Snapline End", &g_pXenonConfigs->g_pEspConfig->m_nSnaplineTypeEnd, "Head\0Body\0Feet");
 
 										ImGui::Indent(-10);
 									}
@@ -326,7 +328,7 @@ void CUIService::RenderDefaultMenu() {
 									if (g_pXenonVariables->g_bBox2D) {
 										ImGui::Indent(10);
 
-										ImGui::SliderInt("Box 2D Type", &g_pXenonConfigs->g_pEspConfig->m_nBox2DType, 0, 1);
+										ImGui::Combo("Box 2D Type", &g_pXenonConfigs->g_pEspConfig->m_nBox2DType, "Normal\0Cornered");
 
 										ImGui::Indent(-10);
 									}
@@ -436,7 +438,7 @@ void CUIService::RenderDefaultMenu() {
 								ImGui::Checkbox("Render Notifications", &g_pXenonVariables->g_bNotifications);
 								ImGui::Checkbox("Render Mouse", &g_pXenonVariables->g_bRenderMouse);
 								if (g_pXenonVariables->g_bRenderMouse) {
-
+									ImGui::Combo("Mouse Type", &g_pXenonConfigs->g_pUIConfig->m_nMouseType, "Dot\0Cross");
 								}
 								ImGui::Checkbox("Render UI Windows", &g_pXenonVariables->g_bRenderWindows);
 								ImGui::Checkbox("Render UI Overlays", &g_pXenonVariables->g_bRenderOverlays);
@@ -455,10 +457,8 @@ void CUIService::RenderDefaultMenu() {
 							ImGui::BeginGroup();
 							{
 								ImGui::ColorEdit4("Crossair", (float*)&g_pXenonConfigs->g_pUIConfig->m_cCrosshair);
-								ImGui::Combo("Crossair Type", &g_pXenonConfigs->g_pUIConfig->m_nCrosshairType, "Cross\0Circle");
 							
 								ImGui::ColorEdit4("Mouse", (float*)&g_pXenonConfigs->g_pUIConfig->m_cMouse);
-								ImGui::Combo("Mouse Type", &g_pXenonConfigs->g_pUIConfig->m_nMouseType, "Cross\0Dot");
 							}
 							ImGui::EndGroup();
 						}
@@ -480,6 +480,7 @@ void CUIService::RenderDefaultMenu() {
 							ImGui::SetCursorPos(ImVec2(10, 10));
 							ImGui::BeginGroup();
 							{
+								ImGui::Combo("Mouse Input Mode", &g_pXenonConfigs->g_pAimConfig->m_nMouseInputMode, "SendInput\0SetCursorPos\0PostMessage\0MoveMouse");
 								ImGui::SliderFloat("Radar Default Scale", &g_pXenonConfigs->g_pRadarConfig->m_fDefaultScale, 0.f, 10000.f, "%.0f");
 								ImGui::Checkbox("Lua Editor", &g_pXenonVariables->g_bLuaEditor);
 								ImGui::Checkbox("Render UI Quick Actions", &g_pXenonVariables->g_bRenderQuickActions);

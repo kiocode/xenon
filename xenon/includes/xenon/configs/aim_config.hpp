@@ -70,6 +70,8 @@ public:
 
     float m_fDistanceScale = 1;
 
+    int m_nMouseInputMode = 0;
+
     /**
      * @brief The color used to render the FOV circle in the UI.
      * Default is white with full opacity (255, 255, 255, 255).

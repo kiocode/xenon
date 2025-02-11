@@ -88,6 +88,8 @@ private:
      */
     void SetAimPos(Vec2 pos);
 
+    void MouseMove(float tarx, float tary, float X, float Y, int smooth);
+
     /**
      * @brief Moves the mouse cursor to a specific position.
      * @param pos The position to move the mouse to.

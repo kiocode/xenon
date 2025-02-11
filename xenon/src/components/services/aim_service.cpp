@@ -190,17 +190,40 @@ void CAimService::TrackMouse() {
 }
 
 void CAimService::MoveMouseTo(Vec2 pos) {
-
     int x = static_cast<int>(pos.x);
     int y = static_cast<int>(pos.y);
 
-    INPUT input = {};
-    input.type = INPUT_MOUSE;
-    input.mi.dx = x;
-    input.mi.dy = y;
-    input.mi.dwFlags = MOUSEEVENTF_MOVE;
-
-    SendInput(1, &input, sizeof(INPUT));
+    switch (g_pXenonConfigs->g_pAimConfig->m_nMouseInputMode) {
+        case 0: { 
+            INPUT input = {};
+            input.type = INPUT_MOUSE;
+            input.mi.dx = x;
+            input.mi.dy = y;
+            input.mi.dwFlags = MOUSEEVENTF_MOVE;
+            SendInput(1, &input, sizeof(INPUT));
+            break;
+        }
+        case 1: { 
+            SetCursorPos(x, y);
+            break;
+        }
+        case 2: { 
+            HWND hwnd = GetForegroundWindow();
+            if (hwnd) {
+                LPARAM lParam = MAKELPARAM(x, y);
+                PostMessage(hwnd, WM_MOUSEMOVE, 0, lParam);
+            }
+            break;
+        }
+        case 3: {
+            int screenWidth = GetSystemMetrics(SM_CXSCREEN);
+            int screenHeight = GetSystemMetrics(SM_CYSCREEN);
+            MouseMove(static_cast<float>(x), static_cast<float>(y),
+                static_cast<float>(screenWidth), static_cast<float>(screenHeight),
+                g_pXenonConfigs->g_pAimConfig->m_fSmooth);
+            break;
+        }
+    }
 }
 
 void CAimService::SetMouseTo(Vec2 pos) {
@@ -210,13 +233,72 @@ void CAimService::SetMouseTo(Vec2 pos) {
     int x = static_cast<int>((pos.x / screenWidth) * 65535.0f);
     int y = static_cast<int>((pos.y / screenHeight) * 65535.0f);
 
-    INPUT input = {};
-    input.type = INPUT_MOUSE;
-    input.mi.dx = x;
-    input.mi.dy = y;
-    input.mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE;
+    switch (g_pXenonConfigs->g_pAimConfig->m_nMouseInputMode) {
+        case 0: { 
+            INPUT input = {};
+            input.type = INPUT_MOUSE;
+            input.mi.dx = x;
+            input.mi.dy = y;
+            input.mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE;
+            SendInput(1, &input, sizeof(INPUT));
+            break;
+        }
+        case 1: { 
+            SetCursorPos(static_cast<int>(pos.x), static_cast<int>(pos.y));
+            break;
+        }
+        case 2: {
+            HWND hwnd = GetForegroundWindow();
+            if (hwnd) {
+                LPARAM lParam = MAKELPARAM(static_cast<int>(pos.x), static_cast<int>(pos.y));
+                PostMessage(hwnd, WM_MOUSEMOVE, 0, lParam);
+            }
+            break;
+        }
+        case 3: { 
+            MouseMove(static_cast<float>(pos.x), static_cast<float>(pos.y),
+                static_cast<float>(screenWidth), static_cast<float>(screenHeight),
+                g_pXenonConfigs->g_pAimConfig->m_fSmooth);
+            break;
+        }
+    }
+}
 
-    SendInput(1, &input, sizeof(INPUT));
+void CAimService::MouseMove(float tarx, float tary, float X, float Y, int smooth) {
+    float ScreenCenterX = (X / 2);
+    float ScreenCenterY = (Y / 2);
+    float TargetX = 0;
+    float TargetY = 0;
+
+    smooth = smooth + 3;
+
+    if (tarx != 0) {
+        if (tarx > ScreenCenterX) {
+            TargetX = -(ScreenCenterX - tarx);
+            TargetX /= smooth;
+            if (TargetX + ScreenCenterX > ScreenCenterX * 2) TargetX = 0;
+        }
+        else {
+            TargetX = tarx - ScreenCenterX;
+            TargetX /= smooth;
+            if (TargetX + ScreenCenterX < 0) TargetX = 0;
+        }
+    }
+
+    if (tary != 0) {
+        if (tary > ScreenCenterY) {
+            TargetY = -(ScreenCenterY - tary);
+            TargetY /= smooth;
+            if (TargetY + ScreenCenterY > ScreenCenterY * 2) TargetY = 0;
+        }
+        else {
+            TargetY = tary - ScreenCenterY;
+            TargetY /= smooth;
+            if (TargetY + ScreenCenterY < 0) TargetY = 0;
+        }
+    }
+
+    mouse_event(MOUSEEVENTF_MOVE, static_cast<DWORD>(TargetX), static_cast<DWORD>(TargetY), 0, 0);
 }
 
 void CAimService::SetAimPos(Vec2 pos) {
