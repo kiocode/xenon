@@ -134,12 +134,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a163effc4a974bd4fce1bd8b1163826d5" id="r_a163effc4a974bd4fce1bd8b1163826d5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/de9/classCAimService.html#a163effc4a974bd4fce1bd8b1163826d5">Spin3D</a> ()</td></tr>
 <tr class="memdesc:a163effc4a974bd4fce1bd8b1163826d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Spins the aim in 3D space.  <br /></td></tr>
 <tr class="separator:a163effc4a974bd4fce1bd8b1163826d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d08f438db977a76abfbd87c1a856a75" id="r_a9d08f438db977a76abfbd87c1a856a75"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d3/d95/classVec2.html">Vec2</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/de9/classCAimService.html#a9d08f438db977a76abfbd87c1a856a75">GetNearestPos</a> (std::vector&lt; <a class="el" href="../../db/d59/classTargetProfile.html">TargetProfile</a> &gt; targets, <a class="el" href="../../db/d59/classTargetProfile.html">TargetProfile</a> local)</td></tr>
-<tr class="memdesc:a9d08f438db977a76abfbd87c1a856a75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the nearest target position from a list of targets.  <br /></td></tr>
-<tr class="separator:a9d08f438db977a76abfbd87c1a856a75"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a943969388bd6cf8541ab3a55b75faced" id="r_a943969388bd6cf8541ab3a55b75faced"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d3/d95/classVec2.html">Vec2</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/de9/classCAimService.html#a943969388bd6cf8541ab3a55b75faced">GetNearestPos</a> (std::vector&lt; <a class="el" href="../../db/d59/classTargetProfile.html">TargetProfile</a> &gt; targets, <a class="el" href="../../db/d59/classTargetProfile.html">TargetProfile</a> local, float maxdist)</td></tr>
-<tr class="memdesc:a943969388bd6cf8541ab3a55b75faced"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the nearest target position with a maximum distance limit.  <br /></td></tr>
-<tr class="separator:a943969388bd6cf8541ab3a55b75faced"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad9efff036c78728c0f19a0951155d77d" id="r_ad9efff036c78728c0f19a0951155d77d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/de9/classCAimService.html#ad9efff036c78728c0f19a0951155d77d">Update</a> () override</td></tr>
 <tr class="memdesc:ad9efff036c78728c0f19a0951155d77d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the aiming system during each game cycle.  <br /></td></tr>
 <tr class="separator:ad9efff036c78728c0f19a0951155d77d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -195,91 +189,6 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 <p>This method moves the aim to the given target position. </p>
-
-</div>
-</div>
-<a id="a9d08f438db977a76abfbd87c1a856a75" name="a9d08f438db977a76abfbd87c1a856a75"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9d08f438db977a76abfbd87c1a856a75">&#9670;&#160;</a></span>GetNearestPos() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="../../d3/d95/classVec2.html">Vec2</a> * CAimService::GetNearestPos </td>
-          <td>(</td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="../../db/d59/classTargetProfile.html">TargetProfile</a> &gt;&#160;</td>
-          <td class="paramname"><em>targets</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../db/d59/classTargetProfile.html">TargetProfile</a>&#160;</td>
-          <td class="paramname"><em>local</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Retrieves the nearest target position from a list of targets. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">targets</td><td>A list of targets to check. </td></tr>
-    <tr><td class="paramname">local</td><td>The local player or the origin from which to calculate the nearest target. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The position of the nearest target.</dd></dl>
-<p>This method checks all the provided targets and returns the position of the one that is closest to the local player or origin. </p>
-
-</div>
-</div>
-<a id="a943969388bd6cf8541ab3a55b75faced" name="a943969388bd6cf8541ab3a55b75faced"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a943969388bd6cf8541ab3a55b75faced">&#9670;&#160;</a></span>GetNearestPos() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="../../d3/d95/classVec2.html">Vec2</a> * CAimService::GetNearestPos </td>
-          <td>(</td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="../../db/d59/classTargetProfile.html">TargetProfile</a> &gt;&#160;</td>
-          <td class="paramname"><em>targets</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../db/d59/classTargetProfile.html">TargetProfile</a>&#160;</td>
-          <td class="paramname"><em>local</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>maxdist</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Retrieves the nearest target position with a maximum distance limit. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">targets</td><td>A list of targets to check. </td></tr>
-    <tr><td class="paramname">local</td><td>The local player or the origin from which to calculate the nearest target. </td></tr>
-    <tr><td class="paramname">maxdist</td><td>The maximum allowable distance to the target. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The position of the nearest target, within the specified distance.</dd></dl>
-<p>This method checks all the provided targets and returns the position of the one that is closest to the local player or origin, while ensuring the target is within the specified maximum distance. </p>
 
 </div>
 </div>

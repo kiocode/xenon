@@ -72,11 +72,10 @@ var searchData=
   ['getgamedimension_69',['GetGameDimension',['../dd/d2d/classSystem.html#a29afbe036898090a06bcc409003c48f2',1,'System']]],
   ['getmoduleaddress_70',['GetModuleAddress',['../d6/d45/classCMemoryService.html#acfc6f42cc3754b929b98a8b87953325b',1,'CMemoryService']]],
   ['getmousepos_71',['GetMousePos',['../dd/d2d/classSystem.html#a7d2f89820e4ab8783b132297297a2851',1,'System']]],
-  ['getnearestpos_72',['getnearestpos',['../d9/de9/classCAimService.html#a9d08f438db977a76abfbd87c1a856a75',1,'CAimService::GetNearestPos(std::vector&lt; TargetProfile &gt; targets, TargetProfile local)'],['../d9/de9/classCAimService.html#a943969388bd6cf8541ab3a55b75faced',1,'CAimService::GetNearestPos(std::vector&lt; TargetProfile &gt; targets, TargetProfile local, float maxdist)']]],
-  ['getplaytime_73',['GetPlayTime',['../dd/d2d/classSystem.html#a2ddcd3d1b31e7600ba81c19c1ac9b8d0',1,'System']]],
-  ['getrenderingtype_74',['GetRenderingType',['../dd/d2d/classSystem.html#ae354f415a9dffebb89c8199b3ede5b5f',1,'System']]],
-  ['getscreencenter_75',['GetScreenCenter',['../dd/d2d/classSystem.html#a3cbd5d899e2576eec2ee1ec628912110',1,'System']]],
-  ['getscreenresolution_76',['GetScreenResolution',['../dd/d2d/classSystem.html#a80f5e6e946ee9362d699d1a20ba187b3',1,'System']]],
-  ['getsize_77',['GetSize',['../d6/d31/classQuickActions.html#a4d6781b58fb522ea1b16224547b9c25a',1,'QuickActions']]],
-  ['getwaypoints_78',['GetWaypoints',['../d4/d9f/classCWaypoints.html#ae43f79ac69543e985f2062f2786a24a6',1,'CWaypoints']]]
+  ['getplaytime_72',['GetPlayTime',['../dd/d2d/classSystem.html#a2ddcd3d1b31e7600ba81c19c1ac9b8d0',1,'System']]],
+  ['getrenderingtype_73',['GetRenderingType',['../dd/d2d/classSystem.html#ae354f415a9dffebb89c8199b3ede5b5f',1,'System']]],
+  ['getscreencenter_74',['GetScreenCenter',['../dd/d2d/classSystem.html#a3cbd5d899e2576eec2ee1ec628912110',1,'System']]],
+  ['getscreenresolution_75',['GetScreenResolution',['../dd/d2d/classSystem.html#a80f5e6e946ee9362d699d1a20ba187b3',1,'System']]],
+  ['getsize_76',['GetSize',['../d6/d31/classQuickActions.html#a4d6781b58fb522ea1b16224547b9c25a',1,'QuickActions']]],
+  ['getwaypoints_77',['GetWaypoints',['../d4/d9f/classCWaypoints.html#ae43f79ac69543e985f2062f2786a24a6',1,'CWaypoints']]]
 ];

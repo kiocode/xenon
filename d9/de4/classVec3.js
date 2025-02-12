@@ -3,6 +3,7 @@ var classVec3 =
     [ "Vec3", "d9/de4/classVec3.html#aae7a1ffaa1108a30c281da216d1cd312", null ],
     [ "Vec3", "d9/de4/classVec3.html#a842ccdcdb2b4c7ca7cef20e6e786a231", null ],
     [ "Distance", "d9/de4/classVec3.html#a099de0d4a2068c9a7142fa59d99a814b", null ],
+    [ "IsValid", "d9/de4/classVec3.html#ae7902e722793e78657792fb4a533ad59", null ],
     [ "Length", "d9/de4/classVec3.html#a38a9efffc3f9413f3dd702abc73eb9a2", null ],
     [ "Normalized", "d9/de4/classVec3.html#a0f7559f2691ad67826f42ca19916b7a9", null ],
     [ "operator!=", "d9/de4/classVec3.html#a4e443bb623f755bdd56aed3b96459871", null ],

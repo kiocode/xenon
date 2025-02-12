@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['init_0',['init',['../d4/da1/classCComponent.html#ac9bf36b35de54f49a3d604da091228a4',1,'CComponent::Init()'],['../da/df7/classCAimbot.html#ac4aaa5d6ca4f5b16235a8963fbce2280',1,'CAimbot::Init()'],['../d7/d5e/classCLuaService.html#ac0f1b85e5e4c677ebf5d40623d8e6f90',1,'CLuaService::Init()'],['../d8/de4/classCUIService.html#a85c8c4d6eb7a952413745567e624673b',1,'CUIService::Init() override']]],
+  ['init_0',['init',['../da/df7/classCAimbot.html#ac4aaa5d6ca4f5b16235a8963fbce2280',1,'CAimbot::Init()'],['../d7/d5e/classCLuaService.html#ac0f1b85e5e4c677ebf5d40623d8e6f90',1,'CLuaService::Init()'],['../d8/de4/classCUIService.html#a85c8c4d6eb7a952413745567e624673b',1,'CUIService::Init()'],['../d4/da1/classCComponent.html#ac9bf36b35de54f49a3d604da091228a4',1,'CComponent::Init()']]],
   ['initexternal_1',['InitExternal',['../d8/de4/classCUIService.html#ad850552b5ace2f5c67f59d0fa04e15ca',1,'CUIService']]],
   ['initpresent_2',['InitPresent',['../d8/de4/classCUIService.html#a21db294a79cc32d446bdb878959d0938',1,'CUIService']]],
   ['inject_3',['Inject',['../d0/d3f/classCInjectionService.html#a367380ec5da79328872c67dc5aaeb853',1,'CInjectionService']]],
@@ -10,5 +10,6 @@ var searchData=
   ['istargetempty_7',['IsTargetEmpty',['../da/df7/classCAimbot.html#af381471cd9517ad39f6e36a674ab5e4e',1,'CAimbot']]],
   ['istargetreached_8',['IsTargetReached',['../da/df7/classCAimbot.html#a7e509ca745d0b3da223a97af6d575805',1,'CAimbot']]],
   ['isunityengine_9',['IsUnityEngine',['../dd/d2d/classSystem.html#ae8a0638bc78618c112ce1140fd9fb8ce',1,'System']]],
-  ['isunrealengine_10',['IsUnrealEngine',['../dd/d2d/classSystem.html#a31bfaf70b388c26eae8cbb2ccfb1d447',1,'System']]]
+  ['isunrealengine_10',['IsUnrealEngine',['../dd/d2d/classSystem.html#a31bfaf70b388c26eae8cbb2ccfb1d447',1,'System']]],
+  ['isvalid_11',['isvalid',['../d3/d95/classVec2.html#a3bef2de6f8bad4dc8bad3a6ceb6c4759',1,'Vec2::IsValid()'],['../d9/de4/classVec3.html#ae7902e722793e78657792fb4a533ad59',1,'Vec3::IsValid()']]]
 ];

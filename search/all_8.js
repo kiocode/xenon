@@ -12,5 +12,6 @@ var searchData=
   ['istargetempty_9',['IsTargetEmpty',['../da/df7/classCAimbot.html#af381471cd9517ad39f6e36a674ab5e4e',1,'CAimbot']]],
   ['istargetreached_10',['IsTargetReached',['../da/df7/classCAimbot.html#a7e509ca745d0b3da223a97af6d575805',1,'CAimbot']]],
   ['isunityengine_11',['IsUnityEngine',['../dd/d2d/classSystem.html#ae8a0638bc78618c112ce1140fd9fb8ce',1,'System']]],
-  ['isunrealengine_12',['IsUnrealEngine',['../dd/d2d/classSystem.html#a31bfaf70b388c26eae8cbb2ccfb1d447',1,'System']]]
+  ['isunrealengine_12',['IsUnrealEngine',['../dd/d2d/classSystem.html#a31bfaf70b388c26eae8cbb2ccfb1d447',1,'System']]],
+  ['isvalid_13',['isvalid',['../d3/d95/classVec2.html#a3bef2de6f8bad4dc8bad3a6ceb6c4759',1,'Vec2::IsValid()'],['../d9/de4/classVec3.html#ae7902e722793e78657792fb4a533ad59',1,'Vec3::IsValid()']]]
 ];
