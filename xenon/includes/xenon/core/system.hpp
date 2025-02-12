@@ -23,8 +23,8 @@ public:
 	float g_fStartPlayTime;
 	float g_fDeltaTime;
 
-	std::function<Vec2* (Vec2)> m_fnW2S2D;
-	std::function<Vec2* (Vec3)> m_fnW2S3D;
+	std::function<Vec2(Vec2)> m_fnW2S2D;
+	std::function<Vec2(Vec3)> m_fnW2S3D;
 
 	float GetPlayTime() const;
 

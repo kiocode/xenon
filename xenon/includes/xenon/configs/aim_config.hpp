@@ -30,7 +30,7 @@ public:
      * @brief The field of view (FOV) for the aimbot to search for targets.
      * Default is 40 degrees.
      */
-    float m_fFov = 40;
+    float m_fFov = 60;
 
     /**
      * @brief The speed at which the aimbot compensates for recoil tilt.
@@ -71,6 +71,8 @@ public:
     float m_fDistanceScale = 1;
 
     int m_nMouseInputMode = 0;
+
+    int m_nAimTo = 0;
 
     /**
      * @brief The color used to render the FOV circle in the UI.

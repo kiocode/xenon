@@ -13,6 +13,10 @@ public:
         return static_cast<float>(sqrt(pow(v.x - x, 2) + pow(v.y - y, 2) + pow(v.z - z, 2)));
     }
 
+    bool IsValid() const {
+        return x != -99 && y != -99 && z != -99;
+    }
+
     bool operator==(const Vec3& v) const {
         return x == v.x && y == v.y && z == v.z;
     }

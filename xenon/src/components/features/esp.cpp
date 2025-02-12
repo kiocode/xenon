@@ -35,11 +35,11 @@ void CEsp::RenderSnapline(TargetProfile* target) const {
 	float centerX = g_pXenon->g_pSystem->GetScreenCenter().x;
 	ImVec2 center = ImVec2(centerX, g_pXenon->g_pSystem->GetScreenCenter().y);
 
-	Vec2* targetScreenPos = (g_pXenon->g_pSystem->Is3DGame() ? g_pXenon->g_pSystem->m_fnW2S3D(target->m_vPos3D) : g_pXenon->g_pSystem->m_fnW2S2D(target->m_vPos2D));
-	Vec2* targetHeadScreenPos = (g_pXenon->g_pSystem->Is3DGame() ? g_pXenon->g_pSystem->m_fnW2S3D(target->m_vHeadPos3D) : g_pXenon->g_pSystem->m_fnW2S2D(target->m_vHeadPos2D));
-	Vec2* targetFeetScreenPos = (g_pXenon->g_pSystem->Is3DGame() ? g_pXenon->g_pSystem->m_fnW2S3D(target->m_vFeetPos3D) : g_pXenon->g_pSystem->m_fnW2S2D(target->m_vFeetPos2D));
+	Vec2 targetScreenPos = g_pXenon->g_pSystem->Is3DGame() ? g_pXenon->g_pSystem->m_fnW2S3D(target->m_vPos3D) : g_pXenon->g_pSystem->m_fnW2S2D(target->m_vPos2D);
+	Vec2 targetHeadScreenPos = g_pXenon->g_pSystem->Is3DGame() ? g_pXenon->g_pSystem->m_fnW2S3D(target->m_vHeadPos3D) : g_pXenon->g_pSystem->m_fnW2S2D(target->m_vHeadPos2D);
+	Vec2 targetFeetScreenPos = g_pXenon->g_pSystem->Is3DGame() ? g_pXenon->g_pSystem->m_fnW2S3D(target->m_vFeetPos3D) : g_pXenon->g_pSystem->m_fnW2S2D(target->m_vFeetPos2D);
 
-	ImVec2 targetPos = ImVec2(targetScreenPos->x, targetScreenPos->y);
+	ImVec2 targetPos = ImVec2(targetScreenPos.x, targetScreenPos.y);
 	ImVec2 startPoint = center;
 
 	switch (g_pXenonConfigs->g_pEspConfig->m_nSnaplineTypeStart)
@@ -57,13 +57,13 @@ void CEsp::RenderSnapline(TargetProfile* target) const {
 
 	switch (g_pXenonConfigs->g_pEspConfig->m_nSnaplineTypeEnd) {
 		case 0: // head
-			targetPos = ImVec2(targetHeadScreenPos->x, targetHeadScreenPos->y);
+			targetPos = ImVec2(targetHeadScreenPos.x, targetHeadScreenPos.y);
 			break;
 		case 1: // body
-			targetPos = ImVec2(targetScreenPos->x, targetScreenPos->y);
+			targetPos = ImVec2(targetScreenPos.x, targetScreenPos.y);
 			break;
 		case 2: // feet
-			targetPos = ImVec2(targetFeetScreenPos->x, targetFeetScreenPos->y);
+			targetPos = ImVec2(targetFeetScreenPos.x, targetFeetScreenPos.y);
 			break;
 	}
 
@@ -78,8 +78,8 @@ void CEsp::Render2DBox(TargetProfile* target) const {
 	float scaleFactor = g_pXenon->g_pSystem->Is3DGame() ? 1.0f / (distance * g_pXenonConfigs->g_pAimConfig->m_fDistanceScale) : 1;
 	float boxWidth = target->m_fWidth * scaleFactor;
 
-	Vec2 targetScreenHeadPos = g_pXenon->g_pSystem->Is3DGame() ? *g_pXenon->g_pSystem->m_fnW2S3D(target->m_vHeadPos3D) : *g_pXenon->g_pSystem->m_fnW2S2D(target->m_vHeadPos2D);
-	Vec2 targetScreenFeetPos = g_pXenon->g_pSystem->Is3DGame() ? *g_pXenon->g_pSystem->m_fnW2S3D(target->m_vFeetPos3D) : *g_pXenon->g_pSystem->m_fnW2S2D(target->m_vFeetPos2D);
+	Vec2 targetScreenHeadPos = g_pXenon->g_pSystem->Is3DGame() ? g_pXenon->g_pSystem->m_fnW2S3D(target->m_vHeadPos3D) : g_pXenon->g_pSystem->m_fnW2S2D(target->m_vHeadPos2D);
+	Vec2 targetScreenFeetPos = g_pXenon->g_pSystem->Is3DGame() ? g_pXenon->g_pSystem->m_fnW2S3D(target->m_vFeetPos3D) : g_pXenon->g_pSystem->m_fnW2S2D(target->m_vFeetPos2D);
 
 	ImVec2 minBottomLeft = ImVec2(targetScreenFeetPos.x - boxWidth / 2, targetScreenFeetPos.y);
 	ImVec2 maxTopRight = ImVec2(targetScreenFeetPos.x + boxWidth / 2, targetScreenHeadPos.y);
@@ -88,9 +88,9 @@ void CEsp::Render2DBox(TargetProfile* target) const {
 	colorAlpha.Value.w = 0.3f;
 
 	//// head
-	//ImGui::GetBackgroundDrawList()->AddCircle(ImVec2(g_pXenon->g_pSystem->m_fnW2S3D(target->m_vHeadPos3D)->x, g_pXenon->g_pSystem->m_fnW2S3D(target->m_vHeadPos3D)->y), 5, IM_COL32(255, 255, 0, 255), 12, 1.0f);
+	//ImGui::GetBackgroundDrawList()->AddCircle(ImVec2(g_pXenon->g_pSystem->m_fnW2S3D(target->m_vHeadPos3D).x, g_pXenon->g_pSystem->m_fnW2S3D(target->m_vHeadPos3D).y), 5, IM_COL32(255, 255, 0, 255), 12, 1.0f);
 	//// feet
-	//ImGui::GetBackgroundDrawList()->AddCircle(ImVec2(g_pXenon->g_pSystem->m_fnW2S3D(target->m_vFeetPos3D)->x, g_pXenon->g_pSystem->m_fnW2S3D(target->m_vFeetPos3D)->y), 5, IM_COL32(0, 255, 255, 255), 12, 1.0f);
+	//ImGui::GetBackgroundDrawList()->AddCircle(ImVec2(g_pXenon->g_pSystem->m_fnW2S3D(target->m_vFeetPos3D).x, g_pXenon->g_pSystem->m_fnW2S3D(target->m_vFeetPos3D).y), 5, IM_COL32(0, 255, 255, 255), 12, 1.0f);
 
 	switch (g_pXenonConfigs->g_pEspConfig->m_nBox2DType) {
 		case 0: // regular
@@ -116,6 +116,10 @@ void CEsp::Render2DBox(TargetProfile* target) const {
 		char distanceStr[32];
 		sprintf_s(distanceStr, "%d", static_cast<int>(distance));
 		ImGui::GetBackgroundDrawList()->AddText(ImVec2(minBottomLeft.x + 5, minBottomLeft.y - 15), g_pXenonConfigs->g_pEspConfig->m_cBox2DDistance, distanceStr);
+	}
+
+	if (g_pXenonConfigs->g_pEspConfig->m_bNameInBox) {
+		ImGui::GetBackgroundDrawList()->AddText(ImVec2(minBottomLeft.x + 5, minBottomLeft.y + 5), g_pXenonConfigs->g_pEspConfig->m_cBox2DName, target->m_strName.c_str());
 	}
 }
 
@@ -159,9 +163,9 @@ void CEsp::RenderHealthBar(TargetProfile* target) const {
 	float healthPercentage = target->m_fHealth / target->m_fMaxHealth;
 	if (healthPercentage <= 0.0f) healthPercentage = 0;
 
-	Vec2 targetScreenPos = g_pXenon->g_pSystem->Is3DGame() ? *g_pXenon->g_pSystem->m_fnW2S3D(target->m_vPos3D) : *g_pXenon->g_pSystem->m_fnW2S2D(target->m_vPos2D);
-	Vec2 targetScreenFeetPos = g_pXenon->g_pSystem->Is3DGame() ? *g_pXenon->g_pSystem->m_fnW2S3D(target->m_vFeetPos3D) : *g_pXenon->g_pSystem->m_fnW2S2D(target->m_vFeetPos2D);
-	Vec2 targetScreenHeadPos = g_pXenon->g_pSystem->Is3DGame() ? *g_pXenon->g_pSystem->m_fnW2S3D(target->m_vHeadPos3D) : *g_pXenon->g_pSystem->m_fnW2S2D(target->m_vHeadPos2D);
+	Vec2 targetScreenPos = g_pXenon->g_pSystem->Is3DGame() ? g_pXenon->g_pSystem->m_fnW2S3D(target->m_vPos3D) : g_pXenon->g_pSystem->m_fnW2S2D(target->m_vPos2D);
+	Vec2 targetScreenFeetPos = g_pXenon->g_pSystem->Is3DGame() ? g_pXenon->g_pSystem->m_fnW2S3D(target->m_vFeetPos3D) : g_pXenon->g_pSystem->m_fnW2S2D(target->m_vFeetPos2D);
+	Vec2 targetScreenHeadPos = g_pXenon->g_pSystem->Is3DGame() ? g_pXenon->g_pSystem->m_fnW2S3D(target->m_vHeadPos3D) : g_pXenon->g_pSystem->m_fnW2S2D(target->m_vHeadPos2D);
 
 	float height = abs(targetScreenHeadPos.y - targetScreenFeetPos.y);
 

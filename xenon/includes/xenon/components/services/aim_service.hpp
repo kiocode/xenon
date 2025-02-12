@@ -48,28 +48,9 @@ public:
      */
     void Spin3D();
 
-    /**
-     * @brief Retrieves the nearest target position from a list of targets.
-     * @param targets A list of targets to check.
-     * @param local The local player or the origin from which to calculate the nearest target.
-     * @return The position of the nearest target.
-     *
-     * This method checks all the provided targets and returns the position of the one that is closest
-     * to the local player or origin.
-     */
-    Vec2* GetNearestPos(std::vector<TargetProfile> targets, TargetProfile local);
+    //Vec2* GetNearestPos(std::vector<TargetProfile> targets, TargetProfile local);
 
-    /**
-     * @brief Retrieves the nearest target position with a maximum distance limit.
-     * @param targets A list of targets to check.
-     * @param local The local player or the origin from which to calculate the nearest target.
-     * @param maxdist The maximum allowable distance to the target.
-     * @return The position of the nearest target, within the specified distance.
-     *
-     * This method checks all the provided targets and returns the position of the one that is closest
-     * to the local player or origin, while ensuring the target is within the specified maximum distance.
-     */
-    Vec2* GetNearestPos(std::vector<TargetProfile> targets, TargetProfile local, float maxdist);
+    //Vec2* GetNearestPos(std::vector<TargetProfile> targets, TargetProfile local, float maxdist);
 
     /**
      * @brief Updates the aiming system during each game cycle.

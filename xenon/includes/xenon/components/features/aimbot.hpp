@@ -75,4 +75,7 @@ private:
      * @brief The nearest distance used for target selection, initialized from configuration.
      */
     float nearestDistance = 0;
+    TargetProfile* lockedTarget = nullptr;
+    TargetProfile* bestTarget = nullptr;
+
 };

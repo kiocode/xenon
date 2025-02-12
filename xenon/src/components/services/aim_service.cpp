@@ -78,52 +78,52 @@ void CAimService::Spin3D() {
 
     SetAimPos({ x, y });
 }
-
-Vec2* CAimService::GetNearestPos(std::vector<TargetProfile> targets, TargetProfile local) {
-    float maxdist = 99999;
-
-	return GetNearestPos(targets, local, maxdist);
-}
-
-Vec2* CAimService::GetNearestPos(std::vector<TargetProfile> targets, TargetProfile local, float maxdist) {
-	Vec2* nearest = nullptr;
-	float minDistance = maxdist;
-
-    if (g_pXenon->g_pSystem->Is3DGame()) {
-
-        if (!g_pXenon->g_pSystem->m_fnW2S3D) {
-            spdlog::error("World to screen 3D function not set");
-            return nullptr;
-        }
-
-        for (TargetProfile target : targets) {
-            float distance = target.m_vPos3D.Distance(local.m_vPos3D);
-            if (distance < minDistance) {
-                minDistance = distance;
-                nearest = g_pXenon->g_pSystem->m_fnW2S3D(target.m_vPos3D);
-            }
-        }
-
-    } else {
-
-        if (!g_pXenon->g_pSystem->m_fnW2S2D) {
-            spdlog::error("World to screen 2D function not set");
-			return nullptr;
-        }
-
-        for (TargetProfile target : targets) {
-            float distance = target.m_vPos2D.Distance(local.m_vPos2D);
-            if (distance < minDistance) {
-                minDistance = distance;
-                nearest = g_pXenon->g_pSystem->m_fnW2S2D(target.m_vPos2D);
-            }
-        }
-
-    }
-
-
-	return nearest;
-}
+//
+//Vec2* CAimService::GetNearestPos(std::vector<TargetProfile> targets, TargetProfile local) {
+//    float maxdist = 99999;
+//
+//	return GetNearestPos(targets, local, maxdist);
+//}
+//
+//Vec2* CAimService::GetNearestPos(std::vector<TargetProfile> targets, TargetProfile local, float maxdist) {
+//	Vec2 nearest = nullptr;
+//	float minDistance = maxdist;
+//
+//    if (g_pXenon->g_pSystem->Is3DGame()) {
+//
+//        if (!g_pXenon->g_pSystem->m_fnW2S3D) {
+//            spdlog::error("World to screen 3D function not set");
+//            return nullptr;
+//        }
+//
+//        for (TargetProfile target : targets) {
+//            float distance = target.m_vPos3D.Distance(local.m_vPos3D);
+//            if (distance < minDistance) {
+//                minDistance = distance;
+//                nearest = g_pXenon->g_pSystem->m_fnW2S3D(target.m_vPos3D);
+//            }
+//        }
+//
+//    } else {
+//
+//        if (!g_pXenon->g_pSystem->m_fnW2S2D) {
+//            spdlog::error("World to screen 2D function not set");
+//			return nullptr;
+//        }
+//
+//        for (TargetProfile target : targets) {
+//            float distance = target.m_vPos2D.Distance(local.m_vPos2D);
+//            if (distance < minDistance) {
+//                minDistance = distance;
+//                nearest = g_pXenon->g_pSystem->m_fnW2S2D(target.m_vPos2D);
+//            }
+//        }
+//
+//    }
+//
+//
+//	return nearest;
+//}
 
 #pragma region CAimService::Private
 

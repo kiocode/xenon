@@ -245,6 +245,8 @@ void CUIService::RenderDefaultMenu() {
 								if (g_pXenonVariables->g_bAimbot) {
 									ImGui::Indent(10);
 
+									ImGui::Combo("Aim To", &g_pXenonConfigs->g_pAimConfig->m_nAimTo, "Head\0Body\0Feet");
+
 									ImGui::Checkbox("Fov", &g_pXenonVariables->g_bFov);
 									if (g_pXenonVariables->g_bFov) {
 										ImGui::Indent(10);
@@ -290,6 +292,8 @@ void CUIService::RenderDefaultMenu() {
 							ImGui::SetCursorPos(ImVec2(10, 10));
 							ImGui::BeginGroup();
 							{
+								ImGui::ColorEdit4("Fov Color", (float*)&g_pXenonConfigs->g_pAimConfig->m_cFov);
+
 							}
 							ImGui::EndGroup();
 						}
@@ -329,10 +333,20 @@ void CUIService::RenderDefaultMenu() {
 										ImGui::Indent(10);
 
 										ImGui::Combo("Box 2D Type", &g_pXenonConfigs->g_pEspConfig->m_nBox2DType, "Normal\0Cornered");
+										ImGui::Checkbox("Box 2D Distance", &g_pXenonConfigs->g_pEspConfig->m_bDistanceInBox);
+										ImGui::Checkbox("Box 2D Name", &g_pXenonConfigs->g_pEspConfig->m_bNameInBox);
 
 										ImGui::Indent(-10);
 									}
 									ImGui::Checkbox("Box 3D", &g_pXenonVariables->g_bBox3D);
+									if (g_pXenonVariables->g_bBox3D) {
+										ImGui::Indent(10);
+
+										ImGui::Checkbox("Box 3D Distance", &g_pXenonConfigs->g_pEspConfig->m_bDistanceInBox);
+										ImGui::Checkbox("Box 3D Name", &g_pXenonConfigs->g_pEspConfig->m_bNameInBox);
+
+										ImGui::Indent(-10);
+									}
 									ImGui::Checkbox("Skeleton", &g_pXenonVariables->g_bSkeleton);
 
 									ImGui::Indent(-10);
@@ -355,7 +369,11 @@ void CUIService::RenderDefaultMenu() {
 
 								ImGui::ColorEdit4("Snapline", (float*)&g_pXenonConfigs->g_pEspConfig->m_cSnapline);
 								ImGui::ColorEdit4("Box2D", (float*)&g_pXenonConfigs->g_pEspConfig->m_cBox2D);
+								ImGui::ColorEdit4("Box2D Distance", (float*)&g_pXenonConfigs->g_pEspConfig->m_cBox2DDistance);
+								ImGui::ColorEdit4("Box2D Name", (float*)&g_pXenonConfigs->g_pEspConfig->m_cBox2DName);
 								ImGui::ColorEdit4("Box3D", (float*)&g_pXenonConfigs->g_pEspConfig->m_cBox3D);
+								ImGui::ColorEdit4("Box3D Distance", (float*)&g_pXenonConfigs->g_pEspConfig->m_cBox3DDistance);
+								ImGui::ColorEdit4("Box3D Name", (float*)&g_pXenonConfigs->g_pEspConfig->m_cBox3DName);
 								ImGui::ColorEdit4("Healthbar Background", (float*)&g_pXenonConfigs->g_pEspConfig->m_cHealthBarBg);
 								ImGui::ColorEdit4("Healthbar Foreground", (float*)&g_pXenonConfigs->g_pEspConfig->m_cHealthBarFilled);
 								ImGui::ColorEdit4("Healthbar Text", (float*)&g_pXenonConfigs->g_pEspConfig->m_cHealthBarText);

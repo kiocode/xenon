@@ -37,6 +37,8 @@ public:
      */
     bool m_bDistanceInBox = true;
 
+    bool m_bNameInBox = true;
+
     /**
      * @brief Whether to display the health bar.
      * Default is true (health bar displayed).
@@ -73,11 +75,17 @@ public:
      */
     ImColor m_cBox2DDistance = ImColor(0, 0, 0, 255);
 
+    ImColor m_cBox2DName = ImColor(0, 0, 0, 255);
+
     /**
      * @brief The color of the 3D box.
      * Default is white with full opacity (255, 255, 255, 255).
      */
     ImColor m_cBox3D = ImColor(255, 255, 255, 255);
+
+    ImColor m_cBox3DDistance = ImColor(0, 0, 0, 255);
+
+    ImColor m_cBox3DName = ImColor(0, 0, 0, 255);
 
     /**
      * @brief The color of the skeleton (player bones).

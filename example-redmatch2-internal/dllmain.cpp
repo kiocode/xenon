@@ -66,7 +66,7 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 		Vec2 screenPos;
 		WorldToScreen(pSystem->GetScreenResolution(), pos, screenPos);
 
-		return &screenPos;
+		return screenPos;
 	};
 
 	pUIConfig->m_vFnOverlays.push_back([builder, pWaypoints, pGameVariables, pSystem]() {
@@ -88,11 +88,11 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 		for (auto& target : pGameVariables->g_vTargets) {
 			ImGui::Text("Name: %s", target.m_strName.c_str());
 			ImGui::Text("Pos: %f %f %f", target.m_vPos3D.x, target.m_vPos3D.y, target.m_vPos3D.z);
-			ImGui::Text("Screen Pos: %f %f", pSystem->m_fnW2S3D(target.m_vPos3D)->x, pSystem->m_fnW2S3D(target.m_vPos3D)->y);
+			ImGui::Text("Screen Pos: %f %f", pSystem->m_fnW2S3D(target.m_vPos3D).x, pSystem->m_fnW2S3D(target.m_vPos3D).y);
 			ImGui::Text("Head Pos: %f %f %f", target.m_vHeadPos3D.x, target.m_vHeadPos3D.y, target.m_vHeadPos3D.z);
-			ImGui::Text("Head Screen Pos: %f %f", pSystem->m_fnW2S3D(target.m_vHeadPos3D)->x, pSystem->m_fnW2S3D(target.m_vHeadPos3D)->y);
+			ImGui::Text("Head Screen Pos: %f %f", pSystem->m_fnW2S3D(target.m_vHeadPos3D).x, pSystem->m_fnW2S3D(target.m_vHeadPos3D).y);
 			ImGui::Text("Feet Pos: %f %f %f", target.m_vFeetPos3D.x, target.m_vFeetPos3D.y, target.m_vFeetPos3D.z);
-			ImGui::Text("Feet Screen Pos: %f %f", pSystem->m_fnW2S3D(target.m_vFeetPos3D)->x, pSystem->m_fnW2S3D(target.m_vFeetPos3D)->y);
+			ImGui::Text("Feet Screen Pos: %f %f", pSystem->m_fnW2S3D(target.m_vFeetPos3D).x, pSystem->m_fnW2S3D(target.m_vFeetPos3D).y);
 		
 		}
 

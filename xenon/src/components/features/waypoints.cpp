@@ -28,21 +28,21 @@ void CWaypoints::ClearWaypoints() {
 
 void CWaypoints::RenderInWorld() {
 	for (auto& waypoint : m_vWaypoints) {
-		Vec2* waypointInScreen = g_pXenon->g_pSystem->Is3DGame() ? g_pXenon->g_pSystem->m_fnW2S3D(waypoint.m_vPos3D) : g_pXenon->g_pSystem->m_fnW2S2D(waypoint.m_vPos2D);
+		Vec2 waypointInScreen = g_pXenon->g_pSystem->Is3DGame() ? g_pXenon->g_pSystem->m_fnW2S3D(waypoint.m_vPos3D) : g_pXenon->g_pSystem->m_fnW2S2D(waypoint.m_vPos2D);
 
-		if (!waypointInScreen) continue;
+		if (!waypointInScreen.IsValid()) continue;
 
 		float size = g_pXenonConfigs->g_pWaypointsConfig->m_fSizeInWorld;
 
-		ImVec2 top(waypointInScreen->x, waypointInScreen->y - size);
-		ImVec2 right(waypointInScreen->x + (size / 1.5), waypointInScreen->y);
-		ImVec2 bottom(waypointInScreen->x, waypointInScreen->y + size);
-		ImVec2 left(waypointInScreen->x - (size / 1.5), waypointInScreen->y);
+		ImVec2 top(waypointInScreen.x, waypointInScreen.y - size);
+		ImVec2 right(waypointInScreen.x + (size / 1.5), waypointInScreen.y);
+		ImVec2 bottom(waypointInScreen.x, waypointInScreen.y + size);
+		ImVec2 left(waypointInScreen.x - (size / 1.5), waypointInScreen.y);
 
 		ImGui::GetBackgroundDrawList()->AddQuadFilled(top, right, bottom, left, waypoint.m_cColor);
 
 		if (g_pXenonConfigs->g_pWaypointsConfig->m_bNamesInWorld && !waypoint.m_strName.empty()) {
-			ImGui::GetBackgroundDrawList()->AddText(ImVec2(waypointInScreen->x - (ImGui::CalcTextSize(waypoint.m_strName.c_str()).x / 2), waypointInScreen->y + size + 5), ImColor(255, 255, 255, 255), waypoint.m_strName.c_str());
+			ImGui::GetBackgroundDrawList()->AddText(ImVec2(waypointInScreen.x - (ImGui::CalcTextSize(waypoint.m_strName.c_str()).x / 2), waypointInScreen.y + size + 5), ImColor(255, 255, 255, 255), waypoint.m_strName.c_str());
 		}
 	}
 }
