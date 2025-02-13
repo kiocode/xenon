@@ -37,6 +37,7 @@ void CAimbot::UpdateCurrentTarget(TargetProfile* target) {
                 screenPos = g_pXenon->g_pSystem->Is3DGame()
                     ? g_pXenon->g_pSystem->m_fnW2S3D(lockedTarget->m_vPos3D)
                     : g_pXenon->g_pSystem->m_fnW2S2D(lockedTarget->m_vPos2D);
+                break;
             case 2: // feet
 				screenPos = g_pXenon->g_pSystem->Is3DGame()
 					? g_pXenon->g_pSystem->m_fnW2S3D(lockedTarget->m_vFeetPos3D)
@@ -49,7 +50,7 @@ void CAimbot::UpdateCurrentTarget(TargetProfile* target) {
         }
         else {
             lockedTarget = nullptr;
-            nearestDistance = FLT_MAX;
+            nearestDistance = g_pXenonConfigs->g_pAimConfig->m_fNearest;
             bestTarget = nullptr;
         }
         return;
@@ -66,6 +67,7 @@ void CAimbot::UpdateCurrentTarget(TargetProfile* target) {
 			screenPos = g_pXenon->g_pSystem->Is3DGame()
 				? g_pXenon->g_pSystem->m_fnW2S3D(target->m_vPos3D)
 				: g_pXenon->g_pSystem->m_fnW2S2D(target->m_vPos2D);
+            break;
 		case 2: // feet
 			screenPos = g_pXenon->g_pSystem->Is3DGame()
 				? g_pXenon->g_pSystem->m_fnW2S3D(target->m_vFeetPos3D)
@@ -95,6 +97,7 @@ void CAimbot::UpdateCurrentTarget(TargetProfile* target) {
             distance = g_pXenon->g_pSystem->Is3DGame()
 				? local.m_vPos3D.Distance(target->m_vPos3D)
 				: local.m_vPos2D.Distance(target->m_vPos2D);
+            break;
         case 2: // feet
             distance = g_pXenon->g_pSystem->Is3DGame()
                 ? local.m_vFeetPos3D.Distance(target->m_vFeetPos3D)
