@@ -147,6 +147,19 @@ public:
 
     }
 
+    void UseUIRenderEnabledCheats() {
+
+        if (!m_pXenonVariables->g_bRenderUI) {
+            spdlog::error("UI Show Enabled Cheats can only be used with Custom UI");
+            return;
+        }
+
+        m_pXenonVariables->g_bRenderEnabledCheats = true;
+
+        spdlog::info("UI Show Enabled Cheats is enabled");
+
+    }
+
     void UseUIQuickActions() {
 
         if (!m_pXenonVariables->g_bRenderUI) {

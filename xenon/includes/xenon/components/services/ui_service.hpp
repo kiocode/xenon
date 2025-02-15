@@ -121,6 +121,8 @@ public:
      */
     void RenderFov();
 
+    void RenderEnabledCheats();
+
     /**
      * @brief Updates the UI for each frame.
      */

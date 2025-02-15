@@ -21,6 +21,10 @@ void CUIService::Update() {
 		RenderFov();
 	}
 
+	if (g_pXenonVariables->g_bRenderEnabledCheats) {
+		RenderEnabledCheats();
+	}
+
 	if (g_pXenonVariables->g_bRenderUI) {
 		UpdateUI();
 	}
@@ -558,6 +562,58 @@ void CUIService::InitExternal() {
 		}
 	}
 }
+void CUIService::RenderEnabledCheats() {
+
+	ImGui::SetNextWindowPos(ImVec2(ImGui::GetIO().DisplaySize.x - 100, 10), ImGuiCond_Always);
+	ImGui::SetNextWindowSize(ImVec2(90, 0));
+
+	ImGui::Begin("Enabled Cheats", nullptr,
+		ImGuiWindowFlags_NoTitleBar |
+		ImGuiWindowFlags_NoResize |
+		ImGuiWindowFlags_NoBringToFrontOnFocus |
+		ImGuiWindowFlags_NoScrollbar |
+		ImGuiWindowFlags_NoScrollWithMouse |
+		ImGuiWindowFlags_NoBackground);
+
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 1.0f, 0.0f, 1.0f));
+
+	if (g_pXenonVariables->g_bAimbot) {
+		ImGui::Text("Aimbot");
+		ImGui::Spacing();
+	}
+	if (g_pXenonVariables->g_bSpinbot2D || g_pXenonVariables->g_bSpinbot3D) {
+		ImGui::Text("Spinbot");
+		ImGui::Spacing();
+	}
+	if (g_pXenonVariables->g_bSnapline) {
+		ImGui::Text("Snapline");
+		ImGui::Spacing();
+	}
+	if (g_pXenonVariables->g_bBox2D || g_pXenonVariables->g_bBox3D) {
+		ImGui::Text("Box");
+		ImGui::Spacing();
+	}
+	if (g_pXenonVariables->g_bSkeleton) {
+		ImGui::Text("Skeleton");
+		ImGui::Spacing();
+	}
+	if (g_pXenonVariables->g_bRadar) {
+		ImGui::Text("Radar");
+		ImGui::Spacing();
+	}
+	if (g_pXenonVariables->g_bNoRecoil) {
+		ImGui::Text("No Recoil");
+		ImGui::Spacing();
+	}
+	if (g_pXenonVariables->g_bCrosshair) {
+		ImGui::Text("Crosshair");
+		ImGui::Spacing();
+	}
+
+	ImGui::PopStyleColor();
+	ImGui::End();
+}
+
 
 void CUIService::RenderCrosshair() {
 	switch (g_pXenonConfigs->g_pUIConfig->m_nCrosshairType)

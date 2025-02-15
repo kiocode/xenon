@@ -93,7 +93,6 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 			ImGui::Text("Head Screen Pos: %f %f", pSystem->m_fnW2S3D(target.m_vHeadPos3D).x, pSystem->m_fnW2S3D(target.m_vHeadPos3D).y);
 			ImGui::Text("Feet Pos: %f %f %f", target.m_vFeetPos3D.x, target.m_vFeetPos3D.y, target.m_vFeetPos3D.z);
 			ImGui::Text("Feet Screen Pos: %f %f", pSystem->m_fnW2S3D(target.m_vFeetPos3D).x, pSystem->m_fnW2S3D(target.m_vFeetPos3D).y);
-		
 		}
 
 		ImGui::End();
@@ -144,9 +143,7 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 			targetProfile.m_fWidth = width;
 			targetProfile.m_bTemmate = false;
 			targetProfile.m_fHealth = 100.f;
-			targetProfile.m_fMaxHealth = 100.f;
-/*			targetProfile.m_vHeadPos3D = Vec3(currTargetPos.x, currTargetPos.y + 1, currTargetPos.z);
-			targetProfile.m_vFeetPos3D = Vec3(currTargetPos.x, currTargetPos.y - 1, currTargetPos.z);	*/		
+			targetProfile.m_fMaxHealth = 100.f;		
 			targetProfile.m_vHeadPos3D = Vec3(currTargetPos.x, currTargetPos.y + head, currTargetPos.z);
 			targetProfile.m_vFeetPos3D = Vec3(currTargetPos.x, currTargetPos.y + feet, currTargetPos.z);
 			targetProfile.m_vPos3D = Vec3(currTargetPos.x, currTargetPos.y, currTargetPos.z);
@@ -167,7 +164,8 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 	cheat.UseUICustom(RenderingHookType::KIERO);
 	cheat.UseUIMenu();
 	cheat.UseUIRenderOverlays();
-	cheat.UseUIQuickActions();
+	cheat.UseUIRenderEnabledCheats();
+	//cheat.UseUIQuickActions();
 	cheat.UseUIRenderMouse();
 
 	cheat.Run();

@@ -19,6 +19,7 @@ public:
 	bool g_bRenderMouse;
 	bool g_bRenderWindows;
 	bool g_bRenderOverlays;
+	bool g_bRenderEnabledCheats;
 	bool g_bRenderQuickActions;
 	bool g_bMenu;
 	bool g_bLuaEditor;

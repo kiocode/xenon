@@ -15,22 +15,22 @@ kanban-plugin: board
 
 - [ ] add fly
 - [ ] system and gamesvariable needs rename
-- [ ] fix aimbot broken after update
 - [ ] fix smooth aim and humanized
-- [ ] fix spinbot loop
-- [ ] convert w2s to return Vec2 not pointer
 
 
 ## InProgress
 
-- [ ] add esp and aimbot support for visible/not players behind walls
 - [ ] add ui right top show enabled features like minecraft clients
 - [ ] customize GUI
 
 
 ## Done
 
+- [x] add esp and aimbot support for visible/not players behind walls
+- [x] convert w2s to return Vec2 not pointer
+- [x] fix aimbot broken after update
 - [x] Organize the methods inside `aimbot.cpp` using `#region` to group them, starting with public methods under `#region Public Methods`, followed by private methods under `#region Private Methods`.
+- [x] fix spinbot loop
 - [x] implement il2cppresolver
 - [x] check if the use of pointer makes sense like with vec2
 - [x] in update if attached a game check if its opened
