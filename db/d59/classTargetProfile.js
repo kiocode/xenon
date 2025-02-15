@@ -5,6 +5,7 @@ var classTargetProfile =
     [ "m_fHealth", "db/d59/classTargetProfile.html#a9aaf280d8e0cfad3fd007d27eaed81b8", null ],
     [ "m_fMaxHealth", "db/d59/classTargetProfile.html#a5e7028b8cdec57b66db34e51e80e1d47", null ],
     [ "m_fWidth", "db/d59/classTargetProfile.html#af6ad2e14a483bb66d3492292d066aa20", null ],
+    [ "m_pOriginalAddress", "db/d59/classTargetProfile.html#ab78c5ba09534039555e1398052c9b835", null ],
     [ "m_strName", "db/d59/classTargetProfile.html#a46442ace9633087bb44013d1f9111220", null ],
     [ "m_strTag", "db/d59/classTargetProfile.html#aa3b5ad1a3a0d450a800ea82b136a6db4", null ],
     [ "m_vFeetPos2D", "db/d59/classTargetProfile.html#ae279c89433c435be6d2cb03832a35ca9", null ],
