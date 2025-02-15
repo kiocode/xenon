@@ -1,5 +1,8 @@
 var NAVTREEINDEX1 =
 {
+"d9/de4/classVec3.html#a9316a906e2b490aa9405bc17adc0078c":[1,0,30,15],
+"d9/de4/classVec3.html#a95e809870a5e10fbd41bfe29e3c3da99":[1,0,30,13],
+"d9/de4/classVec3.html#aae7a1ffaa1108a30c281da216d1cd312":[1,0,30,0],
 "d9/de4/classVec3.html#ab16ba241e199e6604928cd5ae66e37d4":[1,0,30,11],
 "d9/de4/classVec3.html#abc1d241232cb04aa98217a942402ae68":[1,0,30,17],
 "d9/de4/classVec3.html#ae7902e722793e78657792fb4a533ad59":[1,0,30,3],

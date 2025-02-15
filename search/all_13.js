@@ -17,8 +17,9 @@ var searchData=
   ['useuimenu_14',['UseUIMenu',['../d3/d59/classCheat.html#affb056b7a844e16dc466ed98aa97ace4',1,'Cheat']]],
   ['useuiquickactions_15',['UseUIQuickActions',['../d3/d59/classCheat.html#a727ee6382cef1232c262a2b2e8c52759',1,'Cheat']]],
   ['useuiradar_16',['UseUIRadar',['../d3/d59/classCheat.html#accba55e5d8fdacba57d3fe0885e229f4',1,'Cheat']]],
-  ['useuirendermouse_17',['UseUIRenderMouse',['../d3/d59/classCheat.html#a9ab68b5b83d89255883c199e80c53d40',1,'Cheat']]],
-  ['useuirenderoverlays_18',['UseUIRenderOverlays',['../d3/d59/classCheat.html#a7716c96b479b8b7a793946aafdfaa289',1,'Cheat']]],
-  ['useuirenderwindows_19',['UseUIRenderWindows',['../d3/d59/classCheat.html#a19fc12eb884f2d5e4416a0cc0f4708e8',1,'Cheat']]],
-  ['useupdate_20',['UseUpdate',['../d3/d59/classCheat.html#aabce8a7c44d7d1de510fa56f6177fa89',1,'Cheat']]]
+  ['useuirenderenabledcheats_17',['UseUIRenderEnabledCheats',['../d3/d59/classCheat.html#adb572172421adf817e8c779992906387',1,'Cheat']]],
+  ['useuirendermouse_18',['UseUIRenderMouse',['../d3/d59/classCheat.html#a9ab68b5b83d89255883c199e80c53d40',1,'Cheat']]],
+  ['useuirenderoverlays_19',['UseUIRenderOverlays',['../d3/d59/classCheat.html#a7716c96b479b8b7a793946aafdfaa289',1,'Cheat']]],
+  ['useuirenderwindows_20',['UseUIRenderWindows',['../d3/d59/classCheat.html#a19fc12eb884f2d5e4416a0cc0f4708e8',1,'Cheat']]],
+  ['useupdate_21',['UseUpdate',['../d3/d59/classCheat.html#aabce8a7c44d7d1de510fa56f6177fa89',1,'Cheat']]]
 ];

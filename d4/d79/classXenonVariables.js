@@ -17,6 +17,7 @@ var classXenonVariables =
     [ "g_bNoSpread", "d4/d79/classXenonVariables.html#aa43ddf37f62b6a8bdc2b54edd44e392f", null ],
     [ "g_bNotifications", "d4/d79/classXenonVariables.html#a58501e9625a5236fe47e489fb4c5ac02", null ],
     [ "g_bRadar", "d4/d79/classXenonVariables.html#a0dd519d41bbc533c5cbff5f70c046a09", null ],
+    [ "g_bRenderEnabledCheats", "d4/d79/classXenonVariables.html#a9673c4fa41a433e8b0fd28065ad08bf5", null ],
     [ "g_bRenderMouse", "d4/d79/classXenonVariables.html#acfc47c7fe3e6701395a0fe73b9af721d", null ],
     [ "g_bRenderOverlays", "d4/d79/classXenonVariables.html#a22c15ac2bceca906c827b87ec7897a56", null ],
     [ "g_bRenderQuickActions", "d4/d79/classXenonVariables.html#a5b7466cc829b959a1ab37db262ed383b", null ],

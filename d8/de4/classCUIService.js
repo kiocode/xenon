@@ -8,6 +8,7 @@ var classCUIService =
     [ "InitExternal", "d8/de4/classCUIService.html#ad850552b5ace2f5c67f59d0fa04e15ca", null ],
     [ "InitPresent", "d8/de4/classCUIService.html#a21db294a79cc32d446bdb878959d0938", null ],
     [ "RenderCrosshair", "d8/de4/classCUIService.html#aedea2be1a961f0dda95ff7959fe3ba6f", null ],
+    [ "RenderEnabledCheats", "d8/de4/classCUIService.html#aee2b24f31d1be9aeb87668f06565f613", null ],
     [ "RenderFov", "d8/de4/classCUIService.html#a39fecf6a59124f663f959306baf4df91", null ],
     [ "SetMenuClose", "d8/de4/classCUIService.html#a86b0545e88106778f94a4ca4bd3d3aff", null ],
     [ "SetMenuOpen", "d8/de4/classCUIService.html#abe2e7a862f31c535a54f19fa9d3df9c4", null ],

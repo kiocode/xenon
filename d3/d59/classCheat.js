@@ -17,6 +17,7 @@ var classCheat =
     [ "UseUIMenu", "d3/d59/classCheat.html#affb056b7a844e16dc466ed98aa97ace4", null ],
     [ "UseUIQuickActions", "d3/d59/classCheat.html#a727ee6382cef1232c262a2b2e8c52759", null ],
     [ "UseUIRadar", "d3/d59/classCheat.html#accba55e5d8fdacba57d3fe0885e229f4", null ],
+    [ "UseUIRenderEnabledCheats", "d3/d59/classCheat.html#adb572172421adf817e8c779992906387", null ],
     [ "UseUIRenderMouse", "d3/d59/classCheat.html#a9ab68b5b83d89255883c199e80c53d40", null ],
     [ "UseUIRenderOverlays", "d3/d59/classCheat.html#a7716c96b479b8b7a793946aafdfaa289", null ],
     [ "UseUIRenderWindows", "d3/d59/classCheat.html#a19fc12eb884f2d5e4416a0cc0f4708e8", null ],
