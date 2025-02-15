@@ -256,9 +256,7 @@ void CAimService::SetMouseTo(Vec2 pos) {
             break;
         }
         case 3: { 
-            MouseMove(static_cast<float>(pos.x), static_cast<float>(pos.y),
-                static_cast<float>(screenWidth), static_cast<float>(screenHeight),
-                g_pXenonConfigs->g_pAimConfig->m_fSmooth);
+            MouseMove(static_cast<float>(pos.x), static_cast<float>(pos.y), static_cast<float>(screenWidth), static_cast<float>(screenHeight), 0);
             break;
         }
     }

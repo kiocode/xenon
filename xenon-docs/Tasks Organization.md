@@ -8,7 +8,6 @@ kanban-plugin: board
 
 - [ ] Add on github an activity check for building and formatting
 - [ ] packet sniffer + parser
-- [ ] dll loader
 
 
 ## Todo
@@ -20,13 +19,14 @@ kanban-plugin: board
 
 ## InProgress
 
-- [ ] add ui right top show enabled features like minecraft clients
 - [ ] customize GUI
 
 
 ## Done
 
 - [x] add esp and aimbot support for visible/not players behind walls
+- [x] dll loader
+- [x] add ui right top show enabled features like minecraft clients
 - [x] convert w2s to return Vec2 not pointer
 - [x] fix aimbot broken after update
 - [x] Organize the methods inside `aimbot.cpp` using `#region` to group them, starting with public methods under `#region Public Methods`, followed by private methods under `#region Private Methods`.

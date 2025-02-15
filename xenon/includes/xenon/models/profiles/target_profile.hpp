@@ -8,6 +8,8 @@
 
 class TargetProfile {
 public:
+	intptr_t m_pOriginalAddress;
+
 	Vec2 m_vHeadPos2D;
 	Vec2 m_vFeetPos2D;
 	Vec2 m_vPos2D;

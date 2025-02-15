@@ -79,18 +79,14 @@ void CInjectionService::Inject(HANDLE hProcess, const std::string& dllPath, Inje
 {
 	switch (type)
 	{
-	case InjectionType::LoadLibraryDLL:
-		if (!LoadLibraryDLL(hProcess, dllPath))
-			spdlog::error("Failed to inject DLL using LoadLibrary.");
-		break;
-	case InjectionType::ManualMap:
-		if (!ManualMapDLL(hProcess, dllPath))
-			spdlog::error("Failed to inject DLL using ManualMap.");
-		break;
-	default:
-		if (!LoadLibraryDLL(hProcess, dllPath))
-			spdlog::error("Failed to inject DLL using LoadLibrary.");
-		break;
+		case InjectionType::LoadLibraryDLL:
+			if (!LoadLibraryDLL(hProcess, dllPath))
+				spdlog::error("Failed to inject DLL using LoadLibrary.");
+			break;
+		case InjectionType::ManualMap:
+			if (!ManualMapDLL(hProcess, dllPath))
+				spdlog::error("Failed to inject DLL using ManualMap.");
+			break;
 	}
 }
 
@@ -264,8 +260,6 @@ bool CInjectionService::ManualMapDLL(HANDLE hProc, BYTE* pSrcData, SIZE_T FileSi
 		spdlog::error("Invalid platform.");
 		return false;
 	}
-
-	spdlog::info("File OK");
 
 	pTargetBase = reinterpret_cast<BYTE*>(VirtualAllocEx(hProc, nullptr, pOldOptHeader->SizeOfImage, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE));
 	if (!pTargetBase)

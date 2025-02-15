@@ -41,7 +41,7 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 		float x = (pos.x - pGameVariables->g_vLocal.m_vPos2D.x) * (screenWidth / cam->GetOrthographicSize()) * 0.3;
 		float y = (pos.y - pGameVariables->g_vLocal.m_vPos2D.y) * (screenHeight / cam->GetOrthographicSize()) * 0.4;
 
-		return new Vec2(screenWidth / 2 + x, screenHeight / 2 - y);
+		return Vec2(screenWidth / 2 + x, screenHeight / 2 - y);
 	};
 
 	pUIConfig->m_vFnOverlays.push_back([builder, pWaypoints, pGameVariables, pSystem]() {

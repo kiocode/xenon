@@ -6,6 +6,7 @@
 #include <spdlog/spdlog.h>
 
 #include <xenon/components/features/waypoints.hpp>
+#include <xenon/components/features/aimbot.hpp>
 #include <xenon/models/waypoint.hpp>
 #include <il2cpp_resolver/il2cpp_resolver.hpp>
 
@@ -17,12 +18,12 @@ float width = 300.0f;
 
 bool WorldToScreen(Vec2 screenSize, Vec3 world, Vec2& screen)
 {
-	Unity::CCamera* CameraMain = Unity::Camera::GetMain();
-	if (!CameraMain) {
+	Unity::CCamera* cameraMain = Unity::Camera::GetMain();
+	if (!cameraMain) {
 		return false;
 	}
 
-	Unity::Vector3 buffer = CameraMain->CallMethodSafe<Unity::Vector3>("WorldToScreenPoint", Unity::Vector3(world.x, world.y, world.z), Unity::m_eCameraEye::m_eCameraEye_Center);
+	Unity::Vector3 buffer = cameraMain->CallMethodSafe<Unity::Vector3>("WorldToScreenPoint", Unity::Vector3(world.x, world.y, world.z), Unity::m_eCameraEye::m_eCameraEye_Center);
 
 	if (buffer.x > screenSize.x || buffer.y > screenSize.y || buffer.x < 0 || buffer.y < 0 || buffer.z < 0)
 	{
@@ -105,6 +106,13 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 
 		ImGui::End();
 
+
+		ImGui::Begin("Debug");
+
+		ImGui::Text("Locked Target Address: %p", builder.xenon->g_cAimbot->lockedTarget.m_pOriginalAddress);
+
+		ImGui::End();
+
 	});
 
 	builder.xenonConfig->g_pAimConfig->m_fDistanceScale = 0.6f;
@@ -116,6 +124,9 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 	pUIConfig->m_qActions->AddSlider("Distance Scale", &builder.xenonConfig->g_pAimConfig->m_fDistanceScale, 0.0f, 100.0f);
 
 	builder.GameManager->OnEvent("Update", [builder, pGameVariables]() {
+
+		void* m_pThisThread = IL2CPP::Thread::Attach(IL2CPP::Domain::Get());
+		if (!m_pThisThread) return;
 
 		pGameVariables->g_vTargets.clear();
 
@@ -140,6 +151,7 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 			if(currTargetPos.x == 0 && currTargetPos.y == 0 && currTargetPos.z == 0) continue;
 
 			TargetProfile targetProfile;
+			targetProfile.m_pOriginalAddress = reinterpret_cast<intptr_t>(current);
 			targetProfile.m_fWidth = width;
 			targetProfile.m_bTemmate = false;
 			targetProfile.m_fHealth = 100.f;
@@ -158,6 +170,9 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 				pGameVariables->g_vTargets.push_back(targetProfile);
 			
 		}
+
+		IL2CPP::Thread::Detach(m_pThisThread);
+
 	});
 
 	Cheat cheat = builder.Build();

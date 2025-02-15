@@ -70,6 +70,7 @@ void CEsp::RenderSnapline(TargetProfile* target) const {
 	ImGui::GetBackgroundDrawList()->AddLine(startPoint, targetPos, g_pXenonConfigs->g_pEspConfig->m_cSnapline, 1.0f);
 
 }
+
 void CEsp::Render2DBox(TargetProfile* target) const {
 	float distance = g_pXenon->g_pSystem->Is3DGame() ?
 		target->m_vPos3D.Distance(g_pXenonConfigs->g_pGameVariables->g_vLocal.m_vPos3D) :
