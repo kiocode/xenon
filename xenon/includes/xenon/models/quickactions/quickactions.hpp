@@ -14,8 +14,8 @@ public:
         m_vActions.push_back(std::make_unique<QuickActionButton>(label, callback));
     }
 
-    void AddCheckbox(std::string label, bool* value) {
-        m_vActions.push_back(std::make_unique<QuickActionCheckbox>(label, value));
+    void AddCheckbox(std::string label, bool* value, ImColor bg = ImColor(0, 0, 0, 0), ImColor on = ImColor(0, 255, 0, 255), ImColor off = ImColor(255, 0, 0, 255)) {
+        m_vActions.push_back(std::make_unique<QuickActionCheckbox>(label, value, bg, on, off));
     }
 
     void AddSlider(std::string label, float* value, float min, float max) {

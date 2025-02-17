@@ -501,12 +501,12 @@ namespace ImGui
     // - You may also use one of the many IsItemXXX functions (e.g. IsItemActive, IsItemHovered, etc.) to query widget state.
     IMGUI_API bool          Button(const char* label, const ImVec2& size = ImVec2(0, 0));   // button
     IMGUI_API bool          Achievement(const char* label, const ImVec2& size_arg, bool islocked = false, ImGuiButtonFlags flags = 0);
-    IMGUI_API bool          Tabs(const char* label, const ImVec2& size_arg, bool selected, ImGuiButtonFlags flags = 0);
+    IMGUI_API bool          Tabs(const char* label, const ImVec2& size_arg, bool selected, ImColor animCRegular, ImColor animCSelected, ImGuiButtonFlags flags = 0);
     IMGUI_API bool          Keybind(const char* label, int* key);
     IMGUI_API bool          SmallButton(const char* label);                                 // button with FramePadding=(0,0) to easily embed within text
     IMGUI_API bool          InvisibleButton(const char* str_id, const ImVec2& size, ImGuiButtonFlags flags = 0); // flexible button behavior without the visuals, frequently useful to build custom behaviors using the public api (along with IsItemActive, IsItemHovered, etc.)
     IMGUI_API bool          ArrowButton(const char* str_id, ImGuiDir dir);                  // square button with an arrow shape
-    IMGUI_API bool          Checkbox(const char* label, bool* v);
+    IMGUI_API bool          Checkbox(const char* label, bool* v, ImColor bgC, ImColor offC, ImColor onC);
     IMGUI_API bool          CheckboxFlags(const char* label, int* flags, int flags_value);
     IMGUI_API bool          CheckboxFlags(const char* label, unsigned int* flags, unsigned int flags_value);
     IMGUI_API bool          RadioButton(const char* label, bool active);                    // use with e.g. if (RadioButton("one", my_value==1)) { my_value = 1; }

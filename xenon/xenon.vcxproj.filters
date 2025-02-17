@@ -714,6 +714,9 @@
     <ClInclude Include="libs\ImGuiColorTextEdit\TextEditor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="includes\xenon\utility\utilities.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\game.cpp">

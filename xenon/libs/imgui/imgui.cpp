@@ -13491,553 +13491,553 @@ static void MetricsHelpMarker(const char* desc)
 }
 
 // [DEBUG] List fonts in a font atlas and display its texture
-void ImGui::ShowFontAtlas(ImFontAtlas* atlas)
-{
-    for (int i = 0; i < atlas->Fonts.Size; i++)
-    {
-        ImFont* font = atlas->Fonts[i];
-        PushID(font);
-        DebugNodeFont(font);
-        PopID();
-    }
-    if (TreeNode("Font Atlas", "Font Atlas (%dx%d pixels)", atlas->TexWidth, atlas->TexHeight))
-    {
-        ImGuiContext& g = *GImGui;
-        ImGuiMetricsConfig* cfg = &g.DebugMetricsConfig;
-        Checkbox("Tint with Text Color", &cfg->ShowAtlasTintedWithTextColor); // Using text color ensure visibility of core atlas data, but will alter custom colored icons
-        ImVec4 tint_col = cfg->ShowAtlasTintedWithTextColor ? GetStyleColorVec4(ImGuiCol_Text) : ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
-        ImVec4 border_col = GetStyleColorVec4(ImGuiCol_Border);
-        Image(atlas->TexID, ImVec2((float)atlas->TexWidth, (float)atlas->TexHeight), ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f), tint_col, border_col);
-        TreePop();
-    }
-}
+//void ImGui::ShowFontAtlas(ImFontAtlas* atlas)
+//{
+//    for (int i = 0; i < atlas->Fonts.Size; i++)
+//    {
+//        ImFont* font = atlas->Fonts[i];
+//        PushID(font);
+//        DebugNodeFont(font);
+//        PopID();
+//    }
+//    if (TreeNode("Font Atlas", "Font Atlas (%dx%d pixels)", atlas->TexWidth, atlas->TexHeight))
+//    {
+//        ImGuiContext& g = *GImGui;
+//        ImGuiMetricsConfig* cfg = &g.DebugMetricsConfig;
+//        Checkbox("Tint with Text Color", &cfg->ShowAtlasTintedWithTextColor); // Using text color ensure visibility of core atlas data, but will alter custom colored icons
+//        ImVec4 tint_col = cfg->ShowAtlasTintedWithTextColor ? GetStyleColorVec4(ImGuiCol_Text) : ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+//        ImVec4 border_col = GetStyleColorVec4(ImGuiCol_Border);
+//        Image(atlas->TexID, ImVec2((float)atlas->TexWidth, (float)atlas->TexHeight), ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f), tint_col, border_col);
+//        TreePop();
+//    }
+//}
 
-void ImGui::ShowMetricsWindow(bool* p_open)
-{
-    ImGuiContext& g = *GImGui;
-    ImGuiIO& io = g.IO;
-    ImGuiMetricsConfig* cfg = &g.DebugMetricsConfig;
-    if (cfg->ShowDebugLog)
-        ShowDebugLogWindow(&cfg->ShowDebugLog);
-    if (cfg->ShowStackTool)
-        ShowStackToolWindow(&cfg->ShowStackTool);
-
-    if (!Begin("Dear ImGui Metrics/Debugger", p_open) || GetCurrentWindow()->BeginCount > 1)
-    {
-        End();
-        return;
-    }
-
-    // Basic info
-    Text("Dear ImGui %s", GetVersion());
-    Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
-    Text("%d vertices, %d indices (%d triangles)", io.MetricsRenderVertices, io.MetricsRenderIndices, io.MetricsRenderIndices / 3);
-    Text("%d visible windows, %d active allocations", io.MetricsRenderWindows, io.MetricsActiveAllocations);
-    //SameLine(); if (SmallButton("GC")) { g.GcCompactAll = true; }
-
-    Separator();
-
-    // Debugging enums
-    enum { WRT_OuterRect, WRT_OuterRectClipped, WRT_InnerRect, WRT_InnerClipRect, WRT_WorkRect, WRT_Content, WRT_ContentIdeal, WRT_ContentRegionRect, WRT_Count }; // Windows Rect Type
-    const char* wrt_rects_names[WRT_Count] = { "OuterRect", "OuterRectClipped", "InnerRect", "InnerClipRect", "WorkRect", "Content", "ContentIdeal", "ContentRegionRect" };
-    enum { TRT_OuterRect, TRT_InnerRect, TRT_WorkRect, TRT_HostClipRect, TRT_InnerClipRect, TRT_BackgroundClipRect, TRT_ColumnsRect, TRT_ColumnsWorkRect, TRT_ColumnsClipRect, TRT_ColumnsContentHeadersUsed, TRT_ColumnsContentHeadersIdeal, TRT_ColumnsContentFrozen, TRT_ColumnsContentUnfrozen, TRT_Count }; // Tables Rect Type
-    const char* trt_rects_names[TRT_Count] = { "OuterRect", "InnerRect", "WorkRect", "HostClipRect", "InnerClipRect", "BackgroundClipRect", "ColumnsRect", "ColumnsWorkRect", "ColumnsClipRect", "ColumnsContentHeadersUsed", "ColumnsContentHeadersIdeal", "ColumnsContentFrozen", "ColumnsContentUnfrozen" };
-    if (cfg->ShowWindowsRectsType < 0)
-        cfg->ShowWindowsRectsType = WRT_WorkRect;
-    if (cfg->ShowTablesRectsType < 0)
-        cfg->ShowTablesRectsType = TRT_WorkRect;
-
-    struct Funcs
-    {
-        static ImRect GetTableRect(ImGuiTable* table, int rect_type, int n)
-        {
-            ImGuiTableInstanceData* table_instance = TableGetInstanceData(table, table->InstanceCurrent); // Always using last submitted instance
-            if (rect_type == TRT_OuterRect)                     { return table->OuterRect; }
-            else if (rect_type == TRT_InnerRect)                { return table->InnerRect; }
-            else if (rect_type == TRT_WorkRect)                 { return table->WorkRect; }
-            else if (rect_type == TRT_HostClipRect)             { return table->HostClipRect; }
-            else if (rect_type == TRT_InnerClipRect)            { return table->InnerClipRect; }
-            else if (rect_type == TRT_BackgroundClipRect)       { return table->BgClipRect; }
-            else if (rect_type == TRT_ColumnsRect)              { ImGuiTableColumn* c = &table->Columns[n]; return ImRect(c->MinX, table->InnerClipRect.Min.y, c->MaxX, table->InnerClipRect.Min.y + table_instance->LastOuterHeight); }
-            else if (rect_type == TRT_ColumnsWorkRect)          { ImGuiTableColumn* c = &table->Columns[n]; return ImRect(c->WorkMinX, table->WorkRect.Min.y, c->WorkMaxX, table->WorkRect.Max.y); }
-            else if (rect_type == TRT_ColumnsClipRect)          { ImGuiTableColumn* c = &table->Columns[n]; return c->ClipRect; }
-            else if (rect_type == TRT_ColumnsContentHeadersUsed){ ImGuiTableColumn* c = &table->Columns[n]; return ImRect(c->WorkMinX, table->InnerClipRect.Min.y, c->ContentMaxXHeadersUsed, table->InnerClipRect.Min.y + table_instance->LastFirstRowHeight); } // Note: y1/y2 not always accurate
-            else if (rect_type == TRT_ColumnsContentHeadersIdeal){ImGuiTableColumn* c = &table->Columns[n]; return ImRect(c->WorkMinX, table->InnerClipRect.Min.y, c->ContentMaxXHeadersIdeal, table->InnerClipRect.Min.y + table_instance->LastFirstRowHeight); }
-            else if (rect_type == TRT_ColumnsContentFrozen)     { ImGuiTableColumn* c = &table->Columns[n]; return ImRect(c->WorkMinX, table->InnerClipRect.Min.y, c->ContentMaxXFrozen, table->InnerClipRect.Min.y + table_instance->LastFrozenHeight); }
-            else if (rect_type == TRT_ColumnsContentUnfrozen)   { ImGuiTableColumn* c = &table->Columns[n]; return ImRect(c->WorkMinX, table->InnerClipRect.Min.y + table_instance->LastFrozenHeight, c->ContentMaxXUnfrozen, table->InnerClipRect.Max.y); }
-            IM_ASSERT(0);
-            return ImRect();
-        }
-
-        static ImRect GetWindowRect(ImGuiWindow* window, int rect_type)
-        {
-            if (rect_type == WRT_OuterRect)                 { return window->Rect(); }
-            else if (rect_type == WRT_OuterRectClipped)     { return window->OuterRectClipped; }
-            else if (rect_type == WRT_InnerRect)            { return window->InnerRect; }
-            else if (rect_type == WRT_InnerClipRect)        { return window->InnerClipRect; }
-            else if (rect_type == WRT_WorkRect)             { return window->WorkRect; }
-            else if (rect_type == WRT_Content)       { ImVec2 min = window->InnerRect.Min - window->Scroll + window->WindowPadding; return ImRect(min, min + window->ContentSize); }
-            else if (rect_type == WRT_ContentIdeal)         { ImVec2 min = window->InnerRect.Min - window->Scroll + window->WindowPadding; return ImRect(min, min + window->ContentSizeIdeal); }
-            else if (rect_type == WRT_ContentRegionRect)    { return window->ContentRegionRect; }
-            IM_ASSERT(0);
-            return ImRect();
-        }
-    };
-
-    // Tools
-    if (TreeNode("Tools"))
-    {
-        bool show_encoding_viewer = TreeNode("UTF-8 Encoding viewer");
-        SameLine();
-        MetricsHelpMarker("You can also call ImGui::DebugTextEncoding() from your code with a given string to test that your UTF-8 encoding settings are correct.");
-        if (show_encoding_viewer)
-        {
-            static char buf[100] = "";
-            SetNextItemWidth(-FLT_MIN);
-            InputText("##Text", buf, IM_ARRAYSIZE(buf));
-            if (buf[0] != 0)
-                DebugTextEncoding(buf);
-            TreePop();
-        }
-
-        // The Item Picker tool is super useful to visually select an item and break into the call-stack of where it was submitted.
-        if (Checkbox("Show Item Picker", &g.DebugItemPickerActive) && g.DebugItemPickerActive)
-            DebugStartItemPicker();
-        SameLine();
-        MetricsHelpMarker("Will call the IM_DEBUG_BREAK() macro to break in debugger.\nWarning: If you don't have a debugger attached, this will probably crash.");
-
-        // Stack Tool is your best friend!
-        Checkbox("Show Debug Log", &cfg->ShowDebugLog);
-        SameLine();
-        MetricsHelpMarker("You can also call ImGui::ShowDebugLogWindow() from your code.");
-
-        // Stack Tool is your best friend!
-        Checkbox("Show Stack Tool", &cfg->ShowStackTool);
-        SameLine();
-        MetricsHelpMarker("You can also call ImGui::ShowStackToolWindow() from your code.");
-
-        Checkbox("Show windows begin order", &cfg->ShowWindowsBeginOrder);
-        Checkbox("Show windows rectangles", &cfg->ShowWindowsRects);
-        SameLine();
-        SetNextItemWidth(GetFontSize() * 12);
-        cfg->ShowWindowsRects |= Combo("##show_windows_rect_type", &cfg->ShowWindowsRectsType, wrt_rects_names, WRT_Count, WRT_Count);
-        if (cfg->ShowWindowsRects && g.NavWindow != NULL)
-        {
-            BulletText("'%s':", g.NavWindow->Name);
-            Indent();
-            for (int rect_n = 0; rect_n < WRT_Count; rect_n++)
-            {
-                ImRect r = Funcs::GetWindowRect(g.NavWindow, rect_n);
-                Text("(%6.1f,%6.1f) (%6.1f,%6.1f) Size (%6.1f,%6.1f) %s", r.Min.x, r.Min.y, r.Max.x, r.Max.y, r.GetWidth(), r.GetHeight(), wrt_rects_names[rect_n]);
-            }
-            Unindent();
-        }
-
-        Checkbox("Show tables rectangles", &cfg->ShowTablesRects);
-        SameLine();
-        SetNextItemWidth(GetFontSize() * 12);
-        cfg->ShowTablesRects |= Combo("##show_table_rects_type", &cfg->ShowTablesRectsType, trt_rects_names, TRT_Count, TRT_Count);
-        if (cfg->ShowTablesRects && g.NavWindow != NULL)
-        {
-            for (int table_n = 0; table_n < g.Tables.GetMapSize(); table_n++)
-            {
-                ImGuiTable* table = g.Tables.TryGetMapData(table_n);
-                if (table == NULL || table->LastFrameActive < g.FrameCount - 1 || (table->OuterWindow != g.NavWindow && table->InnerWindow != g.NavWindow))
-                    continue;
-
-                BulletText("Table 0x%08X (%d columns, in '%s')", table->ID, table->ColumnsCount, table->OuterWindow->Name);
-                if (IsItemHovered())
-                    GetForegroundDrawList()->AddRect(table->OuterRect.Min - ImVec2(1, 1), table->OuterRect.Max + ImVec2(1, 1), IM_COL32(255, 255, 0, 255), 0.0f, 0, 2.0f);
-                Indent();
-                char buf[128];
-                for (int rect_n = 0; rect_n < TRT_Count; rect_n++)
-                {
-                    if (rect_n >= TRT_ColumnsRect)
-                    {
-                        if (rect_n != TRT_ColumnsRect && rect_n != TRT_ColumnsClipRect)
-                            continue;
-                        for (int column_n = 0; column_n < table->ColumnsCount; column_n++)
-                        {
-                            ImRect r = Funcs::GetTableRect(table, rect_n, column_n);
-                            ImFormatString(buf, IM_ARRAYSIZE(buf), "(%6.1f,%6.1f) (%6.1f,%6.1f) Size (%6.1f,%6.1f) Col %d %s", r.Min.x, r.Min.y, r.Max.x, r.Max.y, r.GetWidth(), r.GetHeight(), column_n, trt_rects_names[rect_n]);
-                            Selectable(buf);
-                            if (IsItemHovered())
-                                GetForegroundDrawList()->AddRect(r.Min - ImVec2(1, 1), r.Max + ImVec2(1, 1), IM_COL32(255, 255, 0, 255), 0.0f, 0, 2.0f);
-                        }
-                    }
-                    else
-                    {
-                        ImRect r = Funcs::GetTableRect(table, rect_n, -1);
-                        ImFormatString(buf, IM_ARRAYSIZE(buf), "(%6.1f,%6.1f) (%6.1f,%6.1f) Size (%6.1f,%6.1f) %s", r.Min.x, r.Min.y, r.Max.x, r.Max.y, r.GetWidth(), r.GetHeight(), trt_rects_names[rect_n]);
-                        Selectable(buf);
-                        if (IsItemHovered())
-                            GetForegroundDrawList()->AddRect(r.Min - ImVec2(1, 1), r.Max + ImVec2(1, 1), IM_COL32(255, 255, 0, 255), 0.0f, 0, 2.0f);
-                    }
-                }
-                Unindent();
-            }
-        }
-
-        Checkbox("Debug Begin/BeginChild return value", &io.ConfigDebugBeginReturnValueLoop);
-        SameLine();
-        MetricsHelpMarker("Some calls to Begin()/BeginChild() will return false.\n\nWill cycle through window depths then repeat. Windows should be flickering while running.");
-
-        TreePop();
-    }
-
-    // Windows
-    if (TreeNode("Windows", "Windows (%d)", g.Windows.Size))
-    {
-        //SetNextItemOpen(true, ImGuiCond_Once);
-        DebugNodeWindowsList(&g.Windows, "By display order");
-        DebugNodeWindowsList(&g.WindowsFocusOrder, "By focus order (root windows)");
-        if (TreeNode("By submission order (begin stack)"))
-        {
-            // Here we display windows in their submitted order/hierarchy, however note that the Begin stack doesn't constitute a Parent<>Child relationship!
-            ImVector<ImGuiWindow*>& temp_buffer = g.WindowsTempSortBuffer;
-            temp_buffer.resize(0);
-            for (int i = 0; i < g.Windows.Size; i++)
-                if (g.Windows[i]->LastFrameActive + 1 >= g.FrameCount)
-                    temp_buffer.push_back(g.Windows[i]);
-            struct Func { static int IMGUI_CDECL WindowComparerByBeginOrder(const void* lhs, const void* rhs) { return ((int)(*(const ImGuiWindow* const *)lhs)->BeginOrderWithinContext - (*(const ImGuiWindow* const*)rhs)->BeginOrderWithinContext); } };
-            ImQsort(temp_buffer.Data, (size_t)temp_buffer.Size, sizeof(ImGuiWindow*), Func::WindowComparerByBeginOrder);
-            DebugNodeWindowsListByBeginStackParent(temp_buffer.Data, temp_buffer.Size, NULL);
-            TreePop();
-        }
-
-        TreePop();
-    }
-
-    // DrawLists
-    int drawlist_count = 0;
-    for (int viewport_i = 0; viewport_i < g.Viewports.Size; viewport_i++)
-        drawlist_count += g.Viewports[viewport_i]->DrawDataBuilder.GetDrawListCount();
-    if (TreeNode("DrawLists", "DrawLists (%d)", drawlist_count))
-    {
-        Checkbox("Show ImDrawCmd mesh when hovering", &cfg->ShowDrawCmdMesh);
-        Checkbox("Show ImDrawCmd bounding boxes when hovering", &cfg->ShowDrawCmdBoundingBoxes);
-        for (int viewport_i = 0; viewport_i < g.Viewports.Size; viewport_i++)
-        {
-            ImGuiViewportP* viewport = g.Viewports[viewport_i];
-            for (int layer_i = 0; layer_i < IM_ARRAYSIZE(viewport->DrawDataBuilder.Layers); layer_i++)
-                for (int draw_list_i = 0; draw_list_i < viewport->DrawDataBuilder.Layers[layer_i].Size; draw_list_i++)
-                    DebugNodeDrawList(NULL, viewport->DrawDataBuilder.Layers[layer_i][draw_list_i], "DrawList");
-        }
-        TreePop();
-    }
-
-    // Viewports
-    if (TreeNode("Viewports", "Viewports (%d)", g.Viewports.Size))
-    {
-        Indent(GetTreeNodeToLabelSpacing());
-        RenderViewportsThumbnails();
-        Unindent(GetTreeNodeToLabelSpacing());
-        for (int i = 0; i < g.Viewports.Size; i++)
-            DebugNodeViewport(g.Viewports[i]);
-        TreePop();
-    }
-
-    // Details for Popups
-    if (TreeNode("Popups", "Popups (%d)", g.OpenPopupStack.Size))
-    {
-        for (int i = 0; i < g.OpenPopupStack.Size; i++)
-        {
-            // As it's difficult to interact with tree nodes while popups are open, we display everything inline.
-            const ImGuiPopupData* popup_data = &g.OpenPopupStack[i];
-            ImGuiWindow* window = popup_data->Window;
-            BulletText("PopupID: %08x, Window: '%s' (%s%s), BackupNavWindow '%s', ParentWindow '%s'",
-                popup_data->PopupId, window ? window->Name : "NULL", window && (window->Flags & ImGuiWindowFlags_ChildWindow) ? "Child;" : "", window && (window->Flags & ImGuiWindowFlags_ChildMenu) ? "Menu;" : "",
-                popup_data->BackupNavWindow ? popup_data->BackupNavWindow->Name : "NULL", window && window->ParentWindow ? window->ParentWindow->Name : "NULL");
-        }
-        TreePop();
-    }
-
-    // Details for TabBars
-    if (TreeNode("TabBars", "Tab Bars (%d)", g.TabBars.GetAliveCount()))
-    {
-        for (int n = 0; n < g.TabBars.GetMapSize(); n++)
-            if (ImGuiTabBar* tab_bar = g.TabBars.TryGetMapData(n))
-            {
-                PushID(tab_bar);
-                DebugNodeTabBar(tab_bar, "TabBar");
-                PopID();
-            }
-        TreePop();
-    }
-
-    // Details for Tables
-    if (TreeNode("Tables", "Tables (%d)", g.Tables.GetAliveCount()))
-    {
-        for (int n = 0; n < g.Tables.GetMapSize(); n++)
-            if (ImGuiTable* table = g.Tables.TryGetMapData(n))
-                DebugNodeTable(table);
-        TreePop();
-    }
-
-    // Details for Fonts
-    ImFontAtlas* atlas = g.IO.Fonts;
-    if (TreeNode("Fonts", "Fonts (%d)", atlas->Fonts.Size))
-    {
-        ShowFontAtlas(atlas);
-        TreePop();
-    }
-
-    // Details for InputText
-    if (TreeNode("InputText"))
-    {
-        DebugNodeInputTextState(&g.InputTextState);
-        TreePop();
-    }
-
-    // Details for Docking
-#ifdef IMGUI_HAS_DOCK
-    if (TreeNode("Docking"))
-    {
-        TreePop();
-    }
-#endif // #ifdef IMGUI_HAS_DOCK
-
-    // Settings
-    if (TreeNode("Settings"))
-    {
-        if (SmallButton("Clear"))
-            ClearIniSettings();
-        SameLine();
-        if (SmallButton("Save to memory"))
-            SaveIniSettingsToMemory();
-        SameLine();
-        if (SmallButton("Save to disk"))
-            SaveIniSettingsToDisk(g.IO.IniFilename);
-        SameLine();
-        if (g.IO.IniFilename)
-            Text("\"%s\"", g.IO.IniFilename);
-        else
-            TextUnformatted("<NULL>");
-        Text("SettingsDirtyTimer %.2f", g.SettingsDirtyTimer);
-        if (TreeNode("SettingsHandlers", "Settings handlers: (%d)", g.SettingsHandlers.Size))
-        {
-            for (int n = 0; n < g.SettingsHandlers.Size; n++)
-                BulletText("%s", g.SettingsHandlers[n].TypeName);
-            TreePop();
-        }
-        if (TreeNode("SettingsWindows", "Settings packed data: Windows: %d bytes", g.SettingsWindows.size()))
-        {
-            for (ImGuiWindowSettings* settings = g.SettingsWindows.begin(); settings != NULL; settings = g.SettingsWindows.next_chunk(settings))
-                DebugNodeWindowSettings(settings);
-            TreePop();
-        }
-
-        if (TreeNode("SettingsTables", "Settings packed data: Tables: %d bytes", g.SettingsTables.size()))
-        {
-            for (ImGuiTableSettings* settings = g.SettingsTables.begin(); settings != NULL; settings = g.SettingsTables.next_chunk(settings))
-                DebugNodeTableSettings(settings);
-            TreePop();
-        }
-
-#ifdef IMGUI_HAS_DOCK
-#endif // #ifdef IMGUI_HAS_DOCK
-
-        if (TreeNode("SettingsIniData", "Settings unpacked data (.ini): %d bytes", g.SettingsIniData.size()))
-        {
-            InputTextMultiline("##Ini", (char*)(void*)g.SettingsIniData.c_str(), g.SettingsIniData.Buf.Size, ImVec2(-FLT_MIN, GetTextLineHeight() * 20), ImGuiInputTextFlags_ReadOnly);
-            TreePop();
-        }
-        TreePop();
-    }
-
-    if (TreeNode("Inputs"))
-    {
-        Text("KEYBOARD/GAMEPAD/MOUSE KEYS");
-        {
-            // We iterate both legacy native range and named ImGuiKey ranges, which is a little odd but this allows displaying the data for old/new backends.
-            // User code should never have to go through such hoops! You can generally iterate between ImGuiKey_NamedKey_BEGIN and ImGuiKey_NamedKey_END.
-            Indent();
-#ifdef IMGUI_DISABLE_OBSOLETE_KEYIO
-            struct funcs { static bool IsLegacyNativeDupe(ImGuiKey) { return false; } };
-#else
-            struct funcs { static bool IsLegacyNativeDupe(ImGuiKey key) { return key < 512 && GetIO().KeyMap[key] != -1; } }; // Hide Native<>ImGuiKey duplicates when both exists in the array
-            //Text("Legacy raw:");      for (ImGuiKey key = ImGuiKey_KeysData_OFFSET; key < ImGuiKey_COUNT; key++) { if (io.KeysDown[key]) { SameLine(); Text("\"%s\" %d", GetKeyName(key), key); } }
-#endif
-            Text("Keys down:");         for (ImGuiKey key = ImGuiKey_KeysData_OFFSET; key < ImGuiKey_COUNT; key = (ImGuiKey)(key + 1)) { if (funcs::IsLegacyNativeDupe(key) || !IsKeyDown(key)) continue;     SameLine(); Text(IsNamedKey(key) ? "\"%s\"" : "\"%s\" %d", GetKeyName(key), key); SameLine(); Text("(%.02f)", GetKeyData(key)->DownDuration); }
-            Text("Keys pressed:");      for (ImGuiKey key = ImGuiKey_KeysData_OFFSET; key < ImGuiKey_COUNT; key = (ImGuiKey)(key + 1)) { if (funcs::IsLegacyNativeDupe(key) || !IsKeyPressed(key)) continue;  SameLine(); Text(IsNamedKey(key) ? "\"%s\"" : "\"%s\" %d", GetKeyName(key), key); }
-            Text("Keys released:");     for (ImGuiKey key = ImGuiKey_KeysData_OFFSET; key < ImGuiKey_COUNT; key = (ImGuiKey)(key + 1)) { if (funcs::IsLegacyNativeDupe(key) || !IsKeyReleased(key)) continue; SameLine(); Text(IsNamedKey(key) ? "\"%s\"" : "\"%s\" %d", GetKeyName(key), key); }
-            Text("Keys mods: %s%s%s%s", io.KeyCtrl ? "CTRL " : "", io.KeyShift ? "SHIFT " : "", io.KeyAlt ? "ALT " : "", io.KeySuper ? "SUPER " : "");
-            Text("Chars queue:");       for (int i = 0; i < io.InputQueueCharacters.Size; i++) { ImWchar c = io.InputQueueCharacters[i]; SameLine(); Text("\'%c\' (0x%04X)", (c > ' ' && c <= 255) ? (char)c : '?', c); } // FIXME: We should convert 'c' to UTF-8 here but the functions are not public.
-            DebugRenderKeyboardPreview(GetWindowDrawList());
-            Unindent();
-        }
-
-        Text("MOUSE STATE");
-        {
-            Indent();
-            if (IsMousePosValid())
-                Text("Mouse pos: (%g, %g)", io.MousePos.x, io.MousePos.y);
-            else
-                Text("Mouse pos: <INVALID>");
-            Text("Mouse delta: (%g, %g)", io.MouseDelta.x, io.MouseDelta.y);
-            int count = IM_ARRAYSIZE(io.MouseDown);
-            Text("Mouse down:");     for (int i = 0; i < count; i++) if (IsMouseDown(i)) { SameLine(); Text("b%d (%.02f secs)", i, io.MouseDownDuration[i]); }
-            Text("Mouse clicked:");  for (int i = 0; i < count; i++) if (IsMouseClicked(i)) { SameLine(); Text("b%d (%d)", i, io.MouseClickedCount[i]); }
-            Text("Mouse released:"); for (int i = 0; i < count; i++) if (IsMouseReleased(i)) { SameLine(); Text("b%d", i); }
-            Text("Mouse wheel: %.1f", io.MouseWheel);
-            Text("Mouse source: %s", GetMouseSourceName(io.MouseSource));
-            Text("Pen Pressure: %.1f", io.PenPressure); // Note: currently unused
-            Unindent();
-        }
-
-        Text("MOUSE WHEELING");
-        {
-            Indent();
-            Text("WheelingWindow: '%s'", g.WheelingWindow ? g.WheelingWindow->Name : "NULL");
-            Text("WheelingWindowReleaseTimer: %.2f", g.WheelingWindowReleaseTimer);
-            Text("WheelingAxisAvg[] = { %.3f, %.3f }, Main Axis: %s", g.WheelingAxisAvg.x, g.WheelingAxisAvg.y, (g.WheelingAxisAvg.x > g.WheelingAxisAvg.y) ? "X" : (g.WheelingAxisAvg.x < g.WheelingAxisAvg.y) ? "Y" : "<none>");
-            Unindent();
-        }
-
-        Text("KEY OWNERS");
-        {
-            Indent();
-            if (BeginListBox("##owners", ImVec2(-FLT_MIN, GetTextLineHeightWithSpacing() * 6)))
-            {
-                for (ImGuiKey key = ImGuiKey_NamedKey_BEGIN; key < ImGuiKey_NamedKey_END; key = (ImGuiKey)(key + 1))
-                {
-                    ImGuiKeyOwnerData* owner_data = GetKeyOwnerData(&g, key);
-                    if (owner_data->OwnerCurr == ImGuiKeyOwner_None)
-                        continue;
-                    Text("%s: 0x%08X%s", GetKeyName(key), owner_data->OwnerCurr,
-                        owner_data->LockUntilRelease ? " LockUntilRelease" : owner_data->LockThisFrame ? " LockThisFrame" : "");
-                    DebugLocateItemOnHover(owner_data->OwnerCurr);
-                }
-                EndListBox();
-            }
-            Unindent();
-        }
-        Text("SHORTCUT ROUTING");
-        {
-            Indent();
-            if (BeginListBox("##routes", ImVec2(-FLT_MIN, GetTextLineHeightWithSpacing() * 6)))
-            {
-                for (ImGuiKey key = ImGuiKey_NamedKey_BEGIN; key < ImGuiKey_NamedKey_END; key = (ImGuiKey)(key + 1))
-                {
-                    ImGuiKeyRoutingTable* rt = &g.KeysRoutingTable;
-                    for (ImGuiKeyRoutingIndex idx = rt->Index[key - ImGuiKey_NamedKey_BEGIN]; idx != -1; )
-                    {
-                        char key_chord_name[64];
-                        ImGuiKeyRoutingData* routing_data = &rt->Entries[idx];
-                        GetKeyChordName(key | routing_data->Mods, key_chord_name, IM_ARRAYSIZE(key_chord_name));
-                        Text("%s: 0x%08X", key_chord_name, routing_data->RoutingCurr);
-                        DebugLocateItemOnHover(routing_data->RoutingCurr);
-                        idx = routing_data->NextEntryIndex;
-                    }
-                }
-                EndListBox();
-            }
-            Text("(ActiveIdUsing: AllKeyboardKeys: %d, NavDirMask: 0x%X)", g.ActiveIdUsingAllKeyboardKeys, g.ActiveIdUsingNavDirMask);
-            Unindent();
-        }
-        TreePop();
-    }
-
-    if (TreeNode("Internal state"))
-    {
-        Text("WINDOWING");
-        Indent();
-        Text("HoveredWindow: '%s'", g.HoveredWindow ? g.HoveredWindow->Name : "NULL");
-        Text("HoveredWindow->Root: '%s'", g.HoveredWindow ? g.HoveredWindow->RootWindow->Name : "NULL");
-        Text("HoveredWindowUnderMovingWindow: '%s'", g.HoveredWindowUnderMovingWindow ? g.HoveredWindowUnderMovingWindow->Name : "NULL");
-        Text("MovingWindow: '%s'", g.MovingWindow ? g.MovingWindow->Name : "NULL");
-        Unindent();
-
-        Text("ITEMS");
-        Indent();
-        Text("ActiveId: 0x%08X/0x%08X (%.2f sec), AllowOverlap: %d, Source: %s", g.ActiveId, g.ActiveIdPreviousFrame, g.ActiveIdTimer, g.ActiveIdAllowOverlap, GetInputSourceName(g.ActiveIdSource));
-        DebugLocateItemOnHover(g.ActiveId);
-        Text("ActiveIdWindow: '%s'", g.ActiveIdWindow ? g.ActiveIdWindow->Name : "NULL");
-        Text("ActiveIdUsing: AllKeyboardKeys: %d, NavDirMask: %X", g.ActiveIdUsingAllKeyboardKeys, g.ActiveIdUsingNavDirMask);
-        Text("HoveredId: 0x%08X (%.2f sec), AllowOverlap: %d", g.HoveredIdPreviousFrame, g.HoveredIdTimer, g.HoveredIdAllowOverlap); // Not displaying g.HoveredId as it is update mid-frame
-        Text("HoverDelayId: 0x%08X, Timer: %.2f, ClearTimer: %.2f", g.HoverDelayId, g.HoverDelayTimer, g.HoverDelayClearTimer);
-        Text("DragDrop: %d, SourceId = 0x%08X, Payload \"%s\" (%d bytes)", g.DragDropActive, g.DragDropPayload.SourceId, g.DragDropPayload.DataType, g.DragDropPayload.DataSize);
-        DebugLocateItemOnHover(g.DragDropPayload.SourceId);
-        Unindent();
-
-        Text("NAV,FOCUS");
-        Indent();
-        Text("NavWindow: '%s'", g.NavWindow ? g.NavWindow->Name : "NULL");
-        Text("NavId: 0x%08X, NavLayer: %d", g.NavId, g.NavLayer);
-        DebugLocateItemOnHover(g.NavId);
-        Text("NavInputSource: %s", GetInputSourceName(g.NavInputSource));
-        Text("NavActive: %d, NavVisible: %d", g.IO.NavActive, g.IO.NavVisible);
-        Text("NavActivateId/DownId/PressedId: %08X/%08X/%08X", g.NavActivateId, g.NavActivateDownId, g.NavActivatePressedId);
-        Text("NavActivateFlags: %04X", g.NavActivateFlags);
-        Text("NavDisableHighlight: %d, NavDisableMouseHover: %d", g.NavDisableHighlight, g.NavDisableMouseHover);
-        Text("NavFocusScopeId = 0x%08X", g.NavFocusScopeId);
-        Text("NavWindowingTarget: '%s'", g.NavWindowingTarget ? g.NavWindowingTarget->Name : "NULL");
-        Unindent();
-
-        TreePop();
-    }
-
-    // Overlay: Display windows Rectangles and Begin Order
-    if (cfg->ShowWindowsRects || cfg->ShowWindowsBeginOrder)
-    {
-        for (int n = 0; n < g.Windows.Size; n++)
-        {
-            ImGuiWindow* window = g.Windows[n];
-            if (!window->WasActive)
-                continue;
-            ImDrawList* draw_list = GetForegroundDrawList(window);
-            if (cfg->ShowWindowsRects)
-            {
-                ImRect r = Funcs::GetWindowRect(window, cfg->ShowWindowsRectsType);
-                draw_list->AddRect(r.Min, r.Max, IM_COL32(255, 0, 128, 255));
-            }
-            if (cfg->ShowWindowsBeginOrder && !(window->Flags & ImGuiWindowFlags_ChildWindow))
-            {
-                char buf[32];
-                ImFormatString(buf, IM_ARRAYSIZE(buf), "%d", window->BeginOrderWithinContext);
-                float font_size = GetFontSize();
-                draw_list->AddRectFilled(window->Pos, window->Pos + ImVec2(font_size, font_size), IM_COL32(200, 100, 100, 255));
-                draw_list->AddText(window->Pos, IM_COL32(255, 255, 255, 255), buf);
-            }
-        }
-    }
-
-    // Overlay: Display Tables Rectangles
-    if (cfg->ShowTablesRects)
-    {
-        for (int table_n = 0; table_n < g.Tables.GetMapSize(); table_n++)
-        {
-            ImGuiTable* table = g.Tables.TryGetMapData(table_n);
-            if (table == NULL || table->LastFrameActive < g.FrameCount - 1)
-                continue;
-            ImDrawList* draw_list = GetForegroundDrawList(table->OuterWindow);
-            if (cfg->ShowTablesRectsType >= TRT_ColumnsRect)
-            {
-                for (int column_n = 0; column_n < table->ColumnsCount; column_n++)
-                {
-                    ImRect r = Funcs::GetTableRect(table, cfg->ShowTablesRectsType, column_n);
-                    ImU32 col = (table->HoveredColumnBody == column_n) ? IM_COL32(255, 255, 128, 255) : IM_COL32(255, 0, 128, 255);
-                    float thickness = (table->HoveredColumnBody == column_n) ? 3.0f : 1.0f;
-                    draw_list->AddRect(r.Min, r.Max, col, 0.0f, 0, thickness);
-                }
-            }
-            else
-            {
-                ImRect r = Funcs::GetTableRect(table, cfg->ShowTablesRectsType, -1);
-                draw_list->AddRect(r.Min, r.Max, IM_COL32(255, 0, 128, 255));
-            }
-        }
-    }
-
-#ifdef IMGUI_HAS_DOCK
-    // Overlay: Display Docking info
-    if (show_docking_nodes && g.IO.KeyCtrl)
-    {
-    }
-#endif // #ifdef IMGUI_HAS_DOCK
-
-    End();
-}
+//void ImGui::ShowMetricsWindow(bool* p_open)
+//{
+//    ImGuiContext& g = *GImGui;
+//    ImGuiIO& io = g.IO;
+//    ImGuiMetricsConfig* cfg = &g.DebugMetricsConfig;
+//    if (cfg->ShowDebugLog)
+//        ShowDebugLogWindow(&cfg->ShowDebugLog);
+//    if (cfg->ShowStackTool)
+//        ShowStackToolWindow(&cfg->ShowStackTool);
+//
+//    if (!Begin("Dear ImGui Metrics/Debugger", p_open) || GetCurrentWindow()->BeginCount > 1)
+//    {
+//        End();
+//        return;
+//    }
+//
+//    // Basic info
+//    Text("Dear ImGui %s", GetVersion());
+//    Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+//    Text("%d vertices, %d indices (%d triangles)", io.MetricsRenderVertices, io.MetricsRenderIndices, io.MetricsRenderIndices / 3);
+//    Text("%d visible windows, %d active allocations", io.MetricsRenderWindows, io.MetricsActiveAllocations);
+//    //SameLine(); if (SmallButton("GC")) { g.GcCompactAll = true; }
+//
+//    Separator();
+//
+//    // Debugging enums
+//    enum { WRT_OuterRect, WRT_OuterRectClipped, WRT_InnerRect, WRT_InnerClipRect, WRT_WorkRect, WRT_Content, WRT_ContentIdeal, WRT_ContentRegionRect, WRT_Count }; // Windows Rect Type
+//    const char* wrt_rects_names[WRT_Count] = { "OuterRect", "OuterRectClipped", "InnerRect", "InnerClipRect", "WorkRect", "Content", "ContentIdeal", "ContentRegionRect" };
+//    enum { TRT_OuterRect, TRT_InnerRect, TRT_WorkRect, TRT_HostClipRect, TRT_InnerClipRect, TRT_BackgroundClipRect, TRT_ColumnsRect, TRT_ColumnsWorkRect, TRT_ColumnsClipRect, TRT_ColumnsContentHeadersUsed, TRT_ColumnsContentHeadersIdeal, TRT_ColumnsContentFrozen, TRT_ColumnsContentUnfrozen, TRT_Count }; // Tables Rect Type
+//    const char* trt_rects_names[TRT_Count] = { "OuterRect", "InnerRect", "WorkRect", "HostClipRect", "InnerClipRect", "BackgroundClipRect", "ColumnsRect", "ColumnsWorkRect", "ColumnsClipRect", "ColumnsContentHeadersUsed", "ColumnsContentHeadersIdeal", "ColumnsContentFrozen", "ColumnsContentUnfrozen" };
+//    if (cfg->ShowWindowsRectsType < 0)
+//        cfg->ShowWindowsRectsType = WRT_WorkRect;
+//    if (cfg->ShowTablesRectsType < 0)
+//        cfg->ShowTablesRectsType = TRT_WorkRect;
+//
+//    struct Funcs
+//    {
+//        static ImRect GetTableRect(ImGuiTable* table, int rect_type, int n)
+//        {
+//            ImGuiTableInstanceData* table_instance = TableGetInstanceData(table, table->InstanceCurrent); // Always using last submitted instance
+//            if (rect_type == TRT_OuterRect)                     { return table->OuterRect; }
+//            else if (rect_type == TRT_InnerRect)                { return table->InnerRect; }
+//            else if (rect_type == TRT_WorkRect)                 { return table->WorkRect; }
+//            else if (rect_type == TRT_HostClipRect)             { return table->HostClipRect; }
+//            else if (rect_type == TRT_InnerClipRect)            { return table->InnerClipRect; }
+//            else if (rect_type == TRT_BackgroundClipRect)       { return table->BgClipRect; }
+//            else if (rect_type == TRT_ColumnsRect)              { ImGuiTableColumn* c = &table->Columns[n]; return ImRect(c->MinX, table->InnerClipRect.Min.y, c->MaxX, table->InnerClipRect.Min.y + table_instance->LastOuterHeight); }
+//            else if (rect_type == TRT_ColumnsWorkRect)          { ImGuiTableColumn* c = &table->Columns[n]; return ImRect(c->WorkMinX, table->WorkRect.Min.y, c->WorkMaxX, table->WorkRect.Max.y); }
+//            else if (rect_type == TRT_ColumnsClipRect)          { ImGuiTableColumn* c = &table->Columns[n]; return c->ClipRect; }
+//            else if (rect_type == TRT_ColumnsContentHeadersUsed){ ImGuiTableColumn* c = &table->Columns[n]; return ImRect(c->WorkMinX, table->InnerClipRect.Min.y, c->ContentMaxXHeadersUsed, table->InnerClipRect.Min.y + table_instance->LastFirstRowHeight); } // Note: y1/y2 not always accurate
+//            else if (rect_type == TRT_ColumnsContentHeadersIdeal){ImGuiTableColumn* c = &table->Columns[n]; return ImRect(c->WorkMinX, table->InnerClipRect.Min.y, c->ContentMaxXHeadersIdeal, table->InnerClipRect.Min.y + table_instance->LastFirstRowHeight); }
+//            else if (rect_type == TRT_ColumnsContentFrozen)     { ImGuiTableColumn* c = &table->Columns[n]; return ImRect(c->WorkMinX, table->InnerClipRect.Min.y, c->ContentMaxXFrozen, table->InnerClipRect.Min.y + table_instance->LastFrozenHeight); }
+//            else if (rect_type == TRT_ColumnsContentUnfrozen)   { ImGuiTableColumn* c = &table->Columns[n]; return ImRect(c->WorkMinX, table->InnerClipRect.Min.y + table_instance->LastFrozenHeight, c->ContentMaxXUnfrozen, table->InnerClipRect.Max.y); }
+//            IM_ASSERT(0);
+//            return ImRect();
+//        }
+//
+//        static ImRect GetWindowRect(ImGuiWindow* window, int rect_type)
+//        {
+//            if (rect_type == WRT_OuterRect)                 { return window->Rect(); }
+//            else if (rect_type == WRT_OuterRectClipped)     { return window->OuterRectClipped; }
+//            else if (rect_type == WRT_InnerRect)            { return window->InnerRect; }
+//            else if (rect_type == WRT_InnerClipRect)        { return window->InnerClipRect; }
+//            else if (rect_type == WRT_WorkRect)             { return window->WorkRect; }
+//            else if (rect_type == WRT_Content)       { ImVec2 min = window->InnerRect.Min - window->Scroll + window->WindowPadding; return ImRect(min, min + window->ContentSize); }
+//            else if (rect_type == WRT_ContentIdeal)         { ImVec2 min = window->InnerRect.Min - window->Scroll + window->WindowPadding; return ImRect(min, min + window->ContentSizeIdeal); }
+//            else if (rect_type == WRT_ContentRegionRect)    { return window->ContentRegionRect; }
+//            IM_ASSERT(0);
+//            return ImRect();
+//        }
+//    };
+//
+//    // Tools
+//    if (TreeNode("Tools"))
+//    {
+//        bool show_encoding_viewer = TreeNode("UTF-8 Encoding viewer");
+//        SameLine();
+//        MetricsHelpMarker("You can also call ImGui::DebugTextEncoding() from your code with a given string to test that your UTF-8 encoding settings are correct.");
+//        if (show_encoding_viewer)
+//        {
+//            static char buf[100] = "";
+//            SetNextItemWidth(-FLT_MIN);
+//            InputText("##Text", buf, IM_ARRAYSIZE(buf));
+//            if (buf[0] != 0)
+//                DebugTextEncoding(buf);
+//            TreePop();
+//        }
+//
+//        // The Item Picker tool is super useful to visually select an item and break into the call-stack of where it was submitted.
+//        if (Checkbox("Show Item Picker", &g.DebugItemPickerActive) && g.DebugItemPickerActive)
+//            DebugStartItemPicker();
+//        SameLine();
+//        MetricsHelpMarker("Will call the IM_DEBUG_BREAK() macro to break in debugger.\nWarning: If you don't have a debugger attached, this will probably crash.");
+//
+//        // Stack Tool is your best friend!
+//        Checkbox("Show Debug Log", &cfg->ShowDebugLog);
+//        SameLine();
+//        MetricsHelpMarker("You can also call ImGui::ShowDebugLogWindow() from your code.");
+//
+//        // Stack Tool is your best friend!
+//        Checkbox("Show Stack Tool", &cfg->ShowStackTool);
+//        SameLine();
+//        MetricsHelpMarker("You can also call ImGui::ShowStackToolWindow() from your code.");
+//
+//        Checkbox("Show windows begin order", &cfg->ShowWindowsBeginOrder);
+//        Checkbox("Show windows rectangles", &cfg->ShowWindowsRects);
+//        SameLine();
+//        SetNextItemWidth(GetFontSize() * 12);
+//        cfg->ShowWindowsRects |= Combo("##show_windows_rect_type", &cfg->ShowWindowsRectsType, wrt_rects_names, WRT_Count, WRT_Count);
+//        if (cfg->ShowWindowsRects && g.NavWindow != NULL)
+//        {
+//            BulletText("'%s':", g.NavWindow->Name);
+//            Indent();
+//            for (int rect_n = 0; rect_n < WRT_Count; rect_n++)
+//            {
+//                ImRect r = Funcs::GetWindowRect(g.NavWindow, rect_n);
+//                Text("(%6.1f,%6.1f) (%6.1f,%6.1f) Size (%6.1f,%6.1f) %s", r.Min.x, r.Min.y, r.Max.x, r.Max.y, r.GetWidth(), r.GetHeight(), wrt_rects_names[rect_n]);
+//            }
+//            Unindent();
+//        }
+//
+//        Checkbox("Show tables rectangles", &cfg->ShowTablesRects);
+//        SameLine();
+//        SetNextItemWidth(GetFontSize() * 12);
+//        cfg->ShowTablesRects |= Combo("##show_table_rects_type", &cfg->ShowTablesRectsType, trt_rects_names, TRT_Count, TRT_Count);
+//        if (cfg->ShowTablesRects && g.NavWindow != NULL)
+//        {
+//            for (int table_n = 0; table_n < g.Tables.GetMapSize(); table_n++)
+//            {
+//                ImGuiTable* table = g.Tables.TryGetMapData(table_n);
+//                if (table == NULL || table->LastFrameActive < g.FrameCount - 1 || (table->OuterWindow != g.NavWindow && table->InnerWindow != g.NavWindow))
+//                    continue;
+//
+//                BulletText("Table 0x%08X (%d columns, in '%s')", table->ID, table->ColumnsCount, table->OuterWindow->Name);
+//                if (IsItemHovered())
+//                    GetForegroundDrawList()->AddRect(table->OuterRect.Min - ImVec2(1, 1), table->OuterRect.Max + ImVec2(1, 1), IM_COL32(255, 255, 0, 255), 0.0f, 0, 2.0f);
+//                Indent();
+//                char buf[128];
+//                for (int rect_n = 0; rect_n < TRT_Count; rect_n++)
+//                {
+//                    if (rect_n >= TRT_ColumnsRect)
+//                    {
+//                        if (rect_n != TRT_ColumnsRect && rect_n != TRT_ColumnsClipRect)
+//                            continue;
+//                        for (int column_n = 0; column_n < table->ColumnsCount; column_n++)
+//                        {
+//                            ImRect r = Funcs::GetTableRect(table, rect_n, column_n);
+//                            ImFormatString(buf, IM_ARRAYSIZE(buf), "(%6.1f,%6.1f) (%6.1f,%6.1f) Size (%6.1f,%6.1f) Col %d %s", r.Min.x, r.Min.y, r.Max.x, r.Max.y, r.GetWidth(), r.GetHeight(), column_n, trt_rects_names[rect_n]);
+//                            Selectable(buf);
+//                            if (IsItemHovered())
+//                                GetForegroundDrawList()->AddRect(r.Min - ImVec2(1, 1), r.Max + ImVec2(1, 1), IM_COL32(255, 255, 0, 255), 0.0f, 0, 2.0f);
+//                        }
+//                    }
+//                    else
+//                    {
+//                        ImRect r = Funcs::GetTableRect(table, rect_n, -1);
+//                        ImFormatString(buf, IM_ARRAYSIZE(buf), "(%6.1f,%6.1f) (%6.1f,%6.1f) Size (%6.1f,%6.1f) %s", r.Min.x, r.Min.y, r.Max.x, r.Max.y, r.GetWidth(), r.GetHeight(), trt_rects_names[rect_n]);
+//                        Selectable(buf);
+//                        if (IsItemHovered())
+//                            GetForegroundDrawList()->AddRect(r.Min - ImVec2(1, 1), r.Max + ImVec2(1, 1), IM_COL32(255, 255, 0, 255), 0.0f, 0, 2.0f);
+//                    }
+//                }
+//                Unindent();
+//            }
+//        }
+//
+//        Checkbox("Debug Begin/BeginChild return value", &io.ConfigDebugBeginReturnValueLoop);
+//        SameLine();
+//        MetricsHelpMarker("Some calls to Begin()/BeginChild() will return false.\n\nWill cycle through window depths then repeat. Windows should be flickering while running.");
+//
+//        TreePop();
+//    }
+//
+//    // Windows
+//    if (TreeNode("Windows", "Windows (%d)", g.Windows.Size))
+//    {
+//        //SetNextItemOpen(true, ImGuiCond_Once);
+//        DebugNodeWindowsList(&g.Windows, "By display order");
+//        DebugNodeWindowsList(&g.WindowsFocusOrder, "By focus order (root windows)");
+//        if (TreeNode("By submission order (begin stack)"))
+//        {
+//            // Here we display windows in their submitted order/hierarchy, however note that the Begin stack doesn't constitute a Parent<>Child relationship!
+//            ImVector<ImGuiWindow*>& temp_buffer = g.WindowsTempSortBuffer;
+//            temp_buffer.resize(0);
+//            for (int i = 0; i < g.Windows.Size; i++)
+//                if (g.Windows[i]->LastFrameActive + 1 >= g.FrameCount)
+//                    temp_buffer.push_back(g.Windows[i]);
+//            struct Func { static int IMGUI_CDECL WindowComparerByBeginOrder(const void* lhs, const void* rhs) { return ((int)(*(const ImGuiWindow* const *)lhs)->BeginOrderWithinContext - (*(const ImGuiWindow* const*)rhs)->BeginOrderWithinContext); } };
+//            ImQsort(temp_buffer.Data, (size_t)temp_buffer.Size, sizeof(ImGuiWindow*), Func::WindowComparerByBeginOrder);
+//            DebugNodeWindowsListByBeginStackParent(temp_buffer.Data, temp_buffer.Size, NULL);
+//            TreePop();
+//        }
+//
+//        TreePop();
+//    }
+//
+//    // DrawLists
+//    int drawlist_count = 0;
+//    for (int viewport_i = 0; viewport_i < g.Viewports.Size; viewport_i++)
+//        drawlist_count += g.Viewports[viewport_i]->DrawDataBuilder.GetDrawListCount();
+//    if (TreeNode("DrawLists", "DrawLists (%d)", drawlist_count))
+//    {
+//        Checkbox("Show ImDrawCmd mesh when hovering", &cfg->ShowDrawCmdMesh);
+//        Checkbox("Show ImDrawCmd bounding boxes when hovering", &cfg->ShowDrawCmdBoundingBoxes);
+//        for (int viewport_i = 0; viewport_i < g.Viewports.Size; viewport_i++)
+//        {
+//            ImGuiViewportP* viewport = g.Viewports[viewport_i];
+//            for (int layer_i = 0; layer_i < IM_ARRAYSIZE(viewport->DrawDataBuilder.Layers); layer_i++)
+//                for (int draw_list_i = 0; draw_list_i < viewport->DrawDataBuilder.Layers[layer_i].Size; draw_list_i++)
+//                    DebugNodeDrawList(NULL, viewport->DrawDataBuilder.Layers[layer_i][draw_list_i], "DrawList");
+//        }
+//        TreePop();
+//    }
+//
+//    // Viewports
+//    if (TreeNode("Viewports", "Viewports (%d)", g.Viewports.Size))
+//    {
+//        Indent(GetTreeNodeToLabelSpacing());
+//        RenderViewportsThumbnails();
+//        Unindent(GetTreeNodeToLabelSpacing());
+//        for (int i = 0; i < g.Viewports.Size; i++)
+//            DebugNodeViewport(g.Viewports[i]);
+//        TreePop();
+//    }
+//
+//    // Details for Popups
+//    if (TreeNode("Popups", "Popups (%d)", g.OpenPopupStack.Size))
+//    {
+//        for (int i = 0; i < g.OpenPopupStack.Size; i++)
+//        {
+//            // As it's difficult to interact with tree nodes while popups are open, we display everything inline.
+//            const ImGuiPopupData* popup_data = &g.OpenPopupStack[i];
+//            ImGuiWindow* window = popup_data->Window;
+//            BulletText("PopupID: %08x, Window: '%s' (%s%s), BackupNavWindow '%s', ParentWindow '%s'",
+//                popup_data->PopupId, window ? window->Name : "NULL", window && (window->Flags & ImGuiWindowFlags_ChildWindow) ? "Child;" : "", window && (window->Flags & ImGuiWindowFlags_ChildMenu) ? "Menu;" : "",
+//                popup_data->BackupNavWindow ? popup_data->BackupNavWindow->Name : "NULL", window && window->ParentWindow ? window->ParentWindow->Name : "NULL");
+//        }
+//        TreePop();
+//    }
+//
+//    // Details for TabBars
+//    if (TreeNode("TabBars", "Tab Bars (%d)", g.TabBars.GetAliveCount()))
+//    {
+//        for (int n = 0; n < g.TabBars.GetMapSize(); n++)
+//            if (ImGuiTabBar* tab_bar = g.TabBars.TryGetMapData(n))
+//            {
+//                PushID(tab_bar);
+//                DebugNodeTabBar(tab_bar, "TabBar");
+//                PopID();
+//            }
+//        TreePop();
+//    }
+//
+//    // Details for Tables
+//    if (TreeNode("Tables", "Tables (%d)", g.Tables.GetAliveCount()))
+//    {
+//        for (int n = 0; n < g.Tables.GetMapSize(); n++)
+//            if (ImGuiTable* table = g.Tables.TryGetMapData(n))
+//                DebugNodeTable(table);
+//        TreePop();
+//    }
+//
+//    // Details for Fonts
+//    ImFontAtlas* atlas = g.IO.Fonts;
+//    if (TreeNode("Fonts", "Fonts (%d)", atlas->Fonts.Size))
+//    {
+//        ShowFontAtlas(atlas);
+//        TreePop();
+//    }
+//
+//    // Details for InputText
+//    if (TreeNode("InputText"))
+//    {
+//        DebugNodeInputTextState(&g.InputTextState);
+//        TreePop();
+//    }
+//
+//    // Details for Docking
+//#ifdef IMGUI_HAS_DOCK
+//    if (TreeNode("Docking"))
+//    {
+//        TreePop();
+//    }
+//#endif // #ifdef IMGUI_HAS_DOCK
+//
+//    // Settings
+//    if (TreeNode("Settings"))
+//    {
+//        if (SmallButton("Clear"))
+//            ClearIniSettings();
+//        SameLine();
+//        if (SmallButton("Save to memory"))
+//            SaveIniSettingsToMemory();
+//        SameLine();
+//        if (SmallButton("Save to disk"))
+//            SaveIniSettingsToDisk(g.IO.IniFilename);
+//        SameLine();
+//        if (g.IO.IniFilename)
+//            Text("\"%s\"", g.IO.IniFilename);
+//        else
+//            TextUnformatted("<NULL>");
+//        Text("SettingsDirtyTimer %.2f", g.SettingsDirtyTimer);
+//        if (TreeNode("SettingsHandlers", "Settings handlers: (%d)", g.SettingsHandlers.Size))
+//        {
+//            for (int n = 0; n < g.SettingsHandlers.Size; n++)
+//                BulletText("%s", g.SettingsHandlers[n].TypeName);
+//            TreePop();
+//        }
+//        if (TreeNode("SettingsWindows", "Settings packed data: Windows: %d bytes", g.SettingsWindows.size()))
+//        {
+//            for (ImGuiWindowSettings* settings = g.SettingsWindows.begin(); settings != NULL; settings = g.SettingsWindows.next_chunk(settings))
+//                DebugNodeWindowSettings(settings);
+//            TreePop();
+//        }
+//
+//        if (TreeNode("SettingsTables", "Settings packed data: Tables: %d bytes", g.SettingsTables.size()))
+//        {
+//            for (ImGuiTableSettings* settings = g.SettingsTables.begin(); settings != NULL; settings = g.SettingsTables.next_chunk(settings))
+//                DebugNodeTableSettings(settings);
+//            TreePop();
+//        }
+//
+//#ifdef IMGUI_HAS_DOCK
+//#endif // #ifdef IMGUI_HAS_DOCK
+//
+//        if (TreeNode("SettingsIniData", "Settings unpacked data (.ini): %d bytes", g.SettingsIniData.size()))
+//        {
+//            InputTextMultiline("##Ini", (char*)(void*)g.SettingsIniData.c_str(), g.SettingsIniData.Buf.Size, ImVec2(-FLT_MIN, GetTextLineHeight() * 20), ImGuiInputTextFlags_ReadOnly);
+//            TreePop();
+//        }
+//        TreePop();
+//    }
+//
+//    if (TreeNode("Inputs"))
+//    {
+//        Text("KEYBOARD/GAMEPAD/MOUSE KEYS");
+//        {
+//            // We iterate both legacy native range and named ImGuiKey ranges, which is a little odd but this allows displaying the data for old/new backends.
+//            // User code should never have to go through such hoops! You can generally iterate between ImGuiKey_NamedKey_BEGIN and ImGuiKey_NamedKey_END.
+//            Indent();
+//#ifdef IMGUI_DISABLE_OBSOLETE_KEYIO
+//            struct funcs { static bool IsLegacyNativeDupe(ImGuiKey) { return false; } };
+//#else
+//            struct funcs { static bool IsLegacyNativeDupe(ImGuiKey key) { return key < 512 && GetIO().KeyMap[key] != -1; } }; // Hide Native<>ImGuiKey duplicates when both exists in the array
+//            //Text("Legacy raw:");      for (ImGuiKey key = ImGuiKey_KeysData_OFFSET; key < ImGuiKey_COUNT; key++) { if (io.KeysDown[key]) { SameLine(); Text("\"%s\" %d", GetKeyName(key), key); } }
+//#endif
+//            Text("Keys down:");         for (ImGuiKey key = ImGuiKey_KeysData_OFFSET; key < ImGuiKey_COUNT; key = (ImGuiKey)(key + 1)) { if (funcs::IsLegacyNativeDupe(key) || !IsKeyDown(key)) continue;     SameLine(); Text(IsNamedKey(key) ? "\"%s\"" : "\"%s\" %d", GetKeyName(key), key); SameLine(); Text("(%.02f)", GetKeyData(key)->DownDuration); }
+//            Text("Keys pressed:");      for (ImGuiKey key = ImGuiKey_KeysData_OFFSET; key < ImGuiKey_COUNT; key = (ImGuiKey)(key + 1)) { if (funcs::IsLegacyNativeDupe(key) || !IsKeyPressed(key)) continue;  SameLine(); Text(IsNamedKey(key) ? "\"%s\"" : "\"%s\" %d", GetKeyName(key), key); }
+//            Text("Keys released:");     for (ImGuiKey key = ImGuiKey_KeysData_OFFSET; key < ImGuiKey_COUNT; key = (ImGuiKey)(key + 1)) { if (funcs::IsLegacyNativeDupe(key) || !IsKeyReleased(key)) continue; SameLine(); Text(IsNamedKey(key) ? "\"%s\"" : "\"%s\" %d", GetKeyName(key), key); }
+//            Text("Keys mods: %s%s%s%s", io.KeyCtrl ? "CTRL " : "", io.KeyShift ? "SHIFT " : "", io.KeyAlt ? "ALT " : "", io.KeySuper ? "SUPER " : "");
+//            Text("Chars queue:");       for (int i = 0; i < io.InputQueueCharacters.Size; i++) { ImWchar c = io.InputQueueCharacters[i]; SameLine(); Text("\'%c\' (0x%04X)", (c > ' ' && c <= 255) ? (char)c : '?', c); } // FIXME: We should convert 'c' to UTF-8 here but the functions are not public.
+//            DebugRenderKeyboardPreview(GetWindowDrawList());
+//            Unindent();
+//        }
+//
+//        Text("MOUSE STATE");
+//        {
+//            Indent();
+//            if (IsMousePosValid())
+//                Text("Mouse pos: (%g, %g)", io.MousePos.x, io.MousePos.y);
+//            else
+//                Text("Mouse pos: <INVALID>");
+//            Text("Mouse delta: (%g, %g)", io.MouseDelta.x, io.MouseDelta.y);
+//            int count = IM_ARRAYSIZE(io.MouseDown);
+//            Text("Mouse down:");     for (int i = 0; i < count; i++) if (IsMouseDown(i)) { SameLine(); Text("b%d (%.02f secs)", i, io.MouseDownDuration[i]); }
+//            Text("Mouse clicked:");  for (int i = 0; i < count; i++) if (IsMouseClicked(i)) { SameLine(); Text("b%d (%d)", i, io.MouseClickedCount[i]); }
+//            Text("Mouse released:"); for (int i = 0; i < count; i++) if (IsMouseReleased(i)) { SameLine(); Text("b%d", i); }
+//            Text("Mouse wheel: %.1f", io.MouseWheel);
+//            Text("Mouse source: %s", GetMouseSourceName(io.MouseSource));
+//            Text("Pen Pressure: %.1f", io.PenPressure); // Note: currently unused
+//            Unindent();
+//        }
+//
+//        Text("MOUSE WHEELING");
+//        {
+//            Indent();
+//            Text("WheelingWindow: '%s'", g.WheelingWindow ? g.WheelingWindow->Name : "NULL");
+//            Text("WheelingWindowReleaseTimer: %.2f", g.WheelingWindowReleaseTimer);
+//            Text("WheelingAxisAvg[] = { %.3f, %.3f }, Main Axis: %s", g.WheelingAxisAvg.x, g.WheelingAxisAvg.y, (g.WheelingAxisAvg.x > g.WheelingAxisAvg.y) ? "X" : (g.WheelingAxisAvg.x < g.WheelingAxisAvg.y) ? "Y" : "<none>");
+//            Unindent();
+//        }
+//
+//        Text("KEY OWNERS");
+//        {
+//            Indent();
+//            if (BeginListBox("##owners", ImVec2(-FLT_MIN, GetTextLineHeightWithSpacing() * 6)))
+//            {
+//                for (ImGuiKey key = ImGuiKey_NamedKey_BEGIN; key < ImGuiKey_NamedKey_END; key = (ImGuiKey)(key + 1))
+//                {
+//                    ImGuiKeyOwnerData* owner_data = GetKeyOwnerData(&g, key);
+//                    if (owner_data->OwnerCurr == ImGuiKeyOwner_None)
+//                        continue;
+//                    Text("%s: 0x%08X%s", GetKeyName(key), owner_data->OwnerCurr,
+//                        owner_data->LockUntilRelease ? " LockUntilRelease" : owner_data->LockThisFrame ? " LockThisFrame" : "");
+//                    DebugLocateItemOnHover(owner_data->OwnerCurr);
+//                }
+//                EndListBox();
+//            }
+//            Unindent();
+//        }
+//        Text("SHORTCUT ROUTING");
+//        {
+//            Indent();
+//            if (BeginListBox("##routes", ImVec2(-FLT_MIN, GetTextLineHeightWithSpacing() * 6)))
+//            {
+//                for (ImGuiKey key = ImGuiKey_NamedKey_BEGIN; key < ImGuiKey_NamedKey_END; key = (ImGuiKey)(key + 1))
+//                {
+//                    ImGuiKeyRoutingTable* rt = &g.KeysRoutingTable;
+//                    for (ImGuiKeyRoutingIndex idx = rt->Index[key - ImGuiKey_NamedKey_BEGIN]; idx != -1; )
+//                    {
+//                        char key_chord_name[64];
+//                        ImGuiKeyRoutingData* routing_data = &rt->Entries[idx];
+//                        GetKeyChordName(key | routing_data->Mods, key_chord_name, IM_ARRAYSIZE(key_chord_name));
+//                        Text("%s: 0x%08X", key_chord_name, routing_data->RoutingCurr);
+//                        DebugLocateItemOnHover(routing_data->RoutingCurr);
+//                        idx = routing_data->NextEntryIndex;
+//                    }
+//                }
+//                EndListBox();
+//            }
+//            Text("(ActiveIdUsing: AllKeyboardKeys: %d, NavDirMask: 0x%X)", g.ActiveIdUsingAllKeyboardKeys, g.ActiveIdUsingNavDirMask);
+//            Unindent();
+//        }
+//        TreePop();
+//    }
+//
+//    if (TreeNode("Internal state"))
+//    {
+//        Text("WINDOWING");
+//        Indent();
+//        Text("HoveredWindow: '%s'", g.HoveredWindow ? g.HoveredWindow->Name : "NULL");
+//        Text("HoveredWindow->Root: '%s'", g.HoveredWindow ? g.HoveredWindow->RootWindow->Name : "NULL");
+//        Text("HoveredWindowUnderMovingWindow: '%s'", g.HoveredWindowUnderMovingWindow ? g.HoveredWindowUnderMovingWindow->Name : "NULL");
+//        Text("MovingWindow: '%s'", g.MovingWindow ? g.MovingWindow->Name : "NULL");
+//        Unindent();
+//
+//        Text("ITEMS");
+//        Indent();
+//        Text("ActiveId: 0x%08X/0x%08X (%.2f sec), AllowOverlap: %d, Source: %s", g.ActiveId, g.ActiveIdPreviousFrame, g.ActiveIdTimer, g.ActiveIdAllowOverlap, GetInputSourceName(g.ActiveIdSource));
+//        DebugLocateItemOnHover(g.ActiveId);
+//        Text("ActiveIdWindow: '%s'", g.ActiveIdWindow ? g.ActiveIdWindow->Name : "NULL");
+//        Text("ActiveIdUsing: AllKeyboardKeys: %d, NavDirMask: %X", g.ActiveIdUsingAllKeyboardKeys, g.ActiveIdUsingNavDirMask);
+//        Text("HoveredId: 0x%08X (%.2f sec), AllowOverlap: %d", g.HoveredIdPreviousFrame, g.HoveredIdTimer, g.HoveredIdAllowOverlap); // Not displaying g.HoveredId as it is update mid-frame
+//        Text("HoverDelayId: 0x%08X, Timer: %.2f, ClearTimer: %.2f", g.HoverDelayId, g.HoverDelayTimer, g.HoverDelayClearTimer);
+//        Text("DragDrop: %d, SourceId = 0x%08X, Payload \"%s\" (%d bytes)", g.DragDropActive, g.DragDropPayload.SourceId, g.DragDropPayload.DataType, g.DragDropPayload.DataSize);
+//        DebugLocateItemOnHover(g.DragDropPayload.SourceId);
+//        Unindent();
+//
+//        Text("NAV,FOCUS");
+//        Indent();
+//        Text("NavWindow: '%s'", g.NavWindow ? g.NavWindow->Name : "NULL");
+//        Text("NavId: 0x%08X, NavLayer: %d", g.NavId, g.NavLayer);
+//        DebugLocateItemOnHover(g.NavId);
+//        Text("NavInputSource: %s", GetInputSourceName(g.NavInputSource));
+//        Text("NavActive: %d, NavVisible: %d", g.IO.NavActive, g.IO.NavVisible);
+//        Text("NavActivateId/DownId/PressedId: %08X/%08X/%08X", g.NavActivateId, g.NavActivateDownId, g.NavActivatePressedId);
+//        Text("NavActivateFlags: %04X", g.NavActivateFlags);
+//        Text("NavDisableHighlight: %d, NavDisableMouseHover: %d", g.NavDisableHighlight, g.NavDisableMouseHover);
+//        Text("NavFocusScopeId = 0x%08X", g.NavFocusScopeId);
+//        Text("NavWindowingTarget: '%s'", g.NavWindowingTarget ? g.NavWindowingTarget->Name : "NULL");
+//        Unindent();
+//
+//        TreePop();
+//    }
+//
+//    // Overlay: Display windows Rectangles and Begin Order
+//    if (cfg->ShowWindowsRects || cfg->ShowWindowsBeginOrder)
+//    {
+//        for (int n = 0; n < g.Windows.Size; n++)
+//        {
+//            ImGuiWindow* window = g.Windows[n];
+//            if (!window->WasActive)
+//                continue;
+//            ImDrawList* draw_list = GetForegroundDrawList(window);
+//            if (cfg->ShowWindowsRects)
+//            {
+//                ImRect r = Funcs::GetWindowRect(window, cfg->ShowWindowsRectsType);
+//                draw_list->AddRect(r.Min, r.Max, IM_COL32(255, 0, 128, 255));
+//            }
+//            if (cfg->ShowWindowsBeginOrder && !(window->Flags & ImGuiWindowFlags_ChildWindow))
+//            {
+//                char buf[32];
+//                ImFormatString(buf, IM_ARRAYSIZE(buf), "%d", window->BeginOrderWithinContext);
+//                float font_size = GetFontSize();
+//                draw_list->AddRectFilled(window->Pos, window->Pos + ImVec2(font_size, font_size), IM_COL32(200, 100, 100, 255));
+//                draw_list->AddText(window->Pos, IM_COL32(255, 255, 255, 255), buf);
+//            }
+//        }
+//    }
+//
+//    // Overlay: Display Tables Rectangles
+//    if (cfg->ShowTablesRects)
+//    {
+//        for (int table_n = 0; table_n < g.Tables.GetMapSize(); table_n++)
+//        {
+//            ImGuiTable* table = g.Tables.TryGetMapData(table_n);
+//            if (table == NULL || table->LastFrameActive < g.FrameCount - 1)
+//                continue;
+//            ImDrawList* draw_list = GetForegroundDrawList(table->OuterWindow);
+//            if (cfg->ShowTablesRectsType >= TRT_ColumnsRect)
+//            {
+//                for (int column_n = 0; column_n < table->ColumnsCount; column_n++)
+//                {
+//                    ImRect r = Funcs::GetTableRect(table, cfg->ShowTablesRectsType, column_n);
+//                    ImU32 col = (table->HoveredColumnBody == column_n) ? IM_COL32(255, 255, 128, 255) : IM_COL32(255, 0, 128, 255);
+//                    float thickness = (table->HoveredColumnBody == column_n) ? 3.0f : 1.0f;
+//                    draw_list->AddRect(r.Min, r.Max, col, 0.0f, 0, thickness);
+//                }
+//            }
+//            else
+//            {
+//                ImRect r = Funcs::GetTableRect(table, cfg->ShowTablesRectsType, -1);
+//                draw_list->AddRect(r.Min, r.Max, IM_COL32(255, 0, 128, 255));
+//            }
+//        }
+//    }
+//
+//#ifdef IMGUI_HAS_DOCK
+//    // Overlay: Display Docking info
+//    if (show_docking_nodes && g.IO.KeyCtrl)
+//    {
+//    }
+//#endif // #ifdef IMGUI_HAS_DOCK
+//
+//    End();
+//}
 
 // [DEBUG] Display contents of Columns
 void ImGui::DebugNodeColumns(ImGuiOldColumns* columns)
@@ -14707,81 +14707,81 @@ static int StackToolFormatLevelInfo(ImGuiStackTool* tool, int n, bool format_for
 }
 
 // Stack Tool: Display UI
-void ImGui::ShowStackToolWindow(bool* p_open)
-{
-    ImGuiContext& g = *GImGui;
-    if (!(g.NextWindowData.Flags & ImGuiNextWindowDataFlags_HasSize))
-        SetNextWindowSize(ImVec2(0.0f, GetFontSize() * 8.0f), ImGuiCond_FirstUseEver);
-    if (!Begin("Dear ImGui Stack Tool", p_open) || GetCurrentWindow()->BeginCount > 1)
-    {
-        End();
-        return;
-    }
-
-    // Display hovered/active status
-    ImGuiStackTool* tool = &g.DebugStackTool;
-    const ImGuiID hovered_id = g.HoveredIdPreviousFrame;
-    const ImGuiID active_id = g.ActiveId;
-#ifdef IMGUI_ENABLE_TEST_ENGINE
-    Text("HoveredId: 0x%08X (\"%s\"), ActiveId:  0x%08X (\"%s\")", hovered_id, hovered_id ? ImGuiTestEngine_FindItemDebugLabel(&g, hovered_id) : "", active_id, active_id ? ImGuiTestEngine_FindItemDebugLabel(&g, active_id) : "");
-#else
-    Text("HoveredId: 0x%08X, ActiveId:  0x%08X", hovered_id, active_id);
-#endif
-    SameLine();
-    MetricsHelpMarker("Hover an item with the mouse to display elements of the ID Stack leading to the item's final ID.\nEach level of the stack correspond to a PushID() call.\nAll levels of the stack are hashed together to make the final ID of a widget (ID displayed at the bottom level of the stack).\nRead FAQ entry about the ID stack for details.");
-
-    // CTRL+C to copy path
-    const float time_since_copy = (float)g.Time - tool->CopyToClipboardLastTime;
-    Checkbox("Ctrl+C: copy path to clipboard", &tool->CopyToClipboardOnCtrlC);
-    SameLine();
-    TextColored((time_since_copy >= 0.0f && time_since_copy < 0.75f && ImFmod(time_since_copy, 0.25f) < 0.25f * 0.5f) ? ImVec4(1.f, 1.f, 0.3f, 1.f) : ImVec4(), "*COPIED*");
-    if (tool->CopyToClipboardOnCtrlC && IsKeyDown(ImGuiMod_Ctrl) && IsKeyPressed(ImGuiKey_C))
-    {
-        tool->CopyToClipboardLastTime = (float)g.Time;
-        char* p = g.TempBuffer.Data;
-        char* p_end = p + g.TempBuffer.Size;
-        for (int stack_n = 0; stack_n < tool->Results.Size && p + 3 < p_end; stack_n++)
-        {
-            *p++ = '/';
-            char level_desc[256];
-            StackToolFormatLevelInfo(tool, stack_n, false, level_desc, IM_ARRAYSIZE(level_desc));
-            for (int n = 0; level_desc[n] && p + 2 < p_end; n++)
-            {
-                if (level_desc[n] == '/')
-                    *p++ = '\\';
-                *p++ = level_desc[n];
-            }
-        }
-        *p = '\0';
-        SetClipboardText(g.TempBuffer.Data);
-    }
-
-    // Display decorated stack
-    tool->LastActiveFrame = g.FrameCount;
-    if (tool->Results.Size > 0 && BeginTable("##table", 3, ImGuiTableFlags_Borders))
-    {
-        const float id_width = CalcTextSize("0xDDDDDDDD").x;
-        TableSetupColumn("Seed", ImGuiTableColumnFlags_WidthFixed, id_width);
-        TableSetupColumn("PushID", ImGuiTableColumnFlags_WidthStretch);
-        TableSetupColumn("Result", ImGuiTableColumnFlags_WidthFixed, id_width);
-        TableHeadersRow();
-        for (int n = 0; n < tool->Results.Size; n++)
-        {
-            ImGuiStackLevelInfo* info = &tool->Results[n];
-            TableNextColumn();
-            Text("0x%08X", (n > 0) ? tool->Results[n - 1].ID : 0);
-            TableNextColumn();
-            StackToolFormatLevelInfo(tool, n, true, g.TempBuffer.Data, g.TempBuffer.Size);
-            TextUnformatted(g.TempBuffer.Data);
-            TableNextColumn();
-            Text("0x%08X", info->ID);
-            if (n == tool->Results.Size - 1)
-                TableSetBgColor(ImGuiTableBgTarget_CellBg, GetColorU32(ImGuiCol_Header));
-        }
-        EndTable();
-    }
-    End();
-}
+//void ImGui::ShowStackToolWindow(bool* p_open)
+//{
+//    ImGuiContext& g = *GImGui;
+//    if (!(g.NextWindowData.Flags & ImGuiNextWindowDataFlags_HasSize))
+//        SetNextWindowSize(ImVec2(0.0f, GetFontSize() * 8.0f), ImGuiCond_FirstUseEver);
+//    if (!Begin("Dear ImGui Stack Tool", p_open) || GetCurrentWindow()->BeginCount > 1)
+//    {
+//        End();
+//        return;
+//    }
+//
+//    // Display hovered/active status
+//    ImGuiStackTool* tool = &g.DebugStackTool;
+//    const ImGuiID hovered_id = g.HoveredIdPreviousFrame;
+//    const ImGuiID active_id = g.ActiveId;
+//#ifdef IMGUI_ENABLE_TEST_ENGINE
+//    Text("HoveredId: 0x%08X (\"%s\"), ActiveId:  0x%08X (\"%s\")", hovered_id, hovered_id ? ImGuiTestEngine_FindItemDebugLabel(&g, hovered_id) : "", active_id, active_id ? ImGuiTestEngine_FindItemDebugLabel(&g, active_id) : "");
+//#else
+//    Text("HoveredId: 0x%08X, ActiveId:  0x%08X", hovered_id, active_id);
+//#endif
+//    SameLine();
+//    MetricsHelpMarker("Hover an item with the mouse to display elements of the ID Stack leading to the item's final ID.\nEach level of the stack correspond to a PushID() call.\nAll levels of the stack are hashed together to make the final ID of a widget (ID displayed at the bottom level of the stack).\nRead FAQ entry about the ID stack for details.");
+//
+//    // CTRL+C to copy path
+//    const float time_since_copy = (float)g.Time - tool->CopyToClipboardLastTime;
+//    Checkbox("Ctrl+C: copy path to clipboard", &tool->CopyToClipboardOnCtrlC);
+//    SameLine();
+//    TextColored((time_since_copy >= 0.0f && time_since_copy < 0.75f && ImFmod(time_since_copy, 0.25f) < 0.25f * 0.5f) ? ImVec4(1.f, 1.f, 0.3f, 1.f) : ImVec4(), "*COPIED*");
+//    if (tool->CopyToClipboardOnCtrlC && IsKeyDown(ImGuiMod_Ctrl) && IsKeyPressed(ImGuiKey_C))
+//    {
+//        tool->CopyToClipboardLastTime = (float)g.Time;
+//        char* p = g.TempBuffer.Data;
+//        char* p_end = p + g.TempBuffer.Size;
+//        for (int stack_n = 0; stack_n < tool->Results.Size && p + 3 < p_end; stack_n++)
+//        {
+//            *p++ = '/';
+//            char level_desc[256];
+//            StackToolFormatLevelInfo(tool, stack_n, false, level_desc, IM_ARRAYSIZE(level_desc));
+//            for (int n = 0; level_desc[n] && p + 2 < p_end; n++)
+//            {
+//                if (level_desc[n] == '/')
+//                    *p++ = '\\';
+//                *p++ = level_desc[n];
+//            }
+//        }
+//        *p = '\0';
+//        SetClipboardText(g.TempBuffer.Data);
+//    }
+//
+//    // Display decorated stack
+//    tool->LastActiveFrame = g.FrameCount;
+//    if (tool->Results.Size > 0 && BeginTable("##table", 3, ImGuiTableFlags_Borders))
+//    {
+//        const float id_width = CalcTextSize("0xDDDDDDDD").x;
+//        TableSetupColumn("Seed", ImGuiTableColumnFlags_WidthFixed, id_width);
+//        TableSetupColumn("PushID", ImGuiTableColumnFlags_WidthStretch);
+//        TableSetupColumn("Result", ImGuiTableColumnFlags_WidthFixed, id_width);
+//        TableHeadersRow();
+//        for (int n = 0; n < tool->Results.Size; n++)
+//        {
+//            ImGuiStackLevelInfo* info = &tool->Results[n];
+//            TableNextColumn();
+//            Text("0x%08X", (n > 0) ? tool->Results[n - 1].ID : 0);
+//            TableNextColumn();
+//            StackToolFormatLevelInfo(tool, n, true, g.TempBuffer.Data, g.TempBuffer.Size);
+//            TextUnformatted(g.TempBuffer.Data);
+//            TableNextColumn();
+//            Text("0x%08X", info->ID);
+//            if (n == tool->Results.Size - 1)
+//                TableSetBgColor(ImGuiTableBgTarget_CellBg, GetColorU32(ImGuiCol_Header));
+//        }
+//        EndTable();
+//    }
+//    End();
+//}
 
 #else
 

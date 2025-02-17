@@ -18,7 +18,7 @@ public:
      * @brief The maximum distance at which the aimbot can lock onto a target.
      * Default is 500 units.
      */
-    float m_fNearest = 500;
+    int m_nNearest = 500;
 
     /**
      * @brief The smoothness factor for the aimbot's movement when aiming.

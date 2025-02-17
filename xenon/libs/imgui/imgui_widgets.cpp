@@ -712,7 +712,7 @@ bool ImGui::ButtonEx(const char* label, const ImVec2& size_arg, ImGuiButtonFlags
 
     // Render
     RenderNavHighlight(bb, id);
-    RenderFrame(bb.Min, bb.Max, ImColor(13, 23, 37, 255), true, style.FrameRounding);
+    RenderFrame(bb.Min, bb.Max, ImColor(19, 54, 52, 255), true, style.FrameRounding);
 
     if (g.LogEnabled)
         LogSetNextTextDecoration("[", "]");
@@ -807,7 +807,7 @@ struct tab_state {
 
 static std::map<ImGuiID, tab_state> tab_anim;
 
-bool ImGui::Tabs(const char* label, const ImVec2& size_arg, bool selected, ImGuiButtonFlags flags)
+bool ImGui::Tabs(const char* label, const ImVec2& size_arg, bool selected, ImColor animCRegular, ImColor animCSelected, ImGuiButtonFlags flags)
 {
     ImGuiWindow* window = GetCurrentWindow();
     if (window->SkipItems)
@@ -842,7 +842,7 @@ bool ImGui::Tabs(const char* label, const ImVec2& size_arg, bool selected, ImGui
         it_anim = tab_anim.find(id);
     }
 
-    it_anim->second.bg_col = ImLerp(it_anim->second.bg_col, selected ? ImColor(34, 47, 60, 255) : ImColor(29, 40, 54, 255), g.IO.DeltaTime * 6.f);
+    it_anim->second.bg_col = ImLerp(it_anim->second.bg_col, selected ? animCSelected : animCRegular, g.IO.DeltaTime * 6.f);
 
     // Render
     RenderNavHighlight(bb, id);
@@ -1540,7 +1540,7 @@ struct checkbox_struct {
 
 static std::map<ImGuiID, checkbox_struct> check_anim;
 
-bool ImGui::Checkbox(const char* label, bool* v)
+bool ImGui::Checkbox(const char* label, bool* v, ImColor bgC, ImColor onC, ImColor offC)
 {
     ImGuiWindow* window = GetCurrentWindow();
     if (window->SkipItems) return false;
@@ -1578,11 +1578,11 @@ bool ImGui::Checkbox(const char* label, bool* v)
 
 
     it_anim->second.circle_checkbox = ImLerp(it_anim->second.circle_checkbox, *v ? 30.f : 0.f, g.IO.DeltaTime * 8.f);
-    it_anim->second.circle = ImLerp(it_anim->second.circle, *v ? ImColor(57, 186, 186, 255) : ImColor(255, 68, 44, 255), g.IO.DeltaTime * 8.f);
+    it_anim->second.circle = ImLerp(it_anim->second.circle, *v ? onC : offC, g.IO.DeltaTime * 8.f);
 
     const ImRect check_bb(pos, pos + ImVec2(square_sz, square_sz));
 
-    GetWindowDrawList()->AddRectFilled(check_bb.Min + ImVec2(w - 50, 1), check_bb.Max + ImVec2(w, 1), ImColor(13, 23, 37, 255), 100.f, ImDrawFlags_RoundCornersAll);
+    GetWindowDrawList()->AddRectFilled(check_bb.Min + ImVec2(w - 50, 1), check_bb.Max + ImVec2(w, 1), bgC, 100.f, ImDrawFlags_RoundCornersAll);
 
     GetWindowDrawList()->AddRectFilled(check_bb.Min + ImVec2(w - 50 + it_anim->second.circle_checkbox, 1), check_bb.Max + ImVec2(w  - 30 + it_anim->second.circle_checkbox, 1), GetColorU32(it_anim->second.circle), 100.f, ImDrawFlags_RoundCornersAll);
 
@@ -1601,12 +1601,12 @@ bool ImGui::CheckboxFlagsT(const char* label, T* flags, T flags_value)
         ImGuiContext& g = *GImGui;
         ImGuiItemFlags backup_item_flags = g.CurrentItemFlags;
         g.CurrentItemFlags |= ImGuiItemFlags_MixedValue;
-        pressed = Checkbox(label, &all_on);
+        pressed = false;// Checkbox(label, &all_on);
         g.CurrentItemFlags = backup_item_flags;
     }
     else
     {
-        pressed = Checkbox(label, &all_on);
+        pressed = false;// Checkbox(label, &all_on);
 
     }
     if (pressed)

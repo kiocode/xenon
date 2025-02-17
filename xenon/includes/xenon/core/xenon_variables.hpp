@@ -47,7 +47,7 @@ public:
 	bool g_bSmooth;
 	bool g_bHumanize;
 	bool g_bNoSpread;
-	bool g_bAimNearest;
+	bool g_bNearest = true;
 	bool g_bNoRecoil;
 	bool g_bFov;
 

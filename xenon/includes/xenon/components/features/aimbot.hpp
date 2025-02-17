@@ -20,7 +20,7 @@ public:
      * This method retrieves the nearest targeting distance from the configuration and sets it.
      */
     void Init() override {
-        nearestDistance = g_pXenonConfigs->g_pAimConfig->m_fNearest;
+        nearestDistance = g_pXenonConfigs->g_pAimConfig->m_nNearest;
     }
 
     /**
@@ -65,8 +65,6 @@ public:
      */
     void UpdateCurrentTarget(TargetProfile* target) override;
 
-    TargetProfile lockedTarget; 
-    bool hasLockedTarget = false; 
 private:
     /**
      * @brief The current target position as a 2D vector.
@@ -77,6 +75,8 @@ private:
      * @brief The nearest distance used for target selection, initialized from configuration.
      */
     float nearestDistance = 0;
-    TargetProfile* nearestTarget = nullptr;
+    TargetProfile lockedTarget;
+    TargetProfile nearestTarget;
+    bool hasLockedTarget = false;
 
 };

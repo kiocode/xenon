@@ -143,6 +143,7 @@ private:
     ID3D11DepthStencilState* m_pDefaultDepthStencilState = nullptr; ///< The default depth stencil state.
 
     ImFont* m_pMainFont = nullptr; ///< Font used for rendering the UI.
+    ImFont* m_pBiggerMainFont = nullptr; ///< Font used for rendering the UI.
     int m_nSelectedTab = 0; ///< The currently selected tab in the menu.
     int m_nSelectedSubTab = 0; ///< The currently selected sub-tab in the menu.
 

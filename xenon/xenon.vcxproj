@@ -188,6 +188,7 @@
     <ClInclude Include="includes\xenon\models\hotkey.hpp" />
     <ClInclude Include="includes\xenon\utility\random.hpp" />
     <ClInclude Include="includes\xenon\utility\unity\helper.hpp" />
+    <ClInclude Include="includes\xenon\utility\utilities.hpp" />
     <ClInclude Include="includes\xenon\utility\vec2.hpp" />
     <ClInclude Include="includes\xenon\utility\vec3.hpp" />
     <ClInclude Include="includes\xenon\utility\fonts.h" />

@@ -78,6 +78,7 @@ void Builder::RegisterDefaultComponents() {
 
     #pragma region Components
     xenon->g_pSystem = std::make_shared<System>();
+    xenon->g_pSystem->SetAppTitle(m_strAppTitle);
 
     xenon->g_cAimbot = std::make_shared<CAimbot>();
     xenon->g_cEsp = std::make_shared<CEsp>();

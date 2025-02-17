@@ -89,27 +89,7 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 		for (auto& target : pGameVariables->g_vTargets) {
 			ImGui::Text("Name: %s", target.m_strName.c_str());
 			ImGui::Text("Pos: %f %f %f", target.m_vPos3D.x, target.m_vPos3D.y, target.m_vPos3D.z);
-			ImGui::Text("Screen Pos: %f %f", pSystem->m_fnW2S3D(target.m_vPos3D).x, pSystem->m_fnW2S3D(target.m_vPos3D).y);
-			ImGui::Text("Head Pos: %f %f %f", target.m_vHeadPos3D.x, target.m_vHeadPos3D.y, target.m_vHeadPos3D.z);
-			ImGui::Text("Head Screen Pos: %f %f", pSystem->m_fnW2S3D(target.m_vHeadPos3D).x, pSystem->m_fnW2S3D(target.m_vHeadPos3D).y);
-			ImGui::Text("Feet Pos: %f %f %f", target.m_vFeetPos3D.x, target.m_vFeetPos3D.y, target.m_vFeetPos3D.z);
-			ImGui::Text("Feet Screen Pos: %f %f", pSystem->m_fnW2S3D(target.m_vFeetPos3D).x, pSystem->m_fnW2S3D(target.m_vFeetPos3D).y);
 		}
-
-		ImGui::End();
-
-		ImGui::Begin("Waypoints");
-
-		for (const Waypoint& waypoint : pWaypoints->GetWaypoints()) {
-			ImGui::Text("Waypoint: %s, %f, %f, %f", waypoint.m_strName.c_str(), waypoint.m_vPos3D.x, waypoint.m_vPos3D.y, waypoint.m_vPos3D.z);
-		}
-
-		ImGui::End();
-
-
-		ImGui::Begin("Debug");
-
-		ImGui::Text("Locked Target Address: %p", builder.xenon->g_cAimbot->lockedTarget.m_pOriginalAddress);
 
 		ImGui::End();
 

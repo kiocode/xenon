@@ -69,7 +69,7 @@ static void AddConfigurations(Builder& builder) {
 		static char input0[64] = "";
 		static char input1[64] = "";
 
-		ImGui::Checkbox("Checkbox", &checkbox3);
+		ImGui::Checkbox("Checkbox", &checkbox3, pUIConfig->m_cMenuBg, pUIConfig->m_cMenuAccent, pUIConfig->m_cMenuOff);
 		ImGui::SliderInt("Slider Int", &sliderint, 0, 100);
 		ImGui::SliderFloat("Slider Float", &sliderfloat, 0.f, 100.f, "%.1f");
 		ImGui::Combo("Combo", &combo, "Selectable 1\0Selectable 2\0Selectable 3", 3);
@@ -92,8 +92,8 @@ static void AddConfigurations(Builder& builder) {
 			ImGui::InputText("Pointer or Offset", input0, 64);
 			ImGui::InputText("Value", input1, 64);
 		}
-		ImGui::Checkbox("Read-Only", &checkbox1);
-		ImGui::Checkbox("Loop Command", &checkbox2);
+		ImGui::Checkbox("Read-Only", &checkbox1, pUIConfig->m_cMenuBg, pUIConfig->m_cMenuAccent, pUIConfig->m_cMenuOff);
+		ImGui::Checkbox("Loop Command", &checkbox2, pUIConfig->m_cMenuBg, pUIConfig->m_cMenuAccent, pUIConfig->m_cMenuOff);
 	
 		ImGui::End();
 	});
