@@ -63,7 +63,7 @@ public:
      * @brief Updates the current target based on the provided target profile.
      * @param target The target profile to update the current target.
      */
-    void UpdateCurrentTarget(TargetProfile* target) override;
+    //void UpdateCurrentTarget(TargetProfile* target) override;
     void Update() override;
 
 private:
