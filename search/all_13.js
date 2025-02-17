@@ -21,5 +21,6 @@ var searchData=
   ['useuirendermouse_18',['UseUIRenderMouse',['../d3/d59/classCheat.html#a9ab68b5b83d89255883c199e80c53d40',1,'Cheat']]],
   ['useuirenderoverlays_19',['UseUIRenderOverlays',['../d3/d59/classCheat.html#a7716c96b479b8b7a793946aafdfaa289',1,'Cheat']]],
   ['useuirenderwindows_20',['UseUIRenderWindows',['../d3/d59/classCheat.html#a19fc12eb884f2d5e4416a0cc0f4708e8',1,'Cheat']]],
-  ['useupdate_21',['UseUpdate',['../d3/d59/classCheat.html#aabce8a7c44d7d1de510fa56f6177fa89',1,'Cheat']]]
+  ['useupdate_21',['UseUpdate',['../d3/d59/classCheat.html#aabce8a7c44d7d1de510fa56f6177fa89',1,'Cheat']]],
+  ['utilities_22',['Utilities',['../df/de2/namespaceUtilities.html',1,'']]]
 ];

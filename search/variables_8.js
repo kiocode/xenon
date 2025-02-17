@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['opresent_0',['oPresent',['../d8/de4/classCUIService.html#a7288ae62d66659ec662fae0d6f78916a',1,'CUIService']]],
-  ['owndproc_1',['oWndProc',['../d8/de4/classCUIService.html#ac9cbaf559336410542b281141f8be1cc',1,'CUIService']]]
+  ['pbase_0',['pbase',['../d0/d6f/structManualMappingData.html#a52c72dcc09ad7f63574507e931a31afa',1,'ManualMappingData']]],
+  ['pgetprocaddress_1',['pGetProcAddress',['../d0/d6f/structManualMappingData.html#adc90f6f63790fe04dbcc94e137c0474a',1,'ManualMappingData']]],
+  ['ploadlibrarya_2',['pLoadLibraryA',['../d0/d6f/structManualMappingData.html#a7b69721cea0c18dc5a57175221627476',1,'ManualMappingData']]]
 ];

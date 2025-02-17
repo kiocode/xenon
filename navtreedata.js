@@ -26,7 +26,11 @@ var NAVTREE =
 [
   [ "Xenon", "index.html", [
     [ "Namespaces", "namespaces.html", [
-      [ "Namespace List", "namespaces.html", "namespaces_dup" ]
+      [ "Namespace List", "namespaces.html", "namespaces_dup" ],
+      [ "Namespace Members", "namespacemembers.html", [
+        [ "All", "namespacemembers.html", null ],
+        [ "Functions", "namespacemembers_func.html", null ]
+      ] ]
     ] ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
@@ -44,7 +48,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"d9/de4/classVec3.html#a9316a906e2b490aa9405bc17adc0078c"
+"d9/de4/classVec3.html#a2814580e9b9372738c0a61197ea46b51"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

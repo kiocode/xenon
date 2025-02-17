@@ -7,7 +7,5 @@ var classCAimbot =
     [ "IsTargetReached", "da/df7/classCAimbot.html#a7e509ca745d0b3da223a97af6d575805", null ],
     [ "ResetTarget", "da/df7/classCAimbot.html#a72ec2f4dc676f8bac4e4112454438028", null ],
     [ "SetTarget", "da/df7/classCAimbot.html#a4c85ae4ca15cf5514cf7d50120309c1c", null ],
-    [ "UpdateCurrentTarget", "da/df7/classCAimbot.html#a15d3f8e264789f6c3c9ab7ce40c92909", null ],
-    [ "hasLockedTarget", "da/df7/classCAimbot.html#adbff4d68fe478c96073d20fe16f5da7d", null ],
-    [ "lockedTarget", "da/df7/classCAimbot.html#a76e34c34c3652a871d6d1797189da0cf", null ]
+    [ "UpdateCurrentTarget", "da/df7/classCAimbot.html#a15d3f8e264789f6c3c9ab7ce40c92909", null ]
 ];

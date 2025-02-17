@@ -4,7 +4,6 @@ var classAimConfig =
     [ "m_fDistanceScale", "dc/d76/classAimConfig.html#a0b958bc1443bd7db85680677dc67cd02", null ],
     [ "m_fFov", "dc/d76/classAimConfig.html#a36945f862613b5ad74fe0e3f6921804a", null ],
     [ "m_fnCustomAim", "dc/d76/classAimConfig.html#ac4de010246ddbf8e870d81174c6f3915", null ],
-    [ "m_fNearest", "dc/d76/classAimConfig.html#ab7cac9e90f341eb4f8aac033e9ceede8", null ],
     [ "m_fnGetCustomAim", "dc/d76/classAimConfig.html#a8b36fb13e289126e5aca1293e6993b33", null ],
     [ "m_fRecoilTiltSpeed", "dc/d76/classAimConfig.html#a6b966ecc62552574df70eedc5c8b38ab", null ],
     [ "m_fRecoilTiltStrength", "dc/d76/classAimConfig.html#aa503017154b5ee708cc2c1ca31551e5a", null ],
@@ -14,5 +13,6 @@ var classAimConfig =
     [ "m_fSpinbotRadius", "dc/d76/classAimConfig.html#a0024bcff2de090b37dcee266c4d73f98", null ],
     [ "m_fSpinbotSpeed", "dc/d76/classAimConfig.html#a8f2f2052ac55836c409234586cbdd013", null ],
     [ "m_nAimTo", "dc/d76/classAimConfig.html#a147fca4a9129271df26eeda80beeee23", null ],
-    [ "m_nMouseInputMode", "dc/d76/classAimConfig.html#a2624b49de3b51424c6c60b8bb093e1d9", null ]
+    [ "m_nMouseInputMode", "dc/d76/classAimConfig.html#a2624b49de3b51424c6c60b8bb093e1d9", null ],
+    [ "m_nNearest", "dc/d76/classAimConfig.html#a3ffa3f4ef4de565319847703e361b983", null ]
 ];

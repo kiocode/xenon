@@ -1,7 +1,6 @@
 var classXenonVariables =
 [
     [ "g_bAimbot", "d4/d79/classXenonVariables.html#a6be5245f0cdc034ee7e7217c1f544d01", null ],
-    [ "g_bAimNearest", "d4/d79/classXenonVariables.html#a6377dd428ae46814e1b9efee0d6f36a0", null ],
     [ "g_bAutoScope", "d4/d79/classXenonVariables.html#acc028e64a5f196e9fcacc5de03d2473d", null ],
     [ "g_bAutoShoot", "d4/d79/classXenonVariables.html#a516bf8b74c3a105ee7b052ad1c571e0b", null ],
     [ "g_bBox2D", "d4/d79/classXenonVariables.html#a43c98e4ac7f21a65e6c070984803220c", null ],
@@ -13,6 +12,7 @@ var classXenonVariables =
     [ "g_bHumanize", "d4/d79/classXenonVariables.html#a1deb0febc02398bcf31d74ead7c94050", null ],
     [ "g_bLuaEditor", "d4/d79/classXenonVariables.html#ab51a491a2d49f7705a4a5468bcc3d49f", null ],
     [ "g_bMenu", "d4/d79/classXenonVariables.html#a01b20f29faa24b802eb057f8c0df28c9", null ],
+    [ "g_bNearest", "d4/d79/classXenonVariables.html#a3ba894ab9d33dc26558f61586ed6aaa7", null ],
     [ "g_bNoRecoil", "d4/d79/classXenonVariables.html#acee59ee45b8075e1a78f66166e7c8b67", null ],
     [ "g_bNoSpread", "d4/d79/classXenonVariables.html#aa43ddf37f62b6a8bdc2b54edd44e392f", null ],
     [ "g_bNotifications", "d4/d79/classXenonVariables.html#a58501e9625a5236fe47e489fb4c5ac02", null ],
