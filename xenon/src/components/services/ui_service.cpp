@@ -1032,15 +1032,15 @@ void CUIService::BeginRenderUI()
 
 	if (g_pXenon->g_pSystem->IsInternal()) {
 		switch (g_pXenon->g_pSystem->GetRenderingType()) {
-		case RenderingType::DX11:
-			ImGui_ImplDX11_NewFrame();
-			break;
-		case RenderingType::OPENGL2:
-			ImGui_ImplOpenGL2_NewFrame();
-			break;
-		case RenderingType::OPENGL3:
-			ImGui_ImplOpenGL3_NewFrame();
-			break;
+			case RenderingType::DX11:
+				ImGui_ImplDX11_NewFrame();
+				break;
+			case RenderingType::OPENGL2:
+				ImGui_ImplOpenGL2_NewFrame();
+				break;
+			case RenderingType::OPENGL3:
+				ImGui_ImplOpenGL3_NewFrame();
+				break;
 		}
 	}
 	else {

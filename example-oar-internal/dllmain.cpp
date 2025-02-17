@@ -66,9 +66,14 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 	std::shared_ptr<CWaypoints> pWaypoints = builder.xenon->g_cWaypoints;
 	std::shared_ptr<GameVariables> pGameVariables = builder.xenonConfig->g_pGameVariables;
 	std::shared_ptr<System> pSystem = builder.xenon->g_pSystem;
-
 	pSystem->IsInternal(true);
+	pSystem->IsUnrealEngine(UnrealEngineVersion::UE4);
 
+	builder.SetInfoLogLevel();
+	builder.SetConsoleEnabled();
+
+	pSystem->SetGameDimension(GameDimension::DIM_3D);
+	pSystem->SetRenderingType(RenderingType::DX11);
 	pSystem->m_fnW2S3D = [](Vec3 pos) {
 		SDK::FVector2D screenPos;
 		SDK::FVector unrealPos(pos.x, pos.z, pos.y);
@@ -79,9 +84,6 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 			return Vec2(-99, -99);
 		}
 	};
-
-	builder.SetInfoLogLevel();
-    builder.SetConsoleEnabled();
 
 	pUIConfig->m_qActions->AddSlider("Radar Zoom", &pRadarConfig->m_fZoom, 0.3, 5);
 	pUIConfig->m_qActions->AddButton("Reset Radar Zoom", [pRadarConfig]() { pRadarConfig->m_fZoom = 1; });
@@ -116,8 +118,8 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 			if (unrealTargetPos.X == 0 || unrealTargetPos.Y == 0 || unrealTargetPos.Z == 0) continue;
 
 			TargetProfile targetProfile;
-			targetProfile.m_vHeadPos3D = Vec3(unrealTargetPos.X, unrealTargetPos.Z - 100, unrealTargetPos.Y);
-			targetProfile.m_vFeetPos3D = Vec3(unrealTargetPos.X, unrealTargetPos.Z + 100, unrealTargetPos.Y);
+			targetProfile.m_vHeadPos3D = Vec3(unrealTargetPos.X, unrealTargetPos.Z + 100, unrealTargetPos.Y);
+			targetProfile.m_vFeetPos3D = Vec3(unrealTargetPos.X, unrealTargetPos.Z - 100, unrealTargetPos.Y);
 			targetProfile.m_vPos3D = Vec3(unrealTargetPos.X, unrealTargetPos.Z, unrealTargetPos.Y);
 			targetProfile.m_strName = npc->GetName();
 			targetProfile.m_fHealth = npc->Health;
