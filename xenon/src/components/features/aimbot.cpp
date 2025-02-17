@@ -10,6 +10,60 @@
 #include <xenon/core/system.hpp>
 #include <xenon/utility/utilities.hpp>
 
+// test
+//void CAimbot::Update() {
+//    if (!g_pXenonVariables->g_bAimbot) return;
+//
+//    if (!GetAsyncKeyState(VK_RBUTTON)) {
+//        hasLockedTarget = false;
+//        nearestDistance = g_pXenonVariables->g_bNearest ? g_pXenonConfigs->g_pAimConfig->m_nNearest : g_pXenonConfigs->g_pAimConfig->m_fFov;
+//        ResetTarget();
+//        return;
+//    }
+//
+//	TargetProfile nearestTarget;
+//	Vec2 screenPos;
+//	float worldDistance = 0;
+//    nearestDistance = g_pXenonVariables->g_bNearest ? g_pXenonConfigs->g_pAimConfig->m_nNearest : g_pXenonConfigs->g_pAimConfig->m_fFov;
+//
+//	for (TargetProfile& target : g_pXenonConfigs->g_pGameVariables->g_vTargets) {
+//
+//        float worldDistance = g_pXenon->g_pSystem->Is3DGame() ?
+//            target.m_vPos3D.Distance(g_pXenonConfigs->g_pGameVariables->g_vLocal.m_vPos3D) :
+//            target.m_vPos2D.Distance(g_pXenonConfigs->g_pGameVariables->g_vLocal.m_vPos2D);
+//
+//        Vec2 screenPos;
+//        switch (g_pXenonConfigs->g_pAimConfig->m_nAimTo) {
+//        case 0: // Head
+//            screenPos = g_pXenon->g_pSystem->Is3DGame()
+//                ? g_pXenon->g_pSystem->m_fnW2S3D(target.m_vHeadPos3D)
+//                : g_pXenon->g_pSystem->m_fnW2S2D(target.m_vHeadPos2D);
+//            break;
+//        case 1: // Body
+//            screenPos = g_pXenon->g_pSystem->Is3DGame()
+//                ? g_pXenon->g_pSystem->m_fnW2S3D(target.m_vPos3D)
+//                : g_pXenon->g_pSystem->m_fnW2S2D(target.m_vPos2D);
+//            break;
+//        case 2: // Feet
+//            screenPos = g_pXenon->g_pSystem->Is3DGame()
+//                ? g_pXenon->g_pSystem->m_fnW2S3D(target.m_vFeetPos3D)
+//                : g_pXenon->g_pSystem->m_fnW2S2D(target.m_vFeetPos2D);
+//            break;
+//        }
+//
+//        if (!screenPos.IsValid()) return;
+//
+//        if (worldDistance < nearestDistance) {
+//            nearestDistance = worldDistance;
+//            nearestTarget = target;
+//        }
+//    }
+//
+//    SetTarget(screenPos);
+//    AimTarget();
+//
+//}
+
 void CAimbot::UpdateCurrentTarget(TargetProfile* target) {
     if (!g_pXenonVariables->g_bAimbot) return;
 
@@ -66,7 +120,11 @@ void CAimbot::UpdateCurrentTarget(TargetProfile* target) {
         }
     }
 
-    if (!hasLockedTarget || !Utilities::ListContainsTarget(g_pXenonConfigs->g_pGameVariables->g_vTargets, lockedTarget) || (g_pXenonVariables->g_bFov && target->m_pOriginalAddress == lockedTarget.m_pOriginalAddress && !isInFov)) {
+    if (
+        !hasLockedTarget || 
+        !Utilities::ListContainsTarget(g_pXenonConfigs->g_pGameVariables->g_vTargets, lockedTarget) || 
+        (g_pXenonVariables->g_bFov && target->m_pOriginalAddress == lockedTarget.m_pOriginalAddress && !isInFov)
+    ) {
         lockedTarget = nearestTarget;
         hasLockedTarget = true;
     }

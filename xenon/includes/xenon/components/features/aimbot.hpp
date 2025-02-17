@@ -64,6 +64,7 @@ public:
      * @param target The target profile to update the current target.
      */
     void UpdateCurrentTarget(TargetProfile* target) override;
+    void Update() override;
 
 private:
     /**
