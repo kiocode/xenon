@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <windows.h>
 #include <iostream>
-
+#include <xenon/components/features/waypoints.hpp>
+#include <xenon/components/features/aimbot.hpp>
+#include <xenon/models/waypoint.hpp>
 #include <xenon/xenon.hpp>
 #include <spdlog/spdlog.h>
 
@@ -57,76 +59,46 @@ static bool FetchSDK() {
 DWORD WINAPI MainThread(LPVOID lpReserved)
 {
 
-    Builder builder("OAR internal");
-    builder.SystemVariables->IsInternal(true);
-    builder.SystemVariables->IsUnrealEngine(UnrealEngineVersion::UE4);
-    builder.SystemVariables->SetGameDimension(GameDimension::DIM_3D);
-    builder.SystemVariables->SetRenderingType(RenderingType::DX11);
-	builder.SystemVariables->m_fnW2S3D = [](Vec3 pos) {
+	Builder builder("OAR internal");
+
+	std::shared_ptr<RadarConfig> pRadarConfig = builder.xenonConfig->g_pRadarConfig;
+	std::shared_ptr<UIConfig> pUIConfig = builder.xenonConfig->g_pUIConfig;
+	std::shared_ptr<CWaypoints> pWaypoints = builder.xenon->g_cWaypoints;
+	std::shared_ptr<GameVariables> pGameVariables = builder.xenonConfig->g_pGameVariables;
+	std::shared_ptr<System> pSystem = builder.xenon->g_pSystem;
+
+	pSystem->IsInternal(true);
+
+	pSystem->m_fnW2S3D = [](Vec3 pos) {
 		SDK::FVector2D screenPos;
 		SDK::FVector unrealPos(pos.x, pos.z, pos.y);
 		if (m_pMyController->ProjectWorldLocationToScreen(unrealPos, &screenPos, false)) {
-			return new Vec2(screenPos.X, screenPos.Y);
+			return Vec2(screenPos.X, screenPos.Y);
 		}
 		else {
-			return new Vec2(-99, -99);
+			return Vec2(-99, -99);
 		}
 	};
 
 	builder.SetInfoLogLevel();
     builder.SetConsoleEnabled();
 
-	std::shared_ptr<RadarConfig> pRadarConfig = builder.Services->GetConfiguration<RadarConfig>();
-	std::shared_ptr<UIConfig> pUIConfig = builder.Services->GetConfiguration<UIConfig>();
-	std::shared_ptr<CWaypoints> pWaypoints = builder.Services->GetService<CWaypoints>();
-	
-	pUIConfig->m_vFnOverlays.push_back([builder, pWaypoints]() {
-		ImGui::Begin("OAR internal");
-
-		ImGui::Text("Engine: %p", m_pEngine);
-		ImGui::Text("World: %p", m_pWorld);
-		ImGui::Text("Controller: %p", m_pMyController);
-		ImGui::Text("Pawn: %p", m_pMyPawn);
-		ImGui::Text("Character: %p", m_pMyCharacter);
-
-		ImGui::Separator();
-
-		ImGui::Text("Targets: %d", builder.GameGlobalVariables->g_vTargets.size());
-		for (auto& target : builder.GameGlobalVariables->g_vTargets) {
-			ImGui::Text("Name: %s", target.m_strName.c_str());
-			ImGui::SameLine();
-			ImGui::Text(" - Health: %f", target.m_fHealth);
-			ImGui::Text("Pos: %f %f %f", target.m_vPos3D.x, target.m_vPos3D.y, target.m_vPos3D.z);
-		}
-
-		ImGui::End();
-
-		ImGui::Begin("Waypoints");
-
-		for (const Waypoint& waypoint : pWaypoints->GetWaypoints()) {
-			ImGui::Text("Waypoint: %s, %f, %f, %f", waypoint.m_strName.c_str(), waypoint.m_vPos3D.x, waypoint.m_vPos3D.y, waypoint.m_vPos3D.z);
-		}
-
-		ImGui::End();
-	});
-
 	pUIConfig->m_qActions->AddSlider("Radar Zoom", &pRadarConfig->m_fZoom, 0.3, 5);
 	pUIConfig->m_qActions->AddButton("Reset Radar Zoom", [pRadarConfig]() { pRadarConfig->m_fZoom = 1; });
 	pUIConfig->m_qActions->AddSlider("Radar Type", &pRadarConfig->m_nType, 0, 1);
 
-	std::shared_ptr<GameVariables> pGameVariables = builder.Services->GetConfiguration<GameVariables>();
 	pUIConfig->m_qActions->AddButton("Set Waypoint", [pGameVariables, pWaypoints]() {
 		pWaypoints->SetWaypoint("test", pGameVariables->g_vLocal.m_vPos3D, ImColor(255, 255, 255));
 	});
 
 
-	builder.GameManager->OnEvent("Update", [builder]() {
+	builder.GameManager->OnEvent("Update", [builder, pGameVariables]() {
 		if(!FetchSDK()) return;
 		
-		builder.GameGlobalVariables->g_vTargets.clear();
+		pGameVariables->g_vTargets.clear();
 
 		SDK::FVector myPos = m_pMyCharacter->K2_GetActorLocation();
-		builder.GameGlobalVariables->g_vLocal.m_vPos3D = Vec3(myPos.X, myPos.Z, myPos.Y);
+		pGameVariables->g_vLocal.m_vPos3D = Vec3(myPos.X, myPos.Z, myPos.Y);
 
 		for (int i = 0; i < SDK::UObject::GObjects->Num(); i++) {
 			SDK::UObject* obj = SDK::UObject::GObjects->GetByIndex(i);
@@ -149,19 +121,20 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 			targetProfile.m_vPos3D = Vec3(unrealTargetPos.X, unrealTargetPos.Z, unrealTargetPos.Y);
 			targetProfile.m_strName = npc->GetName();
 			targetProfile.m_fHealth = npc->Health;
-			builder.GameGlobalVariables->g_vTargets.push_back(targetProfile);
+			pGameVariables->g_vTargets.push_back(targetProfile);
 		}
 	});
 
     Cheat cheat = builder.Build();
     cheat.UseUICustom(RenderingHookType::KIERO);
     cheat.UseUIMenu();
-    cheat.UseUIRadar();
     cheat.UseUIRenderMouse();
+    /*cheat.UseUIRadar();
 	cheat.UseESPSnapline();
 	cheat.UseESPBox2D();
 	cheat.UseESPHealthBar();
-	cheat.UseUIRenderOverlays();
+	cheat.UseUIRenderOverlays();*/
+	cheat.UseUIRenderEnabledCheats();
 	cheat.UseUIQuickActions();
 	//cheat.UseAimbot();
 
