@@ -85,6 +85,9 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 		}
 	};
 
+	builder.xenonConfig->g_pAimConfig->m_fDistanceScale = 0.08;
+	builder.xenonConfig->g_pEspConfig->m_fHealthBarWidth = 35;
+
 	pUIConfig->m_qActions->AddSlider("Radar Zoom", &pRadarConfig->m_fZoom, 0.3, 5);
 	pUIConfig->m_qActions->AddButton("Reset Radar Zoom", [pRadarConfig]() { pRadarConfig->m_fZoom = 1; });
 	pUIConfig->m_qActions->AddSlider("Radar Type", &pRadarConfig->m_nType, 0, 1);
@@ -118,7 +121,8 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 			if (unrealTargetPos.X == 0 || unrealTargetPos.Y == 0 || unrealTargetPos.Z == 0) continue;
 
 			TargetProfile targetProfile;
-			targetProfile.m_vHeadPos3D = Vec3(unrealTargetPos.X, unrealTargetPos.Z + 100, unrealTargetPos.Y);
+			targetProfile.m_fWidth = 3000;
+			targetProfile.m_vHeadPos3D = Vec3(unrealTargetPos.X, unrealTargetPos.Z + 85, unrealTargetPos.Y);
 			targetProfile.m_vFeetPos3D = Vec3(unrealTargetPos.X, unrealTargetPos.Z - 100, unrealTargetPos.Y);
 			targetProfile.m_vPos3D = Vec3(unrealTargetPos.X, unrealTargetPos.Z, unrealTargetPos.Y);
 			targetProfile.m_strName = npc->GetName();
