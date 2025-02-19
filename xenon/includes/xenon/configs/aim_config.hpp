@@ -70,7 +70,7 @@ public:
 
     float m_fDistanceScale = 1;
 
-    int m_nMouseInputMode = 0;
+    int m_nMouseInputMode = 3;
 
     int m_nAimTo = 0;
 
