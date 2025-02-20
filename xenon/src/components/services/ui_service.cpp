@@ -737,13 +737,6 @@ void CUIService::UpdateUI() {
 		}
 	}
 
-	//if (g_pXenonConfigs->g_pUIConfig->m_fnCustomNotification) {
-	//	g_pXenonConfigs->g_pUIConfig->m_fnCustomNotification();
-	//}
-	//else {
-	//	RenderTopLeftNotification();
-	//}
-
 	if (g_pXenonVariables->g_bWatermark)
 	{
 		ImColor color = ImColor(255, 255, 255, 255); // or rainbow

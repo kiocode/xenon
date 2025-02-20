@@ -9,23 +9,9 @@
 #include <xenon/components/component.hpp>
 #include <ImGuiColorTextEdit/TextEditor.h>
 
-/**
- * @class CLuaService
- * @brief A service for handling Lua script execution and binding in the Xenon framework.
- *
- * The CLuaService class extends from CComponent and allows for the execution of Lua scripts
- * and binding Lua functions to the Xenon framework, providing a scripting interface for
- * game modifications and automation.
- */
 class CLuaService : public CComponent {
 public:
 
-    /**
-     * @brief Constructor for the CLuaService class.
-     *
-     * Initializes the Lua environment, sets up an exception handler for Lua errors, and
-     * registers the necessary bindings for Lua scripting functionality.
-     */
     CLuaService() {
         lua.set_exception_handler([](lua_State* L, sol::optional<const std::exception&> maybe_exception, sol::string_view description) {
             std::string error_message = "Lua exception: ";
@@ -72,36 +58,17 @@ public:
 
     }
 
-    /**
-     * @brief Executes a Lua script from a string.
-     * @param script The Lua script to execute.
-     *
-     * This method allows the execution of Lua scripts that are passed as a string.
-     * Any errors will be caught and logged via the exception handler.
-     */
     sol::protected_function_result ExecuteScript(std::string script);
 
-    /**
-     * @brief Executes a Lua script from a file.
-     * @param path The path to the Lua script file.
-     *
-     * This method executes a Lua script loaded from a file. The file path is provided
-     * as a string. Any errors encountered during execution will be caught and logged.
-     */
     void ExecuteScriptFile(std::string path);
 
     void Update() override;
 
 private:
-    sol::state lua; ///< The Lua state for managing Lua execution.
+    sol::state lua;
 
     TextEditor editor;
-    /**
-     * @brief Registers Lua bindings for Xenon framework functions.
-     *
-     * This method binds Xenon framework functions and variables to the Lua scripting
-     * environment, enabling Lua scripts to interact with the core functionality of the framework.
-     */
+
     void RegisterBinds();
 
 	void RenderLuaEditor();
