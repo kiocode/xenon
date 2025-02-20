@@ -105,9 +105,6 @@ $(document).ready(function(){initNavTree('d4/d9f/classCWaypoints.html','../../')
 </div><!--header-->
 <div class="contents">
 
-<p>A class that manages and renders waypoints in both world space and radar view.  
- <a href="../../d4/d9f/classCWaypoints.html#details">More...</a></p>
-
 <p><code>#include &lt;waypoints.hpp&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for CWaypoints:</div>
@@ -123,57 +120,40 @@ Collaboration diagram for CWaypoints:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a303073adbe70adf0c6f9a4bff1cb3c7e" id="r_a303073adbe70adf0c6f9a4bff1cb3c7e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d9f/classCWaypoints.html#a303073adbe70adf0c6f9a4bff1cb3c7e">SetWaypoint</a> (std::string title, const <a class="el" href="../../d3/d95/classVec2.html">Vec2</a> &amp;pos, ImColor color)</td></tr>
-<tr class="memdesc:a303073adbe70adf0c6f9a4bff1cb3c7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a waypoint with a title, position, and color in 2D space.  <br /></td></tr>
 <tr class="separator:a303073adbe70adf0c6f9a4bff1cb3c7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad43797051e2cfae46b1bb12ebf304ad" id="r_aad43797051e2cfae46b1bb12ebf304ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d9f/classCWaypoints.html#aad43797051e2cfae46b1bb12ebf304ad">SetWaypoint</a> (std::string title, const <a class="el" href="../../d9/de4/classVec3.html">Vec3</a> &amp;pos, ImColor color)</td></tr>
-<tr class="memdesc:aad43797051e2cfae46b1bb12ebf304ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a waypoint with a title, position, and color in 3D space.  <br /></td></tr>
 <tr class="separator:aad43797051e2cfae46b1bb12ebf304ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae43f79ac69543e985f2062f2786a24a6" id="r_ae43f79ac69543e985f2062f2786a24a6"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="../../d9/d8c/classWaypoint.html">Waypoint</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d9f/classCWaypoints.html#ae43f79ac69543e985f2062f2786a24a6">GetWaypoints</a> ()</td></tr>
-<tr class="memdesc:ae43f79ac69543e985f2062f2786a24a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the list of all set waypoints.  <br /></td></tr>
 <tr class="separator:ae43f79ac69543e985f2062f2786a24a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef78f6369a49596b253e34031a86cf6f" id="r_aef78f6369a49596b253e34031a86cf6f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d9f/classCWaypoints.html#aef78f6369a49596b253e34031a86cf6f">ClearWaypoints</a> ()</td></tr>
-<tr class="memdesc:aef78f6369a49596b253e34031a86cf6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears all the waypoints.  <br /></td></tr>
 <tr class="separator:aef78f6369a49596b253e34031a86cf6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace2d19353cc4c667702c3aebe35c7148" id="r_ace2d19353cc4c667702c3aebe35c7148"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d9f/classCWaypoints.html#ace2d19353cc4c667702c3aebe35c7148">RenderInWorld</a> ()</td></tr>
-<tr class="memdesc:ace2d19353cc4c667702c3aebe35c7148"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders the waypoints in the world space.  <br /></td></tr>
 <tr class="separator:ace2d19353cc4c667702c3aebe35c7148"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f4703c2931c63478459e357ee054937" id="r_a2f4703c2931c63478459e357ee054937"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d9f/classCWaypoints.html#a2f4703c2931c63478459e357ee054937">RenderInRadar</a> (std::function&lt; bool(ImVec2)&gt; fnIsPointInRadar, <a class="el" href="../../d3/d95/classVec2.html">Vec2</a> localPos, float defaultScale, float radarSize, float zoomFactor, ImVec2 radarCenter)</td></tr>
-<tr class="memdesc:a2f4703c2931c63478459e357ee054937"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders the waypoints on the radar, using 2D positions.  <br /></td></tr>
 <tr class="separator:a2f4703c2931c63478459e357ee054937"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa18955f21576f81459d1be98ef775e5d" id="r_aa18955f21576f81459d1be98ef775e5d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d9f/classCWaypoints.html#aa18955f21576f81459d1be98ef775e5d">RenderInRadar</a> (std::function&lt; bool(ImVec2)&gt; fnIsPointInRadar, <a class="el" href="../../d9/de4/classVec3.html">Vec3</a> localPos, float defaultScale, float radarSize, float zoomFactor, ImVec2 radarCenter)</td></tr>
-<tr class="memdesc:aa18955f21576f81459d1be98ef775e5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders the waypoints on the radar, using 3D positions.  <br /></td></tr>
 <tr class="separator:aa18955f21576f81459d1be98ef775e5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16ae9e8544fc618c596d6b758862f876" id="r_a16ae9e8544fc618c596d6b758862f876"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d9f/classCWaypoints.html#a16ae9e8544fc618c596d6b758862f876">Update</a> () override</td></tr>
-<tr class="memdesc:a16ae9e8544fc618c596d6b758862f876"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the waypoints during each game cycle.  <br /></td></tr>
 <tr class="separator:a16ae9e8544fc618c596d6b758862f876"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classCComponent"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classCComponent')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d4/da1/classCComponent.html">CComponent</a></td></tr>
 <tr class="memitem:ac9bf36b35de54f49a3d604da091228a4 inherit pub_methods_classCComponent" id="r_ac9bf36b35de54f49a3d604da091228a4"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/da1/classCComponent.html#ac9bf36b35de54f49a3d604da091228a4">Init</a> ()</td></tr>
-<tr class="memdesc:ac9bf36b35de54f49a3d604da091228a4 inherit pub_methods_classCComponent"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual method to initialize the component.  <br /></td></tr>
 <tr class="separator:ac9bf36b35de54f49a3d604da091228a4 inherit pub_methods_classCComponent"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3e0a108b9cc7677248540fa79d3782d inherit pub_methods_classCComponent" id="r_ae3e0a108b9cc7677248540fa79d3782d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/da1/classCComponent.html#ae3e0a108b9cc7677248540fa79d3782d">UpdateCurrentTarget</a> (<a class="el" href="../../db/d59/classTargetProfile.html">TargetProfile</a> *target)</td></tr>
-<tr class="memdesc:ae3e0a108b9cc7677248540fa79d3782d inherit pub_methods_classCComponent"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual method to update the current target.  <br /></td></tr>
 <tr class="separator:ae3e0a108b9cc7677248540fa79d3782d inherit pub_methods_classCComponent"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af2ad4d80f616aedbf6b08f33bdd9d2d5 inherit pub_methods_classCComponent" id="r_af2ad4d80f616aedbf6b08f33bdd9d2d5"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/da1/classCComponent.html#af2ad4d80f616aedbf6b08f33bdd9d2d5">~CComponent</a> ()=default</td></tr>
-<tr class="memdesc:af2ad4d80f616aedbf6b08f33bdd9d2d5 inherit pub_methods_classCComponent"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor for the <a class="el" href="../../d4/da1/classCComponent.html" title="A base class for components in the Xenon system.">CComponent</a> class.  <br /></td></tr>
 <tr class="separator:af2ad4d80f616aedbf6b08f33bdd9d2d5 inherit pub_methods_classCComponent"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_attribs_classCComponent"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classCComponent')"><img src="../../closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="../../d4/da1/classCComponent.html">CComponent</a></td></tr>
 <tr class="memitem:a808804ff7c7ff10faa3c644f0617e4d3 inherit pub_attribs_classCComponent" id="r_a808804ff7c7ff10faa3c644f0617e4d3"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../de/dba/classXenon.html">Xenon</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/da1/classCComponent.html#a808804ff7c7ff10faa3c644f0617e4d3">g_pXenon</a></td></tr>
-<tr class="memdesc:a808804ff7c7ff10faa3c644f0617e4d3 inherit pub_attribs_classCComponent"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shared pointer to the <a class="el" href="../../de/dba/classXenon.html">Xenon</a> core instance.  <br /></td></tr>
 <tr class="separator:a808804ff7c7ff10faa3c644f0617e4d3 inherit pub_attribs_classCComponent"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e4c7b3ee7e943fc35f5edafcdb4d737 inherit pub_attribs_classCComponent" id="r_a0e4c7b3ee7e943fc35f5edafcdb4d737"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../d4/d79/classXenonVariables.html">XenonVariables</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/da1/classCComponent.html#a0e4c7b3ee7e943fc35f5edafcdb4d737">g_pXenonVariables</a></td></tr>
-<tr class="memdesc:a0e4c7b3ee7e943fc35f5edafcdb4d737 inherit pub_attribs_classCComponent"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shared pointer to the <a class="el" href="../../de/dba/classXenon.html">Xenon</a> variables instance.  <br /></td></tr>
 <tr class="separator:a0e4c7b3ee7e943fc35f5edafcdb4d737 inherit pub_attribs_classCComponent"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90962aecca21e7199b1db4c14e662f5d inherit pub_attribs_classCComponent" id="r_a90962aecca21e7199b1db4c14e662f5d"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../d8/dd1/classXenonConfig.html">XenonConfig</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/da1/classCComponent.html#a90962aecca21e7199b1db4c14e662f5d">g_pXenonConfigs</a></td></tr>
-<tr class="memdesc:a90962aecca21e7199b1db4c14e662f5d inherit pub_attribs_classCComponent"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shared pointer to the <a class="el" href="../../de/dba/classXenon.html">Xenon</a> configuration instance.  <br /></td></tr>
 <tr class="separator:a90962aecca21e7199b1db4c14e662f5d inherit pub_attribs_classCComponent"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A class that manages and renders waypoints in both world space and radar view. </p>
-<p>The <a class="el" href="../../d4/d9f/classCWaypoints.html" title="A class that manages and renders waypoints in both world space and radar view.">CWaypoints</a> class extends from <a class="el" href="../../d4/da1/classCComponent.html" title="A base class for components in the Xenon system.">CComponent</a> and provides functionality for storing, rendering, and interacting with waypoints in a game or application. It supports both world and radar views, allowing waypoints to be set in 2D or 3D space. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+<h2 class="groupheader">Member Function Documentation</h2>
 <a id="aef78f6369a49596b253e34031a86cf6f" name="aef78f6369a49596b253e34031a86cf6f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aef78f6369a49596b253e34031a86cf6f">&#9670;&#160;</a></span>ClearWaypoints()</h2>
 
@@ -188,9 +168,6 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Clears all the waypoints. </p>
-<p>This method removes all waypoints from the list, effectively clearing the stored waypoints. </p>
 
 </div>
 </div>
@@ -208,10 +185,6 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Retrieves the list of all set waypoints. </p>
-<dl class="section return"><dt>Returns</dt><dd>A vector containing all waypoints.</dd></dl>
-<p>This method returns a list of all the waypoints that have been set and stored. </p>
 
 </div>
 </div>
@@ -265,20 +238,6 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Renders the waypoints on the radar, using 2D positions. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">fnIsPointInRadar</td><td>A function that checks if a given point is within the radar's view. </td></tr>
-    <tr><td class="paramname">localPos</td><td>The 2D position of the waypoints relative to the radar's center. </td></tr>
-    <tr><td class="paramname">defaultScale</td><td>The default scale of the waypoints on the radar. </td></tr>
-    <tr><td class="paramname">radarSize</td><td>The size of the radar. </td></tr>
-    <tr><td class="paramname">zoomFactor</td><td>The current zoom level of the radar. </td></tr>
-    <tr><td class="paramname">radarCenter</td><td>The center of the radar view.</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>This method draws the waypoints on the radar view in 2D, considering zoom and radar size. </p>
-
 </div>
 </div>
 <a id="aa18955f21576f81459d1be98ef775e5d" name="aa18955f21576f81459d1be98ef775e5d"></a>
@@ -331,20 +290,6 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Renders the waypoints on the radar, using 3D positions. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">fnIsPointInRadar</td><td>A function that checks if a given point is within the radar's view. </td></tr>
-    <tr><td class="paramname">localPos</td><td>The 3D position of the waypoints relative to the radar's center. </td></tr>
-    <tr><td class="paramname">defaultScale</td><td>The default scale of the waypoints on the radar. </td></tr>
-    <tr><td class="paramname">radarSize</td><td>The size of the radar. </td></tr>
-    <tr><td class="paramname">zoomFactor</td><td>The current zoom level of the radar. </td></tr>
-    <tr><td class="paramname">radarCenter</td><td>The center of the radar view.</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>This method draws the waypoints on the radar view in 3D, considering zoom and radar size. </p>
-
 </div>
 </div>
 <a id="ace2d19353cc4c667702c3aebe35c7148" name="ace2d19353cc4c667702c3aebe35c7148"></a>
@@ -361,9 +306,6 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Renders the waypoints in the world space. </p>
-<p>This method is responsible for drawing the waypoints within the game world, making them visible in 3D or 2D depending on the context. </p>
 
 </div>
 </div>
@@ -399,17 +341,6 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Sets a waypoint with a title, position, and color in 2D space. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">title</td><td>The title of the waypoint. </td></tr>
-    <tr><td class="paramname">pos</td><td>The 2D position of the waypoint. </td></tr>
-    <tr><td class="paramname">color</td><td>The color of the waypoint.</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>This method adds a 2D waypoint with the specified attributes to the waypoint list. </p>
-
 </div>
 </div>
 <a id="aad43797051e2cfae46b1bb12ebf304ad" name="aad43797051e2cfae46b1bb12ebf304ad"></a>
@@ -444,17 +375,6 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Sets a waypoint with a title, position, and color in 3D space. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">title</td><td>The title of the waypoint. </td></tr>
-    <tr><td class="paramname">pos</td><td>The 3D position of the waypoint. </td></tr>
-    <tr><td class="paramname">color</td><td>The color of the waypoint.</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>This method adds a 3D waypoint with the specified attributes to the waypoint list. </p>
-
 </div>
 </div>
 <a id="a16ae9e8544fc618c596d6b758862f876" name="a16ae9e8544fc618c596d6b758862f876"></a>
@@ -479,9 +399,6 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Updates the waypoints during each game cycle. </p>
-<p>This method updates the waypoints, checking for any changes that need to be applied to the waypoints or their rendering state. </p>
 
 <p>Reimplemented from <a class="el" href="../../d4/da1/classCComponent.html#a95eac92b576c4d07d911e1e2dec99c0a">CComponent</a>.</p>
 

@@ -105,9 +105,6 @@ $(document).ready(function(){initNavTree('d6/d45/classCMemoryService.html','../.
 </div><!--header-->
 <div class="contents">
 
-<p>A service for interacting with a game's process memory.  
- <a href="../../d6/d45/classCMemoryService.html#details">More...</a></p>
-
 <p><code>#include &lt;memory_service.hpp&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for CMemoryService:</div>
@@ -123,62 +120,44 @@ Collaboration diagram for CMemoryService:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:abcd9a5fa7234a66d0c796745df9438c9" id="r_abcd9a5fa7234a66d0c796745df9438c9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d45/classCMemoryService.html#abcd9a5fa7234a66d0c796745df9438c9">AttachGame</a> (std::string path)</td></tr>
-<tr class="memdesc:abcd9a5fa7234a66d0c796745df9438c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attaches to a game process using its executable path.  <br /></td></tr>
 <tr class="separator:abcd9a5fa7234a66d0c796745df9438c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acfc6f42cc3754b929b98a8b87953325b" id="r_acfc6f42cc3754b929b98a8b87953325b"><td class="memItemLeft" align="right" valign="top">const std::uintptr_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d45/classCMemoryService.html#acfc6f42cc3754b929b98a8b87953325b">GetModuleAddress</a> (const std::string_view moduleName) const noexcept</td></tr>
-<tr class="memdesc:acfc6f42cc3754b929b98a8b87953325b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the base address of a module loaded into the game's process.  <br /></td></tr>
 <tr class="separator:acfc6f42cc3754b929b98a8b87953325b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9de9846c23b0aeb799fca7460f4969fd" id="r_a9de9846c23b0aeb799fca7460f4969fd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d45/classCMemoryService.html#a9de9846c23b0aeb799fca7460f4969fd">DeattachGame</a> ()</td></tr>
-<tr class="memdesc:a9de9846c23b0aeb799fca7460f4969fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Detaches from the game process.  <br /></td></tr>
 <tr class="separator:a9de9846c23b0aeb799fca7460f4969fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a230b136071c86679fae9b120743bd36a" id="r_a230b136071c86679fae9b120743bd36a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d45/classCMemoryService.html#a230b136071c86679fae9b120743bd36a">IsGameRunning</a> () const noexcept</td></tr>
-<tr class="memdesc:a230b136071c86679fae9b120743bd36a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the game process is currently running.  <br /></td></tr>
 <tr class="separator:a230b136071c86679fae9b120743bd36a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72c7d284951da41493513d78575d6b10" id="r_a72c7d284951da41493513d78575d6b10"><td class="memItemLeft" align="right" valign="top">uintptr_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d45/classCMemoryService.html#a72c7d284951da41493513d78575d6b10">ReadPointer</a> (const std::uintptr_t &amp;address)</td></tr>
-<tr class="memdesc:a72c7d284951da41493513d78575d6b10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads a value from memory at the given address.  <br /></td></tr>
 <tr class="separator:a72c7d284951da41493513d78575d6b10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ff14e0169b4b0891c8434a93f6d49ee" id="r_a6ff14e0169b4b0891c8434a93f6d49ee"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d45/classCMemoryService.html#a6ff14e0169b4b0891c8434a93f6d49ee">WritePointer</a> (const std::uintptr_t &amp;address, const uintptr_t &amp;value)</td></tr>
-<tr class="memdesc:a6ff14e0169b4b0891c8434a93f6d49ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes a value to memory at the given address.  <br /></td></tr>
 <tr class="separator:a6ff14e0169b4b0891c8434a93f6d49ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adbcb3d55886410b92ffdaa9106849cbc" id="r_adbcb3d55886410b92ffdaa9106849cbc"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:adbcb3d55886410b92ffdaa9106849cbc"><td class="memTemplItemLeft" align="right" valign="top">constexpr const T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d6/d45/classCMemoryService.html#adbcb3d55886410b92ffdaa9106849cbc">Read</a> (const std::uintptr_t &amp;address) const noexcept</td></tr>
-<tr class="memdesc:adbcb3d55886410b92ffdaa9106849cbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads a value of type <code>T</code> from memory at the given address.  <br /></td></tr>
 <tr class="separator:adbcb3d55886410b92ffdaa9106849cbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab427e433863e2c1fbb777fdacb1a18af" id="r_ab427e433863e2c1fbb777fdacb1a18af"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ab427e433863e2c1fbb777fdacb1a18af"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d6/d45/classCMemoryService.html#ab427e433863e2c1fbb777fdacb1a18af">Write</a> (const std::uintptr_t &amp;address, const T &amp;value) const noexcept</td></tr>
-<tr class="memdesc:ab427e433863e2c1fbb777fdacb1a18af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes a value of type <code>T</code> to memory at the given address.  <br /></td></tr>
 <tr class="separator:ab427e433863e2c1fbb777fdacb1a18af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classCComponent"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classCComponent')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d4/da1/classCComponent.html">CComponent</a></td></tr>
 <tr class="memitem:ac9bf36b35de54f49a3d604da091228a4 inherit pub_methods_classCComponent" id="r_ac9bf36b35de54f49a3d604da091228a4"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/da1/classCComponent.html#ac9bf36b35de54f49a3d604da091228a4">Init</a> ()</td></tr>
-<tr class="memdesc:ac9bf36b35de54f49a3d604da091228a4 inherit pub_methods_classCComponent"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual method to initialize the component.  <br /></td></tr>
 <tr class="separator:ac9bf36b35de54f49a3d604da091228a4 inherit pub_methods_classCComponent"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95eac92b576c4d07d911e1e2dec99c0a inherit pub_methods_classCComponent" id="r_a95eac92b576c4d07d911e1e2dec99c0a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/da1/classCComponent.html#a95eac92b576c4d07d911e1e2dec99c0a">Update</a> ()</td></tr>
-<tr class="memdesc:a95eac92b576c4d07d911e1e2dec99c0a inherit pub_methods_classCComponent"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual method to update the component.  <br /></td></tr>
 <tr class="separator:a95eac92b576c4d07d911e1e2dec99c0a inherit pub_methods_classCComponent"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3e0a108b9cc7677248540fa79d3782d inherit pub_methods_classCComponent" id="r_ae3e0a108b9cc7677248540fa79d3782d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/da1/classCComponent.html#ae3e0a108b9cc7677248540fa79d3782d">UpdateCurrentTarget</a> (<a class="el" href="../../db/d59/classTargetProfile.html">TargetProfile</a> *target)</td></tr>
-<tr class="memdesc:ae3e0a108b9cc7677248540fa79d3782d inherit pub_methods_classCComponent"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual method to update the current target.  <br /></td></tr>
 <tr class="separator:ae3e0a108b9cc7677248540fa79d3782d inherit pub_methods_classCComponent"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af2ad4d80f616aedbf6b08f33bdd9d2d5 inherit pub_methods_classCComponent" id="r_af2ad4d80f616aedbf6b08f33bdd9d2d5"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/da1/classCComponent.html#af2ad4d80f616aedbf6b08f33bdd9d2d5">~CComponent</a> ()=default</td></tr>
-<tr class="memdesc:af2ad4d80f616aedbf6b08f33bdd9d2d5 inherit pub_methods_classCComponent"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor for the <a class="el" href="../../d4/da1/classCComponent.html" title="A base class for components in the Xenon system.">CComponent</a> class.  <br /></td></tr>
 <tr class="separator:af2ad4d80f616aedbf6b08f33bdd9d2d5 inherit pub_methods_classCComponent"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_attribs_classCComponent"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classCComponent')"><img src="../../closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="../../d4/da1/classCComponent.html">CComponent</a></td></tr>
 <tr class="memitem:a808804ff7c7ff10faa3c644f0617e4d3 inherit pub_attribs_classCComponent" id="r_a808804ff7c7ff10faa3c644f0617e4d3"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../de/dba/classXenon.html">Xenon</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/da1/classCComponent.html#a808804ff7c7ff10faa3c644f0617e4d3">g_pXenon</a></td></tr>
-<tr class="memdesc:a808804ff7c7ff10faa3c644f0617e4d3 inherit pub_attribs_classCComponent"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shared pointer to the <a class="el" href="../../de/dba/classXenon.html">Xenon</a> core instance.  <br /></td></tr>
 <tr class="separator:a808804ff7c7ff10faa3c644f0617e4d3 inherit pub_attribs_classCComponent"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e4c7b3ee7e943fc35f5edafcdb4d737 inherit pub_attribs_classCComponent" id="r_a0e4c7b3ee7e943fc35f5edafcdb4d737"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../d4/d79/classXenonVariables.html">XenonVariables</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/da1/classCComponent.html#a0e4c7b3ee7e943fc35f5edafcdb4d737">g_pXenonVariables</a></td></tr>
-<tr class="memdesc:a0e4c7b3ee7e943fc35f5edafcdb4d737 inherit pub_attribs_classCComponent"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shared pointer to the <a class="el" href="../../de/dba/classXenon.html">Xenon</a> variables instance.  <br /></td></tr>
 <tr class="separator:a0e4c7b3ee7e943fc35f5edafcdb4d737 inherit pub_attribs_classCComponent"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90962aecca21e7199b1db4c14e662f5d inherit pub_attribs_classCComponent" id="r_a90962aecca21e7199b1db4c14e662f5d"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../d8/dd1/classXenonConfig.html">XenonConfig</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/da1/classCComponent.html#a90962aecca21e7199b1db4c14e662f5d">g_pXenonConfigs</a></td></tr>
-<tr class="memdesc:a90962aecca21e7199b1db4c14e662f5d inherit pub_attribs_classCComponent"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shared pointer to the <a class="el" href="../../de/dba/classXenon.html">Xenon</a> configuration instance.  <br /></td></tr>
 <tr class="separator:a90962aecca21e7199b1db4c14e662f5d inherit pub_attribs_classCComponent"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A service for interacting with a game's process memory. </p>
-<p>The <a class="el" href="../../d6/d45/classCMemoryService.html" title="A service for interacting with a game&#39;s process memory.">CMemoryService</a> class provides methods for attaching to a game's process, reading from and writing to its memory, and managing the game's process lifecycle. It is essential for tasks like modifying game values, reading game state, and interfacing with the game at the memory level. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+<h2 class="groupheader">Member Function Documentation</h2>
 <a id="abcd9a5fa7234a66d0c796745df9438c9" name="abcd9a5fa7234a66d0c796745df9438c9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abcd9a5fa7234a66d0c796745df9438c9">&#9670;&#160;</a></span>AttachGame()</h2>
 
@@ -194,15 +173,6 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Attaches to a game process using its executable path. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">path</td><td>The absolute path to the game's executable.</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>This method finds and attaches the current process to the game specified by the given path. It allows the framework to manipulate the game's memory. </p>
 
 </div>
 </div>
@@ -220,9 +190,6 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Detaches from the game process. </p>
-<p>This method detaches the framework from the currently attached game process, releasing any resources associated with the process. </p>
 
 </div>
 </div>
@@ -250,16 +217,6 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Retrieves the base address of a module loaded into the game's process. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">moduleName</td><td>The name of the module (e.g., "game.exe"). </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The base address of the module.</dd></dl>
-<p>This function retrieves the base address of a specified module loaded within the game's process, which can be used to read or write memory from/to the module. </p>
-
 </div>
 </div>
 <a id="a230b136071c86679fae9b120743bd36a" name="a230b136071c86679fae9b120743bd36a"></a>
@@ -284,10 +241,6 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Checks if the game process is currently running. </p>
-<dl class="section return"><dt>Returns</dt><dd><code>true</code> if the game process is running, <code>false</code> otherwise.</dd></dl>
-<p>This function checks the current state of the game process to determine if it is still running. </p>
 
 </div>
 </div>
@@ -317,16 +270,6 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Reads a value of type <code>T</code> from memory at the given address. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">address</td><td>The memory address to read from. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The value of type <code>T</code> stored at the specified address.</dd></dl>
-<p>This function reads the memory at the given address and returns it as a value of type <code>T</code>. The value is read using the <code>ReadProcessMemory</code> API. </p>
-
 </div>
 </div>
 <a id="a72c7d284951da41493513d78575d6b10" name="a72c7d284951da41493513d78575d6b10"></a>
@@ -344,16 +287,6 @@ template&lt;typename T &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Reads a value from memory at the given address. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">address</td><td>The memory address to read from. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The value stored at the specified address.</dd></dl>
-<p>This function reads raw memory from the game's process at the given address and returns the value stored there. </p>
 
 </div>
 </div>
@@ -393,16 +326,6 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Writes a value of type <code>T</code> to memory at the given address. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">address</td><td>The memory address to write to. </td></tr>
-    <tr><td class="paramname">value</td><td>The value to write to memory.</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>This function writes the provided value of type <code>T</code> to the game's memory at the specified address using the <code>WriteProcessMemory</code> API. </p>
-
 </div>
 </div>
 <a id="a6ff14e0169b4b0891c8434a93f6d49ee" name="a6ff14e0169b4b0891c8434a93f6d49ee"></a>
@@ -430,16 +353,6 @@ template&lt;typename T &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Writes a value to memory at the given address. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">address</td><td>The memory address to write to. </td></tr>
-    <tr><td class="paramname">value</td><td>The value to write to memory.</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>This function writes a value to the game's memory at the specified address. </p>
 
 </div>
 </div>

@@ -4,7 +4,7 @@ digraph "UIConfig"
   bgcolor="transparent";
   edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
   node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
-  Node1 [id="Node000001",label="UIConfig",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip="Configuration settings for the user interface."];
+  Node1 [id="Node000001",label="UIConfig",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip=" "];
   Node2 -> Node1 [id="edge1_Node000001_Node000002",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" m_qActions",fontcolor="grey" ];
   Node2 [id="Node000002",label="QuickActions",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$d6/d31/classQuickActions.html",tooltip=" "];
 }
