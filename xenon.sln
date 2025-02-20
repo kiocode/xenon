@@ -11,13 +11,15 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example-ddnet-external", "e
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example-oar-internal", "example-oar-internal\example-oar-internal.vcxproj", "{2C9E8447-CBB7-4348-B3D5-876C1BEE8B42}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example-assaultcube-externalx86", "example-assaultcube-externalx86\example-assaultcube-externalx86.vcxproj", "{D9EFA3CC-92AB-4FFD-92A3-0D4E5CA91BC6}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example-assaultcube-external", "example-assaultcube-externalx86\example-assaultcube-externalx86.vcxproj", "{D9EFA3CC-92AB-4FFD-92A3-0D4E5CA91BC6}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example-amongus-internal", "example-amongus-internal\example-amongus-internal.vcxproj", "{42DCA240-DB78-4FF1-8AC7-3DB9A73AC32B}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example-auto-injector", "example-auto-injector\example-auto-injector.vcxproj", "{E8FECB4E-0E55-4FD8-8401-D96BAE058C38}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example-redmatch2-internal", "example-redmatch2-internal\example-redmatch2-internal.vcxproj", "{938A056E-C465-4CA1-9373-191F1DD3A729}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example-marvelrivals-internal", "example-marvelrivals-internal\example-marvelrivals-internal.vcxproj", "{11344668-C2CA-48E2-99C3-DEC745FD8665}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -125,6 +127,18 @@ Global
 		{938A056E-C465-4CA1-9373-191F1DD3A729}.Release|x64.Build.0 = Release|x64
 		{938A056E-C465-4CA1-9373-191F1DD3A729}.Release|x86.ActiveCfg = Release|Win32
 		{938A056E-C465-4CA1-9373-191F1DD3A729}.Release|x86.Build.0 = Release|Win32
+		{11344668-C2CA-48E2-99C3-DEC745FD8665}.Debug|ARM.ActiveCfg = Debug|x64
+		{11344668-C2CA-48E2-99C3-DEC745FD8665}.Debug|ARM.Build.0 = Debug|x64
+		{11344668-C2CA-48E2-99C3-DEC745FD8665}.Debug|x64.ActiveCfg = Debug|x64
+		{11344668-C2CA-48E2-99C3-DEC745FD8665}.Debug|x64.Build.0 = Debug|x64
+		{11344668-C2CA-48E2-99C3-DEC745FD8665}.Debug|x86.ActiveCfg = Debug|Win32
+		{11344668-C2CA-48E2-99C3-DEC745FD8665}.Debug|x86.Build.0 = Debug|Win32
+		{11344668-C2CA-48E2-99C3-DEC745FD8665}.Release|ARM.ActiveCfg = Release|x64
+		{11344668-C2CA-48E2-99C3-DEC745FD8665}.Release|ARM.Build.0 = Release|x64
+		{11344668-C2CA-48E2-99C3-DEC745FD8665}.Release|x64.ActiveCfg = Release|x64
+		{11344668-C2CA-48E2-99C3-DEC745FD8665}.Release|x64.Build.0 = Release|x64
+		{11344668-C2CA-48E2-99C3-DEC745FD8665}.Release|x86.ActiveCfg = Release|Win32
+		{11344668-C2CA-48E2-99C3-DEC745FD8665}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

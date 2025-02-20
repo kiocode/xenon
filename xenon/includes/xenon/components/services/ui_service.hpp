@@ -8,6 +8,7 @@
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_win32.h>
 #include <imgui/imgui_impl_dx11.h>
+#include <imgui/imgui_impl_dx12.h>
 #include <imgui/imgui_impl_opengl2.h>
 #include <imgui/imgui_impl_opengl3.h>
 
@@ -135,12 +136,14 @@ private:
     IDXGISwapChain* m_pSwapChain = nullptr; ///< The DirectX swap chain used for rendering.
     D3D_FEATURE_LEVEL m_dLevel{}; ///< The Direct3D feature level.
 
-    ID3D11Device* m_pDevice = nullptr; ///< The Direct3D device.
-    ID3D11DeviceContext* m_pContext = nullptr; ///< The Direct3D device context.
-    ID3D11RenderTargetView* m_pMainRenderTargetView = nullptr; ///< The render target view.
+    ID3D11Device* m_pDeviceDX11 = nullptr; ///< The Direct3D device.
+    ID3D11DeviceContext* m_pContextDX11 = nullptr; ///< The Direct3D device context.
+    ID3D11RenderTargetView* m_pMainRenderTargetViewDX11 = nullptr; ///< The render target view.
 
-    ID3D11DepthStencilState* m_pNoDepthStencilState = nullptr; ///< The depth stencil state with no depth.
-    ID3D11DepthStencilState* m_pDefaultDepthStencilState = nullptr; ///< The default depth stencil state.
+    ID3D12Device* m_pDeviceDX12 = nullptr; ///< The Direct3D device.
+
+    ID3D11DepthStencilState* m_pNoDepthStencilStateDX11 = nullptr; ///< The depth stencil state with no depth.
+    ID3D11DepthStencilState* m_pDefaultDepthStencilStateDX11 = nullptr; ///< The default depth stencil state.
 
     ImFont* m_pMainFont = nullptr; ///< Font used for rendering the UI.
     ImFont* m_pBiggerMainFont = nullptr; ///< Font used for rendering the UI.

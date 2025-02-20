@@ -31,18 +31,18 @@ void CUIService::Update() {
 }
 
 bool CUIService::InitPresent(IDXGISwapChain* pSwapChain) {
-	if (!SUCCEEDED(pSwapChain->GetDevice(__uuidof(ID3D11Device), (void**)&m_pDevice)))
+	if (!SUCCEEDED(pSwapChain->GetDevice(__uuidof(ID3D11Device), (void**)&m_pDeviceDX11)))
 	{
 		return false;
 	}
 
-	m_pDevice->GetImmediateContext(&m_pContext);
+	m_pDeviceDX11->GetImmediateContext(&m_pContextDX11);
 	DXGI_SWAP_CHAIN_DESC sd;
 	pSwapChain->GetDesc(&sd);
 	m_hWindow = sd.OutputWindow;
 	ID3D11Texture2D* pBackBuffer = nullptr;
 	pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
-	m_pDevice->CreateRenderTargetView(pBackBuffer, NULL, &m_pMainRenderTargetView);
+	m_pDeviceDX11->CreateRenderTargetView(pBackBuffer, NULL, &m_pMainRenderTargetViewDX11);
 	pBackBuffer->Release();
 
 	oWndProc = (WNDPROC)SetWindowLongPtrA(m_hWindow, GWLP_WNDPROC, (LONG_PTR)WndProc);
@@ -880,9 +880,9 @@ bool CUIService::CreateDeviceUI() {
 		D3D11_SDK_VERSION,
 		&sd,
 		&m_pSwapChain,
-		&m_pDevice,
+		&m_pDeviceDX11,
 		&m_dLevel,
-		&m_pContext
+		&m_pContextDX11
 	);
 
 	if (FAILED(hr)) {
@@ -894,7 +894,7 @@ bool CUIService::CreateDeviceUI() {
 	m_pSwapChain->GetBuffer(0U, IID_PPV_ARGS(&back_buffer));
 
 	if (back_buffer) {
-		m_pDevice->CreateRenderTargetView(back_buffer, nullptr, &m_pMainRenderTargetView);
+		m_pDeviceDX11->CreateRenderTargetView(back_buffer, nullptr, &m_pMainRenderTargetViewDX11);
 		back_buffer->Release();
 		return true;
 	}
@@ -918,39 +918,45 @@ void CUIService::ResetDeviceUI()
 {
 
 	switch (g_pXenon->g_pSystem->GetRenderingType()) {
-	case RenderingType::DX11:
-		ImGui_ImplDX11_InvalidateDeviceObjects();
-		break;
-	case RenderingType::OPENGL2:
-		ImGui_ImplOpenGL2_DestroyDeviceObjects();
-		break;
-	case RenderingType::OPENGL3:
-		ImGui_ImplOpenGL3_DestroyDeviceObjects();
-		break;
+		case RenderingType::DX11:
+			ImGui_ImplDX11_InvalidateDeviceObjects();
+			break;		
+		case RenderingType::DX12:
+			ImGui_ImplDX12_InvalidateDeviceObjects();
+			break;
+		case RenderingType::OPENGL2:
+			ImGui_ImplOpenGL2_DestroyDeviceObjects();
+			break;
+		case RenderingType::OPENGL3:
+			ImGui_ImplOpenGL3_DestroyDeviceObjects();
+			break;
 	}
 
 	DestroyDeviceUI();
 
 	switch (g_pXenon->g_pSystem->GetRenderingType()) {
-	case RenderingType::DX11:
-		ImGui_ImplDX11_CreateDeviceObjects();
-		break;
-	case RenderingType::OPENGL2:
-		ImGui_ImplOpenGL2_CreateDeviceObjects();
-		break;
-	case RenderingType::OPENGL3:
-		ImGui_ImplOpenGL3_CreateDeviceObjects();
-		break;
+		case RenderingType::DX11:
+			ImGui_ImplDX11_CreateDeviceObjects();
+			break;
+		case RenderingType::DX12:
+			ImGui_ImplDX12_CreateDeviceObjects();
+			break;
+		case RenderingType::OPENGL2:
+			ImGui_ImplOpenGL2_CreateDeviceObjects();
+			break;
+		case RenderingType::OPENGL3:
+			ImGui_ImplOpenGL3_CreateDeviceObjects();
+			break;
 	}
 
 }
 
 void CUIService::DestroyDeviceUI()
 {
-	if (m_pDevice)
+	if (m_pDeviceDX11)
 	{
-		m_pDevice->Release();
-		m_pDevice = nullptr;
+		m_pDeviceDX11->Release();
+		m_pDeviceDX11 = nullptr;
 	}
 
 	if (m_pSwapChain)
@@ -972,19 +978,22 @@ void CUIService::CreateImGuiUI()
 	if (g_pXenon->g_pSystem->IsInternal()) {
 
 		switch (g_pXenon->g_pSystem->GetRenderingType()) {
-		case RenderingType::DX11:
-			ImGui_ImplDX11_Init(m_pDevice, m_pContext);
-			break;
-		case RenderingType::OPENGL2:
-			ImGui_ImplOpenGL2_Init();
-			break;
-		case RenderingType::OPENGL3:
-			ImGui_ImplOpenGL3_Init();
-			break;
+			case RenderingType::DX11:
+				ImGui_ImplDX11_Init(m_pDeviceDX11, m_pContextDX11);
+				break;
+			case RenderingType::DX12:
+				//ImGui_ImplDX12_Init();
+				break;
+			case RenderingType::OPENGL2:
+				ImGui_ImplOpenGL2_Init();
+				break;
+			case RenderingType::OPENGL3:
+				ImGui_ImplOpenGL3_Init();
+				break;
 		}
 	}
 	else {
-		ImGui_ImplDX11_Init(m_pDevice, m_pContext);
+		ImGui_ImplDX11_Init(m_pDeviceDX11, m_pContextDX11);
 	}
 
 
@@ -1013,16 +1022,16 @@ void CUIService::DestroyImGuiUI()
 		m_pSwapChain->Release();
 	}
 
-	if (m_pContext) {
-		m_pContext->Release();
+	if (m_pContextDX11) {
+		m_pContextDX11->Release();
 	}
 
-	if (m_pDevice) {
-		m_pDevice->Release();
+	if (m_pDeviceDX11) {
+		m_pDeviceDX11->Release();
 	}
 
-	if (m_pMainRenderTargetView) {
-		m_pMainRenderTargetView->Release();
+	if (m_pMainRenderTargetViewDX11) {
+		m_pMainRenderTargetViewDX11->Release();
 	}
 
 }
@@ -1034,6 +1043,9 @@ void CUIService::BeginRenderUI()
 		switch (g_pXenon->g_pSystem->GetRenderingType()) {
 			case RenderingType::DX11:
 				ImGui_ImplDX11_NewFrame();
+				break;
+			case RenderingType::DX12:
+				ImGui_ImplDX12_NewFrame();
 				break;
 			case RenderingType::OPENGL2:
 				ImGui_ImplOpenGL2_NewFrame();
@@ -1063,7 +1075,7 @@ void CUIService::BeginRenderUI()
 
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
-	m_pContext->OMSetDepthStencilState(m_pNoDepthStencilState, 0);
+	m_pContextDX11->OMSetDepthStencilState(m_pNoDepthStencilStateDX11, 0);
 
 }
 
@@ -1074,7 +1086,7 @@ void CUIService::InitializeDepthStencilStates() {
 	noDepthStencilDesc.DepthFunc = D3D11_COMPARISON_ALWAYS;
 	noDepthStencilDesc.StencilEnable = FALSE;
 
-	HRESULT hr = m_pDevice->CreateDepthStencilState(&noDepthStencilDesc, &m_pNoDepthStencilState);
+	HRESULT hr = m_pDeviceDX11->CreateDepthStencilState(&noDepthStencilDesc, &m_pNoDepthStencilStateDX11);
 	if (FAILED(hr)) {
 		return;
 	}
@@ -1085,7 +1097,7 @@ void CUIService::InitializeDepthStencilStates() {
 	defaultDepthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
 	defaultDepthStencilDesc.StencilEnable = FALSE;
 
-	hr = m_pDevice->CreateDepthStencilState(&defaultDepthStencilDesc, &m_pDefaultDepthStencilState);
+	hr = m_pDeviceDX11->CreateDepthStencilState(&defaultDepthStencilDesc, &m_pDefaultDepthStencilStateDX11);
 	if (FAILED(hr)) {
 		return;
 	}
@@ -1093,16 +1105,16 @@ void CUIService::InitializeDepthStencilStates() {
 
 void CUIService::EndRenderUI()
 {
-	m_pContext->OMSetDepthStencilState(m_pDefaultDepthStencilState, 0);
+	m_pContextDX11->OMSetDepthStencilState(m_pDefaultDepthStencilStateDX11, 0);
 
 	ImGui::EndFrame();
 
 	ImGui::Render();
 
-	m_pContext->OMSetRenderTargets(1U, &m_pMainRenderTargetView, nullptr);
+	m_pContextDX11->OMSetRenderTargets(1U, &m_pMainRenderTargetViewDX11, nullptr);
 	if (!g_pXenon->g_pSystem->IsInternal()) {
 		constexpr float color[4] = { 0.f, 0.f, 0.f, 0.f };
-		m_pContext->ClearRenderTargetView(m_pMainRenderTargetView, color);
+		m_pContextDX11->ClearRenderTargetView(m_pMainRenderTargetViewDX11, color);
 	}
 
 	if (g_pXenon->g_pSystem->IsInternal()) {
