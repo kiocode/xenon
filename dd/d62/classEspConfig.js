@@ -16,8 +16,10 @@ var classEspConfig =
     [ "m_cSkeleton", "dd/d62/classEspConfig.html#a028908367cff9fd382c8940db2ca57cb", null ],
     [ "m_cSnapline", "dd/d62/classEspConfig.html#ae6ecc4f32809b5fc6e30a2c99f720630", null ],
     [ "m_fHealthBarWidth", "dd/d62/classEspConfig.html#af8f7d4150d7d95610b8a8fa8cbe64ced", null ],
-    [ "m_fnGetBoneScreenPosFromIndex", "dd/d62/classEspConfig.html#a8d308248da96576171203dd01869c8be", null ],
+    [ "m_fnGetBoneScreenPosFromIndex2D", "dd/d62/classEspConfig.html#a58ac7d96621f7e60324ae2ba9d73ae56", null ],
+    [ "m_fnGetBoneScreenPosFromIndex3D", "dd/d62/classEspConfig.html#a9c947dac56e86a8a3fba5381d59d116e", null ],
     [ "m_nBox2DType", "dd/d62/classEspConfig.html#a24d63b2e45d20f9b0b001b1ab7df1880", null ],
+    [ "m_nLimitDistance", "dd/d62/classEspConfig.html#acc5517047e5953904878df7952dfabf4", null ],
     [ "m_nSnaplineTypeEnd", "dd/d62/classEspConfig.html#aae0cd50ff841ce19b3539c5aa718b633", null ],
     [ "m_nSnaplineTypeStart", "dd/d62/classEspConfig.html#a684d74a0e7d703fd612d5f94109de195", null ],
     [ "m_tBonePairs", "dd/d62/classEspConfig.html#a5e4b42d61cd8c8cb55a8a44f47ff6f6d", null ]
