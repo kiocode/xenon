@@ -113,6 +113,7 @@ void Game::Update() {
 	for (TargetProfile& target : m_pXenonConfigs->g_pGameVariables->g_vTargets) {
 		TriggerEvent("UpdateCurrentTarget", &target);
 
+		float distance = 0;
 		if (m_pXenon->g_pSystem->Is3DGame()) {
 
 			if (!m_pXenon->g_pSystem->m_fnW2S3D) {
@@ -122,6 +123,8 @@ void Game::Update() {
 			else if (!m_pXenon->g_pSystem->m_fnW2S3D(target.m_vPos3D).IsValid()) {
 				continue;
 			}
+
+			distance = target.m_vPos3D.Distance(m_pXenonConfigs->g_pGameVariables->g_vLocal.m_vPos3D);
 
 		}
 		else {
@@ -133,6 +136,8 @@ void Game::Update() {
 			else if (!m_pXenon->g_pSystem->m_fnW2S2D(target.m_vPos2D).IsValid()) {
 				continue;
 			}
+
+			distance = target.m_vPos2D.Distance(m_pXenonConfigs->g_pGameVariables->g_vLocal.m_vPos2D);
 
 		}
 

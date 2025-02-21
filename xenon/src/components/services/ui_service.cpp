@@ -391,6 +391,7 @@ void CUIService::RenderDefaultMenu() {
 								ImGui::ColorEdit4("Box3D", (float*)&g_pXenonConfigs->g_pEspConfig->m_cBox3D, ImGuiColorEditFlags_NoInputs);
 								ImGui::ColorEdit4("Box3D Distance", (float*)&g_pXenonConfigs->g_pEspConfig->m_cBox3DDistance, ImGuiColorEditFlags_NoInputs);
 								ImGui::ColorEdit4("Box3D Name", (float*)&g_pXenonConfigs->g_pEspConfig->m_cBox3DName, ImGuiColorEditFlags_NoInputs);
+								ImGui::ColorEdit4("Skeleton", (float*)&g_pXenonConfigs->g_pEspConfig->m_cSkeleton, ImGuiColorEditFlags_NoInputs);
 								ImGui::ColorEdit4("Healthbar Background", (float*)&g_pXenonConfigs->g_pEspConfig->m_cHealthBarBg, ImGuiColorEditFlags_NoInputs);
 								ImGui::ColorEdit4("Healthbar Foreground", (float*)&g_pXenonConfigs->g_pEspConfig->m_cHealthBarFilled, ImGuiColorEditFlags_NoInputs);
 								ImGui::ColorEdit4("Healthbar Text", (float*)&g_pXenonConfigs->g_pEspConfig->m_cHealthBarText, ImGuiColorEditFlags_NoInputs);

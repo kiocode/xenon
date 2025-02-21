@@ -6,6 +6,8 @@
 class AimConfig {
 public:
 
+    int m_nLimitDistance = 0;
+
     int m_nNearest = 500;
 
     float m_fSmooth = 10;

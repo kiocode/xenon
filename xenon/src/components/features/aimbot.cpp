@@ -27,12 +27,12 @@ void CAimbot::Update() {
     for (TargetProfile& target : g_pXenonConfigs->g_pGameVariables->g_vTargets) {
         if(target.m_pOriginalAddress == g_pXenonConfigs->g_pGameVariables->g_vLocal.m_pOriginalAddress) continue;
 
-        float distance = 9999;
+        float distance = g_pXenon->g_pSystem->Is3DGame() ?
+            target.m_vPos3D.Distance(g_pXenonConfigs->g_pGameVariables->g_vLocal.m_vPos3D) :
+            target.m_vPos2D.Distance(g_pXenonConfigs->g_pGameVariables->g_vLocal.m_vPos2D);
         
-        if (g_pXenonVariables->g_bNearest) {
-            distance = g_pXenon->g_pSystem->Is3DGame() ?
-                target.m_vPos3D.Distance(g_pXenonConfigs->g_pGameVariables->g_vLocal.m_vPos3D) :
-                target.m_vPos2D.Distance(g_pXenonConfigs->g_pGameVariables->g_vLocal.m_vPos2D);
+        if (g_pXenonConfigs->g_pAimConfig->m_nLimitDistance != 0 && distance >= g_pXenonConfigs->g_pAimConfig->m_nLimitDistance) {
+            continue;
         }
 
         Vec2 screenPos;

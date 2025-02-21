@@ -7,6 +7,14 @@
 void CEsp::UpdateCurrentTarget(TargetProfile* target) {
 	if (!g_pXenonVariables->g_bEsp) return;
 
+	float distance = g_pXenon->g_pSystem->Is3DGame() ?
+		target->m_vPos3D.Distance(g_pXenonConfigs->g_pGameVariables->g_vLocal.m_vPos3D) :
+		target->m_vPos2D.Distance(g_pXenonConfigs->g_pGameVariables->g_vLocal.m_vPos2D);
+
+	if (g_pXenonConfigs->g_pEspConfig->m_nLimitDistance != 0 && distance >= g_pXenonConfigs->g_pEspConfig->m_nLimitDistance) {
+		return;
+	}
+
 	if (g_pXenonVariables->g_bSnapline) {
 		RenderSnapline(target);
 	}
@@ -131,7 +139,9 @@ void CEsp::Render3DBox(TargetProfile* target) const {
 
 void CEsp::RenderSkeleton(TargetProfile* target) const {
 
-	if (!g_pXenonConfigs->g_pEspConfig->m_tBonePairs.empty() || !g_pXenonConfigs->g_pEspConfig->m_fnGetBoneScreenPosFromIndex) {
+	if (g_pXenonConfigs->g_pEspConfig->m_tBonePairs.empty() ||
+		(!g_pXenonConfigs->g_pEspConfig->m_fnGetBoneScreenPosFromIndex3D && !g_pXenonConfigs->g_pEspConfig->m_fnGetBoneScreenPosFromIndex2D)
+	) {
 		spdlog::error("No bone pairs or bone getter function set");
 		return;
 	}
@@ -141,20 +151,53 @@ void CEsp::RenderSkeleton(TargetProfile* target) const {
 		const int bone1Index = pair.first;
 		const int bone2Index = pair.second;
 
-		const Vec2 boneLoc1 = g_pXenonConfigs->g_pEspConfig->m_fnGetBoneScreenPosFromIndex(bone1Index);
-		const Vec2 boneLoc2 = g_pXenonConfigs->g_pEspConfig->m_fnGetBoneScreenPosFromIndex(bone2Index);
+		if (g_pXenon->g_pSystem->Is3DGame()) {
 
-		float bone1X = boneLoc1.x;
-		float bone1Y = boneLoc1.y;
-		float bone2X = boneLoc2.x;
-		float bone2Y = boneLoc2.y;
+			Vec3 boneLoc1World = g_pXenonConfigs->g_pEspConfig->m_fnGetBoneScreenPosFromIndex3D(bone1Index);
+			Vec3 boneLoc2World = g_pXenonConfigs->g_pEspConfig->m_fnGetBoneScreenPosFromIndex3D(bone2Index);
 
-		ImGui::GetBackgroundDrawList()->AddLine(
-			ImVec2(bone1X, bone1Y),
-			ImVec2(bone2X, bone2Y),
-			g_pXenonConfigs->g_pEspConfig->m_cSkeleton,
-			1.0f
-		);
+			Vec2 boneLoc1 = g_pXenon->g_pSystem->m_fnW2S3D(boneLoc1World);
+			Vec2 boneLoc2 = g_pXenon->g_pSystem->m_fnW2S3D(boneLoc2World);
+
+			if(!boneLoc1.IsValid() || !boneLoc2.IsValid()) continue;
+
+			float bone1X = boneLoc1.x;
+			float bone1Y = boneLoc1.y;
+			float bone2X = boneLoc2.x;
+			float bone2Y = boneLoc2.y;
+
+			ImGui::GetBackgroundDrawList()->AddLine(
+				ImVec2(bone1X, bone1Y),
+				ImVec2(bone2X, bone2Y),
+				g_pXenonConfigs->g_pEspConfig->m_cSkeleton,
+				1.0f
+			);
+
+		}
+		else {
+
+			Vec2 boneLoc1World = g_pXenonConfigs->g_pEspConfig->m_fnGetBoneScreenPosFromIndex2D(bone1Index);
+			Vec2 boneLoc2World = g_pXenonConfigs->g_pEspConfig->m_fnGetBoneScreenPosFromIndex2D(bone2Index);
+
+			Vec2 boneLoc1 = g_pXenon->g_pSystem->m_fnW2S2D(boneLoc1World);
+			Vec2 boneLoc2 = g_pXenon->g_pSystem->m_fnW2S2D(boneLoc2World);
+
+			if (!boneLoc1.IsValid() || !boneLoc2.IsValid()) continue;
+
+			float bone1X = boneLoc1.x;
+			float bone1Y = boneLoc1.y;
+			float bone2X = boneLoc2.x;
+			float bone2Y = boneLoc2.y;
+
+			ImGui::GetBackgroundDrawList()->AddLine(
+				ImVec2(bone1X, bone1Y),
+				ImVec2(bone2X, bone2Y),
+				g_pXenonConfigs->g_pEspConfig->m_cSkeleton,
+				1.0f
+			);
+		}
+
+		
 	}
 
 }

@@ -10,18 +10,6 @@ void Cheat::Run() {
 
     if (m_pXenon->g_pSystem->IsInternal()) {
 
-        //if (m_pXenon->g_pSystem->g_bIL2CPPResolver) {
-        //    if (IL2CPP::Initialize(true)) {
-        //        spdlog::info("Il2Cpp initialize success.");
-        //    }
-        //    else {
-        //        spdlog::error("Il2Cpp initialize failed.");
-        //        Sleep(300);
-        //        exit(0);
-        //    }
-        //    if (!FetchSDK()) return;
-        //}
-
         spdlog::info("Internal cheat initialized");
 
         switch (m_pXenonVariables->g_renderingType) {
