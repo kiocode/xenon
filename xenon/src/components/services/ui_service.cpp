@@ -31,19 +31,34 @@ void CUIService::Update() {
 }
 
 bool CUIService::InitPresent(IDXGISwapChain* pSwapChain) {
-	if (!SUCCEEDED(pSwapChain->GetDevice(__uuidof(ID3D11Device), (void**)&m_pDeviceDX11)))
-	{
-		return false;
-	}
 
-	m_pDeviceDX11->GetImmediateContext(&m_pContextDX11);
-	DXGI_SWAP_CHAIN_DESC sd;
-	pSwapChain->GetDesc(&sd);
-	m_hWindow = sd.OutputWindow;
-	ID3D11Texture2D* pBackBuffer = nullptr;
-	pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
-	m_pDeviceDX11->CreateRenderTargetView(pBackBuffer, NULL, &m_pMainRenderTargetViewDX11);
-	pBackBuffer->Release();
+	switch (g_pXenon->g_pSystem->GetRenderingType()) {
+		case RenderingType::DX11: {
+			if (!SUCCEEDED(pSwapChain->GetDevice(__uuidof(ID3D11Device), (void**)&m_pDeviceDX11)))
+			{
+				return false;
+			}
+
+			m_pDeviceDX11->GetImmediateContext(&m_pContextDX11);
+			DXGI_SWAP_CHAIN_DESC sd;
+			pSwapChain->GetDesc(&sd);
+			m_hWindow = sd.OutputWindow;
+			ID3D11Texture2D* pBackBuffer = nullptr;
+			pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
+			m_pDeviceDX11->CreateRenderTargetView(pBackBuffer, NULL, &m_pMainRenderTargetViewDX11);
+			pBackBuffer->Release();
+			break;
+		}
+		case RenderingType::DX12: {
+			break;
+		}
+		case RenderingType::OPENGL2: {
+			break;
+		}
+		case RenderingType::OPENGL3: {
+			break;
+		}
+	}
 
 	oWndProc = (WNDPROC)SetWindowLongPtrA(m_hWindow, GWLP_WNDPROC, (LONG_PTR)WndProc);
 
@@ -258,6 +273,7 @@ void CUIService::RenderDefaultMenu() {
 								if (g_pXenonVariables->g_bAimbot) {
 									ImGui::Indent(10);
 
+									ImGui::Checkbox("Aim Only Visible", &g_pXenonConfigs->g_pAimConfig->m_bOnlyVisible, g_pXenonConfigs->g_pUIConfig->m_cMenuBg, g_pXenonConfigs->g_pUIConfig->m_cMenuAccent, g_pXenonConfigs->g_pUIConfig->m_cMenuOff);
 									ImGui::Combo("Aim To", &g_pXenonConfigs->g_pAimConfig->m_nAimTo, "Head\0Body\0Feet");
 
 									ImGui::Checkbox("Nearest", &g_pXenonVariables->g_bNearest, g_pXenonConfigs->g_pUIConfig->m_cMenuBg, g_pXenonConfigs->g_pUIConfig->m_cMenuAccent, g_pXenonConfigs->g_pUIConfig->m_cMenuOff);
@@ -334,6 +350,8 @@ void CUIService::RenderDefaultMenu() {
 								ImGui::Checkbox("ESP", &g_pXenonVariables->g_bEsp, g_pXenonConfigs->g_pUIConfig->m_cMenuBg, g_pXenonConfigs->g_pUIConfig->m_cMenuAccent, g_pXenonConfigs->g_pUIConfig->m_cMenuOff);
 								if (g_pXenonVariables->g_bEsp) {
 									ImGui::Indent(10);
+
+									ImGui::Checkbox("Render Only Visible", &g_pXenonConfigs->g_pEspConfig->m_bOnlyVisible, g_pXenonConfigs->g_pUIConfig->m_cMenuBg, g_pXenonConfigs->g_pUIConfig->m_cMenuAccent, g_pXenonConfigs->g_pUIConfig->m_cMenuOff);
 
 									ImGui::Checkbox("Healthbar", &g_pXenonVariables->g_bHealthBar, g_pXenonConfigs->g_pUIConfig->m_cMenuBg, g_pXenonConfigs->g_pUIConfig->m_cMenuAccent, g_pXenonConfigs->g_pUIConfig->m_cMenuOff);
 									ImGui::Checkbox("Snapline", &g_pXenonVariables->g_bSnapline, g_pXenonConfigs->g_pUIConfig->m_cMenuBg, g_pXenonConfigs->g_pUIConfig->m_cMenuAccent, g_pXenonConfigs->g_pUIConfig->m_cMenuOff);
@@ -659,7 +677,6 @@ void CUIService::RenderMouse() {
 
 void CUIService::RenderDefaultUIQuickActions() {
 
-
 	if (ImGui::Begin("QuickActions", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoBackground)) {
 
 		float width = 490;
@@ -976,7 +993,7 @@ void CUIService::CreateImGuiUI()
 				ImGui_ImplDX11_Init(m_pDeviceDX11, m_pContextDX11);
 				break;
 			case RenderingType::DX12:
-				//ImGui_ImplDX12_Init();
+				ImGui_ImplDX12_Init(m_pDeviceDX12, m_nBuffersCounts, DXGI_FORMAT_R8G8B8A8_UNORM, m_pDescriptorHeapImGuiRender, m_pDescriptorHeapImGuiRender->GetCPUDescriptorHandleForHeapStart(), m_pDescriptorHeapImGuiRender->GetGPUDescriptorHandleForHeapStart());
 				break;
 			case RenderingType::OPENGL2:
 				ImGui_ImplOpenGL2_Init();
@@ -1000,6 +1017,9 @@ void CUIService::DestroyImGuiUI()
 	switch (g_pXenon->g_pSystem->GetRenderingType()) {
 	case RenderingType::DX11:
 		ImGui_ImplDX11_Shutdown();
+		break;
+	case RenderingType::DX12:
+		ImGui_ImplDX12_Shutdown();
 		break;
 	case RenderingType::OPENGL2:
 		ImGui_ImplOpenGL2_Shutdown();
@@ -1099,34 +1119,42 @@ void CUIService::InitializeDepthStencilStates() {
 
 void CUIService::EndRenderUI()
 {
+
 	m_pContextDX11->OMSetDepthStencilState(m_pDefaultDepthStencilStateDX11, 0);
 
 	ImGui::EndFrame();
 
 	ImGui::Render();
 
-	m_pContextDX11->OMSetRenderTargets(1U, &m_pMainRenderTargetViewDX11, nullptr);
-	if (!g_pXenon->g_pSystem->IsInternal()) {
-		constexpr float color[4] = { 0.f, 0.f, 0.f, 0.f };
-		m_pContextDX11->ClearRenderTargetView(m_pMainRenderTargetViewDX11, color);
-	}
-
 	if (g_pXenon->g_pSystem->IsInternal()) {
 
 		switch (g_pXenon->g_pSystem->GetRenderingType()) {
-		case RenderingType::DX11:
-			ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-			break;
-		case RenderingType::OPENGL2:
-			ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
-			break;
-		case RenderingType::OPENGL3:
-			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-			break;
+			case RenderingType::DX11: {
+				m_pContextDX11->OMSetRenderTargets(1U, &m_pMainRenderTargetViewDX11, nullptr);
+				ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+				break;
+			}
+			case RenderingType::DX12:
+				ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), nullptr);
+				break;
+			case RenderingType::OPENGL2:
+				ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
+				break;
+			case RenderingType::OPENGL3:
+				ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+				break;
+			default:
+				spdlog::error("Invalid rendering type");
+				return;
 		}
 
 	}
 	else {
+		constexpr float color[4] = { 0.f, 0.f, 0.f, 0.f };
+		m_pContextDX11->ClearRenderTargetView(m_pMainRenderTargetViewDX11, color);
+
+		m_pContextDX11->OMSetRenderTargets(1U, &m_pMainRenderTargetViewDX11, nullptr);
+
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 	}
 

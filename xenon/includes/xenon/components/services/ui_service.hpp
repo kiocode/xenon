@@ -3,6 +3,7 @@
 #include <memory>
 #include <Windows.h>
 #include <d3d11.h>
+#include <d3d12.h>
 #include <dxgi.h>
 
 #include <imgui/imgui.h>
@@ -89,6 +90,8 @@ private:
     ID3D11RenderTargetView* m_pMainRenderTargetViewDX11 = nullptr;
 
     ID3D12Device* m_pDeviceDX12 = nullptr; 
+    ID3D12DescriptorHeap* m_pDescriptorHeapImGuiRender;
+    uint8_t m_nBuffersCounts = -1;
 
     ID3D11DepthStencilState* m_pNoDepthStencilStateDX11 = nullptr;
     ID3D11DepthStencilState* m_pDefaultDepthStencilStateDX11 = nullptr; 

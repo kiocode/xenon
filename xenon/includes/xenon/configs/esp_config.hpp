@@ -19,6 +19,8 @@ public:
     bool m_bTextInHealthBar = true;
     float m_fHealthBarWidth = 25;
 
+    bool m_bOnlyVisible = false;
+
     ImColor m_cSnapline = ImColor(255, 255, 255, 255);
     ImColor m_cBox2D = ImColor(255, 255, 255, 255);
     ImColor m_cBox2DDistance = ImColor(0, 0, 0, 255);

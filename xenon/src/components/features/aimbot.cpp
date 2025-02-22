@@ -25,7 +25,7 @@ void CAimbot::Update() {
     nearestDistance = g_pXenonVariables->g_bNearest ? g_pXenonConfigs->g_pAimConfig->m_nNearest : g_pXenonConfigs->g_pAimConfig->m_fFov;
 
     for (TargetProfile& target : g_pXenonConfigs->g_pGameVariables->g_vTargets) {
-        if(target.m_pOriginalAddress == g_pXenonConfigs->g_pGameVariables->g_vLocal.m_pOriginalAddress) continue;
+        if((g_pXenonConfigs->g_pAimConfig->m_bOnlyVisible && !target.m_bVisible) || target.m_pOriginalAddress == g_pXenonConfigs->g_pGameVariables->g_vLocal.m_pOriginalAddress) continue;
 
         float distance = g_pXenon->g_pSystem->Is3DGame() ?
             target.m_vPos3D.Distance(g_pXenonConfigs->g_pGameVariables->g_vLocal.m_vPos3D) :

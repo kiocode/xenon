@@ -5,7 +5,7 @@
 #include <xenon/core/system.hpp>
 
 void CEsp::UpdateCurrentTarget(TargetProfile* target) {
-	if (!g_pXenonVariables->g_bEsp) return;
+	if (!g_pXenonVariables->g_bEsp || (g_pXenonConfigs->g_pEspConfig->m_bOnlyVisible && !target->m_bVisible)) return;
 
 	float distance = g_pXenon->g_pSystem->Is3DGame() ?
 		target->m_vPos3D.Distance(g_pXenonConfigs->g_pGameVariables->g_vLocal.m_vPos3D) :

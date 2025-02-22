@@ -21,7 +21,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example-redmatch2-internal"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example-marvelrivals-internal", "example-marvelrivals-internal\example-marvelrivals-internal.vcxproj", "{11344668-C2CA-48E2-99C3-DEC745FD8665}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example-odh-internal", "example-odh-internal\example-odh-internal.vcxproj", "{D86CCD02-5029-42AC-8189-05469731DBF9}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example-ohd-internal", "example-ohd-internal\example-ohd-internal.vcxproj", "{D86CCD02-5029-42AC-8189-05469731DBF9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -64,7 +64,7 @@ static bool FetchSDK() {
 DWORD WINAPI MainThread(LPVOID lpReserved)
 {
 
-	Builder builder("OAR internal");
+	Builder builder("Marvel Rivals internal");
 
 	std::shared_ptr<RadarConfig> pRadarConfig = builder.xenonConfig->g_pRadarConfig;
 	std::shared_ptr<UIConfig> pUIConfig = builder.xenonConfig->g_pUIConfig;

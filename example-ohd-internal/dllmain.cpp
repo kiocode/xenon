@@ -4,7 +4,7 @@
 #include <xenon/xenon.hpp>
 
 // test variables
-float width = 4000;
+float width = 160000;
 float head = 62;
 float feet = -102;
 float scale = 0.01;
@@ -13,8 +13,6 @@ DWORD WINAPI MainThread(LPVOID lpReserved) {
     // going to use xenon there
 
     Builder builder("OHD Example");
-    builder.SetConsoleEnabled();
-    builder.SetInfoLogLevel();
 
     std::shared_ptr<GameVariables> pGameVariables = builder.xenonConfig->g_pGameVariables;
     std::shared_ptr<EspConfig> pEspConfig= builder.xenonConfig->g_pEspConfig;
@@ -27,6 +25,10 @@ DWORD WINAPI MainThread(LPVOID lpReserved) {
     pSystem->IsUnrealEngine(UnrealEngineVersion::UE4);
     pSystem->SetGameDimension(GameDimension::DIM_3D);
     pSystem->SetRenderingType(RenderingType::DX11);
+
+    builder.SetInfoLogLevel();
+    builder.SetConsoleEnabled();
+
     pSystem->m_fnW2S3D = [](Vec3 pos) {
         SDK::FVector2D screenPos; // <-- result
         SDK::FVector unrealPos(pos.x, pos.z, pos.y);
@@ -40,8 +42,8 @@ DWORD WINAPI MainThread(LPVOID lpReserved) {
 
     // set configurations
     pAimConfig->m_fDistanceScale = 0.06f;
-    pAimConfig->m_nLimitDistance = 50000;
-    pEspConfig->m_nLimitDistance = 50000;
+    pAimConfig->m_nLimitDistance = 100000;
+    pEspConfig->m_nLimitDistance = 100000;
     pEspConfig->m_fHealthBarWidth = 40;
 
     pEspConfig->m_fnGetBoneScreenPosFromIndex3D = [](int index) {
@@ -114,7 +116,7 @@ DWORD WINAPI MainThread(LPVOID lpReserved) {
     };
 
     // SET DEBUG VALUES
-	pUIConfig->m_qActions->AddSlider("Width", &width, 10, 80000);
+	pUIConfig->m_qActions->AddSlider("Width", &width, 100000, 300000);
     pUIConfig->m_qActions->AddSlider("Head", &head, 0, 900);
     pUIConfig->m_qActions->AddSlider("Feet", &feet, -900, 0);
     pUIConfig->m_qActions->AddSlider("Distance scale", &pAimConfig->m_fDistanceScale, 0.001, 2);
