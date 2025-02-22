@@ -3,6 +3,7 @@ var classEspConfig =
     [ "m_bDistanceInBox", "dd/d62/classEspConfig.html#ad4089dd1f0c82606a6daa9a0bbe8815b", null ],
     [ "m_bHealthBar", "dd/d62/classEspConfig.html#afe5e397478e42ea9bbdb2d9ec34ecc7f", null ],
     [ "m_bNameInBox", "dd/d62/classEspConfig.html#a6250ee7b534117cfdfc6a95f2f64a81c", null ],
+    [ "m_bOnlyVisible", "dd/d62/classEspConfig.html#aee78d7a262cfdc64ec78a369ecf39b71", null ],
     [ "m_bTextInHealthBar", "dd/d62/classEspConfig.html#a0f530cd73416739b03fc455894d7ffcf", null ],
     [ "m_cBox2D", "dd/d62/classEspConfig.html#ac1a273192952420f5c018db67bc69d9d", null ],
     [ "m_cBox2DDistance", "dd/d62/classEspConfig.html#a8ba8f106242f0b5283769db182dc60c4", null ],
