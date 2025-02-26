@@ -34,3 +34,4 @@
 .vs/
 build/
 lib64-build/
+example-vrising-internal/VRisingDump/il2cpp.h
