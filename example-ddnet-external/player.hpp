@@ -10,4 +10,5 @@ public:
 	int gametick;
 	bool frozen;
 	Vec2 pos;
+	Vec2 vel;
 };

@@ -19,8 +19,12 @@ public:
     int m_nMouseInputMode = 3;
     int m_nAimTo = 0;
 
+    bool m_bPredictPosition = false;
+    float m_fPredictionTime = 0.1;
+
     bool m_bOnlyVisible = false;   
 
+    bool m_bTriggerWithKey = true;
     int m_nAimKey = VK_RBUTTON;
 
     ImColor m_cFov = ImColor(255, 255, 255, 255);

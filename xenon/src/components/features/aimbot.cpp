@@ -18,7 +18,7 @@
 void CAimbot::Update() {
     if (!g_pXenonVariables->g_bAimbot) return;
 
-    if (!GetAsyncKeyState(g_pXenonConfigs->g_pAimConfig->m_nAimKey)) {
+    if (g_pXenonConfigs->g_pAimConfig->m_bTriggerWithKey && !GetAsyncKeyState(g_pXenonConfigs->g_pAimConfig->m_nAimKey)) {
         hasLockedTarget = false;
         nearestDistance = g_pXenonVariables->g_bNearest ? g_pXenonConfigs->g_pAimConfig->m_nNearest : g_pXenonConfigs->g_pAimConfig->m_fFov;
         ResetTarget();
@@ -83,18 +83,32 @@ void CAimbot::Update() {
 
     Vec2 lockedScreenPos;
     if (g_pXenon->g_pSystem->Is3DGame()) {
+        Vec3 targetPos;
         switch (g_pXenonConfigs->g_pAimConfig->m_nAimTo) {
-            case 0: lockedScreenPos = g_pXenon->g_pSystem->m_fnW2S3D(lockedTarget.m_vHeadPos3D); break;
-            case 1: lockedScreenPos = g_pXenon->g_pSystem->m_fnW2S3D(lockedTarget.m_vPos3D); break;
-            case 2: lockedScreenPos = g_pXenon->g_pSystem->m_fnW2S3D(lockedTarget.m_vFeetPos3D); break;
+            case 0: targetPos = lockedTarget.m_vHeadPos3D; break;
+            case 1: targetPos = lockedTarget.m_vPos3D; break;
+            case 2: targetPos = lockedTarget.m_vFeetPos3D; break;
         }
+
+        if (g_pXenonConfigs->g_pAimConfig->m_bPredictPosition) {
+            targetPos += lockedTarget.m_vVelocity3D * g_pXenonConfigs->g_pAimConfig->m_fPredictionTime;
+        }
+
+        lockedScreenPos = g_pXenon->g_pSystem->m_fnW2S3D(targetPos);
     }
     else {
+        Vec2 targetPos;
         switch (g_pXenonConfigs->g_pAimConfig->m_nAimTo) {
-            case 0: lockedScreenPos = g_pXenon->g_pSystem->m_fnW2S2D(lockedTarget.m_vHeadPos2D); break;
-            case 1: lockedScreenPos = g_pXenon->g_pSystem->m_fnW2S2D(lockedTarget.m_vPos2D); break;
-            case 2: lockedScreenPos = g_pXenon->g_pSystem->m_fnW2S2D(lockedTarget.m_vFeetPos2D); break;
+            case 0: targetPos = lockedTarget.m_vHeadPos2D; break;
+            case 1: targetPos = lockedTarget.m_vPos2D; break;
+            case 2: targetPos = lockedTarget.m_vFeetPos2D; break;
         }
+
+        if (g_pXenonConfigs->g_pAimConfig->m_bPredictPosition) {
+            targetPos += lockedTarget.m_vVelocity2D * g_pXenonConfigs->g_pAimConfig->m_fPredictionTime;
+        }
+
+        lockedScreenPos = g_pXenon->g_pSystem->m_fnW2S2D(targetPos);
     }
 
     if (!lockedScreenPos.IsValid()) return;

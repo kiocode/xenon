@@ -13,6 +13,7 @@ struct offsets {
 	uintptr_t onlinePlayers;
 	uintptr_t gametick;
 	uintptr_t playerPos;
+	uintptr_t playerVel;
 
 	uintptr_t staticClientAddr;
 	uintptr_t aimPos;
@@ -20,7 +21,7 @@ struct offsets {
 
 struct offsets offsets;
 
-bool ddper = true;
+bool ddper = false;
 
 static void AddConfigurations(Builder& builder) {
 
@@ -34,6 +35,8 @@ static void AddConfigurations(Builder& builder) {
 	pRadarConfig->m_bTargetsName = true;
 
 	std::shared_ptr<AimConfig> pAimConfig = builder.xenonConfig->g_pAimConfig;
+	pAimConfig->m_bPredictPosition = true;
+	pAimConfig->m_fPredictionTime = 0.016;
 	std::shared_ptr<EspConfig> pESPConfig = builder.xenonConfig->g_pEspConfig;
 	pESPConfig->m_bHealthBar = true;
 
@@ -45,6 +48,7 @@ static void AddConfigurations(Builder& builder) {
 
 		for (const auto &target : builder.xenonConfig->g_pGameVariables->g_vTargets) {
 			ImGui::Text("Position: %f, %f", target.m_vPos2D.x, target.m_vPos2D.y);
+			ImGui::Text("Vel: %f, %f", target.m_vVelocity2D.x, target.m_vVelocity2D.y);
 		}
 
 		ImGui::Separator();
@@ -77,6 +81,7 @@ int main()
 		offsets.onlinePlayers = 0x2098;
 		offsets.gametick = 0x20D4 + 0x0;
 		offsets.playerPos = 0x20D4 + 0xE8;
+		offsets.playerVel= 0x20D4 + 0xC;
 
 		offsets.staticClientAddr = 0x460A80;
 		offsets.aimPos = 0x10;
@@ -86,7 +91,8 @@ int main()
 		offsets.idLocalPlayer = 0x22E0;
 		offsets.onlinePlayers = 0x22E4;
 		offsets.gametick = 0x2318 + 0x4;
-		offsets.playerPos = 0x2318 + 0xEC;
+		offsets.playerPos = 0x2318 + 0x4 + 0xEC;
+		offsets.playerVel = 0x2318 + 0xC;
 
 		offsets.staticClientAddr = 0x3F35C0;
 		offsets.aimPos = 0x10;
@@ -139,6 +145,8 @@ int main()
 			player.gametick = memoryService->Read<int>(serverAddr + offsets.gametick + (i * offsetPlayers));
 			player.pos.x = memoryService->Read<float>(serverAddr + offsets.playerPos + (i * offsetPlayers));
 			player.pos.y = memoryService->Read<float>(serverAddr + offsets.playerPos + 0x4 + (i * offsetPlayers));
+			player.vel.x = memoryService->Read<int>(serverAddr + offsets.playerVel + (i * offsetPlayers));
+			player.vel.y = memoryService->Read<int>(serverAddr + offsets.playerVel + 0x4 + (i * offsetPlayers));
 
 			server->players.push_back(player);
 
@@ -161,6 +169,7 @@ int main()
 
 			TargetProfile targetProfile;
 			targetProfile.m_fWidth = 64;
+			targetProfile.m_vVelocity2D = server->players[i].vel;
 			targetProfile.m_vPos2D = modifiedPos;
 			targetProfile.m_vHeadPos2D = modifiedPos - Vec2(0, 32);
 			targetProfile.m_vFeetPos2D = modifiedPos + Vec2(0, 32);

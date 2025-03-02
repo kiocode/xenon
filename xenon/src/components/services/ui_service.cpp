@@ -277,7 +277,15 @@ void CUIService::RenderDefaultMenu() {
 								if (g_pXenonVariables->g_bAimbot) {
 									ImGui::Indent(10);
 
-									ImGui::Keybind("Aim Key", &g_pXenonConfigs->g_pAimConfig->m_nAimKey);
+									ImGui::Checkbox("Use Prediction", &g_pXenonConfigs->g_pAimConfig->m_bPredictPosition, g_pXenonConfigs->g_pUIConfig->m_cMenuBg, g_pXenonConfigs->g_pUIConfig->m_cMenuAccent, g_pXenonConfigs->g_pUIConfig->m_cMenuOff);
+									if (g_pXenonConfigs->g_pAimConfig->m_bPredictPosition) {
+										ImGui::SliderFloat("Prediction time", &g_pXenonConfigs->g_pAimConfig->m_fPredictionTime, 0.001f, 0.9f, "%.5f");
+									}
+
+									ImGui::Checkbox("Trigger Holding A Key", &g_pXenonConfigs->g_pAimConfig->m_bTriggerWithKey, g_pXenonConfigs->g_pUIConfig->m_cMenuBg, g_pXenonConfigs->g_pUIConfig->m_cMenuAccent, g_pXenonConfigs->g_pUIConfig->m_cMenuOff);
+									if (g_pXenonConfigs->g_pAimConfig->m_bTriggerWithKey) {
+										ImGui::Keybind("Aim Key", &g_pXenonConfigs->g_pAimConfig->m_nAimKey);
+									}
 
 									ImGui::Checkbox("Aim Only Visible", &g_pXenonConfigs->g_pAimConfig->m_bOnlyVisible, g_pXenonConfigs->g_pUIConfig->m_cMenuBg, g_pXenonConfigs->g_pUIConfig->m_cMenuAccent, g_pXenonConfigs->g_pUIConfig->m_cMenuOff);
 									ImGui::Combo("Aim To", &g_pXenonConfigs->g_pAimConfig->m_nAimTo, "Head\0Body\0Feet");
