@@ -25,6 +25,8 @@ public:
 
     void Update() override;
 
+    Vec2 GetTarget() const;
+
 private:
 
     Vec2 m_vTarget;

@@ -84,7 +84,13 @@ void CEsp::Render2DBox(TargetProfile* target) const {
 		target->m_vPos3D.Distance(g_pXenonConfigs->g_pGameVariables->g_vLocal.m_vPos3D) :
 		target->m_vPos2D.Distance(g_pXenonConfigs->g_pGameVariables->g_vLocal.m_vPos2D);
 
-	float scaleFactor = g_pXenon->g_pSystem->Is3DGame() ? 1.0f / (distance * g_pXenonConfigs->g_pAimConfig->m_fDistanceScale) : 1;
+	float scaleFactor = 1;
+	if (g_pXenon->g_pSystem->m_bCheckDistanceScale) {
+		scaleFactor = 1.0f / (distance * g_pXenon->g_pSystem->m_fDistanceScale);
+	}
+	else {
+		scaleFactor = 1.0f;
+	}	
 	float boxWidth = target->m_fWidth * scaleFactor;
 
 	Vec2 targetScreenHeadPos = g_pXenon->g_pSystem->Is3DGame() ? g_pXenon->g_pSystem->m_fnW2S3D(target->m_vHeadPos3D) : g_pXenon->g_pSystem->m_fnW2S2D(target->m_vHeadPos2D);
@@ -218,7 +224,13 @@ void CEsp::RenderHealthBar(TargetProfile* target) const {
 		target->m_vPos3D.Distance(g_pXenonConfigs->g_pGameVariables->g_vLocal.m_vPos3D) :
 		target->m_vPos2D.Distance(g_pXenonConfigs->g_pGameVariables->g_vLocal.m_vPos2D);
 
-	float scaleFactor = g_pXenon->g_pSystem->Is3DGame() ? 1.0f / (distance * g_pXenonConfigs->g_pAimConfig->m_fDistanceScale) : 1;
+	float scaleFactor = 1;
+	if (g_pXenon->g_pSystem->m_bCheckDistanceScale) {
+		scaleFactor = 1.0f / (distance * g_pXenon->g_pSystem->m_fDistanceScale);
+	}
+	else {
+		scaleFactor = 1.0f;
+	}
 	float targetWidth = target->m_fWidth * scaleFactor;
 
 	currentHeight *= healthPercentage;

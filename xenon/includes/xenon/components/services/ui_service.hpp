@@ -105,6 +105,8 @@ private:
 
     static LRESULT __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
+    void RenderFovLine(float offset);
+
     void InitializeDepthStencilStates();
 
     void LoadDefaultFonts();

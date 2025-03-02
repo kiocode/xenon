@@ -23,7 +23,7 @@ public:
 	bool g_bRenderQuickActions;
 	bool g_bMenu;
 	bool g_bLuaEditor;
-	bool g_bNotifications;
+	bool g_bNotifications = true;
 	bool g_bRadar;
 	bool g_bWaypoints;
 

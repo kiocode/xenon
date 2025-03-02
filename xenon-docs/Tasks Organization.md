@@ -20,6 +20,7 @@ kanban-plugin: board
 ## InProgress
 
 - [ ] customize GUI
+- [ ] add fov 2d aimbot
 
 
 ## Done

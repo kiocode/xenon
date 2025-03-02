@@ -16,15 +16,21 @@
 class System {
 public:
 
-	intptr_t g_pUnityBase = 0;
-	intptr_t g_pUnityGameAssembly = 0;
-	intptr_t g_pUnityPlayer = 0;
+	intptr_t g_pUnityBase;
+	intptr_t g_pUnityGameAssembly;
+	intptr_t g_pUnityPlayer;
 
 	float g_fStartPlayTime;
 	float g_fDeltaTime;
 
+	float m_fDistanceScale = 1;
+	bool m_bCheckDistanceScale = false;
+
 	std::function<Vec2(Vec2)> m_fnW2S2D;
 	std::function<Vec2(Vec3)> m_fnW2S3D;
+
+	std::function<Vec2(Vec2)> m_fnS2W2D;
+	std::function<Vec2(Vec3)> m_fnS2W3D;
 
 	float GetPlayTime() const;
 

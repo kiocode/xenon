@@ -16,15 +16,17 @@ public:
     float m_fSpinbotSpeed = 10;
     float m_fSpinbotRadius = 100;
     float m_fSpinbotDepth = 5;
-    float m_fDistanceScale = 1;
     int m_nMouseInputMode = 3;
     int m_nAimTo = 0;
 
-    bool m_bOnlyVisible = false;
+    bool m_bOnlyVisible = false;   
+
+    int m_nAimKey = VK_RBUTTON;
 
     ImColor m_cFov = ImColor(255, 255, 255, 255);
 
     std::function<void(const Vec2&)> m_fnCustomAim;
+    std::function<Vec2()> m_fnCustomGetAim;
 
     std::function<Vec2()> m_fnGetCustomAim;
 };

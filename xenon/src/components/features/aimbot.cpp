@@ -10,11 +10,15 @@
 #include <xenon/core/system.hpp>
 #include <xenon/utility/utilities.hpp>
 
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+
 // test
 void CAimbot::Update() {
     if (!g_pXenonVariables->g_bAimbot) return;
 
-    if (!GetAsyncKeyState(VK_RBUTTON)) {
+    if (!GetAsyncKeyState(g_pXenonConfigs->g_pAimConfig->m_nAimKey)) {
         hasLockedTarget = false;
         nearestDistance = g_pXenonVariables->g_bNearest ? g_pXenonConfigs->g_pAimConfig->m_nNearest : g_pXenonConfigs->g_pAimConfig->m_fFov;
         ResetTarget();
@@ -54,15 +58,16 @@ void CAimbot::Update() {
         if (!screenPos.IsValid()) continue; 
 
         if(g_pXenonVariables->g_bFov) {
-            Vec2 screenCenter = g_pXenon->g_pSystem->GetScreenCenter();
+            if (g_pXenon->g_pSystem->Is3DGame()) {
+                Vec2 screenCenter = g_pXenon->g_pSystem->GetScreenCenter();
 
-            if (std::abs(screenPos.x - screenCenter.x) < g_pXenonConfigs->g_pAimConfig->m_fFov && std::abs(screenPos.y - screenCenter.y) < g_pXenonConfigs->g_pAimConfig->m_fFov) {
-                distance = screenPos.Distance(screenCenter);
+                if (std::abs(screenPos.x - screenCenter.x) < g_pXenonConfigs->g_pAimConfig->m_fFov && std::abs(screenPos.y - screenCenter.y) < g_pXenonConfigs->g_pAimConfig->m_fFov) {
+                    distance = screenPos.Distance(screenCenter);
+                }            
             }
-            /*else if (lockedTarget.m_pOriginalAddress == target.m_pOriginalAddress) {
-                hasLockedTarget = false;
-            }*/
-            
+            else {
+                spdlog::warn("2D game not supported yet");
+            }
         }
 
         if (distance < nearestDistance) {
@@ -97,84 +102,6 @@ void CAimbot::Update() {
     SetTarget(lockedScreenPos);
     AimTarget();
 }
-
-
-//void CAimbot::UpdateCurrentTarget(TargetProfile* target) {
-//    if (!g_pXenonVariables->g_bAimbot) return;
-//
-//    if (!GetAsyncKeyState(VK_RBUTTON)) {
-//        hasLockedTarget = false;
-//        nearestDistance = g_pXenonVariables->g_bNearest ? g_pXenonConfigs->g_pAimConfig->m_nNearest : g_pXenonConfigs->g_pAimConfig->m_fFov;
-//        ResetTarget();
-//        return;
-//    }
-//
-//    float worldDistance = g_pXenon->g_pSystem->Is3DGame() ? 
-//        target->m_vPos3D.Distance(g_pXenonConfigs->g_pGameVariables->g_vLocal.m_vPos3D) :
-//        target->m_vPos2D.Distance(g_pXenonConfigs->g_pGameVariables->g_vLocal.m_vPos2D);
-//
-//    Vec2 screenPos;
-//    switch (g_pXenonConfigs->g_pAimConfig->m_nAimTo) {
-//        case 0: // Head
-//            screenPos = g_pXenon->g_pSystem->Is3DGame()
-//                ? g_pXenon->g_pSystem->m_fnW2S3D(target->m_vHeadPos3D)
-//                : g_pXenon->g_pSystem->m_fnW2S2D(target->m_vHeadPos2D);
-//            break;
-//        case 1: // Body
-//            screenPos = g_pXenon->g_pSystem->Is3DGame()
-//                ? g_pXenon->g_pSystem->m_fnW2S3D(target->m_vPos3D)
-//                : g_pXenon->g_pSystem->m_fnW2S2D(target->m_vPos2D);
-//            break;
-//        case 2: // Feet
-//            screenPos = g_pXenon->g_pSystem->Is3DGame()
-//                ? g_pXenon->g_pSystem->m_fnW2S3D(target->m_vFeetPos3D)
-//                : g_pXenon->g_pSystem->m_fnW2S2D(target->m_vFeetPos2D);
-//            break;
-//    }
-//
-//    if (!screenPos.IsValid()) return;
-//
-//    bool isInFov = true;
-//
-//    if (g_pXenonVariables->g_bNearest && worldDistance < nearestDistance) {
-//        nearestDistance = worldDistance;
-//        nearestTarget = *target;
-//    } else if (g_pXenonVariables->g_bFov) {
-//        Vec2 screenCenter = g_pXenon->g_pSystem->GetScreenCenter();
-//
-//        if (std::abs(screenPos.x - screenCenter.x) < g_pXenonConfigs->g_pAimConfig->m_fFov && std::abs(screenPos.y - screenCenter.y) < g_pXenonConfigs->g_pAimConfig->m_fFov) {
-//		    float distanceFromScreenCenter = screenPos.Distance(screenCenter);
-//
-//            if (distanceFromScreenCenter < nearestDistance) {
-//			    nearestDistance = distanceFromScreenCenter;
-//			    nearestTarget = *target;
-//		    }
-//        }
-//        else {
-//            isInFov = false;
-//        }
-//    }
-//
-//    if (
-//        !hasLockedTarget || 
-//        !Utilities::ListContainsTarget(g_pXenonConfigs->g_pGameVariables->g_vTargets, lockedTarget) || 
-//        (g_pXenonVariables->g_bFov && target->m_pOriginalAddress == lockedTarget.m_pOriginalAddress && !isInFov)
-//    ) {
-//        lockedTarget = nearestTarget;
-//        hasLockedTarget = true;
-//    }
-//
-//    if (target->m_pOriginalAddress != lockedTarget.m_pOriginalAddress || !isInFov) return;
-//
-//    float scaleFactor = 1;
-//
-//    if (g_pXenon->g_pSystem->Is3DGame()) {
-//        scaleFactor = 1.0f / (worldDistance * g_pXenonConfigs->g_pAimConfig->m_fDistanceScale);
-//    }
-//
-//    SetTarget(screenPos);
-//    AimTarget();
-//}
 
 bool CAimbot::IsTargetEmpty() const {
     return !m_vTarget.IsValid();
@@ -226,4 +153,8 @@ bool CAimbot::IsTargetReached() const {
     float deltaY = static_cast<float>(cursorPos.y - m_vTarget.y);
 
     return std::sqrt(deltaX * deltaX + deltaY * deltaY) <= 2.0f;
+}
+
+Vec2 CAimbot::GetTarget() const {
+	return m_vTarget;
 }

@@ -11,6 +11,10 @@
 #include <xenon/components/features/waypoints.hpp>
 #include <xenon/components/services/notification_service.hpp>
 
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+
 void CUIService::Update() {
 
 	if (g_pXenonVariables->g_bCrosshair) {
@@ -272,6 +276,8 @@ void CUIService::RenderDefaultMenu() {
 								ImGui::Checkbox("Aimbot", &g_pXenonVariables->g_bAimbot, g_pXenonConfigs->g_pUIConfig->m_cMenuBg, g_pXenonConfigs->g_pUIConfig->m_cMenuAccent, g_pXenonConfigs->g_pUIConfig->m_cMenuOff);
 								if (g_pXenonVariables->g_bAimbot) {
 									ImGui::Indent(10);
+
+									ImGui::Keybind("Aim Key", &g_pXenonConfigs->g_pAimConfig->m_nAimKey);
 
 									ImGui::Checkbox("Aim Only Visible", &g_pXenonConfigs->g_pAimConfig->m_bOnlyVisible, g_pXenonConfigs->g_pUIConfig->m_cMenuBg, g_pXenonConfigs->g_pUIConfig->m_cMenuAccent, g_pXenonConfigs->g_pUIConfig->m_cMenuOff);
 									ImGui::Combo("Aim To", &g_pXenonConfigs->g_pAimConfig->m_nAimTo, "Head\0Body\0Feet");
@@ -656,8 +662,37 @@ void CUIService::RenderCrosshair() {
 }
 
 void CUIService::RenderFov() {
-	ImGui::GetForegroundDrawList()->AddCircle(ImVec2(g_pXenon->g_pSystem->GetScreenCenter().x, g_pXenon->g_pSystem->GetScreenCenter().y), g_pXenonConfigs->g_pAimConfig->m_fFov, g_pXenonConfigs->g_pAimConfig->m_cFov, 360);
+	if (g_pXenon->g_pSystem->Is3DGame()) {
+		ImGui::GetForegroundDrawList()->AddCircle(ImVec2(g_pXenon->g_pSystem->GetScreenCenter().x, g_pXenon->g_pSystem->GetScreenCenter().y), g_pXenonConfigs->g_pAimConfig->m_fFov, g_pXenonConfigs->g_pAimConfig->m_cFov, 360);
+	}
+	else {
+		RenderFovLine(g_pXenonConfigs->g_pAimConfig->m_fFov * 0.01f);
+		RenderFovLine(g_pXenonConfigs->g_pAimConfig->m_fFov * -0.01f);
+	}
 }
+
+void CUIService::RenderFovLine(float offset)
+{
+	if (g_pXenon->g_pSystem->Is3DGame()) {
+		spdlog::error("RenderFovLine is supposed to be called only for 2D games");
+		return;
+	}
+
+	const Vec2 mousePos = g_pXenonConfigs->g_pAimConfig->m_fnCustomGetAim();
+	const float angle = atan2(mousePos.y - 0, mousePos.x - 0) + offset;
+
+	float dirX = cos(angle);
+	float dirY = sin(angle);
+
+	float length = std::sqrt(dirX * dirX + dirY * dirY);
+	const Vec2 initPos = g_pXenon->g_pSystem->m_fnW2S2D(g_pXenonConfigs->g_pGameVariables->g_vLocal.m_vPos2D) + Vec2(g_pXenonConfigs->g_pGameVariables->g_vLocal.m_fWidth/2, g_pXenonConfigs->g_pGameVariables->g_vLocal.GetHeight2D()/2);
+	Vec2 exDirection = (length > 0.0f) ? Vec2{ dirX / length, dirY / length } : Vec2{ 0.0f, 0.0f };
+
+	Vec2 finishPos = initPos + exDirection * 200; 
+
+	ImGui::GetBackgroundDrawList()->AddLine(ImVec2(initPos.x, initPos.y), ImVec2(finishPos.x, finishPos.y), g_pXenonConfigs->g_pAimConfig->m_cFov, 1.2f);
+}
+
 
 void CUIService::RenderMouse() {
 	switch (g_pXenonConfigs->g_pUIConfig->m_nMouseType) {

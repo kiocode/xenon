@@ -63,6 +63,18 @@ public:
         spdlog::info("Aimbot is enabled");
     }
 
+    void UseFov() {
+
+        if (!m_pXenonVariables->g_bRenderUI) {
+            spdlog::error("Fov can only be used with Custom UI");
+            return;
+        }
+
+        m_pXenonVariables->g_bFov = true;
+
+        spdlog::info("Fov is enabled");
+    }
+
     void UseNoRecoil() {
 
         m_pXenonVariables->g_bNoRecoil = true;
@@ -180,6 +192,10 @@ public:
             return;
         }
 
+        if (!m_pXenonVariables->g_bEsp) {
+            m_pXenonVariables->g_bEsp = true;
+        }
+
         m_pXenonVariables->g_bSnapline = true;
 
         spdlog::info("Snapline ESP is enabled");
@@ -191,6 +207,10 @@ public:
         if (!m_pXenonVariables->g_bRenderUI) {
             spdlog::error("2D Box ESP can only be used with Custom UI");
             return;
+        }
+
+        if (!m_pXenonVariables->g_bEsp) {
+            m_pXenonVariables->g_bEsp = true;
         }
 
         m_pXenonVariables->g_bBox2D = true;
@@ -205,6 +225,10 @@ public:
             return;
         }
 
+        if (!m_pXenonVariables->g_bEsp) {
+            m_pXenonVariables->g_bEsp = true;
+        }
+
         m_pXenonVariables->g_bBox3D = true;
 
         spdlog::info("3D Box ESP is enabled");
@@ -217,6 +241,10 @@ public:
             return;
         }
 
+        if (!m_pXenonVariables->g_bEsp) {
+            m_pXenonVariables->g_bEsp = true;
+        }
+
         m_pXenonVariables->g_bSkeleton = true;
 
         spdlog::info("Skeleton ESP is enabled");
@@ -227,6 +255,10 @@ public:
         if (!m_pXenonVariables->g_bRenderUI) {
             spdlog::error("Health Bar ESP can only be used with Custom UI");
             return;
+        }
+
+        if (!m_pXenonVariables->g_bEsp) {
+            m_pXenonVariables->g_bEsp = true;
         }
 
         m_pXenonVariables->g_bHealthBar = true;
