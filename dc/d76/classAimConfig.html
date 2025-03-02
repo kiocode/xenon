@@ -133,8 +133,14 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a2624b49de3b51424c6c60b8bb093e1d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a147fca4a9129271df26eeda80beeee23" id="r_a147fca4a9129271df26eeda80beeee23"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d76/classAimConfig.html#a147fca4a9129271df26eeda80beeee23">m_nAimTo</a> = 0</td></tr>
 <tr class="separator:a147fca4a9129271df26eeda80beeee23"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81fad4f73fd6371735fb53089ae4365a" id="r_a81fad4f73fd6371735fb53089ae4365a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d76/classAimConfig.html#a81fad4f73fd6371735fb53089ae4365a">m_bPredictPosition</a> = false</td></tr>
+<tr class="separator:a81fad4f73fd6371735fb53089ae4365a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20fa1f1dcc354942d9d38ac85cdd3148" id="r_a20fa1f1dcc354942d9d38ac85cdd3148"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d76/classAimConfig.html#a20fa1f1dcc354942d9d38ac85cdd3148">m_fPredictionTime</a> = 0.1</td></tr>
+<tr class="separator:a20fa1f1dcc354942d9d38ac85cdd3148"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa48c23a2f6a45b38c650575eda80a184" id="r_aa48c23a2f6a45b38c650575eda80a184"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d76/classAimConfig.html#aa48c23a2f6a45b38c650575eda80a184">m_bOnlyVisible</a> = false</td></tr>
 <tr class="separator:aa48c23a2f6a45b38c650575eda80a184"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44230f3ebc7ec1041bcad30437b89636" id="r_a44230f3ebc7ec1041bcad30437b89636"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d76/classAimConfig.html#a44230f3ebc7ec1041bcad30437b89636">m_bTriggerWithKey</a> = true</td></tr>
+<tr class="separator:a44230f3ebc7ec1041bcad30437b89636"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a59cc1522dd3a426ec93814af7f6c2fc2" id="r_a59cc1522dd3a426ec93814af7f6c2fc2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d76/classAimConfig.html#a59cc1522dd3a426ec93814af7f6c2fc2">m_nAimKey</a> = VK_RBUTTON</td></tr>
 <tr class="separator:a59cc1522dd3a426ec93814af7f6c2fc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b652d43df347506f30c0c79f6f1813c" id="r_a3b652d43df347506f30c0c79f6f1813c"><td class="memItemLeft" align="right" valign="top">ImColor&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d76/classAimConfig.html#a3b652d43df347506f30c0c79f6f1813c">m_cFov</a> = ImColor(255, 255, 255, 255)</td></tr>
@@ -155,6 +161,34 @@ Public Attributes</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">bool AimConfig::m_bOnlyVisible = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a81fad4f73fd6371735fb53089ae4365a" name="a81fad4f73fd6371735fb53089ae4365a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81fad4f73fd6371735fb53089ae4365a">&#9670;&#160;</a></span>m_bPredictPosition</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool AimConfig::m_bPredictPosition = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a44230f3ebc7ec1041bcad30437b89636" name="a44230f3ebc7ec1041bcad30437b89636"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44230f3ebc7ec1041bcad30437b89636">&#9670;&#160;</a></span>m_bTriggerWithKey</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool AimConfig::m_bTriggerWithKey = true</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -225,6 +259,20 @@ Public Attributes</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">std::function&lt;<a class="el" href="../../d3/d95/classVec2.html">Vec2</a>()&gt; AimConfig::m_fnGetCustomAim</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a20fa1f1dcc354942d9d38ac85cdd3148" name="a20fa1f1dcc354942d9d38ac85cdd3148"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20fa1f1dcc354942d9d38ac85cdd3148">&#9670;&#160;</a></span>m_fPredictionTime</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float AimConfig::m_fPredictionTime = 0.1</td>
         </tr>
       </table>
 </div><div class="memdoc">

@@ -1,11 +1,14 @@
 var classAimConfig =
 [
     [ "m_bOnlyVisible", "dc/d76/classAimConfig.html#aa48c23a2f6a45b38c650575eda80a184", null ],
+    [ "m_bPredictPosition", "dc/d76/classAimConfig.html#a81fad4f73fd6371735fb53089ae4365a", null ],
+    [ "m_bTriggerWithKey", "dc/d76/classAimConfig.html#a44230f3ebc7ec1041bcad30437b89636", null ],
     [ "m_cFov", "dc/d76/classAimConfig.html#a3b652d43df347506f30c0c79f6f1813c", null ],
     [ "m_fFov", "dc/d76/classAimConfig.html#a36945f862613b5ad74fe0e3f6921804a", null ],
     [ "m_fnCustomAim", "dc/d76/classAimConfig.html#ac4de010246ddbf8e870d81174c6f3915", null ],
     [ "m_fnCustomGetAim", "dc/d76/classAimConfig.html#a072ca334de1938e850fdc30d477075e9", null ],
     [ "m_fnGetCustomAim", "dc/d76/classAimConfig.html#a8b36fb13e289126e5aca1293e6993b33", null ],
+    [ "m_fPredictionTime", "dc/d76/classAimConfig.html#a20fa1f1dcc354942d9d38ac85cdd3148", null ],
     [ "m_fRecoilTiltSpeed", "dc/d76/classAimConfig.html#a6b966ecc62552574df70eedc5c8b38ab", null ],
     [ "m_fRecoilTiltStrength", "dc/d76/classAimConfig.html#aa503017154b5ee708cc2c1ca31551e5a", null ],
     [ "m_fRecoilVerticalStrength", "dc/d76/classAimConfig.html#abb13e214bd8048cc72233af7f0d6368e", null ],
