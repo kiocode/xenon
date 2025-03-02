@@ -20,6 +20,10 @@ var classSystem =
     [ "g_pUnityBase", "dd/d2d/classSystem.html#a1c12d1d898a6dd22f384d29636e1f6d2", null ],
     [ "g_pUnityGameAssembly", "dd/d2d/classSystem.html#af52ee26e2cc54e854f2023beb6f3e628", null ],
     [ "g_pUnityPlayer", "dd/d2d/classSystem.html#a0186ea4da1a20909c9517331a13c38a3", null ],
+    [ "m_bCheckDistanceScale", "dd/d2d/classSystem.html#a2778eab943305e6ce7a0f69a2cd1e660", null ],
+    [ "m_fDistanceScale", "dd/d2d/classSystem.html#aa7e46c1e8c3d03477079cdf7c7a4fbd4", null ],
+    [ "m_fnS2W2D", "dd/d2d/classSystem.html#aecf656ad24c5fa3462eb0c051b8c52e3", null ],
+    [ "m_fnS2W3D", "dd/d2d/classSystem.html#acf8588062f2acfb7fa4ca6db1d345c5d", null ],
     [ "m_fnW2S2D", "dd/d2d/classSystem.html#ab3a2c9be416b6b8daebdaafef427c0e3", null ],
     [ "m_fnW2S3D", "dd/d2d/classSystem.html#a2f5aba41b67abcf0f8c4761a1affe919", null ]
 ];

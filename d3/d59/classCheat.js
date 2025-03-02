@@ -11,6 +11,7 @@ var classCheat =
     [ "UseESPHealthBar", "d3/d59/classCheat.html#a232443827ec101034576a719dbab78ca", null ],
     [ "UseESPSkeleton", "d3/d59/classCheat.html#a0fe247616f825b1d70c2d00df1cb1960", null ],
     [ "UseESPSnapline", "d3/d59/classCheat.html#a6532874638cc4e1befe10bbbf9e4f59e", null ],
+    [ "UseFov", "d3/d59/classCheat.html#a3885f2047722470fbcb3adab22edb9f2", null ],
     [ "UseNoRecoil", "d3/d59/classCheat.html#ad6cab7d551d57641384e2aec2045d8b9", null ],
     [ "UseUICustom", "d3/d59/classCheat.html#a4bbe145e5d316433cf9162f53a0f8b63", null ],
     [ "UseUICustom", "d3/d59/classCheat.html#ae1b381dd8bf0261acc3968abe5fe93a3", null ],
