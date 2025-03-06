@@ -9,7 +9,7 @@ void CLuaService::Update() {
 
         if (!result.valid()) {
             sol::error err = result;
-            std::cerr << "Lua error occurred in OnUpdate: " << err.what() << std::endl;
+            spdlog::error("Lua error occurred in OnUpdate: {}", err.what());
         }
     }
 	#pragma endregion
