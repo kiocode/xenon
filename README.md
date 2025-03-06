@@ -4,7 +4,7 @@
 
 This README provides an overview of the framework, examples of how to create projects using Xenon, and a comparison between internal and external cheats, as well as support for Unreal Engine and Unity.
 
-### NOTE: a complete doc is under elaboration
+### NOTE: A complete documentation is under elaboration.
 ---
 
 ## Table of Contents
@@ -14,6 +14,7 @@ This README provides an overview of the framework, examples of how to create pro
 4. [Getting Started](#getting-started)
    - [Internal Cheat Example](#internal-cheat-example)
    - [External Cheat Example](#external-cheat-example)
+   - [Automatic DLL Injection](#automatic-dll-injection)
 5. [Configuration and Customization](#configuration-and-customization)
 6. [Contributing](#contributing)
 7. [License](#license)
@@ -30,6 +31,7 @@ Key Features:
 - **Customizable UI**: Built-in support for ImGui for creating in-game overlays.
 - **Memory Management**: Provides utilities for reading/writing game memory.
 - **Event-Driven Architecture**: Hook into game events like updates or rendering.
+- **Automatic DLL Injection**: Built-in system for injecting DLLs into game processes (work in progress but functional in many cases).
 
 ---
 
@@ -116,7 +118,7 @@ pSystem->m_fnW2S3D = [](Vec3 pos) {
 ```
 
 ### Unity
-Xenon can also be adapted to work with Unity games, though it requires additional setup to access Unity-specific data structures. Xenon have also a custom IL2CPP Resolver integration, improved to avoid crashed getting targets.
+Xenon can also be adapted to work with Unity games, though it requires additional setup to access Unity-specific data structures. Xenon has a custom IL2CPP Resolver integration, improved to avoid crashes when getting targets.
 
 **Example**:
 ```cpp
@@ -165,7 +167,8 @@ DWORD WINAPI MainThread(LPVOID lpReserved) {
     pEspConfig->m_fHealthBarWidth = 40;
 
     builder.GameManager->OnEvent("Update", [pGameVariables]() {
-        // Update game variables and targets, so there you can get players in any way you need in any game
+        // Update game variables and targets,
+	// so there you can get players in any way you need in any game
     });
 
     Cheat cheat = builder.Build();
@@ -190,7 +193,6 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD dReasonForCall, LPVOID lpReserved)
 	}
 	return TRUE;
 }
-
 ```
 
 ### External Cheat Example
@@ -208,14 +210,14 @@ int main() {
 
     builder.xenon->g_pSystem->SetGameDimension(GameDimension::DIM_2D);
 
-		builder.xenon->g_cMemoryService->AttachGame("Your\\Game\\Path.exe");
-  	uintptr_t serverAddr = builder.xenon->g_cMemoryService->ReadPointer(offsets.staticServerAddr);
-  	uintptr_t clientAddr = builder.xenon->g_cMemoryService->ReadPointer(offsets.staticClientAddr);
+    builder.xenon->g_cMemoryService->AttachGame("Your\\Game\\Path.exe");
+    uintptr_t serverAddr = builder.xenon->g_cMemoryService->ReadPointer(offsets.staticServerAddr);
+    uintptr_t clientAddr = builder.xenon->g_cMemoryService->ReadPointer(offsets.staticClientAddr);
 
-  	if (!serverAddr || !clientAddr) {
-  		spdlog::error("Failed to find server or client address");
-  		return 1;
-  	}
+    if (!serverAddr || !clientAddr) {
+        spdlog::error("Failed to find server or client address");
+        return 1;
+    }
 
     builder.GameManager->OnEvent("Update", [builder]() {
         // Update game variables and targets
@@ -225,6 +227,48 @@ int main() {
     cheat.UseUICustom();
     cheat.UseUIMenu();
     cheat.Run();
+
+    return 0;
+}
+```
+
+### Automatic DLL Injection
+Xenon includes a built-in system for automatic DLL injection into game processes. This feature is still a work in progress but is functional in many cases.
+
+**Example**:
+```cpp
+#include <spdlog/spdlog.h>
+#include <xenon/xenon.hpp>
+#include <xenon/components/services/injection_service.hpp>
+
+void Inject(std::string dllPath, std::string exePath, std::string launchOptions) {
+    Builder builder("Custom Injector");
+    builder.SetDebugLogLevel();
+
+    spdlog::info("Game Path: {}", exePath);
+    spdlog::info("DLL Path: {}", dllPath);
+
+    HANDLE hProcess, hThread;
+    if (!builder.xenon->g_cInjectionService->OpenGame(&hProcess, &hThread, exePath, launchOptions)) {
+        spdlog::error("Failed to open game process.");
+        system("pause");
+        return;
+    }
+
+    builder.xenon->g_cInjectionService->Inject(hProcess, dllPath, InjectionType::LoadLibraryDLL);
+
+    Sleep(3000);
+    ResumeThread(hThread);
+    CloseHandle(hProcess);
+}
+
+int main() {
+    // Example usage:
+    Inject("E:\\Projects\\xenon\\example-redmatch2-internal\\build\\example-redmatch2-internal.dll", 
+           "D:\\Steam\\steamapps\\common\\Redmatch 2\\Redmatch 2.exe", "");
+
+    //Inject("E:\\Projects\\xenon\\example-amongus-internal\\build\\example-amongus-internal.dll", 
+    //       "D:\\Among Us\\Among Us.exe", "");
 
     return 0;
 }
