@@ -293,13 +293,13 @@ pUIConfig->m_qActions->AddSlider("Distance Scale", &pAimConfig->m_fDistanceScale
 
 ## Contributing
 
-Contributions are welcome! Please read the [CONTRIBUTING.md](CONTRIBUTING.md) file for details on how to contribute to the project.
+Contributions are welcome! Please read the [CONTRIBUTING.md](https://github.com/kiocode/xenon/blob/main/CONTRIBUTING.md) file for details on how to contribute to the project.
 
 ---
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/kiocode/xenon/blob/main/LICENSE.md) file for details.
 
 ---
 
