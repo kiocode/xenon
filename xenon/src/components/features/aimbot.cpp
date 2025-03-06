@@ -14,7 +14,6 @@
 #define M_PI 3.14159265358979323846
 #endif
 
-// test
 void CAimbot::Update() {
     if (!g_pXenonVariables->g_bAimbot) return;
 
