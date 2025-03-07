@@ -95,13 +95,13 @@ DWORD WINAPI MainThread(LPVOID lpReserved)
 
 	});
 
-	builder.xenonConfig->g_pAimConfig->m_fDistanceScale = 0.6f;
+	builder.xenon->g_pSystem->m_fDistanceScale = 0.6f;
 	builder.xenonConfig->g_pEspConfig->m_fHealthBarWidth = 35;
 
 	pUIConfig->m_qActions->AddSlider("Head", &head, -10.0f, 10.0f);
 	pUIConfig->m_qActions->AddSlider("Feet", &feet, -10.0f, 10.0f);
 	pUIConfig->m_qActions->AddSlider("Width", &width, 0.0f, 300.0f);
-	pUIConfig->m_qActions->AddSlider("Distance Scale", &builder.xenonConfig->g_pAimConfig->m_fDistanceScale, 0.0f, 100.0f);
+	pUIConfig->m_qActions->AddSlider("Distance Scale", &builder.xenon->g_pSystem->m_fDistanceScale, 0.0f, 100.0f);
 
 	builder.GameManager->OnEvent("Update", [builder, pGameVariables]() {
 
