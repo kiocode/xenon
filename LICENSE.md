@@ -22,7 +22,7 @@ furnished to do so, subject to the following conditions:
 
 ### TL;DR:
 - You can use, modify, and distribute this software freely.
-- You must always credit **Progetto Xenon** and include a link to the original project (https://github.com/kiocode/xenon).
+- You must always credit **Xenon** and include a link to the original project (https://github.com/kiocode/xenon).
 - There is no warranty, and the authors are not liable for any issues.
 
 ---
