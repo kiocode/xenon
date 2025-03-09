@@ -247,7 +247,8 @@ static void TestGeneral(Builder& builder) {
 	builder.xenonConfig->g_pGameVariables->g_vTargets.push_back(target4);
 	#pragma endregion
 
-	builder.xenonConfig->g_pUIConfig->m_qActions->AddSlider("Distance Scale", &builder.xenonConfig->g_pAimConfig->m_fDistanceScale, 0.0f, 100.0f);
+	builder.xenonConfig->g_pUIConfig->m_qActions->AddSlider("Distance Scale", &builder.xenon->g_pSystem->m_fDistanceScale, 0.0f, 100.0f);
+	builder.xenonConfig->g_pUIConfig->m_qActions->AddButton("Send test notification", [builder]() { builder.xenon->g_cNotificationService->Notify("Test", "Test message"); });
 
 	Cheat cheat = builder.Build();
 

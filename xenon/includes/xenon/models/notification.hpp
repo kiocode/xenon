@@ -44,7 +44,7 @@ public:
 
 			//sizing + pos
 			ImGui::SetWindowSize(ImVec2(80 + m_fResizeAnim, 80));
-			ImGui::SetWindowPos(ImVec2(20, -780 + m_fAnim + (85 * m_nIndex)));
+			ImGui::SetWindowPos(ImVec2(20, -780 + m_fAnim + (85 * 0)));
 
 			//helpers def
 			ImVec2 startPos = ImGui::GetWindowPos() + ImVec2(5, 5);
@@ -53,23 +53,23 @@ public:
 			ImGui::GetWindowDrawList()->AddRectFilled(startPos, ImVec2(startPos.x + 70 + m_fResizeAnim, startPos.y + 50), ImColor(0, 79, 65, 255), 20.f); //bg
 			ImGui::GetWindowDrawList()->AddRect(startPos, ImVec2(startPos.x + 70 + m_fResizeAnim, startPos.y + 50), ImColor(0, 229, 189, 255), 20.f, 0, 1.5f); //rect
 
-			//m_imLogo
-			ImGui::PushFont(imLogo);
-			ImGui::SetCursorPos(ImVec2(15, 7));
-			ImGui::TextColored(ImColor(255, 255, 255, 255), "A");
-			ImGui::SetCursorPos(ImVec2(15, 7));
-			ImGui::TextColored(ImColor(0, 229, 189), "B");
-			ImGui::SetCursorPos(ImVec2(15, 7));
-			ImGui::TextColored(ImColor(0, 229, 189), "C");
-			ImGui::PopFont();
+			////m_imLogo
+			//ImGui::PushFont(imLogo);
+			//ImGui::SetCursorPos(ImVec2(15, 7));
+			//ImGui::TextColored(ImColor(255, 255, 255, 255), "A");
+			//ImGui::SetCursorPos(ImVec2(15, 7));
+			//ImGui::TextColored(ImColor(0, 229, 189), "B");
+			//ImGui::SetCursorPos(ImVec2(15, 7));
+			//ImGui::TextColored(ImColor(0, 229, 189), "C");
+			//ImGui::PopFont();
 
 			//render notifts
 			ImGui::PushFont(imFont);
-			ImGui::SetCursorPos(ImVec2(78, 13));
+			ImGui::SetCursorPos(ImVec2(25, 13));
 			ImGui::TextColored(ImColor(255, 255, 255, 255), m_strTitle.c_str());
 			ImGui::PopFont();
 
-			ImGui::SetCursorPos(ImVec2(78, 32));
+			ImGui::SetCursorPos(ImVec2(25, 32));
 			ImGui::TextColored(ImColor(255, 255, 255, 255), m_strMessage.c_str());
 		}
 		ImGui::End();
