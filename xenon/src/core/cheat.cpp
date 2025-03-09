@@ -33,6 +33,9 @@ void Cheat::Run() {
             case RenderingHookType::DISCORD: {
                 m_pGame->EnableUpdate();
             } break;
+            case RenderingHookType::STEAM: {
+				m_pGame->EnableUpdate();
+			} break;
         }
     }
     else {
