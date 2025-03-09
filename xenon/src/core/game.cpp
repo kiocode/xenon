@@ -114,7 +114,9 @@ void Game::Update() {
 	}
 
 	if (!init) {
-		m_pXenon->g_cNotificationService->Notify("Xenon", "Xenon initialized");
+		char aBuff[99];
+		sprintf_s(aBuff, "%s initialized", m_pXenon->g_pSystem->GetAppTitle()->c_str());
+		m_pXenon->g_cNotificationService->Notify(m_pXenon->g_pSystem->GetAppTitle()->c_str(), aBuff);
 		init = true;
 	}
 
