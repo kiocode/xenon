@@ -12,6 +12,7 @@
 #include <xenon/components/services/lua_service.hpp>
 #include <xenon/components/services/aim_service.hpp>
 #include <xenon/components/services/memory_service.hpp>
+#include <xenon/components/services/notification_service.hpp>
 
 void Game::EnableUpdate() {
 
@@ -72,6 +73,7 @@ void Game::BindForExternal() {
 		Update();
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(10));
+
 	}
 
 	if (m_pXenonVariables->g_bRenderUI) {
@@ -97,6 +99,7 @@ HRESULT __stdcall Game::BindForInternal(IDXGISwapChain* pSwapChain, UINT nSyncIn
 	return m_pUIService->oPresent(pSwapChain, nSyncInterval, nFlags);
 }
 
+bool init = false;
 void Game::Update() {
 
 	if (m_bRenderUI) {
@@ -108,6 +111,11 @@ void Game::Update() {
 
 	for (std::shared_ptr<CComponent> &component : m_pComponents) {
 		component->Update();
+	}
+
+	if (!init) {
+		m_pXenon->g_cNotificationService->Notify("Xenon", "Xenon initialized");
+		init = true;
 	}
 
 	for (TargetProfile& target : m_pXenonConfigs->g_pGameVariables->g_vTargets) {

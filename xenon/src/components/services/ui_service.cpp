@@ -609,6 +609,7 @@ void CUIService::InitExternal() {
 		}
 	}
 }
+
 void CUIService::RenderEnabledCheats() {
 
 	ImGui::SetNextWindowPos(ImVec2(ImGui::GetIO().DisplaySize.x - 110, 10), ImGuiCond_Always);

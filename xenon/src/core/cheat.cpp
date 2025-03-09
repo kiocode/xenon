@@ -39,6 +39,7 @@ void Cheat::Run() {
         spdlog::info("External cheat initialized");
 
         m_pGame->EnableUpdate();
+
     }
 }
 
