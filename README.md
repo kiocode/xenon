@@ -293,6 +293,16 @@ pUIConfig->m_qActions->AddSlider("Distance Scale", &pAimConfig->m_fDistanceScale
 
 [![Star History Chart](https://api.star-history.com/svg?repos=kiocode/xenon-cheats&type=Date)](https://star-history.com/#kiocode/xenon-cheats&Date)
 
+## Star History
+
+<a href="https://star-history.com/#kiocode/xenon-cheats&Date">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=kiocode/xenon-cheats&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=kiocode/xenon-cheats&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=kiocode/xenon-cheats&type=Date" />
+ </picture>
+</a>
+
 ---
 
 ## Contributing
